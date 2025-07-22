@@ -1,0 +1,306 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table"
+	xmlns:layout="sap.ui.layout">
+	<Dialog type="Message" class="sapUiSizeCompact" showHeader="false">
+		<beginButton>
+			<Button text="Close" press="onCloseProcEinvDialog"/>
+		</beginButton>
+		<Bar>
+			<contentMiddle>
+				<Title text="GET GSTR-1 E-INVOICE Last Call Status" visible="true" id="idgetEinvoice"/>
+				<Title text="GET GSTR-1 E-INVOICE Last Success Status" visible="false" id="idGetSucessEinvoice"/>
+			</contentMiddle>
+		</Bar>
+		<layout:Grid defaultSpan="L2 M2 S12" vSpacing="0" class="sapUiTinyMarginTop">
+			<layout:content>
+				<VBox>
+					<Label text="GSTIN" required="false"/>
+					<Input value="29AAAPH9357H000" id="idpopupgstin" editable="false"/>
+					<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" id="id_TaxProcesseInv" editable="false" visible="false"/>
+				</VBox>
+				<!--<VBox visible="{=!${visiSummPopup>/P}}" class="sapUiSmallMarginBegin">-->
+				<!--	<Label text="GSTIN" required="false"/>-->
+				<!--	<Label id="id_gstineInv" design="Bold"/>-->
+				<!--</VBox>-->
+			</layout:content>
+		</layout:Grid>
+		<Toolbar>
+			<ToolbarSpacer/>
+			<Button text="Download Reports" type="Emphasized" press="onPressDownloadReportsEINV" visible="false"/>
+			<Button text="GET GSTR-1 E-Invoice" type="Emphasized" press="onPressGetBtnEINV" visible="false"/>
+			<Button text="Refresh" type="Emphasized" press="onPressRefreshBtnEINV"/>
+			<SegmentedButton id="idProcessEinv" selectedKey="LCS" selectionChange="onChangeSegmentProcessStatusEinv" class="sapUiSmallMarginEnd">
+				<items>
+					<SegmentedButtonItem text="Last Call Status" key="LCS" width="10rem"/>
+					<SegmentedButtonItem text="Last Success Status" key="LSS" width="10rem"/>
+				</items>
+			</SegmentedButton>
+		</Toolbar>
+		<ui:Table id="idgetVtablegstr1Einv" rows="{path:'Gstr1ASucess>/resp/lastCall'}" selectionMode="Single" selectionBehavior="Row"
+			visibleRowCount="10" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop cl_popupCheck" fixedColumnCount="1" width="85rem"
+			rowSelectionChange="onRowSelectionChangeEINV">
+			<ui:extension></ui:extension>
+			<ui:columns>
+				<ui:Column hAlign="Left" visible="{visiSummPopup>/P}">
+					<HBox>
+						<Label text="Tax Period" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</HBox>
+					<ui:template>
+						<HBox>
+							<Text text="{path:'Gstr1ASucess>taxPeriod', formatter:'.formatter.periodFormat'}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Left">
+					<HBox>
+						<!--<CheckBox text="" enabled="true" select="onSelectAllCheckHeaderEINV($event,'b2bFlag')" selected="{showing>/b2bFlag}"/>-->
+						<Label text="B2B" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+					</HBox>
+					<ui:template>
+						<HBox>
+							<!--<CheckBox text="" selected="{Gstr1ASucess>b2bFlag}"/>-->
+							<VBox>
+								<HBox>
+									<ObjectStatus text="{Gstr1ASucess>b2bStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+										state="{= ${Gstr1ASucess>b2bStatus} ==='Success' ?'Success':'Error'}"/>
+								</HBox>
+								<Text text="{Gstr1ASucess>b2bTimeStamp}"/>
+							</VBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Left">
+					<HBox>
+						<!--<CheckBox text="" enabled="true" select="onSelectAllCheckHeaderEINV($event,'cdnrFlag')" selected="{showing>/cdnrFlag}"/>-->
+						<Label text="CDNR" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+					</HBox>
+					<ui:template>
+						<HBox>
+							<!--<CheckBox text="" selected="{Gstr1ASucess>cdnrFlag}"/>-->
+							<VBox>
+								<HBox>
+									<ObjectStatus text="{Gstr1ASucess>cdnrStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+										state="{= ${Gstr1ASucess>cdnrStatus} ==='Success' ?'Success':'Error'}"/>
+								</HBox>
+								<Text text="{Gstr1ASucess>cdnrTimeStamp}"/>
+							</VBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Left">
+					<HBox>
+						<!--<CheckBox text="" enabled="true" select="onSelectAllCheckHeaderEINV($event,'cdnurFlag')" selected="{showing>/cdnurFlag}"/>-->
+						<Label text="CDNUR" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+					</HBox>
+					<ui:template>
+						<HBox>
+							<!--<CheckBox text="" selected="{Gstr1ASucess>cdnurFlag}"/>-->
+							<VBox>
+								<HBox>
+									<ObjectStatus text="{Gstr1ASucess>cdnurStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+										state="{= ${Gstr1ASucess>cdnurStatus} ==='Success' ?'Success':'Error'}"/>
+								</HBox>
+								<Text text="{Gstr1ASucess>cdnurTimeStamp}"/>
+							</VBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Left">
+					<HBox>
+						<!--<CheckBox text="" enabled="true" select="onSelectAllCheckHeaderEINV($event,'exportsFlag')" selected="{showing>/exportsFlag}"/>-->
+						<Label text="Exports" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+					</HBox>
+					<ui:template>
+						<HBox>
+							<!--<CheckBox text="" selected="{Gstr1ASucess>exportsFlag}"/>-->
+							<VBox>
+								<HBox>
+									<ObjectStatus text="{Gstr1ASucess>exportStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+										state="{= ${Gstr1ASucess>exportStatus} ==='Success' ?'Success':'Error'}"/>
+								</HBox>
+								<Text text="{Gstr1ASucess>exportsTimestamp}"/>
+							</VBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+		<ui:Table id="idgetVtablegst1proEinvLast" rows="{path:'Gstr1ASucess>/resp/lastSuccess'}" selectionMode="Single" selectionBehavior="Row"
+			visibleRowCount="10" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop cl_popupCheck" fixedColumnCount="1" width="85rem"
+			rowSelectionChange="onRowSelectionChangeEINV" visible="false">
+			<ui:extension></ui:extension>
+			<ui:columns>
+				<ui:Column hAlign="Left" visible="{visiSummPopup>/P}">
+					<HBox>
+						<Label text="Tax Period" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</HBox>
+					<ui:template>
+						<HBox>
+							<Text text="{path:'Gstr1ASucess>taxPeriod', formatter:'.formatter.periodFormat'}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Left">
+					<HBox>
+						<!--<CheckBox text="" enabled="true" select="onSelectAllCheckHeaderEINV($event,'b2bFlag')" selected="{showing>/b2bFlag}"/>-->
+						<Label text="B2B" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+					</HBox>
+					<ui:template>
+						<HBox>
+							<!--<CheckBox text="" selected="{Gstr1ASucess>b2bFlag}"/>-->
+							<VBox>
+								<HBox>
+									<ObjectStatus text="{Gstr1ASucess>b2bStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+										state="{= ${Gstr1ASucess>b2bStatus} ==='Success' ?'Success':'Error'}"/>
+								</HBox>
+								<Text text="{Gstr1ASucess>b2bTimeStamp}"/>
+							</VBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Left">
+					<HBox>
+						<!--<CheckBox text="" enabled="true" select="onSelectAllCheckHeaderEINV($event,'cdnrFlag')" selected="{showing>/cdnrFlag}"/>-->
+						<Label text="CDNR" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+					</HBox>
+					<ui:template>
+						<HBox>
+							<!--<CheckBox text="" selected="{Gstr1ASucess>cdnrFlag}"/>-->
+							<VBox>
+								<HBox>
+									<ObjectStatus text="{Gstr1ASucess>cdnrStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+										state="{= ${Gstr1ASucess>cdnrStatus} ==='Success' ?'Success':'Error'}"/>
+								</HBox>
+								<Text text="{Gstr1ASucess>cdnrTimeStamp}"/>
+							</VBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Left">
+					<HBox>
+						<!--<CheckBox text="" enabled="true" select="onSelectAllCheckHeaderEINV($event,'cdnurFlag')" selected="{showing>/cdnurFlag}"/>-->
+						<Label text="CDNUR" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+					</HBox>
+					<ui:template>
+						<HBox>
+							<!--<CheckBox text="" selected="{Gstr1ASucess>cdnurFlag}"/>-->
+							<VBox>
+								<HBox>
+									<ObjectStatus text="{Gstr1ASucess>cdnurStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+										state="{= ${Gstr1ASucess>cdnurStatus} ==='Success' ?'Success':'Error'}"/>
+								</HBox>
+								<Text text="{Gstr1ASucess>cdnurTimeStamp}"/>
+							</VBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Left">
+					<HBox>
+						<!--<CheckBox text="" enabled="true" select="onSelectAllCheckHeaderEINV($event,'exportsFlag')" selected="{showing>/exportsFlag}"/>-->
+						<Label text="Exports" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+					</HBox>
+					<ui:template>
+						<HBox>
+							<!--<CheckBox text="" selected="{Gstr1ASucess>exportsFlag}"/>-->
+							<VBox>
+								<HBox>
+									<ObjectStatus text="{Gstr1ASucess>exportStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+										state="{= ${Gstr1ASucess>exportStatus} ==='Success' ?'Success':'Error'}"/>
+								</HBox>
+								<Text text="{Gstr1ASucess>exportsTimestamp}"/>
+							</VBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+		<!--<ui:Table id="idgetVtablegst1proEinvLast" rows="{path:'Gstr1ASucess>/resp/lastSuccess'}" selectionMode="Multi" selectionBehavior="Row"-->
+		<!--	visibleRowCount="10" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop" fixedColumnCount="1" width="85rem" visible="false"-->
+		<!--	rowSelectionChange="onRowSelectionChangeEINV">-->
+		<!--	<ui:extension></ui:extension>-->
+		<!--	<ui:columns>-->
+		<!--		<ui:Column hAlign="Left" visible="{visiSummPopup>/P}">-->
+		<!--			<HBox>-->
+		<!--				<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+		<!--			</HBox>-->
+		<!--			<ui:template>-->
+		<!--				<HBox>-->
+		<!--					<Text text="{Gstr1ASucess>gstin}"/>-->
+		<!--				</HBox>-->
+		<!--			</ui:template>-->
+		<!--		</ui:Column>-->
+		<!--		<ui:Column hAlign="Left">-->
+		<!--			<HBox>-->
+		<!--				<CheckBox text="" enabled="true" select="onSelectAllCheckHeaderEINV($event,'b2bFlag')" selected="{showing>/b2bFlag}"/>-->
+		<!--				<Label text="B2B" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>-->
+		<!--			</HBox>-->
+		<!--			<ui:template>-->
+		<!--				<HBox>-->
+		<!--					<CheckBox text="" selected="{Gstr1ASucess>b2bFlag}"/>-->
+		<!--					<VBox>-->
+		<!--						<HBox>-->
+		<!--							<ObjectStatus text="{Gstr1ASucess>b2bStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"-->
+		<!--								state="{= ${Gstr1ASucess>b2bStatus} ==='Success' ?'Success':'Error'}"/>-->
+		<!--						</HBox>-->
+		<!--						<Text text="{Gstr1ASucess>b2bTimeStamp}"/>-->
+		<!--					</VBox>-->
+		<!--				</HBox>-->
+		<!--			</ui:template>-->
+		<!--		</ui:Column>-->
+		<!--		<ui:Column hAlign="Left">-->
+		<!--			<HBox>-->
+		<!--				<CheckBox text="" enabled="true" select="onSelectAllCheckHeaderEINV($event,'cdnrFlag')" selected="{showing>/cdnrFlag}"/>-->
+		<!--				<Label text="CDNR" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>-->
+		<!--			</HBox>-->
+		<!--			<ui:template>-->
+		<!--				<HBox>-->
+		<!--					<CheckBox text="" selected="{Gstr1ASucess>cdnrFlag}"/>-->
+		<!--					<VBox>-->
+		<!--						<HBox>-->
+		<!--							<ObjectStatus text="{Gstr1ASucess>cdnrStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"-->
+		<!--								state="{= ${Gstr1ASucess>cdnrStatus} ==='Success' ?'Success':'Error'}"/>-->
+		<!--						</HBox>-->
+		<!--						<Text text="{Gstr1ASucess>cdnrTimeStamp}"/>-->
+		<!--					</VBox>-->
+		<!--				</HBox>-->
+		<!--			</ui:template>-->
+		<!--		</ui:Column>-->
+		<!--		<ui:Column hAlign="Left">-->
+		<!--			<HBox>-->
+		<!--				<CheckBox text="" enabled="true" select="onSelectAllCheckHeaderEINV($event,'cdnurFlag')" selected="{showing>/cdnurFlag}"/>-->
+		<!--				<Label text="CDNUR" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>-->
+		<!--			</HBox>-->
+		<!--			<ui:template>-->
+		<!--				<HBox>-->
+		<!--					<CheckBox text="" selected="{Gstr1ASucess>cdnurFlag}"/>-->
+		<!--					<VBox>-->
+		<!--						<HBox>-->
+		<!--							<ObjectStatus text="{Gstr1ASucess>cdnurStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"-->
+		<!--								state="{= ${Gstr1ASucess>cdnurStatus} ==='Success' ?'Success':'Error'}"/>-->
+		<!--						</HBox>-->
+		<!--						<Text text="{Gstr1ASucess>cdnurTimeStamp}"/>-->
+		<!--					</VBox>-->
+		<!--				</HBox>-->
+		<!--			</ui:template>-->
+		<!--		</ui:Column>-->
+		<!--		<ui:Column hAlign="Left">-->
+		<!--			<HBox>-->
+		<!--				<CheckBox text="" enabled="true" select="onSelectAllCheckHeaderEINV($event,'exportsFlag')" selected="{showing>/exportsFlag}"/>-->
+		<!--				<Label text="Exports" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>-->
+		<!--			</HBox>-->
+		<!--			<ui:template>-->
+		<!--				<HBox>-->
+		<!--					<CheckBox text="" selected="{Gstr1ASucess>exportsFlag}"/>-->
+		<!--					<VBox>-->
+		<!--						<HBox>-->
+		<!--							<ObjectStatus text="{Gstr1ASucess>exportStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"-->
+		<!--								state="{= ${Gstr1ASucess>exportStatus} ==='Success' ?'Success':'Error'}"/>-->
+		<!--						</HBox>-->
+		<!--						<Text text="{Gstr1ASucess>exportsTimestamp}"/>-->
+		<!--					</VBox>-->
+		<!--				</HBox>-->
+		<!--			</ui:template>-->
+		<!--		</ui:Column>-->
+		<!--	</ui:columns>-->
+		<!--</ui:Table>-->
+	</Dialog>
+</core:FragmentDefinition>

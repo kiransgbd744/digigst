@@ -1,0 +1,197 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table" xmlns:l="sap.ui.layout">
+	<Dialog type="Message" class="sapUiSizeCompact" showHeader="false">
+		<beginButton>
+			<Button text="Close" press="onCloseDialog"/>
+		</beginButton>
+		<Bar>
+			<contentMiddle>
+				<Title text="GET GSTR-6A Last Call Status" visible="true" id="idtitle1"/>
+				<Title text="GET GSTR-6A Last Success Status" visible="false" id="idtitle2"/>
+			</contentMiddle>
+		</Bar>
+		<l:Grid defaultSpan="L3 M3 S12" vSpacing="0" class="sapUiTinyMarginTop">
+			<l:content>
+				<HBox alignItems="Center">
+					<Label text="Tax Period:" class="sapUiTinyMarginEnd"/>
+					<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" id="id_TaxProcessGstr6A" editable="true" width="7rem"/>
+					<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" id="id_123TaxProcessGstr6A" visible="false"/>
+				</HBox>
+				<VBox alignItems="Center" direction="Row" class="sapUiTinyMarginTop">
+					<Label text="GSTIN:" class="sapUiTinyMarginEnd"/>
+					<Label id="id_gstinPopupget2" design="Bold"/>
+				</VBox>
+				<Button text="{i18n>go}" type="Emphasized" press="onPressProcessStatusGO" class="buttoncolorSec"/>
+			</l:content>
+		</l:Grid>
+		<l:VerticalLayout width="63rem" class="sapUiTinyMarginTop">
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button text="Download Reports" type="Emphasized" press="onPressProcessSumBtn1"/>
+				<Button text="GET GSTR-6A" type="Emphasized" press="onGstr6Asumpress"/>
+				<Button text="Refresh" type="Emphasized" press="onPressRefresh2Btn"/>
+				<SegmentedButton id="sbUpdatStatusGstr6" selectedKey="LCS" selectionChange="onChangeSegmentStatus" class="sapUiSmallMarginEnd">
+					<items>
+						<SegmentedButtonItem text="Last Call Status" key="LCS" width="10rem"/>
+						<SegmentedButtonItem text="Last Success Status" key="LSS" width="10rem"/>
+					</items>
+				</SegmentedButton>
+			</Toolbar>
+			<ui:Table id="idgetVtablegstr6" rows="{path:'Gstr6ASucess>/resp/lastCall'}" enableColumnReordering="false" selectionMode="Multi"
+				selectionBehavior="RowSelector" fixedColumnCount="1" rowSelectionChange="onRowSelectionChange6A"
+				class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop cl_popupCheck">
+				<ui:columns>
+					<ui:Column hAlign="Left" width="11rem">
+						<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{Gstr6ASucess>gstin}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<HBox>
+							<CheckBox text="" select="onSelectAllCheckHeader6A($event,'b2bFlag')" enabled="true" selected="{showing>/b2bFlag}"/>
+							<Label text="B2B" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<CheckBox text="" selected="{Gstr6ASucess>b2bFlag}"/>
+								<VBox>
+									<ObjectStatus text="{Gstr6ASucess>b2bStatus}" state="{=${Gstr6ASucess>b2bStatus}==='Success'?'Success':'Error'}"
+										active="{=${Gstr6ASucess>b2bStatus}==='Failed'}" press="onGstr6aStatsFailed($event,'B2B')" class="sapUiTinyMarginTop"/>
+									<Text text="{Gstr6ASucess>b2bTimeStamp}" class="timeStmpClr"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<HBox>
+							<CheckBox text="" select="onSelectAllCheckHeader6A($event,'b2baFlag')" enabled="true" selected="{showing>/b2baFlag}"/>
+							<Label text="B2BA" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<CheckBox text="" selected="{Gstr6ASucess>b2baFlag}"/>
+								<VBox>
+									<ObjectStatus text="{Gstr6ASucess>b2baStatus}" state="{=${Gstr6ASucess>b2baStatus}==='Success'?'Success':'Error'}"
+										active="{=${Gstr6ASucess>b2baStatus}==='Failed'}" press="onGstr6aStatsFailed($event,'B2BA')" class="sapUiTinyMarginTop"/>
+									<Text text="{Gstr6ASucess>b2baTimeStamp}" class="timeStmpClr"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<HBox>
+							<CheckBox text="" select="onSelectAllCheckHeader6A($event,'cdnFlag')" selected="{showing>/cdnFlag}" enabled="true"/>
+							<Label text="CDN" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<CheckBox text="" selected="{Gstr6ASucess>cdnFlag}"/>
+								<VBox>
+									<ObjectStatus text="{Gstr6ASucess>cdnStatus}" state="{=${Gstr6ASucess>cdnStatus}==='Success'?'Success':'Error'}"
+										active="{=${Gstr6ASucess>cdnStatus}==='Failed'}" press="onGstr6aStatsFailed($event,'CDN')" class="sapUiTinyMarginTop"/>
+									<Text text="{Gstr6ASucess>cdnTimeStamp}" class="timeStmpClr"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<HBox>
+							<CheckBox text="" select="onSelectAllCheckHeader6A($event,'cdnaFlag')" enabled="true" selected="{showing>/cdnaFlag}"/>
+							<Label text="CDNA" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<CheckBox text="" selected="{Gstr6ASucess>cdnaFlag}"/>
+								<VBox>
+									<ObjectStatus text="{Gstr6ASucess>cdnaStatus}" state="{=${Gstr6ASucess>cdnaStatus}==='Success'?'Success':'Error'}"
+										active="{=${Gstr6ASucess>cdnaStatus}==='Failed'}" press="onGstr6aStatsFailed($event,'CDNA')" class="sapUiTinyMarginTop"/>
+									<Text text="{Gstr6ASucess>cdnaTimeStamp}" class="timeStmpClr"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+			<ui:Table id="idgetStablegstr6" rows="{path:'Gstr6ASucess>/resp/lastSuccess'}" enableColumnReordering="false" selectionMode="Multi"
+				selectionBehavior="RowSelector" fixedColumnCount="1" rowSelectionChange="onRowSelectionChange6A" visible="false"
+				class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop">
+				<ui:columns>
+					<ui:Column hAlign="Left" width="11rem">
+						<HBox>
+							<Label text="GSTN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<Text text="{Gstr6ASucess>gstin}"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<HBox>
+							<CheckBox text="" select="onSelectAllCheckHeader6A($event,'b2bFlag')" enabled="true" selected="{showing>/b2bFlag}"/>
+							<Label text="B2B" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<CheckBox text="" selected="{Gstr6ASucess>b2bFlag}"/>
+								<VBox>
+									<ObjectStatus text="{Gstr6ASucess>b2bStatus}" state="{=${Gstr6ASucess>b2bStatus}==='Success'?'Success':'Error'}"
+										class="sapUiTinyMarginTop sapUiLargeMarginEnd"/>
+									<Text text="{Gstr6ASucess>b2bTimeStamp}" class="timeStmpClr"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<HBox>
+							<CheckBox text="" enabled="true" select="onSelectAllCheckHeader6A($event,'b2baFlag')" selected="{showing>/b2baFlag}"/>
+							<Label text="B2BA" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<CheckBox text="" selected="{Gstr6ASucess>b2baFlag}"/>
+								<VBox>
+									<ObjectStatus text="{Gstr6ASucess>b2baStatus}" state="{=${Gstr6ASucess>b2baStatus}==='Success'?'Success':'Error'}"
+										class="sapUiTinyMarginTop sapUiLargeMarginEnd"/>
+									<Text text="{Gstr6ASucess>b2baTimeStamp}" class="timeStmpClr"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<HBox>
+							<CheckBox text="" selected="{showing>/cdnFlag}" enabled="true" select="onSelectAllCheckHeader6A($event,'cdnFlag')"/>
+							<Label text="CDN" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<CheckBox text="" visible="{=${Gstr6ASucess>cdnStatus} ==='Failed' ?false:true}" selected="{Gstr6ASucess>cdnFlag}"/>
+								<VBox>
+									<ObjectStatus text="{Gstr6ASucess>cdnStatus}" state="{=${Gstr6ASucess>cdnStatus}==='Success'?'Success':'Error'}"
+										class="sapUiTinyMarginTop sapUiLargeMarginEnd"/>
+									<Text text="{Gstr6ASucess>cdnTimeStamp}" class="timeStmpClr"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<HBox>
+							<CheckBox text="" select="onSelectAllCheckHeader6A($event,'cdnaFlag')" enabled="true" selected="{showing>/cdnaFlag}"/>
+							<Label text="CDNA" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<CheckBox text="" selected="{Gstr6ASucess>cdnaFlag}"/>
+								<VBox>
+									<ObjectStatus text="{Gstr6ASucess>cdnaStatus}" state="{=${Gstr6ASucess>cdnaStatus}==='Success'?'Success':'Error'}"
+										class="sapUiTinyMarginTop sapUiLargeMarginEnd"/>
+									<Text text="{Gstr6ASucess>cdnaTimeStamp}" class="timeStmpClr"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+		</l:VerticalLayout>
+	</Dialog>
+</core:FragmentDefinition>

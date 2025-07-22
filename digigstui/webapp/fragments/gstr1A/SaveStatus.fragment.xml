@@ -1,0 +1,148 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.ui.layout.form">
+	<Dialog id="dSaveStatus" title="Save Status" type="Message" contentWidth="100%" class="sapUiSizeCompact" draggable="true">
+		<customHeader>
+            <Toolbar>
+                <ToolbarSpacer/>
+                <Label text="Save Status" />
+                <ToolbarSpacer/>
+                <Button icon="sap-icon://refresh" press="onSearchSaveStatus" tooltip="Refresh" class="buttoncolorSec"/>
+            </Toolbar>
+        </customHeader>
+		<beginButton>
+			<Button text="{i18n>ok}" class="buttoncolorSec" press="onCloseSaveStatus"/>
+		</beginButton>
+		<f:Form editable="true">
+			<f:layout>
+				<f:ResponsiveGridLayout columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="true"/>
+			</f:layout>
+			<f:formContainers>
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement label="{i18n>gstin}">
+							<f:fields>
+								<Select id="slSaveStatsGstin" items="{DataPermission>/respData/dataSecurity/gstin}">
+									<core:Item key="{DataPermission>value}" text="{DataPermission>value}"/>
+								</Select>
+								<!--<MultiComboBox id="slSaveStatsGstin" items="{userPermission>/respData/dataSecurity/gstin}" selectionChange="selectAll">-->
+								<!--	<core:Item key="{userPermission>value}" text="{userPermission>value}"/>-->
+								<!--</MultiComboBox>-->
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>taxPeriod}">
+							<f:fields>
+								<DatePicker id="dtSaveStats" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement >
+							<HBox alignItems="Center">
+								<core:Icon src="sap-icon://download" tooltip="{i18n>consAspError}" color="#0070b1" press="onDownloadConsGstnErrors($event,'aspError',null)"/>
+								<Link text="{i18n>aspReport}" tooltip="{i18n>consAspError}" press="onDownloadConsGstnErrors($event,'aspError',null)"
+									class="sapUiTinyMarginBegin"/>
+							</HBox>
+						</f:FormElement>
+						<f:FormElement>
+							<HBox alignItems="Center">
+								<core:Icon src="sap-icon://download" tooltip="{i18n>consGstnError}" color="#0070b1"
+									press="onDownloadConsGstnErrors($event,'gstnError',null)"/>
+								<Link text="{i18n>gstnReport}" tooltip="{i18n>consGstnError}" press="onDownloadConsGstnErrors($event,'gstnError',null)"
+									class="sapUiTinyMarginBegin"/>
+								<Button text="Filter" press="onSearchSaveStatus" class="sapUiMediumMarginBegin buttoncolorSec buttoncolor"/>
+							</HBox>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+		<ScrollContainer horizontal="false" vertical="true" height="24rem" class="sapUiNoMargin sapUiNoContentPadding">
+			<Table id="tabSaveStatus" items="{SaveStatus>/}" sticky="ColumnHeaders" noDataText="No Data" class="sapUiNoContentPadding">
+				<columns >
+					<Column hAlign="End" width="4rem">
+						<Label text="{i18n>sNo}" design="Bold"/>
+					</Column>
+					<Column hAlign="Center" width="8rem">
+						<Label text="{i18n>date}" design="Bold"/>
+					</Column>
+					<Column hAlign="Center" width="7rem">
+						<Label text="{i18n>time}" design="Bold"/>
+					</Column>
+					<Column>
+						<Label text="{i18n>action}" design="Bold" textAlign="Center" width="100%"/>
+					</Column>
+					<Column width="10rem">
+						<Label text="{i18n>section}" design="Bold"/>
+					</Column>
+					<Column>
+						<Label text="{i18n>refId}" design="Bold" textAlign="Center" width="100%"/>
+					</Column>
+					<Column hAlign="Begin" width="7rem">
+						<Label text="{i18n>status}" design="Bold"/>
+					</Column>
+					<Column hAlign="End" width="6rem">
+						<Label text="{i18n>error} {i18n>count}" design="Bold"/>
+					</Column>
+					<Column hAlign="Center" width="8rem">
+						<Label text="{i18n>gstnPortalMsg}" tooltip="{i18n>gstnPortalMsg}" design="Bold"/>
+					</Column>
+					<Column hAlign="Center" width="10rem">
+						<Label text="Delete Error Report" tooltip="Delete Error Report" design="Bold"/>
+					</Column>
+					<Column hAlign="Center" width="12rem">
+						<Label text="Save JSON" design="Bold"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem vAlign="Middle">
+						<cells>
+							<Text text="{SaveStatus>sno}"/>
+							<Text text="{path:'SaveStatus>date'}" wrapping="false"/>
+							<Text text="{SaveStatus>time}" wrapping="false"/>
+							<Text text="{SaveStatus>action}"/>
+							<Text text="{path:'SaveStatus>section'}"/>
+							<Text text="{SaveStatus>refId}"/>
+							<HBox>
+								<Text text="{SaveStatus>status}" visible="{=(!${SaveStatus>status}||${SaveStatus>status}==='P'||${SaveStatus>errorCount}==='0')?true:false}"/>
+								<Link text="{SaveStatus>status}" press="onPressStatusForNavToInv(${SaveStatus>refId})"
+									visible="{=(!${SaveStatus>status}||${SaveStatus>status}==='P'||${SaveStatus>errorCount}==='0')?false:true}"/>
+							</HBox>
+							<Text text="{SaveStatus>errorCount}"/>
+							<HBox justifyContent="Center"
+								visible="{=((${SaveStatus>action}!=='DELETE (FILE UPLOAD)' &amp;&amp; ${SaveStatus>action}!=='DELETE') &amp;&amp; ${SaveStatus>action}!=='DELETE_RESPONSE')?true:false}">
+								<HBox justifyContent="Center" width="100%"
+									visible="{=(!${SaveStatus>status}||${SaveStatus>status}==='P'||${SaveStatus>errorCount}==='0')?false:true}">
+									<core:Icon src="sap-icon://download" tooltip="{i18n>aspErrorRpt}" size="0.9rem" color="#0070b1"
+										press="onDownloadConsGstnErrors($event,'aspError',${SaveStatus>refId})" visible="{=${SaveStatus>status}==='ER'?false:true}"/>
+									<Label text="" width="0.9rem" visible="{=${SaveStatus>status}==='ER'?true:false}"/>
+									<core:Icon src="sap-icon://download" tooltip="{i18n>gstnErrorRpt}" size="0.9rem" color="#0070b1" class="sapUiSmallMarginBegin"
+										press="onDownloadConsGstnErrors($event,'gstnError',${SaveStatus>refId})"/>
+								</HBox>
+								<HBox justifyContent="Center">
+									<core:Icon src="sap-icon://download" tooltip="{i18n>aspErrorRpt}" size="0.9rem" color="#0070b1"
+										press="onDownloadConsGstnErrors($event,'Error',${SaveStatus>refId})"
+										visible="{=(${SaveStatus>action}==='Generate Summary' &amp;&amp; ${SaveStatus>status}==='PE')}"/>
+									<core:Icon src="sap-icon://download" tooltip="{i18n>aspErrorRpt}" size="0.9rem" color="#0070b1"
+										press="onDownloadConsGstnErrors($event,'Error',${SaveStatus>refId})"
+										visible="{=(${SaveStatus>action}==='Generate Summary (PTF)'&amp;&amp; ${SaveStatus>status}==='PE')}"/>
+								</HBox>
+							</HBox>
+							<HBox justifyContent="Center" width="100%"
+								visible="{=((${SaveStatus>action}==='DELETE (FILE UPLOAD)' || ${SaveStatus>action}==='DELETE' || ${SaveStatus>action}==='DELETE_RESPONSE')&amp;&amp; ${SaveStatus>status}==='PE'&amp;&amp; ${SaveStatus>errorCount}!=='0')?true:false}">
+								<core:Icon src="sap-icon://download" tooltip="{i18n>gstnErrorRpt}" size="0.9rem" color="#0070b1"
+									press="onDownloadConsGstnErrorsDelete($event,'aspError',${SaveStatus>refId})"/>
+							</HBox>
+							<!--<HBox justifyContent="Center" width="100%" visible="{=((${SaveStatus>action}==='Generate Summary')&amp;&amp; ${SaveStatus>status}==='ER'}">
+								<core:Icon src="sap-icon://download" tooltip="{i18n>gstnErrorRpt}" size="0.9rem" color="#0070b1"
+									press="onDownloadGS($event,'aspError',${SaveStatus>refId})"/>
+							</HBox>-->
+							<!--<Text text="{SaveStatus>message}"/>-->
+							<core:Icon src="sap-icon://download" press="onSaveStatusDownload2" visible="{=${SaveStatus>action}==='Generate Summary (PTF)'?false:true}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</ScrollContainer>
+	</Dialog>
+</core:FragmentDefinition>

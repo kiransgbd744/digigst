@@ -1,0 +1,180 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="dynamicERP">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<!--	<Label text="ERP Details" design="Bold"/>-->
+					<!--	<HBox>
+						<Label text="Entity :" class="sapUiTinyMarginTop" design="Bold"/>
+						<Select items="{entityUser>/resp}" change="onSelectionChangeEntity" width="12rem" id="idERPEntityUserCreation" class="sapUiTinyMarginBegin">
+							<core:Item key="{entityUser>entityId}" text="{entityUser>entityName}"/>
+						</Select>
+					</HBox>-->
+				</f:heading>
+				<f:actions>
+					<Button type="Emphasized" icon="sap-icon://save" text="Submit" id="idERPSubmit" press="onSubmit"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<!--<ui:Table id="idTableERP" rows="{REPDetails>/ErpDetails}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10" fixedRowCount="0"
+					fixedColumnCount="0" enableSelectAll="true">
+					<ui:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<Button type="Accept" icon="sap-icon://edit" tooltip="Edit rows" id="idERPEditRows" press="onEditRows"/>
+							<Button type="Accept" icon="sap-icon://add" tooltip="Add row" id="idERPAddrow" press="onAddrow"/>
+							<Button type="Reject" icon="sap-icon://delete" tooltip="Delete rows" id="idERPDeleteRows" press="onDeleteRows"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="4rem" headerSpan="0">
+							<ui:multiLabels>
+								<Label text="S.No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{REPDetails>serialno}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="System ID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{REPDetails>systemid}" editable="{REPDetails>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Host Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{REPDetails>hostName}" editable="{REPDetails>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="User Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{REPDetails>UserName}" editable="{REPDetails>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Password" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{REPDetails>Password}" editable="{REPDetails>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{REPDetails>Status}"/>
+							</ui:template>
+						</ui:Column>
+						
+					</ui:columns>
+				</ui:Table>-->
+				<ui:Table id="idTableERP" rows="{REPDetails>/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10" fixedRowCount="0"
+					fixedColumnCount="0" enableSelectAll="true">
+					<ui:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<Button type="Accept" icon="sap-icon://edit" tooltip="Edit rows" id="idERPEditRows" press="onEditRows"/>
+							<Button type="Accept" icon="sap-icon://add" tooltip="Add row" id="idERPAddrow" press="onAddrow"/>
+							<Button type="Reject" icon="sap-icon://delete" tooltip="Delete rows" id="idERPDeleteRows" press="onDeleteRows"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="4rem" headerSpan="0">
+							<ui:multiLabels>
+								<Label text="S.No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{REPDetails>sno}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Source ID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{REPDetails>systemId}" editable="{REPDetails>edit}" maxLength="10"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Source Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<ComboBox selectedKey="{REPDetails>sourceType}" width="100%" editable="{REPDetails>edit}">
+									<core:ListItem key="SAP" text="SAP"/>
+									<core:ListItem key="NONSAP" text="NON - SAP"/>
+									<core:ListItem key="SFTP" text="SFTP"/>
+								</ComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Protocol" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<ComboBox selectedKey="{REPDetails>portocal}" width="100%" editable="{REPDetails>edit}">
+									<core:ListItem key="HTTP" text="HTTP"/>
+									<core:ListItem key="HTTPS" text="HTTPS"/>
+								</ComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Host Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{REPDetails>hostName}" editable="{REPDetails>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Port" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{REPDetails>port}" editable="{REPDetails>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="User Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{REPDetails>userName}" editable="{REPDetails>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Password" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{REPDetails>password}" type="Password" editable="{REPDetails>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{=${REPDetails>status}===true ? 'Inactive':'Active'}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

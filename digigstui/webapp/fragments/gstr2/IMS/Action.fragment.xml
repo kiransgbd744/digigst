@@ -1,0 +1,43 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog title="IMS Action Response" type="Standard" contentWidth="{= ImsProperty>/visFlag ? '40%' : '30%' }" 
+        contentHeight="{= ImsProperty>/visFlag ? '25%' : '15%' }" draggable="true">
+		<buttons>
+			<Button text="Save" press="onActionSave" class="buttoncolorSec"/>
+			<Button text="Cancel" press="onActionClose" class="buttoncolorSec"/>
+		</buttons>
+		<VBox class="sapUiSmallMargin">
+			<HBox class="sapUiSmallMarginTop">
+				<VBox class="sapUiSmallMarginBegin" alignItems="Start" justifyContent="Start">
+					<Label text="IMS Response Remarks (Max 500 characters)" design="Bold"/>
+					<TextArea id="RMid" value="{actionProperty>/imsResponseRemarks}" placeholder="Enter Remarks" maxLength="500" width="25rem" />
+				</VBox>
+				<VBox class="sapUiSmallMarginBegin sapUiSmallMarginEnd" visible="{ImsProperty>/visFlag}">
+					<Label text="ITC Reduction Required" design="Bold"/>
+					<ComboBox id="itcRed" selectedKey="{actionProperty>/itcReductionRequired}" change="changeITCReduction">
+						<core:Item key="" text=""/>
+						<core:Item key="Y" text="Yes"/>
+						<core:Item key="N" text="No"/>
+					</ComboBox>
+				</VBox>
+			</HBox>
+			<HBox class="sapUiSmallMarginTop">
+				<VBox class="sapUiSmallMarginBegin sapUiSmallMarginEnd" visible="{ImsProperty>/visFlag}">
+					<Label text="IGST Reduced" design="Bold"/>
+					<Input type="Number" value="{actionProperty>/igstDeclToReduceItc}" enabled="{actionProperty>/flag}"/>
+				</VBox>
+				<VBox class="sapUiSmallMarginBegin sapUiSmallMarginEnd" visible="{ImsProperty>/visFlag}">
+					<Label text="CGST Reduced" design="Bold"/>
+					<Input type="Number" value="{actionProperty>/cgstDeclToReduceItc}" enabled="{actionProperty>/flag}"/>
+				</VBox>
+				<VBox class="sapUiSmallMarginBegin sapUiSmallMarginEnd" visible="{ImsProperty>/visFlag}">
+					<Label text="SGST Reduced" design="Bold"/>
+					<Input type="Number" value="{actionProperty>/sgstDeclToReduceItc}" enabled="{actionProperty>/flag}"/>
+				</VBox>
+				<VBox class="sapUiSmallMarginBegin sapUiSmallMarginEnd" visible="{ImsProperty>/visFlag}">
+					<Label text="CESS Reduced" design="Bold"/>
+					<Input type="Number" value="{actionProperty>/cessDeclToReduceItc}" enabled="{actionProperty>/flag}" />
+				</VBox>
+			</HBox>
+		</VBox>
+	</Dialog>
+</core:FragmentDefinition>

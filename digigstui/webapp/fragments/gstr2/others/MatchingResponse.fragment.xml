@@ -1,0 +1,192 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt">
+	<f:DynamicPage id="IdMatchingResponce">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<SegmentedButton id="idSBDataStatus1" selectedKey="Upload" selectionChange="onSelectionresponse">
+							<items>
+								<SegmentedButtonItem text="Matching Response" key="matchkey" width="12rem"/>
+								<SegmentedButtonItem text="Upload" key="Uploadkey" width="4rem"/>
+								<SegmentedButtonItem text="File Status" key="Statuskey" width="6rem"/>
+							</items>
+						</SegmentedButton>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader>
+				<fb:FilterBar id="idFBPRDatas"  showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false" class="sapUiNoContentPadding">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Reporter Name" visibleInFilterBar="true">
+								<fb:control>
+									<Select  forceSelection="true" change="onSelectChange" items="{ path: 'DropDown>/criteria' }">
+										<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="From Date - To Date" visibleInFilterBar="true">
+								<fb:control>
+									<DateRangeSelection displayFormat="YYYY-MM-dd" change="onChange"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Entity" visibleInFilterBar="true">
+								<fb:control>
+									<Select  items="{DropDown>/Entity}" change="onSelectionChange" width="100%">
+										<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Supplier GSTIN" visibleInFilterBar="true">
+								<fb:control>
+									<MultiComboBox  items="{GSTIN>/}" change="onSelectChange" width="100%">
+										<core:Item key="{GSTIN>key}" text="{GSTIN>text}"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<ui:Table id="idmatchresponse" rows="{matchingRspnstmodel>/resp}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="4"
+					fixedRowCount="1" fixedColumnCount="2" enableSelectAll="false" visible="true">
+					<ui:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<ComboBox items="{ path: '/CountriesCollection', sorter: { path: 'text' } }">
+								<core:Item key="{key}" text="{text}"/>
+							</ComboBox>
+						</Toolbar>
+					</ui:extension>
+					<ui:Column width="13rem">
+						<ui:multiLabels>
+							<Label text="SI.No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{matchingRspnstmodel>sNo}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="13rem">
+						<ui:multiLabels>
+							<Label text="EntityName" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{matchingRspnstmodel>entityName}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="13rem">
+						<ui:multiLabels>
+							<Label text="Document Number" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{matchingRspnstmodel>searchDocNo}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="13rem">
+						<ui:multiLabels>
+							<Label text="Document Data" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{matchingRspnstmodel>docDate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="13rem">
+						<ui:multiLabels>
+							<Label text="Supplier" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{matchingRspnstmodel>supplier}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="13rem">
+						<ui:multiLabels>
+							<Label text="InVoice Number" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{matchingRspnstmodel>invoiceNum}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="13rem">
+						<ui:multiLabels>
+							<Label text="Response" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<ComboBox items="{ path: '/CountriesCollection', sorter: { path: 'text' } }">
+								<core:Item key="{key}" text="{text}"/>
+							</ComboBox>
+						</ui:template>
+					</ui:Column>
+				</ui:Table>
+				<VBox class="sapUiTinyMargin" id="idmatchupload" renderType="Bare" visible="false">
+					<Toolbar>
+						<ToolbarSpacer/>
+						<core:Icon src="sap-icon://download" size="1.25rem" tooltip="Download Report" class="sapUiTinyMarginBegin sapUiTinyMarginTop"/>
+						<core:Icon src="sap-icon://add" size="1.25rem" tooltip="Download Report" class="sapUiTinyMarginBegin sapUiTinyMarginTop"/>
+						<core:Icon src="sap-icon://upload" size="1.25rem" tooltip="Download Report" class="sapUiTinyMarginBegin sapUiTinyMarginTop"/>
+					</Toolbar>
+					<UploadCollection id="UploadCollection1" maximumFilenameLength="55" maximumFileSize="10" multiple="true" sameFilenameAllowed="true"
+						instantUpload="false" noDataDescription="Drop files or use the &quot;+&quot; button for pending upload" change="onChange"
+						fileDeleted="onFileDeleted" filenameLengthExceed="onFilenameLengthExceed" fileSizeExceed="onFileSizeExceed" typeMissmatch="onTypeMissmatch"
+						uploadComplete="onUploadComplete" beforeUploadStarts="onBeforeUploadStarts"/>
+				</VBox>
+				<ui:Table id="idmatchresptable" rows="{matchingRspnstmodel>/reports}" selectionMode="MultiToggle" selectionBehavior="Row"
+					visibleRowCount="4" fixedRowCount="1" fixedColumnCount="2" enableSelectAll="false" visible="false">
+					<ui:Column width="13rem">
+						<ui:multiLabels>
+							<Label text="SI.No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{matchingRspnstmodel>Sl.No}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="13rem">
+						<ui:multiLabels>
+							<Label text="EntityName" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{matchingRspnstmodel>EntityName}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="13rem">
+						<ui:multiLabels>
+							<Label text="Search Doc No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<ObjectIdentifier title="{matchingRspnstmodel>SearchDocNo}" titleActive="true" titlePress="onPressDetail"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="13rem">
+						<ui:multiLabels>
+							<Label text="Doc Data" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{matchingRspnstmodel>DocDate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="13rem">
+						<ui:multiLabels>
+							<Label text="supplier" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{matchingRspnstmodel>supplier}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="13rem">
+						<ui:multiLabels>
+							<Label text="InVoice Number" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{matchingRspnstmodel>InVoice Number}"/>
+						</ui:template>
+					</ui:Column>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

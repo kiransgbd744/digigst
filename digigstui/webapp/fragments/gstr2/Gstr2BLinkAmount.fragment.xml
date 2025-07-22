@@ -1,0 +1,334 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons">
+	<commons:ChartContainer showFullScreen="false" showZoom="true" showPersonalization="false" autoAdjustHeight="false"
+		visible="{=${Display>/sbGstr2B}==='linkAmount'}">
+		<commons:toolbar>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button text="Initiate Linking" press="onInitiate2bLinkAmt" class="buttoncolorSec"/>
+				<Button text="Request Status" press="onGstr2BRequestStatus" class="sapUiTinyMarginBegin buttoncolorSec"/>
+				<MenuButton class="buttoncolorSec" text="Download Report">
+					<Menu itemSelected="onDownload2bLinkAmt($event,${$source}>selectedKey)">
+						<MenuItem key="ALL_NL" text="GSTR-2B Amount Not Linked Report"/>
+					</Menu>
+				</MenuButton>
+				<Button type="Transparent" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" press="onGenGstr2bFullScreen('O')"/>
+				<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" press="onGenGstr2bFullScreen('C')"
+					visible="false"/>
+				<commons:ChartContainerToolbarPlaceholder/>
+			</OverflowToolbar>
+		</commons:toolbar>
+		<commons:content>
+			<commons:ChartContainerContent>
+				<commons:content>
+					<ui:Table id="tab2bLinkAmt" rows="{Gstr2bLinkAmt>/}" rowSelectionChange="onLinkAmtRowSelectionChange" enableColumnReordering="false"
+						class="sapUiSizeCompact">
+						<ui:columns>
+							<ui:Column width="12rem">
+								<Label text="GSTIN"/>
+								<ui:template>
+									<HBox alignContent="Center" direction="Column" justifyContent="SpaceBetween">
+										<Text text="{Gstr2bLinkAmt>stateName}" class="stateColor" width="8rem"/>
+										<HBox alignContent="Start" justifyContent="SpaceBetween">
+											<Link text="{Gstr2bLinkAmt>gstin}"/>
+											<core:Icon src="sap-icon://circle-task-2" tooltip="{=${Gstr2bLinkAmt>authToken}==='I'?'Inactive':'Active'}" size="0.8rem"
+												class="sapUiTinyMarginBegin">
+												<core:customData>
+													<core:CustomData key="authToken" value="{=!${Gstr2bLinkAmt>authToken}?'':${Gstr2bLinkAmt>authToken}}" writeToDom="true"/>
+												</core:customData>
+											</core:Icon>
+										</HBox>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<CheckBox text="April" selected="{LinkAmtGstr2bCheck>/aprSelect}" enabled="{LinkAmtGstr2bCheck>/aprEnable}"
+									select="onGstr2bLinkAmtCol($event,'04')"/>
+								<ui:template>
+									<HBox renderType="Bare" alignItems="Center">
+										<CheckBox selected="{Gstr2bLinkAmt>aprCheck}" visible="{=!!${Gstr2bLinkAmt>aprLinkStatus}}"/>
+										<VBox width="100%">
+											<HBox width="100%" visible="{=!!${Gstr2bLinkAmt>aprLinkStatus}}">
+												<HBox width="49%">
+													<ObjectStatus text="Linked {Gstr2bLinkAmt>aprLinked}"
+														state="{parts:[{value:'S'},'Gstr2bLinkAmt>aprLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+												<HBox width="49%">
+													<ObjectStatus text="Not Linked {Gstr2bLinkAmt>aprNotLinked}"
+														state="{parts:[{value:'E'},'Gstr2bLinkAmt>aprLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+											</HBox>
+											<ObjectStatus text="{Gstr2bLinkAmt>aprLinkStatus}" state="{path:'Gstr2bLinkAmt>aprLinkStatus',formatter:'._get2bLinkAmtStatus'}"/>
+											<Text text="{Gstr2bLinkAmt>aprLastUpdatedOn}" class="timeStmpClr" width="100%"/>
+										</VBox>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<CheckBox text="May" selected="{LinkAmtGstr2bCheck>/maySelect}" enabled="{LinkAmtGstr2bCheck>/mayEnable}"
+									select="onGstr2bLinkAmtCol($event,'05')"/>
+								<ui:template>
+									<HBox renderType="Bare" alignItems="Center">
+										<CheckBox selected="{Gstr2bLinkAmt>mayCheck}" visible="{=!!${Gstr2bLinkAmt>mayLinkStatus}}"/>
+										<VBox width="100%">
+											<HBox width="100%" visible="{=!!${Gstr2bLinkAmt>mayLinkStatus}}">
+												<HBox width="49%">
+													<ObjectStatus text="Linked {Gstr2bLinkAmt>mayLinked}"
+														state="{parts:[{value:'S'},'Gstr2bLinkAmt>mayLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+												<HBox width="49%">
+													<ObjectStatus text="Not Linked {Gstr2bLinkAmt>mayNotLinked}"
+														state="{parts:[{value:'E'},'Gstr2bLinkAmt>mayLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+											</HBox>
+											<ObjectStatus text="{Gstr2bLinkAmt>mayLinkStatus}" state="{path:'Gstr2bLinkAmt>mayLinkStatus',formatter:'._get2bLinkAmtStatus'}"/>
+											<Text text="{Gstr2bLinkAmt>mayLastUpdatedOn}" class="timeStmpClr" width="100%"/>
+										</VBox>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<CheckBox text="June" selected="{LinkAmtGstr2bCheck>/junSelect}" enabled="{LinkAmtGstr2bCheck>/junEnable}"
+									select="onGstr2bLinkAmtCol($event,'06')"/>
+								<ui:template>
+									<HBox renderType="Bare" alignItems="Center">
+										<CheckBox selected="{Gstr2bLinkAmt>junCheck}" visible="{=!!${Gstr2bLinkAmt>junLinkStatus}}"/>
+										<VBox width="100%">
+											<HBox width="100%" visible="{=!!${Gstr2bLinkAmt>junLinkStatus}}">
+												<HBox width="49%">
+													<ObjectStatus text="Linked {Gstr2bLinkAmt>junLinked}"
+														state="{parts:[{value:'S'},'Gstr2bLinkAmt>junLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+												<HBox width="49%">
+													<ObjectStatus text="Not Linked {Gstr2bLinkAmt>junNotLinked}"
+														state="{parts:[{value:'E'},'Gstr2bLinkAmt>junLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+											</HBox>
+											<ObjectStatus text="{Gstr2bLinkAmt>junLinkStatus}" state="{path:'Gstr2bLinkAmt>junLinkStatus',formatter:'._get2bLinkAmtStatus'}"/>
+											<Text text="{Gstr2bLinkAmt>junLastUpdatedOn}" class="timeStmpClr" width="100%"/>
+										</VBox>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<CheckBox text="July" selected="{LinkAmtGstr2bCheck>/julSelect}" enabled="{LinkAmtGstr2bCheck>/julEnable}"
+									select="onGstr2bLinkAmtCol($event,'07')"/>
+								<ui:template>
+									<HBox renderType="Bare" alignItems="Center">
+										<CheckBox selected="{Gstr2bLinkAmt>julCheck}" visible="{=!!${Gstr2bLinkAmt>julLinkStatus}}"/>
+										<VBox width="100%">
+											<HBox width="100%" visible="{=!!${Gstr2bLinkAmt>julLinkStatus}}">
+												<HBox width="49%">
+													<ObjectStatus text="Linked {Gstr2bLinkAmt>julLinked}"
+														state="{parts:[{value:'S'},'Gstr2bLinkAmt>julLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+												<HBox width="49%">
+													<ObjectStatus text="Not Linked {Gstr2bLinkAmt>julNotLinked}"
+														state="{parts:[{value:'E'},'Gstr2bLinkAmt>julLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+											</HBox>
+											<ObjectStatus text="{Gstr2bLinkAmt>julLinkStatus}" state="{path:'Gstr2bLinkAmt>julLinkStatus',formatter:'._get2bLinkAmtStatus'}"/>
+											<Text text="{Gstr2bLinkAmt>julLastUpdatedOn}" class="timeStmpClr" width="100%"/>
+										</VBox>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<CheckBox text="August" selected="{LinkAmtGstr2bCheck>/augSelect}" enabled="{LinkAmtGstr2bCheck>/augEnable}"
+									select="onGstr2bLinkAmtCol($event,'08')"/>
+								<ui:template>
+									<HBox renderType="Bare" alignItems="Center">
+										<CheckBox selected="{Gstr2bLinkAmt>augCheck}" visible="{=!!${Gstr2bLinkAmt>augLinkStatus}}"/>
+										<VBox width="100%">
+											<HBox width="100%" visible="{=!!${Gstr2bLinkAmt>augLinkStatus}}">
+												<HBox width="49%">
+													<ObjectStatus text="Linked {Gstr2bLinkAmt>augLinked}"
+														state="{parts:[{value:'S'},'Gstr2bLinkAmt>augLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+												<HBox width="49%">
+													<ObjectStatus text="Not Linked {Gstr2bLinkAmt>augNotLinked}"
+														state="{parts:[{value:'E'},'Gstr2bLinkAmt>augLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+											</HBox>
+											<ObjectStatus text="{Gstr2bLinkAmt>augLinkStatus}" state="{path:'Gstr2bLinkAmt>augLinkStatus',formatter:'._get2bLinkAmtStatus'}"/>
+											<Text text="{Gstr2bLinkAmt>augLastUpdatedOn}" class="timeStmpClr" width="100%"/>
+										</VBox>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<CheckBox text="September" selected="{LinkAmtGstr2bCheck>/sepSelect}" enabled="{LinkAmtGstr2bCheck>/sepEnable}"
+									select="onGstr2bLinkAmtCol($event,'09')"/>
+								<ui:template>
+									<HBox renderType="Bare" alignItems="Center">
+										<CheckBox selected="{Gstr2bLinkAmt>sepCheck}" visible="{=!!${Gstr2bLinkAmt>sepLinkStatus}}"/>
+										<VBox width="100%">
+											<HBox width="100%" visible="{=!!${Gstr2bLinkAmt>sepLinkStatus}}">
+												<HBox width="49%">
+													<ObjectStatus text="Linked {Gstr2bLinkAmt>sepLinked}"
+														state="{parts:[{value:'S'},'Gstr2bLinkAmt>sepLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+												<HBox width="49%">
+													<ObjectStatus text="Not Linked {Gstr2bLinkAmt>sepNotLinked}"
+														state="{parts:[{value:'E'},'Gstr2bLinkAmt>sepLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+											</HBox>
+											<ObjectStatus text="{Gstr2bLinkAmt>sepLinkStatus}" state="{path:'Gstr2bLinkAmt>sepLinkStatus',formatter:'._get2bLinkAmtStatus'}"/>
+											<Text text="{Gstr2bLinkAmt>sepLastUpdatedOn}" class="timeStmpClr" width="100%"/>
+										</VBox>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<CheckBox text="October" selected="{LinkAmtGstr2bCheck>/octSelect}" enabled="{LinkAmtGstr2bCheck>/octEnable}"
+									select="onGstr2bLinkAmtCol($event,'10')"/>
+								<ui:template>
+									<HBox renderType="Bare" alignItems="Center">
+										<CheckBox selected="{Gstr2bLinkAmt>octCheck}" visible="{=!!${Gstr2bLinkAmt>octLinkStatus}}"/>
+										<VBox width="100%">
+											<HBox width="100%" visible="{=!!${Gstr2bLinkAmt>octLinkStatus}}">
+												<HBox width="49%">
+													<ObjectStatus text="Linked {Gstr2bLinkAmt>octLinked}"
+														state="{parts:[{value:'S'},'Gstr2bLinkAmt>octLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+												<HBox width="49%">
+													<ObjectStatus text="Not Linked {Gstr2bLinkAmt>octNotLinked}"
+														state="{parts:[{value:'E'},'Gstr2bLinkAmt>octLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+											</HBox>
+											<ObjectStatus text="{Gstr2bLinkAmt>octLinkStatus}" state="{path:'Gstr2bLinkAmt>octLinkStatus',formatter:'._get2bLinkAmtStatus'}"/>
+											<Text text="{Gstr2bLinkAmt>octLastUpdatedOn}" class="timeStmpClr" width="100%"/>
+										</VBox>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<CheckBox text="November" selected="{LinkAmtGstr2bCheck>/novSelect}" enabled="{LinkAmtGstr2bCheck>/novEnable}"
+									select="onGstr2bLinkAmtCol($event,'11')"/>
+								<ui:template>
+									<HBox renderType="Bare" alignItems="Center">
+										<CheckBox selected="{Gstr2bLinkAmt>novCheck}" visible="{=!!${Gstr2bLinkAmt>novLinkStatus}}"/>
+										<VBox width="100%">
+											<HBox width="100%" visible="{=!!${Gstr2bLinkAmt>novLinkStatus}}">
+												<HBox width="49%">
+													<ObjectStatus text="Linked {Gstr2bLinkAmt>novLinked}"
+														state="{parts:[{value:'S'},'Gstr2bLinkAmt>novLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+												<HBox width="49%">
+													<ObjectStatus text="Not Linked {Gstr2bLinkAmt>novNotLinked}"
+														state="{parts:[{value:'E'},'Gstr2bLinkAmt>novLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+											</HBox>
+											<ObjectStatus text="{Gstr2bLinkAmt>novLinkStatus}" state="{path:'Gstr2bLinkAmt>novLinkStatus',formatter:'._get2bLinkAmtStatus'}"/>
+											<Text text="{Gstr2bLinkAmt>novLastUpdatedOn}" class="timeStmpClr" width="100%"/>
+										</VBox>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<CheckBox text="December" selected="{LinkAmtGstr2bCheck>/decSelect}" enabled="{LinkAmtGstr2bCheck>/decEnable}"
+									select="onGstr2bLinkAmtCol($event,'12')"/>
+								<ui:template>
+									<HBox renderType="Bare" alignItems="Center">
+										<CheckBox selected="{Gstr2bLinkAmt>decCheck}" visible="{=!!${Gstr2bLinkAmt>decLinkStatus}}"/>
+										<VBox width="100%">
+											<HBox width="100%" visible="{=!!${Gstr2bLinkAmt>decLinkStatus}}">
+												<HBox width="49%">
+													<ObjectStatus text="Linked {Gstr2bLinkAmt>decLinked}"
+														state="{parts:[{value:'S'},'Gstr2bLinkAmt>decLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+												<HBox width="49%">
+													<ObjectStatus text="Not Linked {Gstr2bLinkAmt>decNotLinked}"
+														state="{parts:[{value:'E'},'Gstr2bLinkAmt>decLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+											</HBox>
+											<ObjectStatus text="{Gstr2bLinkAmt>decLinkStatus}" state="{path:'Gstr2bLinkAmt>decLinkStatus',formatter:'._get2bLinkAmtStatus'}"/>
+											<Text text="{Gstr2bLinkAmt>decLastUpdatedOn}" class="timeStmpClr" width="100%"/>
+										</VBox>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<CheckBox text="January" selected="{LinkAmtGstr2bCheck>/janSelect}" enabled="{LinkAmtGstr2bCheck>/janEnable}"
+									select="onGstr2bLinkAmtCol($event,'01')"/>
+								<ui:template>
+									<HBox renderType="Bare" alignItems="Center">
+										<CheckBox selected="{Gstr2bLinkAmt>janCheck}" visible="{=!!${Gstr2bLinkAmt>janLinkStatus}}"/>
+										<VBox width="100%">
+											<HBox width="100%" visible="{=!!${Gstr2bLinkAmt>janLinkStatus}}">
+												<HBox width="49%">
+													<ObjectStatus text="Linked {Gstr2bLinkAmt>janLinked}"
+														state="{parts:[{value:'S'},'Gstr2bLinkAmt>janLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+												<HBox width="49%">
+													<ObjectStatus text="Not Linked {Gstr2bLinkAmt>janNotLinked}"
+														state="{parts:[{value:'E'},'Gstr2bLinkAmt>janLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+											</HBox>
+											<ObjectStatus text="{Gstr2bLinkAmt>janLinkStatus}" state="{path:'Gstr2bLinkAmt>janLinkStatus',formatter:'._get2bLinkAmtStatus'}"/>
+											<Text text="{Gstr2bLinkAmt>janLastUpdatedOn}" class="timeStmpClr" width="100%"/>
+										</VBox>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<CheckBox text="February" selected="{LinkAmtGstr2bCheck>/febSelect}" enabled="{LinkAmtGstr2bCheck>/febEnable}"
+									select="onGstr2bLinkAmtCol($event,'02')"/>
+								<ui:template>
+									<HBox renderType="Bare" alignItems="Center">
+										<CheckBox selected="{Gstr2bLinkAmt>febCheck}" visible="{=!!${Gstr2bLinkAmt>febLinkStatus}}"/>
+										<VBox width="100%">
+											<HBox width="100%" visible="{=!!${Gstr2bLinkAmt>febLinkStatus}}">
+												<HBox width="49%">
+													<ObjectStatus text="Linked {Gstr2bLinkAmt>febLinked}"
+														state="{parts:[{value:'S'},'Gstr2bLinkAmt>febLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+												<HBox width="49%">
+													<ObjectStatus text="Not Linked {Gstr2bLinkAmt>febNotLinked}"
+														state="{parts:[{value:'E'},'Gstr2bLinkAmt>febLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+											</HBox>
+											<ObjectStatus text="{Gstr2bLinkAmt>febLinkStatus}" state="{path:'Gstr2bLinkAmt>febLinkStatus',formatter:'._get2bLinkAmtStatus'}"/>
+											<Text text="{Gstr2bLinkAmt>febLastUpdatedOn}" class="timeStmpClr" width="100%"/>
+										</VBox>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<CheckBox text="March" selected="{LinkAmtGstr2bCheck>/marSelect}" enabled="{LinkAmtGstr2bCheck>/marEnable}"
+									select="onGstr2bLinkAmtCol($event,'03')"/>
+								<ui:template>
+									<HBox renderType="Bare" alignItems="Center">
+										<CheckBox selected="{Gstr2bLinkAmt>marCheck}" visible="{=!!${Gstr2bLinkAmt>marLinkStatus}}"/>
+										<VBox width="100%">
+											<HBox width="100%" visible="{=!!${Gstr2bLinkAmt>marLinkStatus}}">
+												<HBox width="49%">
+													<ObjectStatus text="Linked {Gstr2bLinkAmt>marLinked}"
+														state="{parts:[{value:'S'},'Gstr2bLinkAmt>marLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+												<HBox width="49%">
+													<ObjectStatus text="Not Linked {Gstr2bLinkAmt>marNotLinked}"
+														state="{parts:[{value:'E'},'Gstr2bLinkAmt>marLinked'],formatter:'._gstr2bLinkAmtState'}"/>
+												</HBox>
+											</HBox>
+											<ObjectStatus text="{Gstr2bLinkAmt>marLinkStatus}" state="{path:'Gstr2bLinkAmt>marLinkStatus',formatter:'._get2bLinkAmtStatus'}"/>
+											<Text text="{Gstr2bLinkAmt>marLastUpdatedOn}" class="timeStmpClr" width="100%"/>
+										</VBox>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+						<ui:footer>
+							<HBox>
+								<core:Icon src="sap-icon://circle-task-2" color="#00ff00" ariaLabelledBy="Text" size="0.8rem"/>
+								<Text text="{i18n>authActive}" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+								<core:Icon src="sap-icon://circle-task-2" color="red" ariaLabelledBy="Text" size="0.8rem"/>
+								<Text text="{i18n>authInactive}" class="sapUiTinyMarginBegin"/>
+							</HBox>
+						</ui:footer>
+					</ui:Table>
+				</commons:content>
+			</commons:ChartContainerContent >
+		</commons:content>
+	</commons:ChartContainer>
+</core:FragmentDefinition>

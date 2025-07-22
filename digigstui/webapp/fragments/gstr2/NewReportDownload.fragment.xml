@@ -1,0 +1,68 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons">
+	<Dialog title="Report Download" type="Message" class="sapUiSizeCompact cl_saveHeader" showHeader="true" contentWidth="28%"
+		contentHeight="80%">
+		<beginButton>
+			<Button text="OKAY" press="onCloseDialogDow"/>
+		</beginButton>
+		<VBox>
+			<HBox justifyContent="SpaceBetween">
+				<SegmentedButton id="idActionInformationIntiaterecon" selectedKey="API" selectionChange="onInitiateRecondownload">
+					<items>
+						<SegmentedButtonItem text="Transactional Reports" key="INITIATETRANSCATIONAL"/>
+						<SegmentedButtonItem text="Summary Reports" key="INITIATEREPORTS"/>
+					</items>
+				</SegmentedButton>
+				<Button text="Generate Report" class="buttoncolorSec" id="repId" press="onRG"/>
+			</HBox>
+			<ui:TreeTable id="tabSumm" rows="{path:'ReportDownload>/', parameters:{ arrayNames:['level2'], numberOfExpandedLevels:1 }}"
+				selectionMode="None" enableSelectAll="false" fixedColumnCount="2" enableColumnReordering="false" visibleRowCount="14"
+				toggleOpenState="onToggleGstr3bSummary" visible="true" class="sapUiTinyMarginTop sapUiLargeMarginBottom">
+				<ui:extension>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button id="expand" icon="sap-icon://expand-all" press="onExpandPI" class="buttoncolorSec"/>
+						<Button icon="sap-icon://collapse-all" press="onExpandPI" class="buttoncolorSec"/>
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="18rem" hAlign="Center">
+						<Label text="Report Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ReportDownload>reportName}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem" hAlign="Center">
+						<Label text="Download" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox alignContent="Center" alignItems="Center">
+								<core:Icon src="sap-icon://download" tooltip="Download" visible="{=${ReportDownload>flag}}" press="onFragDownload"/>
+								<Text text="{ReportDownload>message}"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:TreeTable>
+			<ui:Table id="tabSumm1" rows="{path:'ReportDownload1>/'}" selectionMode="None" enableSelectAll="false" fixedColumnCount="2"
+				enableColumnReordering="false" visible="false" class="sapUiTinyMarginTop sapUiLargeMarginBottom">
+				<ui:columns>
+					<ui:Column width="18rem" hAlign="Left">
+						<Label text="Report Name" textAlign="Left" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ReportDownload1>reportName}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem" hAlign="Center">
+						<Label text="Download" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox alignContent="Center" alignItems="Center">
+								<core:Icon src="sap-icon://download" tooltip="Download" visible="{=${ReportDownload1>flag}}" press="onFragDownload1"/>
+								<Text text="{ReportDownload1>message}"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+		</VBox>
+	</Dialog>
+</core:FragmentDefinition>

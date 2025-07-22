@@ -1,0 +1,32 @@
+URL : gstr1/save/b2b.do
+Service : POST 
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+Request Payload:
+
+{
+	"req":{
+	"dates":["2019-04-12"]
+  }
+}		
+	
+Response of SaveToGstn :
+
+
+{
+    "hdr": {
+        "status": "S"
+    },
+    "resp": [
+        {
+            "gstnBatchId": 63,
+            "refId": "d1e45fe6-25c5-422c-aaf3-8adf993000e0"
+        },
+        {
+            "gstnBatchId": 64,
+            "refId": "1f9acc59-2a1a-44ca-9437-469b6bd08527"
+        }
+    ]
+}

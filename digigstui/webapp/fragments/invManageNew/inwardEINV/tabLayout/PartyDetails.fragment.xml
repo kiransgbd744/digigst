@@ -1,0 +1,163 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table" xmlns:form="sap.ui.layout.form">
+	<Toolbar class="toolbarbot sapUiTinyMarginBottom">
+		<Label text="Seller Details" design="Bold" class="sapUiSmallMarginBegin titleFont"/>
+	</Toolbar>
+	<l:Grid defaultSpan="L2" hSpacing="2" vSpacing="2" class="sapUiTinyMarginTop">
+		<VBox>
+			<Label text="{i18n>supplierGstin}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/supplierGSTIN}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>supplierTradeName}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/supplierTradeName}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>supplierLegalName}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/supplierLegalName}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>supplierAddress1}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/supplierAddress1}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>supplierAddress2}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/supplierAddress2}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>supplierLocation}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/supplierLocation}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>supplierPincode}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/supplierPincode}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>supplierStateCode}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/supplierStateCode}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>supplierPhone}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/supplierPhone}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>supplierEmail}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/supplierEmail}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+	</l:Grid>
+	<Toolbar class="toolbarbot sapUiTinyMarginBottom">
+		<Label text="Buyer Details" design="Bold" class="sapUiSmallMarginBegin titleFont"/>
+	</Toolbar>
+	<l:Grid defaultSpan="L2" hSpacing="2" vSpacing="2" class="sapUiTinyMarginTop">
+		<VBox>
+			<Label text="{i18n>custGstin}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/customerGSTIN}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>customerTradeName}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/customerTradeName}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>custOrSuppName}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/customerLegalName}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>custOrSuppAddress1}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/customerAddress1}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>custOrSuppAddress2}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/customerAddress2}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>custOrSuppAddress4}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/customerLocation}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>customerPincode}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/customerPincode}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>billToState}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/customerStateCode}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>pos}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/billingPOS}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>customerPhone}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/customerPhone}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>customerEmail}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/customerEmail}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+	</l:Grid>
+	<Toolbar class="toolbarbot sapUiTinyMarginBottom">
+		<Label text="Dispatcher Details" design="Bold" class="sapUiSmallMarginBegin titleFont"/>
+	</Toolbar>
+	<l:Grid id="idgrid12" defaultSpan="L2" hSpacing="2" vSpacing="2" class="sapUiTinyMarginTop">
+		<VBox>
+			<Label text="{i18n>dispatcherTradeName}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/dispatcherTradeName}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="Dispatcher Address 1" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/dispatcherAddress1}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="Dispatcher Address 2" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/dispatcherAddress2}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="Dispatcher Location" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/dispatcherLocation}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>dispatcherPincode}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/dispatcherPincode}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>dispatcherStateCode}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/dispatcherStateCode}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+	</l:Grid>
+	<Toolbar class="toolbarbot sapUiTinyMarginBottom">
+		<Label text="Ship to Details" design="Bold" class="sapUiSmallMarginBegin titleFont"/>
+	</Toolbar>
+	<l:Grid defaultSpan="L2" hSpacing="2" vSpacing="2" class="sapUiTinyMarginTop">
+		<VBox>
+			<Label text="{i18n>shipToGstin}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/shipToGSTIN}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>shipToTradeName}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/shipToTradeName}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>shipToLegalName}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/shipToLegalName}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>shipToBuildingNumber}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/shipToAddress1}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>shipToBuildingName}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/shipToAddress2}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>shipToLocation}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/shipToLocation}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>shipToPincode}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/shipToPincode}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>shipToState}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{EInvMgmtDetail>/0/shipToStateCode}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+	</l:Grid>
+</core:FragmentDefinition>

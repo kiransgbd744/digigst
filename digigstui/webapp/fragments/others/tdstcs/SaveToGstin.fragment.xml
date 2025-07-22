@@ -1,0 +1,17 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.f">
+	<Dialog title="Do you want to Save Data to GSTN?" type="Message" class="sapUiSizeCompact cl_saveHeader">
+		<VBox>
+			<CheckBox text="Select All" selected="{SaveToGstinData>/all}" select="onSelectAllSaveToGstn" class="sapUiTinyMarginBottom clCheckBoxText"/>
+			<HBox>
+				<CheckBox text="TDS" selected="{SaveToGstinData>/TDS}" select="onSelectSaveToGstn"/>
+				<CheckBox text="TDSA" selected="{SaveToGstinData>/TDSA}" select="onSelectSaveToGstn" class="sapUiSmallMarginBeginEnd"/>
+				<CheckBox text="TCS" selected="{SaveToGstinData>/TCS}" select="onSelectSaveToGstn"/>
+				<CheckBox text="TCSA" selected="{SaveToGstinData>/TCSA}" select="onSelectSaveToGstn" class="sapUiSmallMarginBeginEnd"/>
+			</HBox>
+		</VBox>
+		<buttons>
+			<Button text="Yes" press="onConfirmSaveToGstn"/>
+			<Button text="No" press="onCloseSaveToGstn"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

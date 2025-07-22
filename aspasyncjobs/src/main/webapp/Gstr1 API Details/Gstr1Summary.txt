@@ -1,0 +1,91 @@
+URL : /gstnGstr1Summary.do
+Service : POST 
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+Request Payload:
+
+{
+	"req":{
+	"gstin":"33GSPTN0481G1ZA",
+	"ret_period":"082018"
+  }
+}		
+
+Response of Gstr1 Summary:
+
+{
+    "resp": "{\"gstin\":\"33GSPTN0481G1ZA\",\"ret_period\":\"082018\",\"chksum
+    \":\"10ecd865136444f6b6b171501bb50bc0aef376cb54cc5eb9dcb403aafef80e2e\",\"
+    sec_sum\":[{\"sec_nm\":\"CDNUR\",\"chksum\":\"
+    e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\",\"
+    ttl_rec\":0,\"ttl_tax\":0.0,\"ttl_igst\":0.0,\"ttl_val\":0.0,\"ttl_cess\":
+    0.0},{\"sec_nm\":\"EXPA\",\"chksum\":\"
+    e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\",\"ttl_rec
+    \":0,\"ttl_tax\":0.0,\"ttl_igst\":0.0,\"ttl_sgst\":0.0,\"ttl_cgst\":0.0,\"
+    ttl_val\":0.0,\"ttl_cess\":0.0},{\"sec_nm\":\"DOC_ISSUE\",\"chksum\":\"
+    bf185c73de283fe7b51fe848198671ca59d683e7f76660f66e8ed7f560d73449\",\"ttl_rec
+    \":3,\"ttl_doc_issued\":8,\"ttl_doc_cancelled\":2,\"net_doc_issued\":6},{\"
+    sec_nm\":\"TXPDA\",\"chksum\":\"
+    e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\",\"ttl_rec
+    \":0,\"ttl_tax\":0.0,\"ttl_igst\":0.0,\"ttl_sgst\":0.0,\"ttl_cgst\":0.0,\"
+    ttl_val\":0.0,\"ttl_cess\":0.0},{\"sec_nm\":\"HSN\",\"chksum\":\"
+    e7b91b8f938f936203628f8645af8abcdceb5a5ed7fbf1bea3b545d55d25c603\",\"ttl_rec
+    \":6,\"ttl_tax\":6544878.47,\"ttl_igst\":79566.3,\"ttl_sgst\":126542.54,\"
+    ttl_cgst\":126542.54,\"ttl_val\":6877529.85,\"ttl_cess\":0.0},{\"sec_nm\":\"
+    EXP\",\"chksum\":\"5f9c8feda55f6e6247d5e90625e8e997c8f8cd80a83de37f0060ad80cb251575
+    \",\"ttl_rec\":21,\"ttl_tax\":1749554.6,\"ttl_igst\":0.0,\"ttl_val\":
+    1749554.6,\"ttl_cess\":0.0},{\"sec_nm\":\"CDNURA\",\"chksum\":\"
+    e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\",\"ttl_rec
+    \":0,\"ttl_tax\":0.0,\"ttl_igst\":0.0,\"ttl_sgst\":0.0,\"ttl_cgst\":0.0,\"
+    ttl_val\":0.0,\"ttl_cess\":0.0},{\"sec_nm\":\"NIL\",\"chksum\":\"
+    2e4a72c9370918c85028c36dfb1a29e11013bf07e68dcf8aafc91a54e97f6208\",\"ttl_rec
+    \":1,\"ttl_expt_amt\":1066911.61,\"ttl_ngsup_amt\":0.0,\"ttl_nilsup_amt\"
+    :0.0},{\"sec_nm\":\"CDNRA\",\"chksum\":\"
+    e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\",\"ttl_rec
+    \":0,\"ttl_tax\":0.0,\"ttl_igst\":0.0,\"ttl_sgst\":0.0,\"ttl_cgst\":0.0,\"
+    ttl_val\":0.0,\"ttl_cess\":0.0},{\"sec_nm\":\"CDNR\",\"chksum\":\"
+    76742f77de1aab56bf882a67150ae52989589bc26ad53fd3d92fdc7e7cda8c48\",\"ttl_rec
+    \":5,\"ttl_tax\":7936.2,\"ttl_igst\":0.0,\"ttl_sgst\":714.26,\"ttl_cgst\":
+    714.26,\"ttl_val\":9364.72,\"ttl_cess\":0.0,\"cpty_sum\":[{\"ctin\":\"
+    33AAACD0226E1ZI\",\"chksum\":\"
+    8b92b7f0c3229b28021fd66ef6da86db90fefb63c1f4dd59c443adb5fd07501a\",\"ttl_rec
+    \":5,\"ttl_tax\":7936.2,\"ttl_igst\":0.0,\"ttl_sgst\":714.26,\"ttl_cgst\":
+    714.26,\"ttl_val\":9364.72,\"ttl_cess\":0.0}]},{\"sec_nm\":\"B2CL\",\"chksum
+    \":\"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\",\"
+    ttl_rec\":0,\"ttl_tax\":0.0,\"ttl_igst\":0.0,\"ttl_val\":0.0,\"ttl_cess\":
+    0.0},{\"sec_nm\":\"B2CSA\",\"chksum\":\"
+    e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\",\"ttl_rec
+    \":0,\"ttl_tax\":0.0,\"ttl_igst\":0.0,\"ttl_sgst\":0.0,\"ttl_cgst\":0.0,\"
+    ttl_val\":0.0,\"ttl_cess\":0.0},{\"sec_nm\":\"B2CS\",\"chksum\":\"
+    c68933789bff53515d85e7a9435cc491dcff2a6a450f594f35841ce6a9f181d7\",\"
+    ttl_rec\":2,\"ttl_tax\":560128.48,\"ttl_igst\":-3222.84,\"ttl_sgst\":52025.18
+    ,\"ttl_cgst\":52025.18,\"ttl_val\":660956.0,\"ttl_cess\":0.0},{\"sec_nm\":
+    \"AT\",\"chksum\":\"1c17701f42837b85dc1c1ce09ec587fad6ddd268a28423a5d42661a52c4a0ba1
+    \",\"ttl_rec\":2,\"ttl_tax\":23805.46,\"ttl_igst\":800.0,\"ttl_sgst\":584.23
+    ,\"ttl_cgst\":845.23,\"ttl_val\":585642.15,\"ttl_cess\":559607.23},{\"sec_nm
+    \":\"ATA\",\"chksum\":\"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    \",\"ttl_rec\":0,\"ttl_tax\":0.0,\"ttl_igst\":0.0,\"ttl_sgst\":0.0,\"ttl_cgst\":0.0,
+    \"ttl_val\":0.0,\"ttl_cess\":0.0},{\"sec_nm\":\"TXPD\",\"chksum\":\"
+    1c17701f42837b85dc1c1ce09ec587fad6ddd268a28423a5d42661a52c4a0ba1\",\"
+    ttl_rec\":2,\"ttl_tax\":23805.46,\"ttl_igst\":800.0,\"ttl_sgst\":584.23,
+    \"ttl_cgst\":845.23,\"ttl_val\":585642.15,\"ttl_cess\":559607.23},{\"sec_nm
+    \":\"B2BA\",\"chksum\":\"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    \",\"ttl_rec\":0,\"ttl_tax\":0.0,\"ttl_igst\":0.0,\"ttl_sgst\":0.0,\"
+    ttl_cgst\":0.0,\"ttl_val\":0.0,\"ttl_cess\":0.0},{\"sec_nm\":\"B2CLA\",\"
+    chksum\":\"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    \",\"ttl_rec\":0,\"ttl_tax\":0.0,\"ttl_igst\":0.0,\"ttl_val\":0.0,\"ttl_cess
+    \":0.0},{\"sec_nm\":\"B2B\",\"chksum\":\"
+    2a26b9ff2a7c506144a399041bf45c5b1a4487b173cc9eb0268155978d731477\",\"ttl_rec
+    \":11,\"ttl_tax\":3040263.0,\"ttl_igst\":180000.0,\"ttl_sgst\":183623.67,\"
+    ttl_cgst\":183623.67,\"ttl_val\":3587510.34,\"ttl_cess\":0.0,\"cpty_sum\":[{
+    \"ctin\":\"33GSPTN0482G1Z9\",\"chksum\":\"
+    0dfbf2ab8d1a7ff06a519eac48bef123ebb0e1df63c5933ba0bc970da073a4f6\",\"ttl_rec
+    \":10,\"ttl_tax\":3000000.0,\"ttl_igst\":180000.0,\"ttl_sgst\":180000.0,\"
+    ttl_cgst\":180000.0,\"ttl_val\":3540000.0,\"ttl_cess\":0.0},{\"ctin\":\"
+    33AABCE2711N2ZU\",\"chksum\":\"
+    368f10230bf9697793e2e056d1ede44bcfe9f4ef657992a5cc7ec39e6f9b29ac\",\"ttl_rec
+    \":1,\"ttl_tax\":40263.0,\"ttl_igst\":0.0,\"ttl_sgst\":3623.67,\"ttl_cgst\":
+    3623.67,\"ttl_val\":47510.34,\"ttl_cess\":0.0}]}]}"
+}

@@ -1,0 +1,185 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" controllerName="com.ey.digigst.controller.GReconReqStats" core:require="{util:'com/ey/digigst/util/Formatter'}"
+	busyIndicatorDelay="0">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading >
+					<Title text="Recon Request Status"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader>
+				<f:content>
+					<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+						useToolbar="false">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Initiated Date From" visibleInFilterBar="true">
+								<fb:control>
+									<DatePicker id="frInitiateDt" displayFormat="dd MMM yyyy" valueFormat="yyyy-MM-dd" value="{FilterModel>/frDate}" change="onChangeDate('F')"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Initiated Date To" visibleInFilterBar="true">
+								<fb:control>
+									<DatePicker id="toInitiateDt" displayFormat="dd MMM yyyy" valueFormat="yyyy-MM-dd" value="{FilterModel>/toDate}" change="onChangeDate('T')"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Request ID" visibleInFilterBar="true">
+								<fb:control>
+									<MultiComboBox items="{path:'RequestIds>/',sorter:{path:'requestId',descending:true}}" selectedKeys="{FilterModel>/requestId}"
+										selectionChange="selectAll" width="100%">
+										<core:Item key="{RequestIds>requestId}" text="{RequestIds>requestId}"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Recon Type" visibleInFilterBar="true">
+								<fb:control>
+									<Select selectedKey="{FilterModel>/reconType}" forceSelection="false">
+										<core:Item key="2APR" text="GSTR-2A/6A Vs PR"/>
+										<core:Item key="2APRAU" text="GSTR-2A/6A Vs PR (Auto)"/>
+										<core:Item key="2BPR" text="GSTR-2B Vs PR"/>
+										<core:Item key="EINVPR" text="Inward E-Inv vs PR"
+											enabled="{=(${userPermission>/appPermission/R8} &amp;&amp; ${userPermission>/appPermission/P41})}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Entity Name" visibleInFilterBar="true">
+								<fb:control>
+									<MultiComboBox items="{entityAll>/}" selectedKeys="{FilterModel>/entityIds}" selectionChange="onSelectEntity">
+										<core:Item key="{entityAll>entityId}" text="{entityAll>entityName}"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="Initiated By(User ID)" visibleInFilterBar="true">
+								<fb:control>
+									<MultiComboBox width="100%" items="{path:'UserNames>/',sorter: {path: 'userName',descending:false}}" selectionChange="selectAll"
+										selectedKeys="{FilterModel>/userIds}">
+										<core:Item key="{UserNames>userName}" text="{UserNames>userName}"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="Initiated By(User Email ID)" visibleInFilterBar="true">
+								<fb:control>
+									<MultiComboBox width="100%" items="{path:'UserEmailIds>/'}" selectionChange="selectAll" selectedKeys="{FilterModel>/emaildIds}">
+										<core:Item key="{UserEmailIds>email}" text="{UserEmailIds>email}"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="H" label="Recon Status" visibleInFilterBar="true">
+								<fb:control>
+									<Select forceSelection="false" selectedKey="{FilterModel>/reconStats}">
+										<core:Item key="REPORT GENERATED" text="REPORT GENERATED"/>
+										<core:Item key="REPORT GENERATION FAILED" text="REPORT GENERATION FAILED"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+					<HBox justifyContent="End" class="clMain" width="10%">
+						<Button text="Clear" press="onClearReconReqStats" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+						<Button text="Filter" press="onSearchReconReqStats" class="buttoncolor"/>
+					</HBox>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table rows="{path:'ReconReqStats>/', sorter:{path:'requestId',descending:true}}" selectionMode="None" visibleRowCount="12">
+				<ui:Column width="8rem">
+					<Label design="Bold" text="Request ID"/>
+					<ui:template>
+						<Text text="{ReconReqStats>requestId}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<Label design="Bold" text="Entity Name"/>
+					<ui:template>
+						<Text text="{ReconReqStats>entityName}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center" width="7rem">
+					<Label design="Bold" text="No. of GSTIN"/>
+					<ui:template>
+						<HBox alignItems="Center" justifyContent="Center">
+							<Link text="{ReconReqStats>gstinCount}" press="onPressGstinNo"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center" width="8rem">
+					<Label design="Bold" text="Recon Type"/>
+					<ui:template>
+						<HBox alignItems="Center" justifyContent="Center">
+							<ObjectStatus text="{path:'ReconReqStats>reconType', formatter:'.formatter.ReconType'}"
+								state="{= ${ReconReqStats>reconType} === '2BPR' ? 'Information' : ${ReconReqStats>reconType} === '2APR' ? 'Warning' : 'None'}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center" width="8rem">
+					<Label design="Bold" text="Request Type"/>
+					<ui:template>
+						<HBox alignItems="Center" justifyContent="Center">
+							<Text text="{ReconReqStats>reqType}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center" width="7rem">
+					<Label design="Bold" text="PR Tax Period From" wrapping="true" textAlign="Center" width="100%"/>
+					<ui:template>
+						<Text
+							text="{= ${ReconReqStats>reqType} === 'Document Date Wise' ? ${ReconReqStats>fromDocDate} : ${path:'ReconReqStats>fromTaxPeriod', formatter:'.formatter.month'}}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center" width="7rem">
+					<Label design="Bold" text="PR Tax Period To" wrapping="true" textAlign="Center" width="100%"/>
+					<ui:template>
+						<Text
+							text="{=${ReconReqStats>reqType}=== 'Document Date Wise'?${ReconReqStats>toDocDate}:${path:'ReconReqStats>toTaxPeriod',formatter:'.formatter.month'}}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center" width="7rem">
+					<Label design="Bold" text="2A/6A/2B Tax Period From" wrapping="true" textAlign="Center" width="100%"/>
+					<ui:template>
+						<Text text="{path:'ReconReqStats>fromTaxPeriod2A', formatter:'.formatter.month'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center" width="7rem">
+					<Label design="Bold" text="2A/6A/2B Tax Period To" wrapping="true" textAlign="Center" width="100%"/>
+					<ui:template>
+						<Text text="{path:'ReconReqStats>toTaxPeriod2A', formatter:'.formatter.month'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center" width="10rem">
+					<Label design="Bold" text="Initiation"/>
+					<ui:template>
+						<Text text="{ReconReqStats>initiatedOn}" textAlign="Center" width="100%"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column minWidth="220">
+					<Label design="Bold" text="Initiated By"/>
+					<ui:template>
+						<Text text="{ReconReqStats>initiatedBy}_{ReconReqStats>emailId}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center" width="10rem">
+					<Label design="Bold" text="Completion"/>
+					<ui:template>
+						<Text text="{ReconReqStats>completionOn}" textAlign="Center" width="100%"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center" width="9rem">
+					<Label design="Bold" text="Download"/>
+					<ui:template>
+						<Button text="Report Download" press="onDownloadReconReqStats" enabled="{=${userPermission>/appPermission/P8}}"
+							class="sapUiSmallMarginEnd buttoncolorSec"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center" minWidth="250">
+					<Label design="Bold" text="Status"/>
+					<ui:template>
+						<Text text="{path:'ReconReqStats>status',formatter:'.formatter.statusReplace'}" textAlign="Center" width="100%"/>
+					</ui:template>
+				</ui:Column>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

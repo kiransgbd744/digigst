@@ -1,0 +1,119 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="dynamicBank">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Label text="Entity :" class="sapUiTinyMarginTop" design="Bold"/>
+						<Select items="{bdEntity>/resp}" change="onSelectionChangeEntity" width="12rem" id="idEntityBD" class="sapUiTinyMarginBegin">
+							<core:Item key="{bdEntity>entityId}" text="{bdEntity>entityName}"/>
+						</Select>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<Button type="Emphasized" icon="sap-icon://save" text="Submit" id="idBDSubmit" press="onSubmit" enabled="false"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<ui:Table id="idTableBD" rows="{BankDetails>/item/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10"
+				fixedRowCount="0" fixedColumnCount="0" enableSelectAll="true">
+				<ui:extension>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button type="Accept" icon="sap-icon://edit" tooltip="Edit rows" id="idBDEditRows" press="onEditRows"/>
+						<Button type="Accept" icon="sap-icon://add" tooltip="Add row" id="idBDAddrow" press="onAddrow"/>
+						<!--<Button type="Reject" icon="sap-icon://delete" tooltip="Delete rows" id="idBDDeleteRows" press="onDeleteRows"/>-->
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="4rem" headerSpan="0">
+						<ui:multiLabels>
+							<Label text="S.No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{BankDetails>sno}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column >
+						<ui:multiLabels>
+							<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<MultiComboBox items="{BankDetails>/gstins/}" selectedKeys="{BankDetails>gstinId}" editable="{BankDetails>edit}"
+								selectionChange="onSelectionChangeMCB" width="100%">
+								<core:ListItem key="{BankDetails>id}" text="{BankDetails>gstin}"/>
+							</MultiComboBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<ui:multiLabels>
+							<Label text="Bank Account" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{BankDetails>bankAcc}" editable="{BankDetails>edit}" maxLength="50"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<ui:multiLabels>
+							<Label text="Bank Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<TextArea value="{BankDetails>bankName}" editable="{BankDetails>edit}" width="100%" maxLength="50"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<ui:multiLabels>
+							<Label text="IFSC Code" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{BankDetails>ifscCode}" editable="{BankDetails>edit}" maxLength="25"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<ui:multiLabels>
+							<Label text="Bank Address" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<TextArea value="{BankDetails>bankAddrs}" editable="{BankDetails>edit}" width="100%" maxLength="100"/>
+						</ui:template>
+					</ui:Column>
+					<!--	<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Beneficiary" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{BankDetails>beneficiary}" editable="{BankDetails>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Payment Due Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<DatePicker value="{BankDetails>paymentDueDate}" valueFormat="yyyy-MM-dd" displayFormat="yyyy-MM-dd" editable="{BankDetails>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Payment Terms" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{BankDetails>paymentTerms}" editable="{BankDetails>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Payment Instruction" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{BankDetails>paymentInstruction}" editable="{BankDetails>edit}"/>
+							</ui:template>
+						</ui:Column>-->
+				</ui:columns>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

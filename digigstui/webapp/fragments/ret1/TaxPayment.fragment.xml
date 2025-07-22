@@ -1,0 +1,207 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<Dialog id="dTaxPayment" title="{i18n>taxPayment}" type="Message" draggable="true" contentWidth="80%" class="sapUiSizeCompact">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="{i18n>taxPayment}" design="Bold"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<beginButton>
+			<Button text="{i18n>ok}" press="onCloseTaxPayment"/>
+		</beginButton>
+		<ui:Table id="tabPaymentOfTax" rows="{TaxPayment>/}" selectionMode="MultiToggle" fixedColumnCount="1" enableColumnReordering="false"
+			rowSelectionChange="onDialogRowSelection">
+			<ui:extension>
+				<Toolbar>
+					<HBox>
+						<Label text="{i18n>entity}:" labelFor="txtTaxEntity" design="Bold"/>
+						<Text id="txtTaxEntity" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+						<Label text="{i18n>gstin}:" labelFor="txtTaxGstin" design="Bold"/>
+						<Text id="txtTaxGstin" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+						<Label text="{i18n>taxPeriod}:" labelFor="txtTaxPeriod" design="Bold"/>
+						<Text id="txtTaxPeriod" class="sapUiTinyMarginBegin"/>
+					</HBox>
+					<ToolbarSpacer/>
+					<Button type="Accept" icon="sap-icon://save" text="{i18n>save}" enabled="{Property>/enabled}" press="onSaveTaxPayment"/>
+					<Button type="Reject" icon="sap-icon://delete" tooltip="{i18n>delete}" enabled="{Property>/enabled}" press="onDeleteTaxPayment"/>
+					<Button type="Emphasized" icon="sap-icon://edit" tooltip="{i18n>edit}" enabled="{Property>/edit}" press="onEditTaxPayment"/>
+					<Button type="Emphasized" icon="sap-icon://add" tooltip="{i18n>add}" press="onAddTaxPayment"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column width="10rem">
+					<Label text="{i18n>description}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{path:'TaxPayment>desc', formatter:'.taxDescription'}" visible="{=!${TaxPayment>visi}}"/>
+							<Select items="{path:'Returns>/gst', templateShareable:false}" selectedKey="{TaxPayment>desc}" visible="{TaxPayment>visi}">
+								<core:Item key="{Returns>key}" text="{Returns>text}"/>
+							</Select>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>taxPayableRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'TaxPayment>taxPayableRc', formatter:'.formatter.amountValue'}" visible="{=!${TaxPayment>edit}}"/>
+							<Input value="{TaxPayment>taxPayableRc}" textAlign="End" liveChange="positiveDecimal" visible="{TaxPayment>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>taxPayableOtherRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'TaxPayment>taxPayableOtherRc', formatter:'.formatter.amountValue'}" visible="{=!${TaxPayment>edit}}"/>
+							<Input value="{TaxPayment>taxPayableOtherRc}" textAlign="End" liveChange="positiveDecimal" visible="{TaxPayment>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>taxPaidRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'TaxPayment>taxPaidRc', formatter:'.formatter.amountValue'}" visible="{=!${TaxPayment>edit}}"/>
+							<Input value="{TaxPayment>taxPaidRc}" textAlign="End" liveChange="positiveDecimal" visible="{TaxPayment>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>taxPaidOtherRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'TaxPayment>taxPaidOtherRc', formatter:'.formatter.amountValue'}" visible="{=!${TaxPayment>edit}}"/>
+							<Input value="{TaxPayment>taxPaidOtherRc}" textAlign="End" liveChange="positiveDecimal" visible="{TaxPayment>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>adjLiabilityRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'TaxPayment>adjLiabilityRc', formatter:'.formatter.amountValue'}" visible="{=!${TaxPayment>edit}}"/>
+							<Input value="{TaxPayment>adjLiabilityRc}" textAlign="End" liveChange="positiveDecimal" visible="{TaxPayment>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>adjLiabilityOtherRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'TaxPayment>adjLiabilityOtherRc', formatter:'.formatter.amountValue'}" visible="{=!${TaxPayment>edit}}"/>
+							<Input value="{TaxPayment>adjLiabilityOtherRc}" textAlign="End" liveChange="positiveDecimal" visible="{TaxPayment>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>itcPaidIgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'TaxPayment>itcPaidIgst', formatter:'.formatter.amountValue'}" visible="{=!${TaxPayment>edit}}"/>
+							<Input value="{TaxPayment>itcPaidIgst}" textAlign="End" liveChange="positiveDecimal" visible="{TaxPayment>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>itcPaidCgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'TaxPayment>itcPaidCgst', formatter:'.formatter.amountValue'}" visible="{=!${TaxPayment>edit}}"/>
+							<Input value="{TaxPayment>itcPaidCgst}" textAlign="End" liveChange="positiveDecimal" visible="{TaxPayment>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>itcPaidSgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'TaxPayment>itcPaidSgst', formatter:'.formatter.amountValue'}" visible="{=!${TaxPayment>edit}}"/>
+							<Input value="{TaxPayment>itcPaidSgst}" textAlign="End" liveChange="positiveDecimal" visible="{TaxPayment>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>itcPaidCess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'TaxPayment>itcPaidCess', formatter:'.formatter.amountValue'}" visible="{=!${TaxPayment>edit}}"/>
+							<Input value="{TaxPayment>itcPaidCess}" textAlign="End" liveChange="positiveDecimal" visible="{TaxPayment>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>cashPaidTax}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'TaxPayment>cashPaidTax', formatter:'.formatter.amountValue'}" visible="{=!${TaxPayment>edit}}"/>
+							<Input value="{TaxPayment>cashPaidTax}" textAlign="End" liveChange="positiveDecimal" visible="{TaxPayment>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>cashPaidInterest}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'TaxPayment>cashPaidInterest', formatter:'.formatter.amountValue'}" visible="{=!${TaxPayment>edit}}"/>
+							<Input value="{TaxPayment>cashPaidInterest}" textAlign="End" liveChange="positiveDecimal" visible="{TaxPayment>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>cashPaidLateFee}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'TaxPayment>cashPaidLateFee', formatter:'.formatter.amountValue'}" visible="{=!${TaxPayment>edit}}"/>
+							<Input value="{TaxPayment>cashPaidLateFee}" textAlign="End" liveChange="positiveDecimal" visible="{TaxPayment>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>userDefinedField1}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{path:'TaxPayment>userDefined1'}" visible="{=!${TaxPayment>edit}}"/>
+							<Input value="{TaxPayment>userDefined1}" visible="{TaxPayment>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>userDefinedField2}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{path:'TaxPayment>userDefined2'}" visible="{=!${TaxPayment>edit}}"/>
+							<Input value="{TaxPayment>userDefined2}" visible="{TaxPayment>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>userDefinedField3}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{path:'TaxPayment>userDefined3'}" visible="{=!${TaxPayment>edit}}"/>
+							<Input value="{TaxPayment>userDefined3}" visible="{TaxPayment>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+			<!--<ui:footer>-->
+			<!--	<HBox width="100%" justifyContent="Center">-->
+			<!--		<Button id="bTaxPrev" type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="false"-->
+			<!--			press="onPressPagination"/>-->
+			<!--		<Input id="inTaxPageNo" type="Number" textAlign="End" width="4rem" submit="onSubmitPagination" enabled="false" class="sapUiTinyMarginBegin"-->
+			<!--			value="0"/>-->
+			<!--		<Text id="txTaxPageNo" text="/ 0" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>-->
+			<!--		<Button id="bTaxNext" type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="false" press="onPressPagination"/>-->
+			<!--		<ComboBox textAlign="End" selectedKey="50" selectionChange="onTaxRecordPerPage" width="5rem" class="sapUiTinyMarginBegin">-->
+			<!--			<core:Item key="50" text="50"/>-->
+			<!--			<core:Item key="100" text="100"/>-->
+			<!--			<core:Item key="200" text="200"/>-->
+			<!--			<core:Item key="500" text="500"/>-->
+			<!--		</ComboBox>-->
+			<!--	</HBox>-->
+			<!--</ui:footer>-->
+		</ui:Table>
+	</Dialog>
+</core:FragmentDefinition>

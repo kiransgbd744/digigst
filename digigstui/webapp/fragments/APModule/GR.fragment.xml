@@ -1,0 +1,198 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.f" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table"
+	xmlns:u="sap.ui.unified" xmlns:fb="sap.ui.comp.filterbar" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Generate Report" titleStyle="H3" class="tinyMarginTop"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showFilterConfiguration="false" useToolbar="false" class="sapUiNoContentPadding" width="90%" showGoOnFB="false"
+					showClearOnFB="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="P" label="Date Range" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idDateRange2A1" class="input" forceSelection="true" change="onDateRangeChange1">
+									<core:Item key="Tax Period" text="Tax Period"/>
+									<core:Item key="Recon Date" text="Recon Date"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Recipient GSTIN" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<MultiComboBox id="idPIGstins" items="{getRecipientGstins>/}" selectionChange="selectAll">
+									<core:Item key="{getRecipientGstins>gstin}" text="{getRecipientGstins>gstin} {getRecipientGstins>regType}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="x" label="Recon From Date" visibleInFilterBar="true" id="vBox1ID2A15"
+							visible="{Display>/DOC1}">
+							<fb:control>
+								<DatePicker displayFormat="dd MMM yyyy" id="idReconPeriod2A8" valueFormat="ddMMyyyy" class="input" change="onFromDateChangeGR"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="v" label="Recon To Date" visibleInFilterBar="true" id="vBox1ID2A11"
+							visible="{Display>/DOC1}">
+							<fb:control>
+								<DatePicker displayFormat="dd MMM yyyy" id="idReconPeriod12A9" valueFormat="ddMMyyyy" class="input"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Tax Period From" visibleInFilterBar="true" mandatory="true"
+							visible="{Display>/TAX1}">
+							<fb:control>
+								<DatePicker id="dtPI" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="handleChangePISumm" width="12rem"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="z" label="Tax Period To" visibleInFilterBar="true" mandatory="true"
+							visible="{Display>/TAX1}">
+							<fb:control>
+								<DatePicker id="dtPITo" displayFormat="MMM yyyy" valueFormat="MMyyyy" width="12rem"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Report Type" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<MultiComboBox id="DocTypeIDPI" selectionChange="selectAll">
+									<core:Item key="All" text="All"/>
+									<core:Item key="Exact Match" text="Exact Match"/>
+									<core:Item key="Match With Tolerance" text="Match With Tolerance"/>
+									<core:Item key="Value Mismatch" text="Value Mismatch"/>
+									<core:Item key="POS Mismatch" text="POS Mismatch"/>
+									<core:Item key="Doc Date Mismatch" text="Doc Date Mismatch"/>
+									<core:Item key="Doc Type Mismatch" text="Doc Type Mismatch"/>
+									<core:Item key="Doc No Mismatch I" text="Doc No Mismatch I"/>
+									<core:Item key="Doc No Mismatch II" text="Doc No Mismatch II"/>
+									<core:Item key="Doc No &amp; Doc Date Mismatch" text="Doc No &amp; Doc Date Mismatch"/>
+									<core:Item key="Multi-Mismatch" text="Multi-Mismatch"/>
+									<core:Item key="Potential-I" text="Potential-I"/>
+									<core:Item key="Potential-II" text="Potential-II"/>
+									<core:Item key="Logical Match" text="Logical Match"/>
+									<core:Item key="Addition in PR" text="Addition in PR"/>
+									<core:Item key="Addition in 2A" text="Addition in 2A"/>
+									<core:Item key="Exact Match IMPG" text="Import - Match"/>
+									<core:Item key="Mismatch IMPG" text="Import - Mismatch"/>
+									<core:Item key="Addition in PR IMPG" text="Import - Addition in PR"/>
+									<core:Item key="Addition in 2A IMPG" text="Import - Addition in 2A/6A"/>
+									<core:Item key="Force Match Records" text="Force Match Records"/>
+									<core:Item key="GSTR-3B Locked Records" text="GSTR-3B Locked Records"/>
+									<!--<core:Item key="ITC Tracking Report" text="ITC Tracking Report"/>-->
+									<!--<core:Item key="Consolidated GSTR 2A-PR Report" text="Consolidated GSTR 2A-PR Report"/>-->
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button class="buttoncolor" press="onPressGoGR" text="Generate Report" enabled="{= (${userPermission>/appPermission/P22})}"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer showFullScreen="false" showZoom="true" showPersonalization="false" autoAdjustHeight="false" id="FullId">
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table rows="{path:'ReqWiseData2A>/resp/requestData', sorter: {path: 'requestId',descending:true}}" selectionMode="None"
+								selectionBehavior="Row" visibleRowCount="10" fixedColumnCount="0" enableSelectAll="false" id="tabId">
+								<ui:Column width="10%" hAlign="Center">
+									<Label design="Bold" text="Request ID"/>
+									<ui:template>
+										<Text text="{ReqWiseData2A>requestId}"/>
+										<!-- NewReturns-->
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="No. of Recipient GSTIN"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Link text="{ReqWiseData2A>noOfRecipientGstins}" press="onPressGSTIN"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="No. of Report Requested"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Link text="{ReqWiseData2A>noOfReportTypes}" press="onPressReport"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="From Tax Period"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{ReqWiseData2A>fromTaxPeriod}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="To Tax Period"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{ReqWiseData2A>toTaxPeriod}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="Date/Time" wrapping="true"/>
+									<ui:template>
+										<Text text="{ReqWiseData2A>createdOn}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="Report Status" wrapping="true"/>
+									<ui:template>
+										<Text text="{ReqWiseData2A>status}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="Download"/>
+									<ui:template>
+										<Button text="Report Download" class="buttoncolorSec" press="onRDownloadPress" visible="{= (${ReqWiseData2A>status} === 'REPORT_GENERATED')}"/>
+										<!--<HBox alignItems="Start" justifyContent="Center" visible="{= (${userPermission>/appPermission/P22})}">-->
+										<!--	<core:Icon src="sap-icon://download" tooltip="Download" press="onDownload" size="0.75rem" class="sapUiTinyMarginBegin"-->
+										<!--		visible="{=${ReqWiseData2A>status}==='REPORT_GENERATED'}"></core:Icon>-->
+										<!--</HBox>-->
+									</ui:template>
+								</ui:Column>
+								<ui:footer>
+									<HBox width="100%" justifyContent="Center">
+										<Button id="btnFirst" type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" class="sapUiTinyMarginBeginEnd" enabled="false"
+											press="onPressPagination"/>
+										<Button id="btnPrev" type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="false"
+											press="onPressPagination"/>
+										<Input id="inPageNo" type="Number" textAlign="End" width="4rem" submit="onSubmitPagination" enabled="false" class="sapUiTinyMarginBegin"
+											value="0"/>
+										<Text id="txtPageNo" text="/ 0" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+										<Button id="btnNext" type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="false" press="onPressPagination"/>
+										<Button id="btnLast" type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" class="sapUiTinyMarginBeginEnd" enabled="false"
+											press="onPressPagination"/>
+									</HBox>
+								</ui:footer>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+				<commons:toolbar>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+						<!--<MenuButton type="Emphasized" text="Download Reports" enabled="{= ${userPermission>/appPermission/P8}}">
+							<Menu itemSelected="onMenuItemPressSavePI">
+								<MenuItem text="Download Summary level" key="Download Summary level"/>
+								<MenuItem text="Download Tranctional level" key="Download Tranctional level"/>
+							</Menu>
+						</MenuButton>-->
+						<Button class="buttoncolorSec" text="Refresh" press="onRefresh"/>
+						<Button type="Transparent" id="openbutPITC" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="true"
+							press="onPITCFullScreen('open')"/>
+						<Button type="Transparent" id="closebutPITC" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="false"
+							press="onPITCFullScreen('close')"/>
+						<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+					</OverflowToolbar>
+				</commons:toolbar>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

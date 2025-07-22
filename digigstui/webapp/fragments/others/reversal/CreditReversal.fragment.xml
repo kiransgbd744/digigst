@@ -1,0 +1,688 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage id="idCreditReverasl" visible="true">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Rule 42 Reversal (Input Goods &amp; Input Services)"/>
+				</f:heading>
+				<f:actions>
+					<HBox class="sapUiTinyMarginBegin">
+						<SegmentedButton id="idCreditRe" selectedKey="RPWise" selectionChange="onChangeCreditReversal">
+							<items>
+								<SegmentedButtonItem text="Return Period Wise" key="RPWise" width="12rem"/>
+								<SegmentedButtonItem text="Financial Year Wise" key="FYWise" width="12rem" visible="false"/>
+							</items>
+						</SegmentedButton>
+					</HBox>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idgstingstCrRev" width="100%" items="{GstinModel>/}" selectionChange="selectAll">
+									<core:Item key="{GstinModel>value}" text="{GstinModel>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>taxPeriod}" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" id="idTaxperiodCrrev"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button id="idFilterProCRrev" icon="sap-icon://filter" class="buttoncolorSec" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilter"
+						enabled="false"/>
+					<Button id="bSummaryClearProcess" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onPressClear" enabled="false"/>
+					<Button text="Filter" class="buttoncolor" press="onPressCreditRevPrGo"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel>
+				<Toolbar height="4.5rem" class="cl_removeBoderTool">
+					<ToolbarSpacer></ToolbarSpacer>
+					<VBox width="15rem" class="clBlockLayoutTax" alignContent="Center" alignItems="Center">
+						<Label text="Rule 42 Reversal" class="cl_lebsta" design="Bold"/>
+						<Label text="GSTR-3B-Table 4B1" design="Bold"/>
+					</VBox>
+					<VBox width="15rem" class="clBlockLayoutTax" alignContent="Center" alignItems="Center">
+						<HBox>
+							<Label text="*" class="cl_star1"/>
+							<Label text="As Per Ratio I" class="cl_lebsta" design="Bold"/>
+						</HBox>
+						<Label text="{parts:[{path:'creditRevSummary>/ratio1'}],formatter:'.formatter.amountValue'}" design="Bold"/>
+					</VBox>
+					<VBox width="15rem" class="clBlockLayoutTax" alignContent="Center" alignItems="Center">
+						<HBox>
+							<Label text="**" class="cl_star1"/>
+							<Label text="As Per Ratio II" design="Bold"/>
+						</HBox>
+						<Label text="{parts:[{path:'creditRevSummary>/ratio2'}],formatter:'.formatter.amountValue'}" design="Bold"/>
+					</VBox>
+					<VBox width="15rem" class="clBlockLayoutTax cl_backRatio3" alignContent="Center" alignItems="Center">
+						<HBox>
+							<Label text="***" class="cl_star1"/>
+							<Label text="As Per Ratio III" design="Bold"/>
+						</HBox>
+						<Label text="{parts:[{path:'creditRevSummary>/ratio3'}],formatter:'.formatter.amountValue'}" design="Bold"/>
+					</VBox>
+					<ToolbarSpacer></ToolbarSpacer>
+				</Toolbar>
+				<ui:Table rowSelectionChange="onSelection" rows="{path:'CreditRevPRData>/resp/'}" selectionMode="MultiToggle" visibleRowCount="8"
+					id="idtableRPWise" enableSelectAll="true" fixedBottomRowCount="0" fixedColumnCount="2" visible="true">
+					<ui:extension>
+						<Toolbar>
+							<Label text="Showing:" design="Bold"/>
+							<CheckBox text="Ratio I" select="onSelectCheckBoxRatio11" editable="{=!${showing>/enableRatio1}}" selected="{showing>/ratio1}"/>
+							<CheckBox text="Ratio II" select="onSelectCheckBoxRatio11" editable="{=!${showing>/enableRatio2}}" selected="{showing>/ratio2}"/>
+							<CheckBox text="Ratio III" select="onSelectCheckBoxRatio11" editable="{=!${showing>/enableRatio3}}" selected="{showing>/ratio3}"/>
+							<ToolbarSpacer/>
+							<MenuButton class="buttoncolorSec" text="Reversal Amount to 3B" enabled="{=${userPermission>/appPermission/P99}}">
+								<Menu>
+									<MenuItem text="Ratio I Amount" key="ratio1" press="fnBeinBtnPress('P','Ratio1')"/>
+									<MenuItem text="Ratio II Amount" key="ratio2" press="fnBeinBtnPress('P','Ratio2')"/>
+									<MenuItem text="Ratio III Amount" key="ratio3" press="fnBeinBtnPress('P','Ratio3')" enabled="false"/>
+								</Menu>
+							</MenuButton>
+							<Button class="buttoncolorSec" text="Compute Reversal" enabled="{=${userPermission>/appPermission/P99}}" press="onButtonExtractPress"/>
+							<MenuButton class="buttoncolorSec" text="Download Report" enabled="{=${userPermission>/appPermission/P99}}">
+								<Menu>
+									<MenuItem text="Summary Level Report" key="Summary" press="onDownloadButtonPress('Summary')"/>
+									<MenuItem text="Transactional Report (Outward)" key="Outward" press="onDownloadButtonPress('Outward')"/>
+									<MenuItem text="Transaction Report (Inward)" key="Inward" press="onDownloadButtonPress('Inward')"/>
+									<MenuItem text="Vertical Report" key="Vertical" press="onDownloadButtonPress('Vertical')"/>
+								</Menu>
+							</MenuButton>
+						</Toolbar>
+					</ui:extension>
+					<ui:Column width="13rem">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="GSTIN" textAlign="Center" design="Bold" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<VBox>
+								<HBox>
+									<Text text="{CreditRevPRData>state}" width="8rem" class="stateColor"/>
+									<Text text="{=${CreditRevPRData>regType}==='REGULAR'?'':${CreditRevPRData>regType}}" class="stateColor fontSmall"/>
+								</HBox>
+								<HBox alignContent="Start" justifyContent="SpaceBetween">
+									<Link text="{CreditRevPRData>gstin}" press="handleLinkPressGSTINMain123"/>
+									<core:Icon src="sap-icon://circle-task-2" size="0.8rem" class="sapUiSmallMarginBegin" tooltip="Generate OTP"
+										visible="{=${CreditRevPRData>gstin}=== '' ?false:true}" color="{=${CreditRevPRData>authToken}=== 'Active' ?'#00ff00':'#ff0000'}"
+										press="onActivateAuthToken(${CreditRevPRData>gstin},${CreditRevPRData>authToken})"/>
+								</HBox>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="11rem">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="Status" textAlign="Center" design="Bold" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<VBox>
+								<!--<HBox>-->
+								<Text text="{CreditRevPRData>status}" width="8rem" class="stateColor"/>
+								<Text text="{CreditRevPRData>dateTime}" class="stateColor fontSmall"/>
+								<!--</HBox>-->
+								<HBox alignContent="Start" justifyContent="SpaceBetween">
+									<!--<Link text="{CreditRevPRData>status}" press="handleLinkPressGSTINMain123"/>-->
+								</HBox>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column headerSpan="6" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+						<ui:multiLabels>
+							<HBox justifyContent="Center" width="100%">
+								<Label text="*" class="cl_star1"/>
+								<Label text="As per Ratio I" textAlign="Center" width="100%" design="Bold"/>
+							</HBox>
+							<Label text="Ratio (%)" textAlign="Center" design="Bold" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'CreditRevPRData>ratio1Ratio'}],formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Total Tax" textAlign="Center" design="Bold" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'CreditRevPRData>ratio1TotalTax'}],formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="IGST" textAlign="End" design="Bold" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'CreditRevPRData>ratio1Igst'}],formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'CreditRevPRData>ratio1Cgst'}],formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="SGST" textAlign="Center" design="Bold" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'CreditRevPRData>ratio1Sgst'}],formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'CreditRevPRData>ratio1Cess'}],formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:columns>
+						<ui:Column headerSpan="6" width="9rem" hAlign="End" visible="{showing>/ratio2}">
+							<ui:multiLabels>
+								<HBox justifyContent="Center" width="100%">
+									<Label text="**" class="cl_star1"/>
+									<Label text="As per Ratio II" textAlign="Center" design="Bold" width="100%"/>
+								</HBox>
+								<Label text="Ratio (%)" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path:'CreditRevPRData>ratio2Ratio'}],formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio2}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Total Tax" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path:'CreditRevPRData>ratio2TotalTax'}],formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio2}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path:'CreditRevPRData>ratio2Igst'}],formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio2}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path:'CreditRevPRData>ratio2Cgst'}],formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio2}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="SGST" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path:'CreditRevPRData>ratio2Sgst'}],formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio2}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path:'CreditRevPRData>ratio2Cess'}],formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="6" width="9rem" hAlign="End" visible="{showing>/ratio3}">
+							<ui:multiLabels>
+								<HBox justifyContent="Center" width="100%">
+									<Label text="***" class="cl_star1"/>
+									<Label text="As per Ratio III" textAlign="Center" design="Bold" width="100%"/>
+								</HBox>
+								<Label text="Ratio (%)" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path:'CreditRevPRData>ratio3Ratio'}],formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio3}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Total Tax" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path:'CreditRevPRData>ratio3TotalTax'}],formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio3}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path:'CreditRevPRData>ratio3Igst'}],formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio3}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path:'CreditRevPRData>ratio3Cgst'}],formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio3}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="SGST" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path:'CreditRevPRData>ratio3Sgst'}],formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio3}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path:'CreditRevPRData>ratio3Cess'}],formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+					<ui:footer>
+						<Toolbar height="5rem">
+							<VBox>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+									<Text text="Auth Token Active" class="sapUiTinyMarginBegin"/>
+									<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem" class="sapUiTinyMarginBegin"/>
+									<Text text="Auth Token Inactive" class="sapUiTinyMarginBegin"/>
+								</HBox>
+								<VBox>
+									<HBox class="sapUiTinyMarginTop">
+										<Label text="*" class="cl_star1"/>
+										<Text
+											text="Exempted Turnover (Exempt supplies+ NIL Rated supplies + Reverse Charge supplies) divided by Total Turnover (Taxable Supplies + Exempt Supplies + NIL Rated Supplies), excluding NON GST supplies"/>
+									</HBox>
+									<HBox class="sapUiTinyMarginTop">
+										<Text text="**" class="cl_star1"/>
+										<Text
+											text="Exempted Turnover (Exempt Supplies + NIL Rated Supplies + Reverse Charge supplies + NON-GST Supplies) divided by Total Turnover (Taxable Supplies + Exempt Supplies + NIL Rated Supplies + NON GST Supplies)"/>
+									</HBox>
+								</VBox>
+							</VBox>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</ui:footer>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="idCreditReverasl1" visible="false" class="cl_dpScroll">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" class="sapUiTinyMarginEnd" press="onPressBackCreditRev"/>
+						<Title text="Rule 42 Reversal (Input Goods &amp; Input Services)" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<HBox class="sapUiTinyMarginBegin">
+						<SegmentedButton id="idCreditRe1" selectedKey="RPWise" selectionChange="onChangeCreditReversalSum">
+							<items>
+								<SegmentedButtonItem text="Reversal" key="RPWise" width="12rem"/>
+								<SegmentedButtonItem text="Turnover" key="FYWise" width="12rem"/>
+							</items>
+						</SegmentedButton>
+					</HBox>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding" id="id_ReversalFilter" visible="true">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idgstingstCrRev1" items="{path:'DataPermission>/respData/dataSecurity/gstin'}">
+									<core:Item key="{DataPermission>value}" text="{DataPermission>value}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>taxPeriod}" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="idTaxperiodCrrev1" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" id="fbSummaryHbox" width="10%" visible="true">
+					<Button id="idFilterProCRrev1" class="buttoncolorSec" icon="sap-icon://filter" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilter"
+						enabled="false"/>
+					<Button id="bSummaryClear" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onPressClear" enabled="false"/>
+					<Button text="Filter" class="buttoncolor" press="onPressCreditRevGo"/>
+				</HBox>
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding" id="Id_trunoverFilter" visible="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idgstingstCrRev12" items="{path:'DataPermission>/respData/dataSecurity/gstin'}">
+									<core:Item key="{DataPermission>value}" text="{DataPermission>value}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>taxPeriod}" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="idTaxperiodCrrev12" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" id="fbSummaryHbox1" width="10%" visible="false">
+					<Button id="idFilterProCRrev12" class="buttoncolorSec" icon="sap-icon://filter" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilter"
+						enabled="false"/>
+					<Button id="bSummaryClear1" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onPressClear" enabled="false"/>
+					<Button text="Filter" class="buttoncolor" press="onPressTurnOverGo"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<VBox>
+				<Panel id="id_reversal" visible="true">
+					<layout:BlockLayout background="Dashboard" id="id_BlockLayoutcreditRev1" class="cl_shadow">
+						<layout:BlockLayoutRow class="sapUiNoContentPadding">
+							<layout:BlockLayoutCell id="id_BlCellgstr1" width="10rem">
+								<Toolbar height="2.2rem" class="supplToolbar supplToolbarCol">
+									<Label text="Summary" design="Bold" textAlign="Center" width="100%"/>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTopBottom">
+									<VBox width="8rem">
+										<Text/>
+										<Label text="Reversal Turnover" class="sapUiTinyMarginBegin sapUiTinyMarginTop" design="Bold"/>
+									</VBox>
+									<VBox alignItems="End" width="25%">
+										<HBox>
+											<Label text="Ratio I" design="Bold"/>
+											<Button icon="sap-icon://begin" press="fnBeinBtnPress('S','Ratio1')" tooltip="Push to GSTR-3B (Table 4B1)" id="id_btnRat1"
+												type="Transparent" class="cl_BtnRat" enabled="{=${userPermission>/appPermission/P99}}"/>
+										</HBox>
+										<Text text="{path:'CreditRevData>/resp/summary/reversalRatio1/',formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+									</VBox>
+									<VBox alignItems="End" width="25%">
+										<HBox>
+											<Label text="Ratio II" design="Bold"/>
+											<Button icon="sap-icon://begin" id="id_btnRat2" tooltip="Push to GSTR-3B (Table 4B1)" press="fnBeinBtnPress('S','Ratio2')"
+												type="Transparent" class="cl_BtnRat" enabled="{=${userPermission>/appPermission/P99}}"/>
+										</HBox>
+										<Text text="{path:'CreditRevData>/resp/summary/reversalRatio2/',formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+									</VBox>
+									<VBox alignItems="End" width="25%">
+										<HBox>
+											<Label text="Ratio III" design="Bold"/>
+											<Button icon="sap-icon://begin" id="id_btnRat3" tooltip="Push to GSTR-3B (Table 4B1)" press="fnBeinBtnPress('S','Ratio3')"
+												type="Transparent" class="cl_BtnRat" enabled="{=${userPermission>/appPermission/P99}}"/>
+										</HBox>
+										<Text text="{path:'CreditRevData>/resp/summary/reversalRatio3/',formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+									</VBox>
+								</HBox>
+								<HBox class="sapUiTinyMarginTopBottom">
+									<VBox width="8rem">
+										<Label text="Total Turnover" class="sapUiTinyMarginBegin" design="Bold"/>
+									</VBox>
+									<VBox alignItems="End" width="25%">
+										<Text text="{path:'CreditRevData>/resp/summary/turnoverRatio1/',formatter:'.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="End" width="25%">
+										<Text text="{path:'CreditRevData>/resp/summary/turnoverRatio2/',formatter:'.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="End" width="25%">
+										<Text text="{path:'CreditRevData>/resp/summary/turnoverRatio3/',formatter:'.formatter.amountValue'}"/>
+									</VBox>
+								</HBox>
+								<HBox class="sapUiTinyMarginTopBottom">
+									<VBox width="8rem">
+										<Label text="Ratio" class="sapUiTinyMarginBegin" design="Bold"/>
+									</VBox>
+									<VBox alignItems="End" width="25%">
+										<Text text="{path:'CreditRevData>/resp/summary/ratio1/',formatter:'.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="End" width="25%">
+										<Text text="{path:'CreditRevData>/resp/summary/ratio2/',formatter:'.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="End" width="25%">
+										<Text text="{path:'CreditRevData>/resp/summary/ratio3/',formatter:'.formatter.amountValue'}"/>
+									</VBox>
+								</HBox>
+							</layout:BlockLayoutCell>
+						</layout:BlockLayoutRow>
+					</layout:BlockLayout>
+					<ui:TreeTable rows="{path:'CreditRevData>/resp/tab/'}" id="idtableRPWise1" fixedBottomRowCount="0" visible="true" visibleRowCount="20"
+						selectionMode="None">
+						<ui:extension>
+							<Toolbar>
+								<ToolbarSpacer/>
+								<Button class="buttoncolorSec" text="Compute Reversal" enabled="{=${userPermission>/appPermission/P99}}" press="onButtonExtractPress1"/>
+								<MenuButton class="buttoncolorSec" text="Download Report" enabled="{=${userPermission>/appPermission/P99}}">
+									<Menu>
+										<MenuItem text="Summary Level Report" key="Summary" press="onReversalDownloadpress('Summary')"/>
+										<MenuItem text="Transactional Report (Outward)" key="Outward" press="onReversalDownloadpress('Outward')"/>
+										<MenuItem text="Transaction Report (Inward)" key="Inward" press="onReversalDownloadpress('Inward')"/>
+										<MenuItem text="Vertical Report" key="Vertical" press="onReversalDownloadpress('Vertical')"/>
+									</Menu>
+								</MenuButton>
+							</Toolbar>
+						</ui:extension>
+						<ui:columns>
+							<ui:Column width="40rem" hAlign="Center">
+								<Label design="Bold" text="Particulars" width=""/>
+								<ui:template>
+									<VBox>
+										<HBox></HBox>
+										<HBox alignContent="Start" justifyContent="SpaceBetween">
+											<ObjectStatus text="{CreditRevData>particulars}" press="onPartPressLink"
+												state="{=${CreditRevData>supplyType}==='None'?'None':'Indication05'}" active="true" class="cl_Bold"/>
+											<!--<Link text="{Anx2>particular}" press="onPressGstrNew11Summary"/>-->
+										</HBox>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End">
+								<Label design="Bold" text="IGST" textAlign="Center" width="100%" wrapping="true"/>
+								<ui:template>
+									<Label text="{path:'CreditRevData>igst',formatter:'.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End">
+								<Label design="Bold" text="CGST" textAlign="Center" width="100%" wrapping="true"/>
+								<ui:template>
+									<Label text="{parts:[{path:'CreditRevData>cgst'}],formatter:'.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End">
+								<Label design="Bold" text="SGST" textAlign="Center" width="100%" wrapping="true"/>
+								<ui:template>
+									<Label text="{parts:[{path:'CreditRevData>sgst'}],formatter:'.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" id="idPREntityTableColNew6">
+								<Label design="Bold" text="Cess" textAlign="Center" width="100%" wrapping="true"/>
+								<ui:template>
+									<Label text="{parts:[{path:'CreditRevData>cess'}],formatter:'.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" id="idPREntityTableColNew7">
+								<HBox>
+									<Label design="Bold" text="Total Tax" textAlign="Center" width="100%" wrapping="true"/>
+								</HBox>
+								<ui:template>
+									<Label text="{parts:[{path:'CreditRevData>totalTax'}],formatter:'.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+						<ui:footer>
+							<Toolbar height="3.5rem">
+								<VBox>
+									<HBox class="sapUiTinyMarginTop">
+										<Label text="*" class="cl_star1"/>
+										<Text
+											text="Exempted Turnover (Exempt supplies+ NIL Rated supplies + Reverse Charge supplies) divided by Total Turnover (Taxable Supplies + Exempt Supplies + NIL Rated Supplies), excluding NON GST supplies"/>
+									</HBox>
+									<HBox class="sapUiTinyMarginTop">
+										<Text text="**" class="cl_star1"/>
+										<Text
+											text="Exempted Turnover (Exempt Supplies + NIL Rated Supplies + Reverse Charge supplies + NON-GST Supplies) divided by Total Turnover (Taxable Supplies + Exempt Supplies + NIL Rated Supplies + NON GST Supplies)"/>
+									</HBox>
+								</VBox>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</ui:footer>
+					</ui:TreeTable>
+				</Panel>
+				<commons:ChartContainer id="id_turnover" showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false"
+					visible="false">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<VBox>
+									<ui:TreeTable id="id_turnoverTab" rows="{path:'TurnOverData>/resp/', parameters:{ arrayNames:['items'], numberOfExpandedLevels:0 }}"
+										visible="true" selectionMode="None" enableSelectAll="false" enableColumnReordering="false" visibleRowCount="7"
+										toggleOpenState="OnOpenStateGET2A">
+										<ui:columns>
+											<ui:Column width="6rem">
+												<Label text="Sr. No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{TurnOverData>sno}" design="{=${Anx2>supplyType}?'Bold':'Standard'}" class="cl_colorBlue"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="Turnover Computation" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<ObjectStatus text="{TurnOverData>turnoverComp}" press="onPartPressLink1" state="{=${Anx2>supplyType}==='None'?'None':'Indication05'}"
+														active="true" class="cl_Bold"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="DigiGST Auto Computed" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path:'TurnOverData>digigstAutoComp'}],formatter:'.formatter.amountValue'}"
+														design="{=${Anx2>supplyType}?'Bold':'Standard'}"/>
+												</ui:template>
+											</ui:Column>
+										</ui:columns>
+									</ui:TreeTable>
+									<ui:TreeTable id="id_turnoverTab2" rows="{path:'TurnOverDataB>/resp/', parameters:{ arrayNames:['items'], numberOfExpandedLevels:0 }}"
+										visible="true" selectionMode="None" enableSelectAll="false" enableColumnReordering="false" visibleRowCount="8"
+										toggleOpenState="OnOpenStateGET2A" class="sapUiTinyMarginTop">
+										<ui:extension>
+											<Toolbar>
+												<ToolbarSpacer/>
+												<Button text="Clear" press="onTurnoverRatioClear" class="buttoncolorSec"/>
+												<Button text="Edit" press="onTurnoverRatioEdit" class="buttoncolorSec"/>
+												<Button text="Save" press="onTurnoverRatioSave" class="buttoncolorSec"/>
+												<Button text="Move data to user edited" press="onTurnoverRatioMoveData" class="buttoncolorSec"/>
+											</Toolbar>
+										</ui:extension>
+										<ui:columns>
+											<ui:Column width="6rem">
+												<Label text="Sr. No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{TurnOverDataB>sno}" design="{=${Anx2>supplyType}?'Bold':'Standard'}" class="cl_colorBlue"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="ITC Reversal Ratio" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<ObjectStatus text="{TurnOverDataB>turnoverComp}" press="onPartPressLink1" state="{=${Anx2>supplyType}==='None'?'None':'Indication05'}"
+														active="true" class="cl_Bold"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="DigiGST Auto Computed" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path:'TurnOverDataB>digigstAutoComp'}],formatter:'.formatter.amountValue'}"
+														design="{=${Anx2>supplyType}?'Bold':'Standard'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="15rem">
+												<Label text="User Input" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<HBox renderType="Bare" alignItems="Center" visible="{path:'TurnOverDataB>turnoverComp',formatter:'._visiTurnoverUsrInput'}">
+														<Input value="{TurnOverDataB>userInputRatio}" editable="{TurnOverDataB>edit}" liveChange="positiveDecimal" textAlign="End" width="100%"/>
+														<Text text="%" class="sapUiTinyMarginBegin"/>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+										</ui:columns>
+										<ui:footer>
+											<Toolbar height="3.5rem">
+												<VBox>
+													<HBox>
+														<Label text="*" class="cl_star1"/>
+														<Text
+															text="Exempted Turnover (Exempt supplies+ NIL Rated supplies + Reverse Charge supplies) divided by Total Turnover (Taxable Supplies + Exempt Supplies + NIL Rated Supplies), excluding NON GST supplies"/>
+													</HBox>
+													<HBox>
+														<Text text="**" class="cl_star1"/>
+														<Text
+															text="Exempted Turnover (Exempt Supplies + NIL Rated Supplies + Reverse Charge supplies + NON-GST Supplies) divided by Total Turnover (Taxable Supplies + Exempt Supplies + NIL Rated Supplies + NON GST Supplies)"/>
+													</HBox>
+												</VBox>
+												<ToolbarSpacer/>
+											</Toolbar>
+										</ui:footer>
+									</ui:TreeTable>
+								</VBox>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar>
+							<ToolbarSpacer/>
+							<MenuButton class="buttoncolorSec" text="Download Report" enabled="{=${userPermission>/appPermission/P99}}">
+								<Menu>
+									<MenuItem text="Summary Level Report" key="Summary" press="OnturnoverDownloadPress('Summary')"/>
+									<MenuItem text="Transactional Report (Outward)" key="Outward" press="OnturnoverDownloadPress('Outward')"/>
+									<MenuItem text="Transaction Report (Inward)" key="Inward" press="OnturnoverDownloadPress('Inward')"/>
+									<MenuItem text="Vertical Report" key="Vertical" press="OnturnoverDownloadPress('Vertical')"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Ghost" id="idCreditRevExp2" enabled="{=${userPermission>/appPermission/P99}}" icon="sap-icon://expand-all"
+								tooltip="{i18n>expand}" press="expandCollapseCreditRevNew2" class="buttoncolorSec"/>
+							<Button type="Ghost" id="idCreditrev2Col2" icon="sap-icon://collapse-all" tooltip="{i18n>collapse}" press="expandCollapseCreditRevNew2"
+								class="buttoncolorSec"/>
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

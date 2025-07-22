@@ -1,0 +1,29 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog title="Vendor PAN" type="Standard" contentWidth="20%" contentHeight="50%" draggable="true">
+		<!--<beginButton>-->
+		<!--	<Button text="{i18n>ok}" press="onCloseE"/>-->
+		<!--</beginButton>-->
+		<VBox>
+			<SearchField id="NonEsearchId1" liveChange="onSearchGstinsPANE" width="100%"/>
+			<HBox visible="{=${oVendorPanModel>/}.length>0}">
+				<CheckBox id="NonEPANCheckId" select="onSelectE"/>
+				<Title text="All" level="H1" class="sapUiSmallMarginTop"/>
+			</HBox>
+			<List mode="MultiSelect" id="NonEselectDialog" items="{oVendorPanModel>/}" updateFinished="updatefinished">
+				<StandardListItem title="{oVendorPanModel>gstin}"/>
+			</List>
+		</VBox>
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button icon="sap-icon://navigation-left-arrow" class="buttoncolorSec" tooltip="Previous" press="onPanELoadPrevious"
+					enabled="{venGstinData>/hasPrevious}"/>
+				<Text id="idPanETotal"></Text>
+				<Button icon="sap-icon://navigation-right-arrow" class="buttoncolorSec" tooltip="Next" press="onPanELoadMore"
+					enabled="{venGstinData>/hasNext}"/>
+				<ToolbarSpacer/>
+				<Button text="{i18n>ok}" press="onCloseE"/>
+			</Toolbar>
+		</footer>
+	</Dialog>
+</core:FragmentDefinition>

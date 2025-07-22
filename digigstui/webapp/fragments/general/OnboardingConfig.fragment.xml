@@ -1,0 +1,20 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m">
+	<Dialog id="dConfig" title="Onboarding Configurations" contentHeight="100%" contentWidth="60%" class="sapUiSizeCompact">
+		<endButton>
+			<Button text="Close" press="onCloseOnboardingConfig" class="buttoncolorSec text-shadow"/>
+		</endButton>
+		<IconTabBar>
+			<items>
+				<IconTabFilter text="General" key="General" visible="false">
+					<!--<VBox items="{path:'ConfigQuestion>/', factory:'.createContentGeneral'}" class="sapUiTinyMarginTop"/>-->
+				</IconTabFilter>
+				<IconTabFilter text="Outward" key="Outward" visible="false">
+					<!--<VBox items="{path:'ConfigQuestion>/', factory:'.createContentInward'}" class="sapUiTinyMarginTop"/>-->
+				</IconTabFilter>
+				<IconTabFilter text="Inward" key="Inward">
+					<VBox items="{path:'ConfigQuestion>/', factory:'.createContentInward'}" class="sapUiTinyMarginTop"/>
+				</IconTabFilter>
+			</items>
+		</IconTabBar>
+	</Dialog>
+</core:FragmentDefinition>

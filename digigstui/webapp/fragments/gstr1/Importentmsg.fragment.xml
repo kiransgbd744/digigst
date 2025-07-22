@@ -1,0 +1,22 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m">
+	<Dialog type="Message" showHeader="true" title="Information" class="sapUiSizeCompact">
+		<beginButton>
+			<Button text="Yes" class="buttoncolorSec" press="onPressYesNR"/>
+		</beginButton>
+		<endButton>
+			<Button text="Cancel" class="buttoncolorSec" press="onPressCloseNR"/>
+		</endButton>
+		<VBox>
+			<HBox alignItems="Start">
+				<Label text="GSTINs Selected :" design="Bold"/>
+				<Text id="gstId"/>
+			</HBox>
+			<HBox alignItems="Start">
+				<Label text="Return Period :" design="Bold"/>
+				<Text id="RpID"/>
+			</HBox>
+			<Label wrapping="true" text="Do you want to proceed to file Nill Return? - No data will be saved from DigiGST to GST portal."
+				class="sapUiMediumMarginTop"/>
+		</VBox>
+	</Dialog>
+</core:FragmentDefinition>

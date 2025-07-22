@@ -1,0 +1,55 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:ui="sap.ui.table">
+	<Table id="tabInvoiceError" items="{path:'InvoiceError>/'}" visible="false" sticky="ColumnHeaders">
+		<columns>
+			<Column width="3rem" vAlign="Middle">
+				<Label text="{i18n>sNo}" design="Bold"/>
+			</Column>
+			<Column width="12rem" vAlign="Middle" visible="{Properties>/colVisi}">
+				<Label text="{i18n>supplierGstin}" design="Bold"/>
+			</Column>
+			<Column width="12rem" vAlign="Middle" visible="{=!${Properties>/colVisi}}">
+				<Label text="{i18n>custGstin}" design="Bold"/>
+			</Column>
+			<Column vAlign="Middle">
+				<Label text="{i18n>docType}" design="Bold"/>
+			</Column>
+			<Column vAlign="Middle">
+				<Label text="{i18n>docNo}" design="Bold"/>
+			</Column>
+			<Column vAlign="Middle">
+				<Label text="{i18n>docDate}" design="Bold"/>
+			</Column>
+			<Column vAlign="Middle">
+				<Label text="{i18n>returnPeriod}" design="Bold"/>
+			</Column>
+			<Column vAlign="Middle">
+				<Label text="{i18n>errorCode}" design="Bold"/>
+			</Column>
+			<Column vAlign="Middle">
+				<Label text="{i18n>infoCode}" design="Bold"/>
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem vAlign="Middle" type="Navigation" press="onErrorItemSelect">
+				<cells>
+					<Text text="{InvoiceError>sNo}"/>
+					<Text text="{InvoiceError>suppGstin}"/>
+					<Text text="{InvoiceError>custGstin}"/>
+					<Text text="{InvoiceError>docType}"/>
+					<ObjectNumber number="{InvoiceError>docNo}"/>
+					<Text text="{path:'InvoiceError>docDate', formatter:'.formatter.dateFormat'}"/>
+					<Text text="{path:'InvoiceError>returnPeriod', formatter:'.formatter.periodFormat'}"/>
+					<Link text="{InvoiceError>errorCode}" emphasized="true" tooltip="{InvoiceError>errorDesc}"/>
+					<Text text="{InvoiceError>infoCode}" tooltip="{InvoiceError>infoDesc}"/>
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+	<HBox id="hbError" width="100%" justifyContent="Center" visible="false">
+		<Button id="bPrevErr" type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="Previous" enabled="false" press="onPressPagination"/>
+		<Input id="inPageNoErr" type="Number" textAlign="End" width="4rem" submit="onSubmitPagination" enabled="false" class="sapUiTinyMarginBegin"
+			value="0"/>
+		<Text id="txtPageNoErr" text="/ 0" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+		<Button id="bNextErr" type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="Next" enabled="false" press="onPressPagination"/>
+	</HBox>
+</core:FragmentDefinition>

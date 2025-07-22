@@ -1,0 +1,161 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage >
+		<!--<f:title>
+			<f:DynamicPageTitle>
+				<f:heading></f:heading>
+				<f:actions>
+					<Button type="Emphasized" icon="sap-icon://save" text="Submit" press="onSubmit"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>-->
+		<f:header>
+			<f:DynamicPageHeader>
+				<f:content>
+					<fb:FilterBar reset="onReset" search="onSearch" useToolbar="false" showGoOnFB="true" class="sapUiNoContentPadding">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="true">
+								<fb:control>
+									<!--	<Select items="{entity>/resp}" change="onSelectionChange" showSecondaryValues="true" id="idEntityHistory">
+										<core:Item key="{entity>entityId}" text="{entity>entityId} - {entity>entityName}"/>
+										<core:ListItem key="{entity>entityId}" text="{entity>entityName}" additionalText="{entity>entityId}"/>
+									</Select>-->
+									<ComboBox items="{entity>/resp}" change="onSelectionChange" showSecondaryValues="true" visible="true" id="idEntityHistory">
+										<core:ListItem key="{entity>entityId}" text="{entity>entityName}" />
+									</ComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Update Date Period" visibleInFilterBar="true">
+								<fb:control>
+									<DateRangeSelection displayFormat="yyyy-MM-dd" editable="true" change="handleChange" id="idUpdatedateHistory"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="EL Value" visibleInFilterBar="true">
+								<fb:control>
+									<Input id="idElValueHistory"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<ui:Table rows="{history>/}" id="idELHistory" selectionMode="None" selectionBehavior="Row" visibleRowCount="10" fixedRowCount="0"
+					fixedColumnCount="2" enableSelectAll="false">
+					<ui:columns>
+						<ui:Column width="4rem">
+							<ui:multiLabels>
+								<Label text="SNO" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{history>sno}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<ui:multiLabels>
+								<Label text="Entity Name" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{history>entityId} - {history>entityName}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem">
+							<ui:multiLabels>
+								<Label text="PAN" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{history>pan}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="GSTIN" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Link text="View GSTIN" press="handleLinkPress1"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="18rem">
+							<ui:multiLabels>
+								<Label text="Functionality" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<MultiComboBox items="{functionality>/}" selectedKeys="{history>functionality}" selectionChange="onSelectionChangeEL"
+									editable="{history>edit}">
+									<core:ListItem key="{functionality>functCode}" text="{functionality>functDesc}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem">
+							<ui:multiLabels>
+								<Label text="Update Date" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<DatePicker value="{history>updateDate}" displayFormat="dd-MM-yyyy" change="handleChange" editable="{history>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="From Tax Period" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<DatePicker value="{history>fromTaxPeriod}" displayFormat="MMM yyyy" change="handleChange" editable="{history>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="To Tax Period" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<DatePicker value="{history>toTaxPeriod}" displayFormat="MMM yyyy" change="handleChange" editable="{history>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="EL Value" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{history>elValue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="11rem">
+							<ui:multiLabels>
+								<Label text="From Contract Period" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<DatePicker value="{history>contractStartPeriod}" displayFormat="MMM yyyy" change="handleChange" editable="{history>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="11rem">
+							<ui:multiLabels>
+								<Label text="To Contract Period" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<DatePicker value="{history>contractEndPeriod}" displayFormat="MMM yyyy" change="handleChange" editable="{history>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="Renewal" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{history>renewal}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="GFIS ID" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{history>gfisId}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

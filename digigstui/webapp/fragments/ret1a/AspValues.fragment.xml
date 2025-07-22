@@ -1,0 +1,161 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<Dialog id="dAspValues" title="{i18n>aspValues}" type="Message" class="sapUiSizeCompact" draggable="true">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label id="iAspValueTitle" design="Bold"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<beginButton>
+			<Button text="{i18n>ok}" press="onCloseAspValues"/>
+		</beginButton>
+		<ui:Table id="tabValuesDet" rows="{AspValues>/}" selectionMode="MultiToggle" fixedColumnCount="1" enableColumnReordering="false">
+			<ui:extension>
+				<Toolbar>
+					<HBox>
+						<Label text="{i18n>entity}:" labelFor="txtValuesEntity" design="Bold"/>
+						<Text id="txtValuesEntity" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+						<Label text="{i18n>gstin}:" labelFor="txtValuesGstin" design="Bold"/>
+						<Text id="txtValuesGstin" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+						<Label text="{i18n>taxPeriod}:" labelFor="txtValuesPeriod" design="Bold"/>
+						<Text id="txtValuesPeriod" class="sapUiTinyMarginBegin"/>
+					</HBox>
+					<ToolbarSpacer/>
+					<Button type="Emphasized" text="{i18n>save}"/>
+					<Button type="Emphasized" icon="sap-icon://edit" tooltip="{i18n>edit}"/>
+					<Button type="Emphasized" icon="sap-icon://add" tooltip="{i18n>add}"/>
+					<Button type="Reject" icon="sap-icon://delete" tooltip="{i18n>delete}"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column width="10rem">
+					<Label text="{i18n>returnTable}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{AspValues>returnTable}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>value}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{AspValues>value}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>igstAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{AspValues>igstAmt}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>cgstAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{AspValues>cgstAmt}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>sgstAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{AspValues>sgstAmt}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>cessAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{AspValues>cessAmt}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>profitCtr}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{AspValues>profitCtr}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>plant}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{AspValues>plant}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>division}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{AspValues>division}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>location}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{AspValues>location}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>salesOrg}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{AspValues>salesOrg}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>distrChannel}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{AspValues>distrChannel}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>userAccess1}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{AspValues>userAccess1}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>userAccess2}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{AspValues>userAccess2}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>userAccess3}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{AspValues>userAccess3}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>userAccess4}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{AspValues>userAccess4}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>userAccess5}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{AspValues>userAccess5}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>userAccess6}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{AspValues>userAccess6}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>userDefinedField1}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{AspValues>userDefinedField1}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>userDefinedField2}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{AspValues>userDefinedField2}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>userDefinedField3}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{AspValues>userDefinedField3}"/>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+	</Dialog>
+</core:FragmentDefinition>

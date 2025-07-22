@@ -1,0 +1,71 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog title="IMS Response Action" type="Standard" contentWidth="42rem" contentHeight="25%" draggable="true" class="sapUiSizeCompact"
+		busyIndicatorDelay="0">
+		<VBox class="sapUiSmallMarginBeginEnd">
+			<HBox renderType="Bare" width="100%">
+				<HBox direction="Column" width="11rem">
+					<Label text="Recon Type" design="Bold" required="true"/>
+					<Select selectedKey="{BulkImsResp>/reconType}" enabled="false" width="100%" class="input">
+						<core:Item key="2A_PR" text="GSTR-2A/6A Vs PR"/>
+						<core:Item key="2B_PR" text="GSTR-2B Vs PR"/>
+					</Select>
+				</HBox>
+				<HBox direction="Column" width="7rem" class="sapUiSmallMarginBeginEnd">
+					<Label text="From Tax Period" design="Bold" required="true"/>
+					<DatePicker id="dBuldFrImsResp" displayFormat="MMM yyyy" valueFormat="yyyyMM" dateValue="{BulkImsResp>/frDate}"
+						maxDate="{BulkImsResp>/maxDate}" change="onChangeImsResponseDate" width="100%"/>
+				</HBox>
+				<HBox direction="Column" width="7rem">
+					<Label text="To Tax Period" design="Bold" required="true"/>
+					<DatePicker id="dBuldToImsResp" displayFormat="MMM yyyy" valueFormat="yyyyMM" dateValue="{BulkImsResp>/toDate}"
+						minDate="{BulkImsResp>/frDate}" maxDate="{BulkImsResp>/maxDate}" width="100%"/>
+				</HBox>
+				<HBox direction="Column" width="12rem" class="sapUiSmallMarginBegin">
+					<Label text="GSTIN" design="Bold" required="true"/>
+					<MultiComboBox items="{path:'ReconResultGstin>/'}" selectedKeys="{BulkImsResp>/gstins}" selectionChange="selectAll" width="100%">
+						<core:Item key="{ReconResultGstin>gstin}" text="{ReconResultGstin>gstin}"/>
+					</MultiComboBox>
+				</HBox>
+			</HBox>
+			<HBox renderType="Bare" class="sapUiSmallMarginTop">
+				<VBox width="11rem" class="sapUiSmallMarginEnd">
+					<Label text="Document Type" design="Bold"/>
+					<MultiComboBox selectedKeys="{BulkImsResp>/docType}" showSelectAll="true">
+						<core:Item key="INV" text="Invoice"/>
+						<core:Item key="CR" text="Credit Note"/>
+						<core:Item key="DR" text="Debit Note"/>
+						<core:Item key="RNV" text="Invoice - Amendment"/>
+						<core:Item key="RCR" text="Credit Note - Amendment"/>
+						<core:Item key="RDR" text="Debit Note - Amendment"/>
+						<!--<core:Item key="IMPG" text="IMPG"/>-->
+						<!--<core:Item key="SEZG" text="IMPGSEZ"/>-->
+					</MultiComboBox>
+				</VBox>
+				<VBox width="11rem" class="sapUiSmallMarginEnd">
+					<Label text="Recon Criteria" design="Bold"/>
+					<Select selectedKey="{BulkImsResp>/reconCriteria}" enabled="false" width="100%" class="input">
+						<core:Item key="Regular" text="Regular"/>
+						<core:Item key="Import" text="Import"/>
+						<core:Item key="ISD" text="ISD"/>
+					</Select>
+				</VBox>
+				<HBox direction="Column" width="15rem">
+					<Label text="Report Type" design="Bold" required="true"/>
+					<Select items="{FmReportType>/}" selectedKey="{BulkImsResp>/reportType}" forceSelection="false" width="100%">
+						<core:Item key="{FmReportType>key}" text="{FmReportType>text}"/>
+					</Select>
+				</HBox>
+			</HBox>
+			<VBox class="sapUiSmallMarginTop">
+				<Label text="IMS Response Remark (Max 500 Characters)" design="Bold"/>
+				<TextArea value="{BulkImsResp>/imsResponseRemarks}" placeholder="Enter Ramarks" cols="40" rows="3"/>
+			</VBox>
+		</VBox>
+		<buttons>
+			<Button text="Accept" press="onBulkImsResponse('A')" class="buttoncolorSec"/>
+			<Button text="Reject" press="onBulkImsResponse('R')" class="buttoncolorSec"/>
+			<Button text="Pending" press="onBulkImsResponse('P')" class="buttoncolorSec"/>
+			<Button text="Cancel" press="onCloseBulkImsResp" class="buttoncolorSec"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

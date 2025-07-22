@@ -1,0 +1,1527 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons" xmlns:l="sap.ui.layout">
+	<f:DynamicPage class="clDPANX2Summary">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button icon="sap-icon://nav-back" tooltip="Go Back to Entity" type="Transparent" press="handleLinkPressANX2SummaryBack"
+							id="idANX2SummaryBack12" visible="false"/>
+						<Title text="" id="idANX2SummaryTitle12" class="sapUiSmallMarginBegin clTitleMarginTop"/>
+						<!--<SegmentedButton selectedKey="Entity" selectionChange="onSelectionChangeANX2Sum" width="40rem">
+							<items>
+								<SegmentedButtonItem text="Entity" key="Entity"/>
+								<SegmentedButtonItem text="Review Summary" key="SummaryGSTIN"/>
+								<SegmentedButtonItem text="Statement" key="StatementGSTIN"/>
+							</items>
+						</SegmentedButton>-->
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<Link text="RET - 1 Impact" press="onPress"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader>
+				<f:content>
+					<fb:FilterBar width="90%" search="onSearch" useToolbar="false" showGoOnFB="false" showFilterConfiguration="false"
+						class="sapUiNoContentPadding">
+						<fb:filterGroupItems>
+							<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="true">
+								<fb:control>
+									<ComboBox selectedKey="Demo Entity">
+										<core:Item key="Demo Entity" text="Demo Entity"/>
+										<core:Item key="Demo Entity 1" text="Demo Entity 1"/>
+										<core:Item key="Demo Entity 2" text="Demo Entity 2"/>
+									</ComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>-->
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="GSTIN" visibleInFilterBar="true">
+								<fb:control>
+									<MultiComboBox width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" id="idfgiGSINTComb">
+										<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="GSTIN" visibleInFilterBar="true" id="idfgiGSIN">-->
+							<!--	<fb:control>-->
+							<!--		<MultiComboBox width="100%" items="{path:'Anx2>/ProcessedData2/'}" id="idfgiGSINTComb">-->
+							<!--			<core:Item key="{Anx2>state}" text="{Anx2>GSTIN}"/>-->
+							<!--		</MultiComboBox>-->
+							<!--	</fb:control>-->
+							<!--</fb:FilterGroupItem>-->
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Tax Period" visibleInFilterBar="true" mandatory="">
+								<fb:control>
+									<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" id="idGetSaveTaxPeriod" change="handleChange" width="8rem"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Tax Period" visibleInFilterBar="true">-->
+							<!--	<fb:control>-->
+							<!--		<DatePicker displayFormat="MMM-yyyy" valueFormat="dd-MM-yyyy" change="handleChange" width="8rem"/>-->
+							<!--	</fb:control>-->
+							<!--</fb:FilterGroupItem>-->
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+					<HBox justifyContent="End" class="clMain" width="10%">
+						<Button text="Clear" class="sapUiTinyMarginBeginEnd"/>
+						<!--<Button icon="sap-icon://filter" type="Default" tooltip="Adapt Filters" press="onPressAdaptFilters" class="sapUiTinyMarginBegin"/>-->
+						<Button text="Go" type="Emphasized" press="onSearch" class="sapUiTinyMarginBegin"/>
+					</HBox>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<!--<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding">
+				<fb:FilterBar showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false" class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox items="{path: '/DropDown>/criteria'}">
+									<core:Item key="{key}" text="{text}"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker displayFormat="MMM yyyy" valueFormat="dd-MM-yyyy" change="handleChange" width="12rem"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="My GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{GSTIN>/}">
+									<core:Item key="{GSTIN>key}" text="{GSTIN>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Table of ANX-1" visibleInFilterBar="true" visible="false"
+							>
+							<fb:control>
+								<MultiComboBox>
+									<core:Item key="B2B - 3B " text="B2B - 3B "/>
+									<core:Item key="SEZWP - 3E" text="SEZWP - 3E"/>
+									<core:Item key="SEZWOP - 3F" text="SEZWOP - 3F"/>
+									<core:Item key="Deemed Exports - 3G" text="Deemed Exports - 3G"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Document Type" visibleInFilterBar="true" >
+							<fb:control>
+								<MultiComboBox >
+									<core:Item key="INV" text="INV"/>
+									<core:Item key="DR" text="DR"/>
+									<core:Item key="CR" text="CR"/>
+									<core:Item key="INV - A" text="INV - A"/>
+									<core:Item key="DR - A" text="DR - A"/>
+									<core:Item key="CR - A" text="CR - A"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+			</f:DynamicPageHeader>
+		</f:header>-->
+		<f:content>
+			<Panel>
+				<Panel id="idEntityPanelANX212">
+					<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false">
+						<commons:content>
+							<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+								<commons:content>
+									<Panel>
+										<l:VerticalLayout width="100%" class="clBlockLayout sapUiContentPadding" id="idverticalRes12">
+											<l:BlockLayout background="{/selectedBackground}">
+												<l:BlockLayoutRow accentCells="Accent1">
+													<l:BlockLayoutCell width="4">
+														<VBox>
+															<Toolbar>
+																<ToolbarSpacer/>
+																<Text text="A2 Tax : 4,40,98,795.12" class="clTextColorHedder"/>
+																<!--	<core:Icon src="sap-icon://message-information" color="#000000" tooltip="Due to Upload / Acceptance of Additional PR"/>-->
+																<ToolbarSpacer/>
+															</Toolbar>
+															<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="IGST"/>
+																	<Text text="4,40,98,795.12" class="clTextColorRed"/>
+																</VBox>
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="CGST"/>
+																	<Text text="3,30,74,096.34" class="clTextColorRed"/>
+																</VBox>
+															</HBox>
+															<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="SGST"/>
+																	<Text text="3,30,74,096.34" class="clTextColorRed"/>
+																</VBox>
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="Cess"/>
+																	<Text text="0.00" class="clTextColorRed"/>
+																</VBox>
+															</HBox>
+														</VBox>
+													</l:BlockLayoutCell>
+													<l:BlockLayoutCell width="4">
+														<VBox>
+															<Toolbar>
+																<ToolbarSpacer/>
+																<Text text=" PR Tax : 88,19,759.00 " class="clTextColorHedder"/>
+																<!--											<core:Icon src="sap-icon://message-information" color="#000000"
+												tooltip="Due to Upload / Acceptance of Additional PR Previous tax period and subsequent upload of invoice by Vendor in ANX-1 "/>-->
+																<ToolbarSpacer/>
+															</Toolbar>
+															<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="IGST"/>
+																	<Text text="8819759.024" class="clTextColorRed"/>
+																</VBox>
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="CGST"/>
+																	<Text text="6614819.268" class="clTextColorRed"/>
+																</VBox>
+															</HBox>
+															<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="SGST"/>
+																	<Text text="6614819.268" class="clTextColorRed"/>
+																</VBox>
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="Cess"/>
+																	<Text text="0.00" class="clTextColorRed"/>
+																</VBox>
+															</HBox>
+														</VBox>
+													</l:BlockLayoutCell>
+													<l:BlockLayoutCell width="4">
+														<VBox>
+															<Toolbar>
+																<ToolbarSpacer/>
+																<Text text="PR Available : 1,76,395.00" class="clTextColorHedder"/>
+																<!--	<core:Icon src="sap-icon://message-information" color="#000000" tooltip="Acceptance of lower values in ANX-2"/>-->
+																<ToolbarSpacer/>
+															</Toolbar>
+															<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="IGST"/>
+																	<Text text="176395.1805" class="clTextColorRed"/>
+																</VBox>
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="CGST"/>
+																	<Text text="132296.3854" class="clTextColorRed"/>
+																</VBox>
+															</HBox>
+															<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="SGST"/>
+																	<Text text="132296.3854" class="clTextColorRed"/>
+																</VBox>
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="Cess"/>
+																	<Text text="0.00" class="clTextColorRed"/>
+																</VBox>
+															</HBox>
+														</VBox>
+													</l:BlockLayoutCell>
+													<l:BlockLayoutCell width="4">
+														<VBox>
+															<Toolbar>
+																<ToolbarSpacer/>
+																<Text text="A2 Tax - PR Tax : 0.00" class="clTextColorHedder"/>
+																<!--			<core:Icon src="sap-icon://message-information" color="#000000" tooltip="Acceptance of higher values in ANX-2"/>-->
+																<ToolbarSpacer/>
+															</Toolbar>
+															<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="IGST"/>
+																	<Text text="0.00"/>
+																</VBox>
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="CGST"/>
+																	<Text text="0.00"/>
+																</VBox>
+															</HBox>
+															<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="SGST"/>
+																	<Text text="0.00"/>
+																</VBox>
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="Cess"/>
+																	<Text text="0.00"/>
+																</VBox>
+															</HBox>
+														</VBox>
+													</l:BlockLayoutCell>
+													<l:BlockLayoutCell width="4">
+														<VBox>
+															<Toolbar>
+																<ToolbarSpacer/>
+																<Text text="PR Tax - PR Available : 0.00 " class="clTextColorHedder"/>
+																<!--	<core:Icon src="sap-icon://message-information" color="#000000" tooltip="Acceptance of higher values in ANX-2"/>-->
+																<ToolbarSpacer/>
+															</Toolbar>
+															<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="IGST"/>
+																	<Text text="0.00"/>
+																</VBox>
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="CGST"/>
+																	<Text text="0.00"/>
+																</VBox>
+															</HBox>
+															<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="SGST"/>
+																	<Text text="0.00"/>
+																</VBox>
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="Cess"/>
+																	<Text text="0.00"/>
+																</VBox>
+															</HBox>
+														</VBox>
+													</l:BlockLayoutCell>
+													<l:BlockLayoutCell width="4">
+														<VBox>
+															<Toolbar>
+																<ToolbarSpacer/>
+																<Text text="Impact on RET-1 : 0.00 " class="clTextColorHedder"/>
+																<!--	<core:Icon src="sap-icon://message-information" color="#000000" tooltip="Acceptance of higher values in ANX-2"/>-->
+																<ToolbarSpacer/>
+															</Toolbar>
+															<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="IGST"/>
+																	<Text text="0.00"/>
+																</VBox>
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="CGST"/>
+																	<Text text="0.00"/>
+																</VBox>
+															</HBox>
+															<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="SGST"/>
+																	<Text text="0.00"/>
+																</VBox>
+																<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+																	<Text text="Cess"/>
+																	<Text text="0.00"/>
+																</VBox>
+															</HBox>
+														</VBox>
+													</l:BlockLayoutCell>
+												</l:BlockLayoutRow>
+											</l:BlockLayout>
+										</l:VerticalLayout>
+										<ui:Table rows="{path:'PRSSaveAnx2Data>/resp/'}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10"
+											fixedColumnCount="1" enableSelectAll="true" class="cl_Toolbarsave">
+											<ui:columns>
+												<ui:Column width="12rem">
+													<ui:multiLabels>
+														<!--<Label text=""/>-->
+														<Label text=""/>
+														<Label design="Bold" text="GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+													</ui:multiLabels>
+													<ui:template>
+														<VBox>
+															<HBox>
+																<Text text="{PRSSaveAnx2Data>state}" width="8rem" class="stateColor"/>
+															</HBox>
+															<HBox alignContent="Start" justifyContent="SpaceBetween">
+																<Link text="{PRSSaveAnx2Data>gstin}" press="handleLinkPressGSTINANX2Sum"/>
+																<core:Icon src="sap-icon://circle-task-2" size="0.8rem" class="sapUiSmallMarginBegin" tooltip="Generate OTP"
+																	visible="{=${PRSSaveAnx2Data>gstin}=== '' ?false:true}" color="{=${PRSSaveAnx2Data>authToken}=== true ?'#00ff00':'#ff0000'}"
+																	press="onPressGenerateOTP4"/>
+															</HBox>
+														</VBox>
+													</ui:template>
+												</ui:Column>
+												<ui:Column width="9rem">
+													<ui:multiLabels>
+														<!--<Label text=""/>-->
+														<Label text=""/>
+														<Label text="Save Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+													</ui:multiLabels>
+													<ui:template>
+														<VBox class="sapUiTinyMarginTopBottom">
+															<ObjectStatus text="{PRSSaveAnx2Data>saveStatus}" state="Information" active="true" press="fnTableSavPress"/>
+															<Text text="{PRSSaveAnx2Data>timeStamp}" class="timeStmpClr"/>
+														</VBox>
+													</ui:template>
+												</ui:Column>
+												<ui:Column width="9rem">
+													<ui:multiLabels>
+														<!--<Label text=""/>-->
+														<Label text=""/>
+														<Label text="Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+													</ui:multiLabels>
+													<ui:template>
+														<VBox class="sapUiTinyMarginTopBottom">
+															<ObjectStatus text="{PRSSaveAnx2Data>typeCount}" state="Information" active="true" visible="{showing>/count}"/>
+															<Text text="{PRSSaveAnx2Data>typeTaxable}" visible="{showing>/taxValue}"/>
+															<Text text="{PRSSaveAnx2Data>typeTotalTax}" visible="{showing>/TotalTax}"/>
+														</VBox>
+													</ui:template>
+												</ui:Column>
+												<ui:Column headerSpan="5" hAlign="End" width="">
+													<ui:multiLabels>
+														<VBox alignItems="Center" width="100%">
+															<Label text="DigiGST" width="100%" design="Bold"/>
+															<!--<Label text="(as on:2019/08/30 12:30:45)" width="100%" design="Bold"/>-->
+														</VBox>
+														<Label text="Accept" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+														<!--<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+													</ui:multiLabels>
+													<ui:template>
+														<HBox alignItems="Start" justifyContent="End">
+															<VBox>
+																<ObjectStatus text="{PRSSaveAnx2Data>aspCountAccept}" state="Information" active="true" visible="{showing>/count}"/>
+																<Text text="{PRSSaveAnx2Data>aspTaxableAccept}" visible="{showing>/taxValue}"/>
+																<Text text="{PRSSaveAnx2Data>aspTotalTaxAccept}" visible="{showing>/TotalTax}"/>
+																<!--<ObjectStatus text="{Anx2>count}" state="Information" active="true"/>-->
+																<!--<Text text="{Anx2>count}"/>-->
+																<!--<Text text="{Anx2>totCredit}"/>-->
+																<!--<Text text="{Anx2>totCredit}"/>-->
+															</VBox>
+														</HBox>
+													</ui:template>
+												</ui:Column>
+												<!--<ui:Column headerSpan="8" hAlign="End" width="6rem">-->
+												<!--	<ui:multiLabels>-->
+												<!--		<Label text="" textAlign="Center" width="100%" design="Bold"/>-->
+												<!--		<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+												<!--		<Label text="Total Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+												<!--	</ui:multiLabels>-->
+												<!--	<ui:template>-->
+												<!--		<HBox alignItems="Start" justifyContent="End">-->
+												<!--			<Text text="{Anx2>totCredit}"/>-->
+												<!--		</HBox>-->
+												<!--	</ui:template>-->
+												<!--</ui:Column>-->
+												<ui:Column width="" hAlign="End" headerSpan="">
+													<ui:multiLabels>
+														<Label text="" design="Bold"/>
+														<Label design="Bold" text="Pending" textAlign="Center" width="100%" wrapping="true"/>
+														<!--<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+													</ui:multiLabels>
+													<ui:template>
+														<HBox alignItems="Start" justifyContent="End">
+															<VBox>
+																<ObjectStatus text="{PRSSaveAnx2Data>aspCountPending}" state="Information" active="true" visible="{showing>/count}"/>
+																<Text text="{PRSSaveAnx2Data>aspTaxablePending}" visible="{showing>/taxValue}"/>
+																<Text text="{PRSSaveAnx2Data>aspTotalTaxPending}" visible="{showing>/TotalTax}"/>
+															</VBox>
+														</HBox>
+													</ui:template>
+												</ui:Column>
+												<!--<ui:Column headerSpan="8" hAlign="End" width="6rem">-->
+												<!--	<ui:multiLabels>-->
+												<!--		<Label text="" textAlign="Center" width="100%" design="Bold"/>-->
+												<!--		<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+												<!--		<Label text="Total Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+												<!--	</ui:multiLabels>-->
+												<!--	<ui:template>-->
+												<!--		<HBox alignItems="Start" justifyContent="End">-->
+												<!--			<Text text="{Anx2>totCredit}"/>-->
+												<!--		</HBox>-->
+												<!--	</ui:template>-->
+												<!--</ui:Column>-->
+												<ui:Column width="" hAlign="End" headerSpan="">
+													<ui:multiLabels>
+														<Label text="" design="Bold"/>
+														<Label design="Bold" text="Reject" textAlign="Center" width="100%" wrapping="true"/>
+														<!--<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+													</ui:multiLabels>
+													<Label design="Bold" text="Tax Paid as per PR" textAlign="Center" width="100%" wrapping="true"/>
+													<ui:template>
+														<HBox alignItems="Start" justifyContent="End">
+															<VBox>
+																<ObjectStatus text="{PRSSaveAnx2Data>aspCountReject}" state="Information" active="true" visible="{showing>/count}"/>
+																<Text text="{PRSSaveAnx2Data>aspTaxableReject}" visible="{showing>/taxValue}"/>
+																<Text text="{PRSSaveAnx2Data>aspTotalTaxReject}" visible="{showing>/TotalTax}"/>
+															</VBox>
+														</HBox>
+													</ui:template>
+												</ui:Column>
+												<!--<ui:Column headerSpan="8" hAlign="End" width="6rem">-->
+												<!--	<ui:multiLabels>-->
+												<!--		<Label text="" textAlign="Center" width="100%" design="Bold"/>-->
+												<!--		<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+												<!--		<Label text="Total Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+												<!--	</ui:multiLabels>-->
+												<!--	<ui:template>-->
+												<!--		<HBox alignItems="Start" justifyContent="End">-->
+												<!--			<Text text="{Anx2>totCredit}"/>-->
+												<!--		</HBox>-->
+												<!--	</ui:template>-->
+												<!--</ui:Column>-->
+												<ui:Column width="" hAlign="End" headerSpan="">
+													<ui:multiLabels>
+														<Label text="" design="Bold"/>
+														<Label design="Bold" text="No Action" textAlign="Center" width="100%" wrapping="true"/>
+														<!--<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+													</ui:multiLabels>
+													<Label design="Bold" text="Tax Paid as per PR" textAlign="Center" width="100%" wrapping="true"/>
+													<ui:template>
+														<HBox alignItems="Start" justifyContent="End">
+															<VBox>
+																<ObjectStatus text="{PRSSaveAnx2Data>aspCountnoAction}" state="Information" active="true" visible="{showing>/count}"/>
+																<Text text="{PRSSaveAnx2Data>aspTaxablenoAction}" visible="{showing>/taxValue}"/>
+																<Text text="{PRSSaveAnx2Data>aspTotalTaxnoAction}" visible="{showing>/TotalTax}"/>
+															</VBox>
+														</HBox>
+													</ui:template>
+												</ui:Column>
+												<ui:Column width="" hAlign="End" headerSpan="">
+													<ui:multiLabels>
+														<Label text="" design="Bold"/>
+														<Label design="Bold" text="ISD Credit" textAlign="Center" width="100%" wrapping="true"/>
+														<!--<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+													</ui:multiLabels>
+													<Label design="Bold" text="Tax Paid as per PR" textAlign="Center" width="100%" wrapping="true"/>
+													<ui:template>
+														<HBox alignItems="Start" justifyContent="End">
+															<VBox>
+																<ObjectStatus text="{PRSSaveAnx2Data>aspCountisdCredit}" state="Information" active="true" visible="{showing>/count}"/>
+																<Text text="{PRSSaveAnx2Data>aspTaxableisdCredit}" visible="{showing>/taxValue}"/>
+																<Text text="{PRSSaveAnx2Data>aspTotalTaxisdCredit}" visible="{showing>/TotalTax}"/>
+															</VBox>
+														</HBox>
+													</ui:template>
+												</ui:Column>
+												<!--<ui:Column headerSpan="8" hAlign="End" width="6rem">-->
+												<!--	<ui:multiLabels>-->
+												<!--		<Label text="" textAlign="Center" width="100%" design="Bold"/>-->
+												<!--		<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+												<!--		<Label text="Total Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+												<!--	</ui:multiLabels>-->
+												<!--	<ui:template>-->
+												<!--		<HBox alignItems="Start" justifyContent="End">-->
+												<!--			<Text text="{Anx2>totCredit}"/>-->
+												<!--		</HBox>-->
+												<!--	</ui:template>-->
+												<!--</ui:Column>-->
+												<ui:Column headerSpan="5" hAlign="End" width="">
+													<ui:multiLabels>
+														<VBox alignItems="Center" width="100%">
+															<Label text="GSTN" width="100%" design="Bold"/>
+															<!--<Label text="(as on:2019/08/30 12:30:45) (Refresh Icon)" width="100%" design="Bold"/>-->
+														</VBox>
+														<Label text="Accept" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+														<!--<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+													</ui:multiLabels>
+													<ui:template>
+														<HBox alignItems="Start" justifyContent="End">
+															<VBox>
+																<ObjectStatus text="{PRSSaveAnx2Data>gstnCountAccept}" state="Information" active="true" visible="{showing>/count}"/>
+																<Text text="{PRSSaveAnx2Data>gstnTaxableAccept}" visible="{showing>/taxValue}"/>
+																<Text text="{PRSSaveAnx2Data>gstnTotalTaxAccept}" visible="{showing>/TotalTax}"/>
+															</VBox>
+														</HBox>
+													</ui:template>
+												</ui:Column>
+												<!--<ui:Column headerSpan="8" hAlign="End" width="6rem">-->
+												<!--	<ui:multiLabels>-->
+												<!--		<Label text="" textAlign="Center" width="100%" design="Bold"/>-->
+												<!--		<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+												<!--		<Label text="Total Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+												<!--	</ui:multiLabels>-->
+												<!--	<ui:template>-->
+												<!--		<HBox alignItems="Start" justifyContent="End">-->
+												<!--			<Text text="{Anx2>totCredit}"/>-->
+												<!--		</HBox>-->
+												<!--	</ui:template>-->
+												<!--</ui:Column>-->
+												<ui:Column width="" hAlign="End" headerSpan="">
+													<ui:multiLabels>
+														<Label text="" design="Bold"/>
+														<Label design="Bold" text="Pending" textAlign="Center" width="100%" wrapping="true"/>
+														<!--<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+													</ui:multiLabels>
+													<Label design="Bold" text="Tax Paid as per PR" textAlign="Center" width="100%" wrapping="true"/>
+													<ui:template>
+														<HBox alignItems="Start" justifyContent="End">
+															<VBox>
+																<ObjectStatus text="{PRSSaveAnx2Data>gstnCountpending}" state="Information" active="true" visible="{showing>/count}"/>
+																<Text text="{PRSSaveAnx2Data>gstnTaxablepending}" visible="{showing>/taxValue}"/>
+																<Text text="{PRSSaveAnx2Data>gstnTotalTaxpending}" visible="{showing>/TotalTax}"/>
+															</VBox>
+														</HBox>
+													</ui:template>
+												</ui:Column>
+												<!--<ui:Column headerSpan="8,2,1" hAlign="End" width="6rem">-->
+												<!--	<ui:multiLabels>-->
+												<!--		<Label text="" textAlign="Center" width="100%" design="Bold"/>-->
+												<!--		<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+												<!--		<Label text="Total Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+												<!--	</ui:multiLabels>-->
+												<!--	<ui:template>-->
+												<!--		<HBox alignItems="Start" justifyContent="End">-->
+												<!--			<Text text="{Anx2>totCredit}"/>-->
+												<!--		</HBox>-->
+												<!--	</ui:template>-->
+												<!--</ui:Column>-->
+												<ui:Column width="" hAlign="End" headerSpan="">
+													<ui:multiLabels>
+														<Label text="" design="Bold"/>
+														<Label design="Bold" text="Reject" textAlign="Center" width="100%" wrapping="true"/>
+														<!--<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+													</ui:multiLabels>
+													<ui:template>
+														<HBox alignItems="Start" justifyContent="End">
+															<VBox>
+																<ObjectStatus text="{PRSSaveAnx2Data>gstnCountreject}" state="Information" active="true" visible="{showing>/count}"/>
+																<Text text="{PRSSaveAnx2Data>gstnTaxablereject}" visible="{showing>/taxValue}"/>
+																<Text text="{PRSSaveAnx2Data>gstnTotalTaxreject}" visible="{showing>/TotalTax}"/>
+															</VBox>
+														</HBox>
+													</ui:template>
+												</ui:Column>
+												<!--<ui:Column headerSpan="8" hAlign="End" width="6rem">-->
+												<!--	<ui:multiLabels>-->
+												<!--		<Label text="" textAlign="Center" width="100%" design="Bold"/>-->
+												<!--		<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+												<!--		<Label text="Total Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+												<!--	</ui:multiLabels>-->
+												<!--	<ui:template>-->
+												<!--		<HBox alignItems="Start" justifyContent="End">-->
+												<!--			<Text text="{Anx2>totCredit}"/>-->
+												<!--		</HBox>-->
+												<!--	</ui:template>-->
+												<!--</ui:Column>-->
+												<ui:Column width="" hAlign="End" headerSpan="">
+													<ui:multiLabels>
+														<Label text="" design="Bold"/>
+														<Label design="Bold" text="No Action" textAlign="Center" width="100%" wrapping="true"/>
+														<!--<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+													</ui:multiLabels>
+													<ui:template>
+														<HBox alignItems="Start" justifyContent="End">
+															<VBox>
+																<ObjectStatus text="{PRSSaveAnx2Data>gstnCountnoAction}" state="Information" active="true" visible="{showing>/count}"/>
+																<Text text="{PRSSaveAnx2Data>gstnTaxablenoAction}" visible="{showing>/taxValue}"/>
+																<Text text="{PRSSaveAnx2Data>gstnTotalTaxnoAction}" visible="{showing>/TotalTax}"/>
+															</VBox>
+														</HBox>
+													</ui:template>
+												</ui:Column>
+												<ui:Column width="" hAlign="End" headerSpan="">
+													<ui:multiLabels>
+														<Label text="" design="Bold"/>
+														<Label design="Bold" text="ISD Credit" textAlign="Center" width="100%" wrapping="true"/>
+														<!--<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+													</ui:multiLabels>
+													<Label design="Bold" text="Tax Paid as per PR" textAlign="Center" width="100%" wrapping="true"/>
+													<ui:template>
+														<HBox alignItems="Start" justifyContent="End">
+															<VBox>
+																<ObjectStatus text="{PRSSaveAnx2Data>gstnCountisdCredit}" state="Information" active="true" visible="{showing>/count}"/>
+																<Text text="{PRSSaveAnx2Data>gstnTaxableisdCredit}" visible="{showing>/taxValue}"/>
+																<Text text="{PRSSaveAnx2Data>gstnTotalTaxisdCredit}" visible="{showing>/TotalTax}"/>
+															</VBox>
+														</HBox>
+													</ui:template>
+												</ui:Column>
+												<ui:Column hAlign="Center" width="10rem">
+													<!--<MenuButton type="Transparent" text="">-->
+													<!--	<Menu itemSelected="onMenuItemSelect">-->
+													<!--		<MenuItem key="A" text="Absolute"/>-->
+													<!--		<MenuItem key="L" text="Lakhs"/>-->
+													<!--		<MenuItem key="C" text="Crores"/>-->
+													<!--		<MenuItem key="M" text="Millions"/>-->
+													<!--		<MenuItem key="B" text="Billions"/>-->
+													<!--	</Menu>-->
+													<!--</MenuButton>-->
+													<ui:template>
+														<HBox justifyContent="Center">
+															<core:Icon src="sap-icon://show" tooltip="View Differential Data" color="#5496cd" press="onPressDifference1" class="clsIcon"/>
+															<Link text="Difference" tooltip="View Differential Data" press="onPressDifference1" class="sapUiTinyMarginBegin"/>
+														</HBox>
+													</ui:template>
+												</ui:Column>
+												<!--<ui:Column width="10rem">-->
+												<!--	<Label text="Rupees In Absolute" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+												<!--	<ui:template>-->
+												<!--		<Link text="{Anx2>RupAbs}" press="onFileAspErrorPress"/>-->
+												<!--	</ui:template>-->
+												<!--</ui:Column>-->
+												<!--<ui:Column headerSpan="8" hAlign="End" width="6rem">-->
+												<!--	<ui:multiLabels>-->
+												<!--		<Label text="" textAlign="Center" width="100%" design="Bold"/>-->
+												<!--		<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+												<!--		<Label text="Total Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+												<!--	</ui:multiLabels>-->
+												<!--	<ui:template>-->
+												<!--		<HBox alignItems="Start" justifyContent="End">-->
+												<!--			<Text text="{Anx2>totCredit}"/>-->
+												<!--		</HBox>-->
+												<!--	</ui:template>-->
+												<!--</ui:Column>-->
+											</ui:columns>
+											<ui:footer>
+												<Toolbar>
+													<Label text="Net Credit: " design="Bold"/>
+													<Label text="After considering Table 4A10, 4B2 and 4B3 of RET-1 " class="red" design="Bold"/>
+													<ToolbarSpacer/>
+												</Toolbar>
+											</ui:footer>
+										</ui:Table>
+									</Panel>
+								</commons:content>
+							</commons:ChartContainerContent >
+						</commons:content>
+						<commons:toolbar height="5rem">
+							<OverflowToolbar>
+								<!--<Title text="Entity Details"/>-->
+								<!--<l:HorizontalLayout>-->
+								<Label text="Showing:" design="Bold"/>
+								<CheckBox text="Count" select="onSelectCheckBoxsaveCol1t" selected="{showing>/count}" editable="{=!${showing>/enablecount}}"/>
+								<CheckBox text="Taxable Value" select="onSelectCheckBoxsaveCol1t" selected="{showing>/taxValue}" editable="{=!${showing>/enabletaxValue}}"/>
+								<CheckBox text="Total Tax" select="onSelectCheckBoxsaveCol1t" selected="{showing>/TotalTax}" editable="{=!${showing>/enableTotalTax}}"/>
+								<ToolbarSpacer/>
+								<!--<Button text="Delete Data" type="Reject" press="onPressReconResultAction" class="sapUiSmallMarginTop"/>
+								<Button text="Save to GSTIN" type="Accept" press="onSaveGstn1DialogPress" class="sapUiSmallMarginTop"/>-->
+								<VBox>
+									<Button type="Emphasized" text="Request for Approval" press="onButtonExtractPress" width="12rem"/>
+								</VBox>
+								<VBox>
+									<Button type="Accept" text="Save to GSTN" press="onButtonExtractPress" width="12rem"/>
+								</VBox>
+								<VBox>
+									<Button type="Emphasized" text="Get Summary" press="onButtonExtractPress" width="12rem"/>
+								</VBox>
+								<MenuButton type="Emphasized" text="Download Report" class="">
+									<Menu itemSelected="onMenuItemPressAnx1down">
+										<MenuItem text="Recon Response" key="processLineItem"/>
+										<MenuItem text="Saved Records" key="processRate"/>
+										<MenuItem text="Entity Level Summary" key="submitted"/>
+										<MenuItem text="Consilidated GSTN Error Report" key="submitted"/>
+									</Menu>
+								</MenuButton>
+								<Button type="Emphasized" icon="sap-icon://download" tooltip="Download Pdf" class=""/>
+								<!--<Button type="Emphasized" text="Download Report" tooltip="Download Pdf" class="sapUiSmallMarginTop"/>-->
+								<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" class=""/>
+								<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="Download Pdf" class=""/>
+								<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+							</OverflowToolbar>
+						</commons:toolbar>
+					</commons:ChartContainer>
+				</Panel>
+				<Panel visible="false" id="idPanelANX2Summary12">
+					<l:VerticalLayout width="100%" class="clBlockLayout sapUiContentPadding" id="idverticalRes22">
+						<l:BlockLayout background="{/selectedBackground}">
+							<l:BlockLayoutRow accentCells="Accent1">
+								<l:BlockLayoutCell width="4">
+									<VBox>
+										<Toolbar>
+											<ToolbarSpacer/>
+											<Text text="A2 Tax : 4,40,98,795.12" class="clTextColorHedder"/>
+											<!--	<core:Icon src="sap-icon://message-information" color="#000000" tooltip="Due to Upload / Acceptance of Additional PR"/>-->
+											<ToolbarSpacer/>
+										</Toolbar>
+										<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="IGST"/>
+												<Text text="4,40,98,795.12" class="clTextColorRed"/>
+											</VBox>
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="CGST"/>
+												<Text text="3,30,74,096.34" class="clTextColorRed"/>
+											</VBox>
+										</HBox>
+										<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="SGST"/>
+												<Text text="3,30,74,096.34" class="clTextColorRed"/>
+											</VBox>
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="Cess"/>
+												<Text text="0.00" class="clTextColorRed"/>
+											</VBox>
+										</HBox>
+									</VBox>
+								</l:BlockLayoutCell>
+								<l:BlockLayoutCell width="4">
+									<VBox>
+										<Toolbar>
+											<ToolbarSpacer/>
+											<Text text=" PR Tax : 88,19,759.00 " class="clTextColorHedder"/>
+											<!--											<core:Icon src="sap-icon://message-information" color="#000000"
+												tooltip="Due to Upload / Acceptance of Additional PR Previous tax period and subsequent upload of invoice by Vendor in ANX-1 "/>-->
+											<ToolbarSpacer/>
+										</Toolbar>
+										<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="IGST"/>
+												<Text text="8819759.024" class="clTextColorRed"/>
+											</VBox>
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="CGST"/>
+												<Text text="6614819.268" class="clTextColorRed"/>
+											</VBox>
+										</HBox>
+										<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="SGST"/>
+												<Text text="6614819.268" class="clTextColorRed"/>
+											</VBox>
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="Cess"/>
+												<Text text="0.00" class="clTextColorRed"/>
+											</VBox>
+										</HBox>
+									</VBox>
+								</l:BlockLayoutCell>
+								<l:BlockLayoutCell width="4">
+									<VBox>
+										<Toolbar>
+											<ToolbarSpacer/>
+											<Text text="PR Available : 1,76,395.00" class="clTextColorHedder"/>
+											<!--	<core:Icon src="sap-icon://message-information" color="#000000" tooltip="Acceptance of lower values in ANX-2"/>-->
+											<ToolbarSpacer/>
+										</Toolbar>
+										<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="IGST"/>
+												<Text text="176395.1805" class="clTextColorRed"/>
+											</VBox>
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="CGST"/>
+												<Text text="132296.3854" class="clTextColorRed"/>
+											</VBox>
+										</HBox>
+										<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="SGST"/>
+												<Text text="132296.3854" class="clTextColorRed"/>
+											</VBox>
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="Cess"/>
+												<Text text="0.00" class="clTextColorRed"/>
+											</VBox>
+										</HBox>
+									</VBox>
+								</l:BlockLayoutCell>
+								<l:BlockLayoutCell width="4">
+									<VBox>
+										<Toolbar>
+											<ToolbarSpacer/>
+											<Text text="A2 Tax - PR Tax : 0.00" class="clTextColorHedder"/>
+											<!--			<core:Icon src="sap-icon://message-information" color="#000000" tooltip="Acceptance of higher values in ANX-2"/>-->
+											<ToolbarSpacer/>
+										</Toolbar>
+										<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="IGST"/>
+												<Text text="0.00"/>
+											</VBox>
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="CGST"/>
+												<Text text="0.00"/>
+											</VBox>
+										</HBox>
+										<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="SGST"/>
+												<Text text="0.00"/>
+											</VBox>
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="Cess"/>
+												<Text text="0.00"/>
+											</VBox>
+										</HBox>
+									</VBox>
+								</l:BlockLayoutCell>
+								<l:BlockLayoutCell width="4">
+									<VBox>
+										<Toolbar>
+											<ToolbarSpacer/>
+											<Text text="PR Tax - PR Available : 0.00 " class="clTextColorHedder"/>
+											<!--	<core:Icon src="sap-icon://message-information" color="#000000" tooltip="Acceptance of higher values in ANX-2"/>-->
+											<ToolbarSpacer/>
+										</Toolbar>
+										<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="IGST"/>
+												<Text text="0.00"/>
+											</VBox>
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="CGST"/>
+												<Text text="0.00"/>
+											</VBox>
+										</HBox>
+										<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="SGST"/>
+												<Text text="0.00"/>
+											</VBox>
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="Cess"/>
+												<Text text="0.00"/>
+											</VBox>
+										</HBox>
+									</VBox>
+								</l:BlockLayoutCell>
+								<l:BlockLayoutCell width="4">
+									<VBox>
+										<Toolbar>
+											<ToolbarSpacer/>
+											<Text text="Impact on RET-1 : 0.00 " class="clTextColorHedder"/>
+											<!--	<core:Icon src="sap-icon://message-information" color="#000000" tooltip="Acceptance of higher values in ANX-2"/>-->
+											<ToolbarSpacer/>
+										</Toolbar>
+										<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="IGST"/>
+												<Text text="0.00"/>
+											</VBox>
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="CGST"/>
+												<Text text="0.00"/>
+											</VBox>
+										</HBox>
+										<HBox width="100%" justifyContent="SpaceBetween" alignContent="Center">
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="SGST"/>
+												<Text text="0.00"/>
+											</VBox>
+											<VBox width="100%" alignContent="Center" class="sapUiTinyMargin sapUiSmallMarginBegin">
+												<Text text="Cess"/>
+												<Text text="0.00"/>
+											</VBox>
+										</HBox>
+									</VBox>
+								</l:BlockLayoutCell>
+							</l:BlockLayoutRow>
+						</l:BlockLayout>
+					</l:VerticalLayout>
+					<headerToolbar>
+						<Toolbar height="3.2rem">
+							<Label text="Showing:" design="Bold"/>
+							<CheckBox text="DigiGST" select="onSelectCheckBoxCol2t" editable="{=!${showing>/enabledigigst}}" selected="{showing>/digigst}"/>
+							<CheckBox text="GSTN" select="onSelectCheckBoxCol2t" editable="{=!${showing>/enablegstn}}" selected="{showing>/gstn}"/>
+							<CheckBox text="Difference" select="onSelectCheckBoxCol2t" editable="{=!${showing>/enablediff}}" selected="{showing>/diff}"/>
+							<ToolbarSpacer/>
+							<!--<VBox>-->
+							<Text text=""/>
+							<!--<HBox>-->
+							<Button type="Emphasized" text="Request for Approval" press="onButtonExtractPress" width="12rem"/>
+							<Button type="Accept" text="Save to GSTN" press="onButtonExtractPress" width="12rem"/>
+							<Button type="Emphasized" text="Get Summary" press="onButtonExtractPress" width="12rem"/>
+							<MenuButton type="Emphasized" text="Download Report" class="">
+								<Menu itemSelected="onMenuItemPressAnx1down">
+									<MenuItem text="Recon Response" key="processLineItem"/>
+									<MenuItem text="Saved Records" key="processRate"/>
+									<!--<MenuItem text="Entity Level Summary" key="submitted"/>-->
+									<MenuItem text="Consilidated GSTN Error Report" key="submitted"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Emphasized" icon="sap-icon://download" tooltip="Download Pdf" class=""/>
+							<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" class=""/>
+							<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="Download Pdf" class=""/>
+							<!--<Button type="Emphasized" text="Save Status" press="onPressCheckStatus" class="sapUiTinyMarginEnd"/>-->
+							<!--<Button type="Emphasized" text="Summary" class="sapUiTinyMarginEnd"/>-->
+							<!--<Button type="Reject" text="Delete Data" class="sapUiTinyMarginEnd"/>-->
+							<!--</HBox>-->
+							<!--</VBox>-->
+							<!--<VBox>-->
+							<!--	<Text text="Jun 06, 2019, 16:06:26"/>-->
+							<!--	<Button type="Accept" text="Save to GSTN" class="sapUiTinyMarginEnd" width="10rem"/>-->
+							<!--</VBox>-->
+							<!--<VBox>-->
+							<!--	<Text text="Jun 06, 2019, 16:06:26"/>-->
+							<!--	<Button type="Ghost" text="Update GSTN Data" icon="sap-icon://refresh"/>-->
+							<!--</VBox>-->
+						</Toolbar>
+					</headerToolbar>
+					<!--<ui:TreeTable rows="{path:'Anx2>/ret1t', parameters:{ arrayNames:['items'], numberOfExpandedLevels:1 }}" selectionMode="None"-->
+					<!--	enableSelectAll="false" fixedColumnCount="2" enableColumnReordering="false" visibleRowCount="4">-->
+					<!--	<ui:toolbar>-->
+					<!--		<OverflowToolbar>-->
+					<!--			<content>-->
+					<!--				<Title text="Inward Supplies Received"/>-->
+					<!--				<ToolbarSpacer/>-->
+					<!--			</content>-->
+					<!--		</OverflowToolbar>-->
+					<!--	</ui:toolbar>-->
+					<!--	<ui:columns>-->
+					<!--		<ui:Column width="12rem">-->
+					<!--			<Label text="Table(ANX-2)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>table}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="">-->
+					<!--			<Label text="Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>value}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="">-->
+					<!--			<Label text="Invoice value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>invValue}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="">-->
+					<!--			<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>taxableValue}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="">-->
+					<!--			<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>totalCredit}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="">-->
+					<!--			<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>igst}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="" visible="{visiRet1>/eyU}">-->
+					<!--			<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>cgst}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="" visible="{visiRet1>/eyU}">-->
+					<!--			<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>sgst}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="" visible="{visiRet1>/eyU}">-->
+					<!--			<Label text="CESS" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>cess}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--	</ui:columns>-->
+					<!--</ui:TreeTable>-->
+					<!--<ui:Table rows="{path:'Anx2>/taxCredit'}" visible="true" selectionMode="None" enableSelectAll="false" fixedColumnCount="2"-->
+					<!--	enableColumnReordering="false" class="sapUiSmallmarginTop" visibleRowCount="6">-->
+					<!--	<ui:toolbar>-->
+					<!--		<OverflowToolbar>-->
+					<!--			<content>-->
+					<!--				<Title text="Summary of Input Tax Credit"/>-->
+					<!--				<ToolbarSpacer/>-->
+					<!--			</content>-->
+					<!--		</OverflowToolbar>-->
+					<!--	</ui:toolbar>-->
+					<!--	<ui:columns>-->
+					<!--		<ui:Column width="12rem">-->
+					<!--			<Label text="Action Taking" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>action}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="">-->
+					<!--			<Label text="Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>records}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="">-->
+					<!--			<Label text="Invoice value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>InvValue}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="">-->
+					<!--			<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>taxableValue}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="">-->
+					<!--			<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>taxPayable}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="">-->
+					<!--			<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>IGST}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="" visible="{visiRet1>/eyU}">-->
+					<!--			<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>CGST}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="" visible="{visiRet1>/eyU}">-->
+					<!--			<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>SGST}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="" visible="{visiRet1>/eyU}">-->
+					<!--			<Label text="CESS" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>Cess}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--	</ui:columns>-->
+					<!--</ui:Table>-->
+					<!--<ui:Table rows="{path:'Anx2>/ISDCredit'}" visible="true" selectionMode="None" enableSelectAll="false" fixedColumnCount="2"-->
+					<!--	enableColumnReordering="false" class="sapUiSmallmarginTop" visibleRowCount="6">-->
+					<!--	<ui:toolbar>-->
+					<!--		<OverflowToolbar>-->
+					<!--			<content>-->
+					<!--				<Title text="ISD Credits Received"/>-->
+					<!--				<ToolbarSpacer/>-->
+					<!--			</content>-->
+					<!--		</OverflowToolbar>-->
+					<!--	</ui:toolbar>-->
+					<!--	<ui:columns>-->
+					<!--		<ui:Column width="12rem">-->
+					<!--			<Label text="GSTIN of ISD" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>gstin}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="">-->
+					<!--			<Label text="Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>value}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="">-->
+					<!--			<Label text="Invoice value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>value}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="">-->
+					<!--			<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>value}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="">-->
+					<!--			<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>value}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="">-->
+					<!--			<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>value}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="" visible="{visiRet1>/eyU}">-->
+					<!--			<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>value}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="" visible="{visiRet1>/eyU}">-->
+					<!--			<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>value}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--		<ui:Column hAlign="End" width="" visible="{visiRet1>/eyU}">-->
+					<!--			<Label text="CESS" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--			<ui:template>-->
+					<!--				<Text text="{Anx2>value}"/>-->
+					<!--			</ui:template>-->
+					<!--		</ui:Column>-->
+					<!--	</ui:columns>-->
+					<!--</ui:Table>-->
+					<ui:TreeTable rows="{Anx2>/saveanx3}" selectionMode="Single" selectionBehavior="Row" visibleRowCount="7" fixedColumnCount="1"
+						enableSelectAll="false" toggleOpenState="OnOpenStateAnxSave">
+						<ui:columns>
+							<ui:Column width="12rem">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label design="Bold" text="Table(ANX-2)" textAlign="Center" width="100%" wrapping="true"/>
+								</ui:multiLabels>
+								<ui:template>
+									<VBox>
+										<HBox>
+											<Text text="{Anx2>table}" width="8rem" class="stateColor"/>
+										</HBox>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="6" hAlign="End" width="" visible="{showing>/digigst}">
+								<ui:multiLabels>
+									<VBox alignItems="Center" width="100%">
+										<Label text="DigiGST" width="100%" design="Bold"/>
+										<!--<Label text="(as on:2019/08/30 12:30:45)" width="100%" design="Bold"/>-->
+									</VBox>
+									<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{Anx2>count}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="" hAlign="End" width="" visible="{showing>/digigst}">
+								<ui:multiLabels>
+									<Label text="" design="Bold"/>
+									<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{Anx2>totCredit}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="" hAlign="End" visible="{showing>/digigst}">
+								<ui:multiLabels>
+									<Label text="" design="Bold"/>
+									<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{Anx2>count}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="" hAlign="End" width="" visible="{showing>/digigst}">
+								<ui:multiLabels>
+									<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{Anx2>totCredit}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="" hAlign="End" visible="{showing>/digigst}">
+								<ui:multiLabels>
+									<Label text="" design="Bold"/>
+									<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<Label design="Bold" text="Tax Paid as per PR" textAlign="Center" width="100%" wrapping="true"/>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{Anx2>count}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="" hAlign="End" width="" visible="{showing>/digigst}">
+								<ui:multiLabels>
+									<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{Anx2>totCredit}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="6" hAlign="End" width="" visible="{showing>/gstn}">
+								<ui:multiLabels>
+									<VBox alignItems="Center" width="100%">
+										<Label text="GSTN" width="100%" design="Bold"/>
+										<!--<Label text="(as on:2019/08/30 12:30:45)" width="100%" design="Bold"/>-->
+									</VBox>
+									<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{Anx2>count}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="" hAlign="End" width="" visible="{showing>/gstn}">
+								<ui:multiLabels>
+									<Label text="" design="Bold"/>
+									<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{Anx2>totCredit}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="" hAlign="End" visible="{showing>/gstn}">
+								<ui:multiLabels>
+									<Label text="" design="Bold"/>
+									<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{Anx2>count}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="" hAlign="End" width="" visible="{showing>/gstn}">
+								<ui:multiLabels>
+									<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{Anx2>totCredit}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="" hAlign="End" visible="{showing>/gstn}">
+								<ui:multiLabels>
+									<Label text="" design="Bold"/>
+									<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<Label design="Bold" text="Tax Paid as per PR" textAlign="Center" width="100%" wrapping="true"/>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{Anx2>count}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="" hAlign="End" width="" visible="{showing>/gstn}">
+								<ui:multiLabels>
+									<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{Anx2>totCredit}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="6" hAlign="End" width="" visible="{showing>/diff}">
+								<ui:multiLabels>
+									<VBox alignItems="Center" width="100%">
+										<Label text="Difference" width="100%" design="Bold"/>
+										<!--<Label text="(as on:2019/08/30 12:30:45)" width="100%" design="Bold"/>-->
+									</VBox>
+									<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{Anx2>count}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="" hAlign="End" width="" visible="{showing>/diff}">
+								<ui:multiLabels>
+									<Label text="" design="Bold"/>
+									<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{Anx2>totCredit}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="" hAlign="End" visible="{showing>/diff}">
+								<ui:multiLabels>
+									<Label text="" design="Bold"/>
+									<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{Anx2>count}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="" hAlign="End" width="" visible="{showing>/diff}">
+								<ui:multiLabels>
+									<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{Anx2>totCredit}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="" hAlign="End" visible="{showing>/diff}">
+								<ui:multiLabels>
+									<Label text="" design="Bold"/>
+									<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<Label design="Bold" text="Tax Paid as per PR" textAlign="Center" width="100%" wrapping="true"/>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{Anx2>count}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="" hAlign="End" width="" visible="{showing>/diff}">
+								<ui:multiLabels>
+									<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{Anx2>totCredit}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+						<ui:footer>
+							<Toolbar>
+								<Label text="Net Credit: " design="Bold"/>
+								<Label text="After considering Table 4A10, 4B2 and 4B3 of RET-1 " class="red" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</ui:footer>
+					</ui:TreeTable>
+				</Panel>
+				<Panel id="idStatementPanelANX212" visible="false">
+					<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false">
+						<commons:content>
+							<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+								<commons:content>
+									<ui:TreeTable rows="{Anx2>/StatementANX2}" selectionMode="None" selectionBehavior="Row" visibleRowCount="10" fixedColumnCount="2">
+										<ui:Column width="20rem">
+											<ui:multiLabels>
+												<Label text="" design="Bold" textAlign="Center" width="100%"/>
+												<Label text="Particulars" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{Anx2>Details}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="20rem">
+											<ui:multiLabels>
+												<Label text="" design="Bold" textAlign="Center" width="100%"/>
+												<Label text="Details" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{Anx2>Action}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem" headerSpan="6">
+											<ui:multiLabels>
+												<Label text="ANX-2" design="Bold" textAlign="Center" width="100%"/>
+												<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{Anx2>anx2TaxableValue}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem">
+											<ui:multiLabels>
+												<Label text="" design="Bold" textAlign="Center" width="100%"/>
+												<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{Anx2>anx2TotalTax}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem">
+											<ui:multiLabels>
+												<Label text="" design="Bold" textAlign="Center" width="100%"/>
+												<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{Anx2>anx2IGST}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem" headerSpan="3">
+											<ui:multiLabels>
+												<Label text="" design="Bold" textAlign="Center" width="100%"/>
+												<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{Anx2>anx2CGST}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem">
+											<ui:multiLabels>
+												<Label text="" design="Bold" textAlign="Center" width="100%"/>
+												<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{Anx2>anx2SGST}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem">
+											<ui:multiLabels>
+												<Label text="" design="Bold" textAlign="Center" width="100%"/>
+												<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{Anx2>anx2Cess}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem" headerSpan="6">
+											<ui:multiLabels>
+												<Label text="PR" design="Bold" textAlign="Center" width="100%"/>
+												<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{Anx2>prTaxableValue}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem">
+											<ui:multiLabels>
+												<Label text="" design="Bold" textAlign="Center" width="100%"/>
+												<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{Anx2>prTotalTax}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem">
+											<ui:multiLabels>
+												<Label text="" design="Bold" textAlign="Center" width="100%"/>
+												<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{Anx2>prIGST}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem" headerSpan="3">
+											<ui:multiLabels>
+												<Label text="" design="Bold" textAlign="Center" width="100%"/>
+												<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{Anx2>prCGST}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem">
+											<ui:multiLabels>
+												<Label text="" design="Bold" textAlign="Center" width="100%"/>
+												<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{Anx2>prSGST}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem">
+											<ui:multiLabels>
+												<Label text="" design="Bold" textAlign="Center" width="100%"/>
+												<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{Anx2>prCess}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:TreeTable>
+								</commons:content>
+							</commons:ChartContainerContent >
+						</commons:content>
+						<commons:toolbar>
+							<OverflowToolbar>
+								<Title text="Entity Details"/>
+								<ToolbarSpacer/>
+								<!--<Button type="Emphasized" text="Summary" press="onButtonExtractPress"/>-->
+								<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+							</OverflowToolbar>
+						</commons:toolbar>
+					</commons:ChartContainer>
+				</Panel>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

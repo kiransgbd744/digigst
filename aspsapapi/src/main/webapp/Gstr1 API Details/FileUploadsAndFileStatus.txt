@@ -1,0 +1,133 @@
+
+========================File status===========================
+
+URL : /fileStatus.do
+Service : POST
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+Request Payload :
+{  
+   "req":{  
+     
+      "dataRecvFrom":null,
+      "dataRecvTo":null,
+      "docDateFrom":null,
+      "docDateTo":null,
+      "retPeriodFrom":102019,
+      "retPeriodTo":112019,
+      "fileType":"RAW" OR "HSN" OR "INVOICE" ,"B2CS","AT","TXPD","NIL"
+   }
+}
+
+
+URL : /fileStatus.do
+Service : POST
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+Request Payload :
+{  
+   "req":{  
+     
+      "dataRecvFrom":"2019-05-10",
+      "dataRecvTo":"2019-05-15",
+      "docDateFrom":null,
+      "docDateTo":null,
+      "retPeriodFrom":null,
+      "retPeriodTo":null,
+      "fileType":"RAW" OR "HSN" OR "INVOICE" ,"B2CS","AT","TXPD","NIL","ALL"
+   }
+}
+
+URL : /fileStatus.do
+Service : POST
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+Request Payload :
+{  
+   "req":{  
+     
+      "dataRecvFrom":null,
+      "dataRecvTo":null,
+      "docDateFrom":"2019-05-10",
+      "docDateTo":"2019-05-15",
+      "retPeriodFrom":null,
+      "retPeriodTo":null,
+      "fileType":"RAW" 
+   }
+}
+
+URL : /getAllFileStatus.do
+Service : POST
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+O/P:Getting all the data of file status
+
+======================File web uploads=======================
+
+
+URL : /webRawUploadDocuments.do
+Service : POST
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/xml
+o/p: for Raw file uploads
+
+
+
+URL : /webB2csUploadDocuments.do
+Service : POST
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/xml
+o/p: for B2cs file uploads
+
+
+URL : /webHsnUploadDocuments.do
+Service : POST
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/xml
+o/p: for Hsn file uploads
+
+
+URL : /webInvoiceUploadDocuments.do
+Service : POST
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/xml
+o/p: for Invoice file uploads
+
+
+
+URL : /webNilUploadDocuments.do
+Service : POST
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/xml
+o/p: for NilNonExmpt file uploads
+
+
+
+URL : /webAtUploadDocuments.do
+Service : POST
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/xml
+o/p: for Advance Received file uploads
+
+
+
+URL : /webTxpdUploadDocuments.do
+Service : POST
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/xml
+o/p: for Advance adjustment file uploads

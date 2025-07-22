@@ -1,0 +1,88 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.APICallDashboard"
+	xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:commons="sap.suite.ui.commons" xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table"
+	xmlns:fm="sap.ui.layout.form" xmlns:u="sap.ui.unified" busyIndicatorDelay="0">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading design="Bold">
+					<Title text="API Call Dashboard" titleStyle="H3"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<Toolbar>
+					<!--<OverflowToolbar>-->
+					<SegmentedButton id="idActionInformationDistGstr6" selectedKey="API" width="70%" selectionChange="onAPICallChangeSegment">
+						<items>
+							<SegmentedButtonItem key="GSTR1" text="GSTR-1" width="6rem"/>
+							<SegmentedButtonItem key="GSTR1A" text="GSTR-1A" width="6rem"/>
+							<SegmentedButtonItem key="GSTR2A" text="GSTR-2A" width="6rem" visible="false"/>
+							<SegmentedButtonItem key="GSTR3B" text="GSTR-3B" width="6rem"/>
+							<SegmentedButtonItem key="GSTR6" text="GSTR-6" width="6rem"/>
+							<SegmentedButtonItem key="GSTR7" text="GSTR-7" width="6rem"/>
+							<SegmentedButtonItem key="ITC04" text="ITC04" width="6rem"/>
+							<SegmentedButtonItem key="GSTR8A" text="Table-8A" width="6rem"/>
+							<SegmentedButtonItem key="GSTR8" text="GSTR-8" width="6rem"/>
+							<SegmentedButtonItem key="GSTR9" text="GSTR-9" width="6rem"/>
+							<SegmentedButtonItem key="TDS" text="TDS/TDSA/TCS/TCSA" width="10rem"/>
+						</items>
+					</SegmentedButton>
+					<ToolbarSpacer/>
+					<Label text="View detailed Information" tooltip="View detailed Information" id="id_ApiCallSwitchTxt"/>
+					<Switch visible="true" id="idApiCallSwitch" state="false" customTextOn="" customTextOff="" change="onChngeAPICallSwith"></Switch>
+					<!--	<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>-->
+					<!--</OverflowToolbar>-->
+				</Toolbar>
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onRRConsoldGO" clear="onClearFilterConslM"
+					id="idGstr1fltrBar" useToolbar="false" class="sapUiNoContentPadding" visible="true" width="25%">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="false" mandatory="true">
+							<fb:control>
+								<Select items="{DropDown>/Entity}" change="onSelectionChange" width="100%">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Financial Year" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<Select width="100%" id="dtFinYearGstr1" items="{oFyModel>/finYears}" forceSelection="true" change="onGstr1Change">
+									<core:Item key="{oFyModel>fy}" text="{oFyModel>fy}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox id="fbGstr1Hbox" class="clMain" justifyContent="Start" width="75%" visible="true">
+					<Button id="bSgsrt1" text="Filter" press="onPrsSearchGstr1Go" class="sapUiTinyMarginBegin buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel>
+				<!-- GSTR-1 -->
+				<core:Fragment fragmentName="com.ey.digigst.fragments.apiCallDashboard.gstr1" type="XML"/>
+				<!-- GSTR-1A -->
+				<core:Fragment fragmentName="com.ey.digigst.fragments.apiCallDashboard.gstr1a" type="XML"/>
+				<!-- GSTR-2A -->
+				<core:Fragment fragmentName="com.ey.digigst.fragments.apiCallDashboard.gstr2a" type="XML"/>
+				<!-- GSTR-3B -->
+				<core:Fragment fragmentName="com.ey.digigst.fragments.apiCallDashboard.gstr3b" type="XML"/>
+				<!-- GSTR-6 -->
+				<core:Fragment fragmentName="com.ey.digigst.fragments.apiCallDashboard.gstr6" type="XML"/>
+				<!-- GSTR-7 -->
+				<core:Fragment fragmentName="com.ey.digigst.fragments.apiCallDashboard.gstr7" type="XML"/>
+				<!-- GSTR 8A -->
+				<core:Fragment fragmentName="com.ey.digigst.fragments.apiCallDashboard.gstr8a" type="XML"/>
+				<!-- GSTR-8 -->
+				<core:Fragment fragmentName="com.ey.digigst.fragments.apiCallDashboard.gstr8" type="XML"/>
+				<!-- GSTR-9 -->
+				<core:Fragment fragmentName="com.ey.digigst.fragments.apiCallDashboard.gstr9" type="XML"/>
+				<!-- ITC04 -->
+				<core:Fragment fragmentName="com.ey.digigst.fragments.apiCallDashboard.itc04" type="XML"/>
+				<!-- TDS/TDSA/TCS/TCSA -->
+				<core:Fragment fragmentName="com.ey.digigst.fragments.apiCallDashboard.tdsTcs" type="XML"/>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

@@ -1,0 +1,118 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout">
+	<l:BlockLayout background="Dashboard" id="id_BlockLayoutgstr1" class="cl_shadow">
+		<l:BlockLayoutRow class="sapUiNoContentPadding">
+			<l:BlockLayoutCell id="id_BlCellgstr1" width="13">
+				<HBox class="sapUiTinyMarginTopBottom">
+					<VBox width="4rem">
+						<Text/>
+						<Label text="PR" class="sapUiTinyMarginBegin sapUiTinyMarginTop" design="Bold"/>
+					</VBox>
+					<VBox alignItems="End" width="10rem">
+						<Label text="Vendor GSTIN Count" design="Bold"/>
+						<Text text="{path:'ReconResultHeader>/prVendorGstinCount'}" class="sapUiTinyMarginTop"/>
+					</VBox>
+					<VBox alignItems="End" width="9rem">
+						<Label text="Document Count" design="Bold"/>
+						<Text text="{path:'ReconResultHeader>/prDocumentCount'}" class="sapUiTinyMarginTop"/>
+					</VBox>
+					<VBox alignItems="End" width="10%">
+						<Label text="Total Tax" design="Bold"/>
+						<Text text="{path:'ReconResultHeader>/prTotalTax', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+					</VBox>
+					<VBox alignItems="End" width="10%">
+						<Label text="IGST" design="Bold"/>
+						<Text text="{path:'ReconResultHeader>/prIgst', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+					</VBox>
+					<VBox alignItems="End" width="10%">
+						<Label text="CGST" design="Bold"/>
+						<Text text="{path:'ReconResultHeader>/prCgst', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+					</VBox>
+					<VBox alignItems="End" width="10%">
+						<Label text="SGST" design="Bold"/>
+						<Text text="{path:'ReconResultHeader>/prSgst', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+					</VBox>
+					<VBox alignItems="End" width="10%">
+						<Label text="CESS" design="Bold"/>
+						<Text text="{path:'ReconResultHeader>/prCess', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+					</VBox>
+					<VBox alignItems="End" width="10%">
+						<Label text="Available IGST" design="Bold"/>
+						<Text text="{path:'ReconResultHeader>/prAvailableIgst', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+					</VBox>
+					<VBox alignItems="End" width="10%">
+						<Label text="Available CGST" design="Bold"/>
+						<Text text="{path:'ReconResultHeader>/prAvailableCgst', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+					</VBox>
+					<VBox alignItems="End" width="10%">
+						<Label text="Available SGST" design="Bold"/>
+						<Text text="{path:'ReconResultHeader>/prAvailableSgst', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+					</VBox>
+					<VBox alignItems="End" width="10%" class="sapUiTinyMarginEnd">
+						<Label text="Available CESS" design="Bold"/>
+						<Text text="{path:'ReconResultHeader>/prAvailableCess', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+					</VBox>
+				</HBox>
+				<HBox class="sapUiTinyMarginTopBottom" visible="{=${Display>/LabelRR1}==='2A'}">
+					<VBox width="4rem">
+						<Label text="{Display>/LabelRR1}" class="sapUiTinyMarginBegin" design="Bold"/>
+					</VBox>
+					<VBox alignItems="End" width="10rem">
+						<Text text="{path:'ReconResultHeader>/a2VendorGstinCount'}"/>
+					</VBox>
+					<VBox alignItems="End" width="9rem">
+						<Text text="{path:'ReconResultHeader>/a2DocumentCount'}"/>
+					</VBox>
+					<VBox alignItems="End" width="10%">
+						<Text text="{path:'ReconResultHeader>/a2TotalTax', formatter:'.formatter.amountValue'}"/>
+					</VBox>
+					<VBox alignItems="End" width="10%">
+						<Text text="{path:'ReconResultHeader>/a2Igst', formatter:'.formatter.amountValue'}"/>
+					</VBox>
+					<VBox alignItems="End" width="10%">
+						<Text text="{path:'ReconResultHeader>/a2Cgst', formatter:'.formatter.amountValue'}"/>
+					</VBox>
+					<VBox alignItems="End" width="10%">
+						<Text text="{path:'ReconResultHeader>/a2Sgst', formatter:'.formatter.amountValue'}"/>
+					</VBox>
+					<VBox alignItems="End" width="10%">
+						<Text text="{path:'ReconResultHeader>/a2Cess', formatter:'.formatter.amountValue'}"/>
+					</VBox>
+					<VBox alignItems="End" width="10%"/>
+					<VBox alignItems="End" width="10%"/>
+					<VBox alignItems="End" width="10%"/>
+					<VBox alignItems="End" width="10%" class="sapUiTinyMarginEnd"/>
+				</HBox>
+				<HBox class="sapUiTinyMarginTopBottom" visible="{=${Display>/LabelRR1}==='2B'}">
+					<VBox width="4rem">
+						<Label text="{Display>/LabelRR1}" class="sapUiTinyMarginBegin" design="Bold"/>
+					</VBox>
+					<VBox alignItems="End" width="10rem">
+						<Text text="{path:'ReconResultHeader>/b2VendorGstinCount'}"/>
+					</VBox>
+					<VBox alignItems="End" width="9rem">
+						<Text text="{path:'ReconResultHeader>/b2DocumentCount'}"/>
+					</VBox>
+					<VBox alignItems="End" width="10%">
+						<Text text="{path:'ReconResultHeader>/b2TotalTax', formatter:'.formatter.amountValue'}"/>
+					</VBox>
+					<VBox alignItems="End" width="10%">
+						<Text text="{path:'ReconResultHeader>/b2Igst', formatter:'.formatter.amountValue'}"/>
+					</VBox>
+					<VBox alignItems="End" width="10%">
+						<Text text="{path:'ReconResultHeader>/b2Cgst', formatter:'.formatter.amountValue'}"/>
+					</VBox>
+					<VBox alignItems="End" width="10%">
+						<Text text="{path:'ReconResultHeader>/b2Sgst', formatter:'.formatter.amountValue'}"/>
+					</VBox>
+					<VBox alignItems="End" width="10%">
+						<Text text="{path:'ReconResultHeader>/b2Cess', formatter:'.formatter.amountValue'}"/>
+					</VBox>
+					<VBox alignItems="End" width="10%"/>
+					<VBox alignItems="End" width="10%"/>
+					<VBox alignItems="End" width="10%"/>
+					<VBox alignItems="End" width="10%" class="sapUiTinyMarginEnd"/>
+				</HBox>
+			</l:BlockLayoutCell>
+		</l:BlockLayoutRow>
+	</l:BlockLayout>
+</core:FragmentDefinition>

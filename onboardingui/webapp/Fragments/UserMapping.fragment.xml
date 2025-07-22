@@ -1,0 +1,265 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Label text="Entity :" class="sapUiTinyMarginTop" design="Bold"/>
+						<Select items="{entityDS>/resp}" change="onSelectionChangeEntity" id="idEntityDS" width="12rem" class="sapUiTinyMarginBegin">
+							<core:Item key="{entityDS>entityId}" text="{entityDS>entityName}"/>
+						</Select>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<Button type="Emphasized" icon="sap-icon://save" text="Submit" id="idUserMappingSubmit" enabled="false" press="onSubmit"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<!--<f:header>
+			<f:DynamicPageHeader>
+				<f:content>
+					<RadioButtonGroup id="idRBUserMapping" columns="3" selectedIndex="2" select="onSelectRadioButton" class="sapUiMediumMarginBottom">
+						<buttons>
+							<RadioButton id="RB2-1" text="Outward"/>
+							<RadioButton id="RB2-2" text="Inward"/>
+							<RadioButton id="RB2-3" text="Both"/>
+						</buttons>
+					</RadioButtonGroup>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>-->
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<ui:Table id="idUserMappingTable" rows="{dataPermission>/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10"
+					fixedRowCount="0" fixedColumnCount="2" enableSelectAll="true">
+					<ui:extension>
+						<Toolbar>
+							<!--<Button text="Download Template" icon="sap-icon://excel-attachment" press="onExportTemplate"/>-->
+							<ToolbarSpacer/>
+							<!--<u:FileUploader name="myFileUpload" uploadUrl="upload/" uploadComplete="handleUploadComplete" change="handleUploadComplete"/>-->
+							<!--<Button icon="sap-icon://download" press="onExportExcel"/>-->
+							<!--<Button type="Accept" icon="sap-icon://add" tooltip="Add row" id="idUserMappingAddrow" press="onAddrow"/>-->
+							<Button type="Accept" icon="sap-icon://edit" tooltip="Edit row" id="idDataSecurityEditrow" press="onEditRows"/>
+							<Button type="Reject" icon="sap-icon://delete" tooltip="Delete rows" id="idUserMappingDeleteRows" press="onDeleteRows" enabled="false"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="4rem" headerSpan="0">
+							<ui:multiLabels>
+								<Label text="S.No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{dataPermission>sno}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem">
+							<ui:multiLabels>
+								<Label text="User Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{dataPermission>userName}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem">
+							<ui:multiLabels>
+								<Label text="E-Mail ID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{dataPermission>email}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="18rem">
+							<ui:multiLabels>
+								<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<MultiComboBox items="{dataF4>/gstin/}" selectedKeys="{dataPermission>gstinIds}" editable="{dataPermission>edit}"
+									selectionChange="onSelectionChangeMCB">
+									<core:ListItem key="{dataF4>id}" text="{dataF4>supplierGstin}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem" visible="{visCol>/plant}">
+							<ui:multiLabels>
+								<Label text="Plant" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<MultiComboBox items="{dataF4>/plant/}" selectedKeys="{dataPermission>plant}" editable="{dataPermission>edit}"
+									selectionChange="onSelectionChangeMCB">
+									<core:ListItem key="{dataF4>id}" text="{dataF4>plant}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem" visible="{visCol>/division}">
+							<ui:multiLabels>
+								<Label text="Division" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<MultiComboBox items="{dataF4>/division/}" selectedKeys="{dataPermission>division}" editable="{dataPermission>edit}"
+									selectionChange="onSelectionChangeMCB">
+									<core:ListItem key="{dataF4>id}" text="{dataF4>division}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem" visible="{visCol>/subDivision}">
+							<ui:multiLabels>
+								<Label text="Sub Division" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<MultiComboBox items="{dataF4>/subDivision/}" selectedKeys="{dataPermission>subDivision}" editable="{dataPermission>edit}"
+									selectionChange="onSelectionChangeMCB">
+									<core:ListItem key="{dataF4>id}" text="{dataF4>subDivision}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem" visible="{visCol>/location}">
+							<ui:multiLabels>
+								<Label text="Location" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<MultiComboBox items="{dataF4>/location/}" selectedKeys="{dataPermission>location}" editable="{dataPermission>edit}"
+									selectionChange="onSelectionChangeMCB">
+									<core:ListItem key="{dataF4>id}" text="{dataF4>location}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem" visible="{visCol>/salesOrg}">
+							<ui:multiLabels>
+								<Label text="Sales Organization" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<MultiComboBox items="{dataF4>/salesOrg/}" selectedKeys="{dataPermission>salesOrg}" editable="{dataPermission>edit}"
+									selectionChange="onSelectionChangeMCB">
+									<core:ListItem key="{dataF4>id}" text="{dataF4>salesOrg}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem" visible="{visCol>/purchOrg}">
+							<ui:multiLabels>
+								<Label text="Purchase Organization" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<MultiComboBox items="{dataF4>/purchOrg/}" selectedKeys="{dataPermission>purchOrg}" editable="{dataPermission>edit}"
+									selectionChange="onSelectionChangeMCB">
+									<core:ListItem key="{dataF4>id}" text="{dataF4>purchOrg}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem" visible="{visCol>/distChannel}">
+							<ui:multiLabels>
+								<Label text="Distribution Channel" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<MultiComboBox items="{dataF4>/distChannel/}" selectedKeys="{dataPermission>distChannel}" editable="{dataPermission>edit}"
+									selectionChange="onSelectionChangeMCB">
+									<core:ListItem key="{dataF4>id}" text="{dataF4>distChannel}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem" visible="{visCol>/profitCenter}">
+							<ui:multiLabels>
+								<Label text="Profit Centre 1" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<MultiComboBox items="{dataF4>/profitCenter/}" selectedKeys="{dataPermission>profitCenter}" editable="{dataPermission>edit}"
+									selectionChange="onSelectionChangeMCB">
+									<core:ListItem key="{dataF4>id}" text="{dataF4>profitCenter}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem" visible="{visCol>/profitCenter2}">
+							<ui:multiLabels>
+								<Label text="Profit Centre 2" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<MultiComboBox items="{dataF4>/profitCenter2/}" selectedKeys="{dataPermission>profitCenter2}" editable="{dataPermission>edit}"
+									selectionChange="onSelectionChangeMCB">
+									<core:ListItem key="{dataF4>id}" text="{dataF4>profitCenter2}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem" visible="{visCol>/userAccess1}">
+							<ui:multiLabels>
+								<Label text="Profit Centre 3" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<MultiComboBox items="{dataF4>/userAccess1/}" selectedKeys="{dataPermission>userAccess1}" editable="{dataPermission>edit}"
+									selectionChange="onSelectionChangeMCB">
+									<core:ListItem key="{dataF4>id}" text="{dataF4>userAccess1}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem" visible="{visCol>/userAccess2}">
+							<ui:multiLabels>
+								<Label text="Profit Centre 4" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<MultiComboBox items="{dataF4>/userAccess2/}" selectedKeys="{dataPermission>userAccess2}" editable="{dataPermission>edit}"
+									selectionChange="onSelectionChangeMCB">
+									<core:ListItem key="{dataF4>id}" text="{dataF4>userAccess2}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem" visible="{visCol>/userAccess3}">
+							<ui:multiLabels>
+								<Label text="Profit Centre 5" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<MultiComboBox items="{dataF4>/userAccess3/}" selectedKeys="{dataPermission>userAccess3}" editable="{dataPermission>edit}"
+									selectionChange="onSelectionChangeMCB">
+									<core:ListItem key="{dataF4>id}" text="{dataF4>userAccess3}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem" visible="{visCol>/userAccess4}">
+							<ui:multiLabels>
+								<Label text="Profit Centre 6" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<MultiComboBox items="{dataF4>/userAccess4/}" selectedKeys="{dataPermission>userAccess4}" editable="{dataPermission>edit}"
+									selectionChange="onSelectionChangeMCB">
+									<core:ListItem key="{dataF4>id}" text="{dataF4>userAccess4}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem" visible="{visCol>/userAccess5}">
+							<ui:multiLabels>
+								<Label text="Profit Centre 7" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<MultiComboBox items="{dataF4>/userAccess5/}" selectedKeys="{dataPermission>userAccess5}" editable="{dataPermission>edit}"
+									selectionChange="onSelectionChangeMCB">
+									<core:ListItem key="{dataF4>id}" text="{dataF4>userAccess5}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem" visible="{visCol>/userAccess6}">
+							<ui:multiLabels>
+								<Label text="Profit Centre 8" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<MultiComboBox items="{dataF4>/userAccess6/}" selectedKeys="{dataPermission>userAccess6}" editable="{dataPermission>edit}"
+									selectionChange="onSelectionChangeMCB">
+									<core:ListItem key="{dataF4>id}" text="{dataF4>userAccess6}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem" visible="{visCol>/sourceId}">
+							<ui:multiLabels>
+								<Label text="Source ID" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<MultiComboBox items="{dataF4>/sourceId/}" selectedKeys="{dataPermission>sourceId}" editable="{dataPermission>edit}"
+									selectionChange="onSelectionChangeMCB">
+									<core:ListItem key="{dataF4>id}" text="{dataF4>sourceId}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

@@ -1,0 +1,231 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:commons="sap.suite.ui.commons" xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table">
+	<f:DynamicPage id="dpGstr2PrSummary" visible="{PrProperty>/summary}">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button icon="sap-icon://nav-back" tooltip="{i18n>backGstr2}" type="Transparent" press="onGstr2Back('PrSummary')"/>
+						<Title text="{i18n>reviewSummary}" class="clTitleMarginTop"/>
+					</HBox>
+				</f:heading>
+				<!--<f:actions>-->
+				<!--	<Link text="{i18n>requsetIdWise}" press="onPressGstr2RequestId"/>-->
+				<!--</f:actions>-->
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>criteria}" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="slPrSummaryCriteria" change=".changeGstr2Criteria('summaryDate', ${$source>/selectedKey}==='docDate')"
+									items="{DropDown>/gstr2Criteria}">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>fromDate}" visibleInFilterBar="true"
+							visible="{PrProperty>/summaryDate}">
+							<fb:control>
+								<DatePicker id="dtPrSummaryFrom" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" change="onChangePrDate($event,'dtPrSummaryTo')"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>toDate}" visibleInFilterBar="true"
+							visible="{PrProperty>/summaryDate}">
+							<fb:control>
+								<DatePicker id="dtPrSummaryTo" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="{i18n>fromPeriod}" visibleInFilterBar="true"
+							visible="{=!${PrProperty>/summaryDate}}">
+							<fb:control>
+								<DatePicker id="dpPrSummaryFrom" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="onChangePrDate($event,'dpPrSummaryTo')"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="{i18n>toPeriod}" visibleInFilterBar="true"
+							visible="{=!${PrProperty>/summaryDate}}">
+							<fb:control>
+								<DatePicker id="dpPrSummaryTo" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slPrSummaryGstin" items="{isdregGstin>/}" selectionChange="selectAll">
+									<core:Item key="{isdregGstin>value}" text="{isdregGstin>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="{i18n>dataCategory}" visibleInFilterBar="false">
+							<fb:control>
+								<MultiComboBox id="slPrSummaryDataCateg" items="{DropDown>/gstr2PrDataCateg}" selectionChange="selectAll">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button icon="sap-icon://filter" class="buttoncolorSec" tooltip="{i18n>adaptFilter}" press="onPrSummAdaptFilters('S')"/>
+					<Button text="{i18n>clear}" press="onPressClearPR('Summary')" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+					<Button text="Filter" class="buttoncolor" press="onSearch('PrSummary')"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer id="idCcPrSummary">
+				<commons:toolbar>
+					<OverflowToolbar>
+						<Label text="Showing:" design="Bold"/>
+						<CheckBox text="Tax Amount" selected="{PrProperty>/summaryTaxPayable}"/>
+						<CheckBox text="{i18n>creditEligible}" selected="{PrProperty>/summaryCrEligible}"/>
+						<ToolbarSpacer/>
+						<!--<HBox visible="{= ${userPermission>/appPermission/P8}}">-->
+						<Button text="{i18n>errorCorrect}" class="buttoncolorSec" enabled="{= ${userPermission>/appPermission/P8}}" press="onErrorCorrection('S')"/>
+						<MenuButton class="buttoncolorSec" text="{i18n>downReport}" enabled="{= ${userPermission>/appPermission/P8}}">
+							<Menu itemSelected="onDownloadPrSummaryReport($event,${$parameters>/item},'S')">
+								<MenuItem key="gstr2Process" text="{i18n>processedRecords}"/>
+								<MenuItem key="gstr2PREntityLevel" text="{i18n>entityLevel}"/>
+								<MenuItem key="gstr2AspError" text="{i18n>aspError}"/>
+								<MenuItem key="itcRep" text="ITC summary report" enabled="{= ${userPermission>/appPermission/P36}}"/>
+								<MenuItem key="gstr2Tagging" text="Processed Records (Recon Tagging)"/>
+							</Menu>
+						</MenuButton>
+						<!--<Button class="buttoncolorSec" text="{i18n>deleteData}" enabled="false"/>-->
+						<Button class="buttoncolorSec" icon="sap-icon://expand-all" tooltip="{i18n>expand}" press="onPrExpandCollapseAll('E')"/>
+						<Button class="buttoncolorSec" icon="sap-icon://collapse-all" tooltip="{i18n>collapse}" press="onPrExpandCollapseAll('C')"/>
+						<!--<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="{i18n>downExcel}" enabled="false"/>-->
+						<!--<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="{i18n>downPdf}" enabled="false"/>-->
+						<Button type="Transparent" icon="sap-icon://full-screen" id="bGstr2SummaryFullScreen" tooltip="{i18n>openFullScreen}"
+							press="onGstr2FullScreen('openSummary')" visible="{=!${PrProperty>/summaryFullScreen}}"/>
+						<Button type="Transparent" icon="sap-icon://exit-full-screen" id="bGstr2SummaryCloseScreen" tooltip="{i18n>closeFullScreen}"
+							press="onGstr2FullScreen('closeSummary')" visible="{PrProperty>/summaryFullScreen}"/>
+						<!--</HBox>-->
+						<commons:ChartContainerToolbarPlaceholder/>
+					</OverflowToolbar>
+				</commons:toolbar>
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:TreeTable id="tabPrSummary" rows="{PrSummary>/}" selectionMode="Single" fixedColumnCount="1" enableColumnReordering="false"
+								toggleOpenState="onTogglePrSummary">
+								<ui:columns>
+									<ui:Column width="16rem">
+										<Label text="{i18n>table}" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+										<ui:template>
+											<Text text="{path:'PrSummary>tableSection', formatter:'._prSummaryTables'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="8rem">
+										<Label text="{i18n>count}" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+										<ui:template>
+											<Text text="{PrSummary>count}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160">
+										<Label design="Bold" text="{i18n>invoiceValue}" textAlign="Center" width="100%" wrapping="true"/>
+										<ui:template>
+											<Text text="{path:'PrSummary>invoiceValue', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160">
+										<Label design="Bold" text="{i18n>taxableVal}" textAlign="Center" width="100%" wrapping="true"/>
+										<ui:template>
+											<Text text="{path:'PrSummary>taxableValue', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160">
+										<Label design="Bold" text="{i18n>totalTax}" textAlign="Center" width="100%" wrapping="true"/>
+										<ui:template>
+											<Text text="{path:'PrSummary>taxPayable', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" headerSpan="4" minWidth="160" visible="{PrProperty>/summaryTaxPayable}">
+										<ui:multiLabels>
+											<Label text="Tax Amount" textAlign="Center" width="100%" design="Bold"/>
+											<Label text="{i18n>igst}" textAlign="Center" width="100%" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'PrSummary>taxPayableIgst', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160" visible="{PrProperty>/summaryTaxPayable}">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="{i18n>cgst}" textAlign="Center" width="100%" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'PrSummary>taxPayableCgst', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160" visible="{PrProperty>/summaryTaxPayable}">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="{i18n>sgst}" textAlign="Center" width="100%" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'PrSummary>taxPayableSgst', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160" visible="{PrProperty>/summaryTaxPayable}">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="{i18n>cess}" textAlign="Center" width="100%" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'PrSummary>taxPayableCess', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160">
+										<Label text="{i18n>totalEligibleCr}" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+										<ui:template>
+											<Text text="{path:'PrSummary>crEligibleTotal', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" headerSpan="4" minWidth="160" visible="{PrProperty>/summaryCrEligible}">
+										<ui:multiLabels>
+											<Label text="{i18n>creditEligible}" textAlign="Center" width="100%" design="Bold"/>
+											<Label text="{i18n>igst}" textAlign="Center" width="100%" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'PrSummary>crEligibleIgst', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160" visible="{PrProperty>/summaryCrEligible}">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="{i18n>cgst}" textAlign="Center" width="100%" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'PrSummary>crEligibleCgst', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160" visible="{PrProperty>/summaryCrEligible}">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="{i18n>sgst}" textAlign="Center" width="100%" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'PrSummary>crEligibleSgst', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160" visible="{PrProperty>/summaryCrEligible}">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="{i18n>cess}" textAlign="Center" width="100%" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'PrSummary>crEligibleCess', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:TreeTable>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

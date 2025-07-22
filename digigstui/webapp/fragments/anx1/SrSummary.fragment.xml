@@ -1,0 +1,173 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table" xmlns:f="sap.f"
+	xmlns:layout="sap.ui.layout" xmlns:fb="sap.ui.comp.filterbar">
+	<f:DynamicPage id="dpRecipientSRSumm">
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding">
+				<fb:FilterBar id="fbRecptSummary" showGoOnFB="false" showClearOnFB="false" width="90%" showFilterConfiguration="false" search="onSearch"
+					clear="onClearFilter" useToolbar="false" class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="false">
+							<fb:control>
+								<Select id="recpSummEntity" items="{EntityModel>/}" change="onSrSummSEntyChange" width="100%">
+									<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>
+								</Select>
+								<!--<Select id="recpSummEntity" items="{EntityList>/resp/}" change="onSrSummSEntyChange" width="100%">
+									<core:Item key="{EntityList>entityId}" text="{EntityList>entityName}"/>
+								</Select>-->
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="recpSummGstin" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}"
+									selectionFinish="onSrsummGstinChange">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Recipient PAN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="recpSummPAN" width="100%" items="{ReciSummGSTN12>/}" selectionFinish="onSRsumPAN">
+									<core:Item key="{ReciSummGSTN12>cpan}" text="{ReciSummGSTN12>cpan}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Recipient GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="recpSummRGstin" width="100%" items="{ReciSummGSTN1>/}">
+									<core:Item key="{ReciSummGSTN1>cgstin}" text="{ReciSummGSTN1>cgstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Date of Upload to GSTN" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="slRecptUploadDate" forceSelection="false" items="{DropDown>/uploadGstn}" change="onSelectChange">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dtRecSumm" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" id="fbStatusHboxRS" width="10%">
+					<Button id="bRecptFilter" icon="sap-icon://filter" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilter"/>
+					<Button id="bRecptClear" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd" press="onRecSumClear"/>
+					<Button id="bRecptGo" text="{i18n>go}" type="Emphasized" press="onRecpSumGo"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+	</f:DynamicPage>
+	<ui:TreeTable id="tabRecipSummary" rows="{path:'recptSummGO>/', parameters:{arrayNames:['level2','level3'],numberOfExpandedLevels:1}}"
+		selectionMode="None">
+		<ui:extension>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<MenuButton type="Emphasized" text="Download Report">
+					<Menu itemSelected="onMenuItemPress">
+						<MenuItem text="Processed Records (Line Item Level)" key="processLineItem"/>
+						<MenuItem text="Processed Records (HSN / Rate Level)" key="processRate"/>
+						<MenuItem text="Tax Amount Recon" key="taxAmtRecon"/>
+						<MenuItem text="Counter Party Response" key="cpResopnse"/>
+						<MenuItem text="Submitted Records" key="submitted"/>
+						<MenuItem text="Entity Level Summary" key="entityLevel"/>
+						<MenuItem text="Records available for Amendment" key="amendRecord"/>
+						<MenuItem text="Consolidate DigiGST Error" key="digiError"/>
+						<MenuItem text="Consolidate GSTN Error" key="gstnError"/>
+					</Menu>
+				</MenuButton>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="10rem">
+				<Label text="Recipient PAN" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{recptSummGO>cPan}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="Recpient Name" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{recptSummGO>cName}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="Recipient GSTIN" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{recptSummGO>cgstin}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="Table Type" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{recptSummGO>tableType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="Doc Type" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{recptSummGO>docType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{recptSummGO>count}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{recptSummGO>taxableVal}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{recptSummGO>igst}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{recptSummGO>cgst}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{recptSummGO>sgst}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{recptSummGO>cess}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="Invoice Value" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{recptSummGO>docAmt}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="Remarks" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{recptSummGO>remarks}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+		<ui:footer>
+			<HBox width="100%" justifyContent="Center">
+				<Button id="SRbtnPrev" type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="Previous" enabled="false" press="SRonPressPagination"/>
+				<Input id="SRinPageNo" type="Number" textAlign="End" width="4rem" submit="SRonSubmitPagination" enabled="false" class="sapUiTinyMarginBegin"
+					value="0"/>
+				<Text id="SRtxtPageNo" text="/ 0" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+				<Button id="SRbtnNext" type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="Next" enabled="false" press="SRonPressPagination"/>
+			</HBox>
+		</ui:footer>
+	</ui:TreeTable>
+</core:FragmentDefinition>

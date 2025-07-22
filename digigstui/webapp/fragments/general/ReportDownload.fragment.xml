@@ -1,0 +1,64 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons">
+	<Dialog title="Report Download" type="Message" contentWidth="28%" contentHeight="80%" class="sapUiSizeCompact cl_saveHeader">
+		<buttons>
+			<Button text="OK" press="onCloseRptDownload"/>
+		</buttons>
+		<HBox justifyContent="SpaceBetween">
+			<SegmentedButton selectedKey="{PropReport>/segment}">
+				<items>
+					<SegmentedButtonItem key="transaction" text="Transactional Reports"/>
+					<SegmentedButtonItem key="summary" text="Summary Reports"/>
+				</items>
+			</SegmentedButton>
+			<Button text="Generate Report" press="onGenerateRpt" visible="{=${PropReport>/status}==='REPORT_GENERATION_FAILED'}" class="buttoncolorSec"/>
+		</HBox>
+		<ui:TreeTable id="tabTrans" rows="{path:'ReportDownload>/transactionalRecords',parameters:{arrayNames:['level2'],numberOfExpandedLevels:1}}"
+			enableColumnReordering="false" selectionMode="None" visibleRowCount="14" visible="{=${PropReport>/segment}==='transaction'}">
+			<ui:extension>
+				<Toolbar>
+					<ToolbarSpacer/>
+					<Button icon="sap-icon://expand-all" press="onExpandCollapse('E')" class="buttoncolorSec"/>
+					<Button icon="sap-icon://collapse-all" press="onExpandCollapse('C')" class="buttoncolorSec"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column>
+					<Label text="Report Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{ReportDownload>reportName}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center" width="8rem">
+					<Label text="Download" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox alignItems="Center" justifyContent="Center" renderType="Bare">
+							<core:Icon src="sap-icon://download" tooltip="Download" press="onReportDownload(${ReportDownload>path})" visible="{=${ReportDownload>flag}}"/>
+							<Text text="{ReportDownload>message}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:TreeTable>
+		<ui:Table id="tabSummary" rows="{path:'ReportDownload>/summaryRecords'}" enableColumnReordering="false" selectionMode="None"
+			visible="{=${PropReport>/segment}==='summary'}" class="sapUiMediumMarginTop">
+			<ui:columns>
+				<ui:Column>
+					<Label text="Report Name" design="Bold" textAlign="Left" width="100%" wrapping="true"/>
+					<ui:template>
+						<Text text="{ReportDownload>reportName}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center" width="8rem">
+					<Label text="Download" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+					<ui:template>
+						<HBox direction="Column" justifyContent="Center">
+							<core:Icon src="sap-icon://download" tooltip="Download" press="onReportDownload(${ReportDownload>path})" visible="{=${ReportDownload>flag}}"/>
+							<Text text="{ReportDownload>message}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+	</Dialog>
+</core:FragmentDefinition>

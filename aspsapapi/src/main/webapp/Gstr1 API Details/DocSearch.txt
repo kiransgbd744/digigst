@@ -1,0 +1,51 @@
+URL : /docSearch.do
+Service : POST 
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+Request Payload :
+
+
+{
+"hdr":{
+                "pageNum": 0,
+                "pageSize": 50    
+    }, 
+"req" :   {
+               
+                 "entityId": ["225"],
+                 "criteria": "",
+                 "receivFromDate": null,
+                 "receivToDate": null,
+                 "docFromDate": null,
+                 "docToDate": null,
+                 "returnFromDate": null,
+                 "returnToDate": null,
+                 "docNo": "PRTEST4-DBNM01-3107",
+                 "gstnStatus":["Saved","NotSaved","Error","Submitted"],
+                 "processingStatus": "E/P/I",
+                 "fileId": null,
+                 "dataSecAttrs": {
+                                                "PC":["PC125", "PC126"],
+                                                "GSTIN":[],
+                                                "Plant":[],
+                                                "D":[],
+                                                "SO":[],
+                                                "DC":[],
+                                                "L":[],
+                                                "UD1":[],
+                                                "UD2":[],
+                                                "UD3":[],
+                                                "UD4":[],
+                                                "UD5":[],
+                                                "UD6":[]
+                                },
+                   "dataCategory":[],
+                   "tableNumber":[],
+                   "docType":[],
+                   "returnType":[],
+                   "counterPartyGstin":[],
+                   "counterPartyFlag":null                   
+           } 
+}

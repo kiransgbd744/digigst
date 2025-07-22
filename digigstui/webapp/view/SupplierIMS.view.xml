@@ -1,0 +1,38 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.f"
+	controllerName="com.ey.digigst.controller.SupplierIMS" displayBlock="true" busyIndicatorDelay="0">
+	<f:DynamicPage class="clDataStatusAPI">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox alignItems="Center">
+						<Button type="Transparent" icon="sap-icon://nav-back" tooltip="Back" press="onBackImsSummary" visible="{ViewProperty>/navBack}"/>
+						<Title text="{ViewProperty>/title}"/>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<SegmentedButton selectedKey="{ViewProperty>/btnSubSegment}"
+						visible="{=(${ViewProperty>/btnSegment}==='IMSGetCall'||${ViewProperty>/btnSegment}==='IMSSummary')&amp;&amp;!${ViewProperty>/navBack}}">
+						<items>
+							<SegmentedButtonItem text="Summary" key="summary"/>
+							<SegmentedButtonItem text="Details" key="details"/>
+						</items>
+					</SegmentedButton>
+					<SegmentedButton selectedKey="{ViewProperty>/btnSegment}" select="onSegmentBtnChange(${$source>/selectedKey})" width="35rem">
+						<items>
+							<SegmentedButtonItem text="Get Supplier IMS Records" key="IMSGetCall"/>
+							<SegmentedButtonItem text="Supplier IMS Summary" key="IMSSummary"/>
+							<SegmentedButtonItem text="Supplier IMS Records View" key="IMSRecords"/>
+						</items>
+					</SegmentedButton>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr1.ims.SupplierIMSGetCall" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr1.ims.SupplierIMSSummary" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr1.ims.SupplierIMSRecords" type="XML"/>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

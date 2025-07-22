@@ -1,0 +1,370 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.imGetInwardEINV"
+	xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table" xmlns:u="sap.ui.unified" busyIndicatorDelay="0">
+	<VBox>
+		<f:DynamicPage id="dpGetSummary" class="sapUiNoContentPadding sapUiNoMargin" visible="{=!${Property>/visiSumm}}">
+			<f:title>
+				<f:DynamicPageTitle>
+					<f:heading>
+						<Title text="Get Inward E-Invoices" titleStyle="H3"/>
+					</f:heading>
+					<f:actions>
+						<Label text="View Details Information"/>
+						<Switch state="{Property>/flag}" customTextOn="Yes" customTextOff="No" change="onSwitchEInv">
+							<layoutData>
+								<FlexItemData growFactor="1"/>
+							</layoutData>
+						</Switch>
+					</f:actions>
+				</f:DynamicPageTitle>
+			</f:title>
+			<f:header>
+				<f:DynamicPageHeader pinnable="false">
+					<fb:FilterBar id="fbProcessRecord" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+						class="sapUiNoContentPadding">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+								<fb:control>
+									<MultiComboBox items="{IRNGstin>/}" selectedKeys="{FilterModel>/gstins}" selectionChange="selectAll" width="100%">
+										<core:Item key="{IRNGstin>gstin}" text="{IRNGstin>gstin}"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Month (i)" tooltip="E-Invoice generation Period"
+								labelTooltip="Tax period in which IRN is generated" visibleInFilterBar="true">
+								<fb:control>
+									<DatePicker id="dtProcessed" displayFormat="MMM yyyy" valueFormat="MMyyyy" value="{FilterModel>/period}" maxDate="{FilterModel>/maxDate}"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Supply Type" visibleInFilterBar="true">
+								<fb:control>
+									<MultiComboBox selectedKeys="{FilterModel>/supplyType}" selectionChange="selectAll">
+										<core:Item key="All" text="All"/>
+										<core:Item key="B2B" text="B2B"/>
+										<core:Item key="SEZWP" text="SEZWP"/>
+										<core:Item key="SEZWOP" text="SEZWOP"/>
+										<core:Item key="DXP" text="DXP"/>
+										<core:Item key="EXPWP" text="EXPWP"/>
+										<core:Item key="EXPWOP" text="EXPWOP"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+					<HBox justifyContent="End" class="clMain" width="10%">
+						<Button text="{i18n>clear}" press="onPressClear" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+						<Button text="Filter" press="onSearch" class="buttoncolor"/>
+					</HBox>
+				</f:DynamicPageHeader>
+			</f:header>
+			<f:content>
+				<VBox>
+					<ui:Table id="tabEntityInward" rows="{ProcessedRecord>/}" selectionMode="MultiToggle" fixedColumnCount="1" visible="{=!${Property>/flag}}"
+						class="sapUiTinyMarginTop">
+						<ui:extension>
+							<OverflowToolbar>
+								<RadioButtonGroup id="rgbFileType" columns="2" select="onSelectFileType(${$parameters>/selectedIndex})" class="sapUiMediumMarginEnd">
+									<RadioButton text="Excel"/>
+								</RadioButtonGroup>
+								<u:FileUploader id="fuGetInwardEInv" name="file" fileType="xlsx,xlsm,xls,csv" sameFilenameAllowed="false" sendXHR="true" width="30rem"
+									uploadComplete="onEInvUploadComplete" class="buttoncolorSec"/>
+								<Button text="{i18n>upload}" press="onUploadGetInwardEInv" class="sapUiTinyMarginBegin buttoncolor"/>
+								<ToolbarSpacer/>
+								<Button text="Initiate Get Inward E-Invoices" press="onInitiateGetInwardEInv" class="sapUiTinyMarginBegin buttoncolorSec"/>
+								<MenuButton text="Download Reports" class="buttoncolorSec sapUiTinyMarginBegin">
+									<menu>
+										<Menu itemSelected="onDownloadReport">
+											<MenuItem key="summary" text="Summary Report"/>
+											<MenuItem key="detail" text="Detailed Report (Line Item level)"/>
+											<MenuItem key="json" text="JSON Data"/>
+											<!--<MenuItem key="table" text="Table Data"/>-->
+											<MenuItem key="nested" text="Preceding Document &amp; Other details"/>
+										</Menu>
+									</menu>
+								</MenuButton>
+							</OverflowToolbar>
+						</ui:extension>
+						<ui:columns>
+							<ui:Column width="14rem">
+								<Label text="{i18n>gstin}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<VBox>
+										<HBox>
+											<Text text="{ProcessedRecord>state}" width="8rem" class="stateColor"/>
+											<Text text="{=${ProcessedRecord>regType}==='REGULAR'?'':${ProcessedRecord>regType}}" class="stateColor fontSmall"/>
+										</HBox>
+										<HBox alignContent="Start" justifyContent="SpaceBetween">
+											<Link text="{ProcessedRecord>gstin}" emphasized="true" press="onGstinEInvDetails"/>
+											<core:Icon src="sap-icon://circle-task-2" size="0.8rem" tooltip="{=${ProcessedRecord>authToken}==='I'?'Inactive':'Active'}"
+												visible="{=${ProcessedRecord>state}===''?false:true}" press="onActivateAuthToken(${ProcessedRecord>gstin},${ProcessedRecord>authToken})">
+												<core:customData>
+													<core:CustomData key="authToken" value="{=!${ProcessedRecord>authToken}?'':${ProcessedRecord>authToken}}" writeToDom="true"/>
+												</core:customData>
+											</core:Icon>
+										</HBox>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column>
+								<Label text="Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<VBox width="100%">
+										<ObjectStatus text="{ProcessedRecord>status}" active="{=${ProcessedRecord>status}!=='NOT INITIATED'?true:false}"
+											state="{path:'ProcessedRecord>status', formatter:'.formatter.statusClr'}" press="onPressSaveStatus($event,'P')"/>
+										<Text text="{ProcessedRecord>getCallTimestamp}" class="timeStmpClr"/>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End">
+								<Label text="Count of Supplier GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Text text="{ProcessedRecord>countSuppGstn}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End">
+								<Label text="Count of E-Invoice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Text text="{ProcessedRecord>countEinv}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End">
+								<Label text="Active E-Invoice Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Text text="{ProcessedRecord>activeEinv}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End">
+								<Label text="Cancelled E-Invoice Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Text text="{ProcessedRecord>canclEinv}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End">
+								<HBox justifyContent="Center" width="100%">
+									<Label text="Total Invoice Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									<core:Icon src="sap-icon://message-information" tooltip="Invoice amount is only for active IRNs after net off with Credit Note"
+										class="sapUiTinyMarginBegin"/>
+								</HBox>
+								<ui:template>
+									<Text text="{ProcessedRecord>totlInvAmt}"/>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+						<ui:footer>
+							<HBox>
+								<!--<HBox width="33%" class="sapUiTinyMarginTop">-->
+								<core:Icon src="sap-icon://circle-task-2" ariaLabelledBy="txtActive" color="#00ff00" size="0.8rem"/>
+								<Text id="txtActive" text="Auth Token Active" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+								<core:Icon src="sap-icon://circle-task-2" ariaLabelledBy="txtInactive" color="red" size="0.8rem"/>
+								<Text id="txtInactive" text="Auth Token Inactive" class="sapUiTinyMarginBegin"/>
+								<!--</HBox>
+								<HBox justifyContent="Center" width="33%">
+									<Button type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" enabled="{Property>/bFirst}" class="sapUiTinyMarginBeginEnd"
+										press="onPaginationEInv('F')"/>
+									<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="{Property>/bPrev}"
+										press="onPaginationEInv('P')"/>
+									<Input type="Number" textAlign="End" value="{Property>/pageNo}" enabled="{Property>/ePageNo}" width="4rem" class="sapUiTinyMarginBegin"
+										submit="onSubmitPaginationEInv"/>
+									<Text text="/ {Property>/pgTotal}" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+									<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="{Property>/bNext}"
+										press="onPaginationEInv('N')"/>
+									<Button type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" enabled="{Property>/bLast}" class="sapUiTinyMarginBeginEnd"
+										press="onPaginationEInv('L')"/>
+								</HBox>
+								<HBox width="33%"/>-->
+							</HBox>
+						</ui:footer>
+					</ui:Table>
+					<ui:Table id="tabInwardDetails" rows="{ProcessedRecord>/}" selectionMode="MultiToggle" fixedColumnCount="1" visible="{Property>/flag}"
+						class="sapUiSmallMarginTop">
+						<ui:columns>
+							<ui:Column width="14rem">
+								<Label text="{i18n>gstin}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<VBox>
+										<HBox>
+											<Text text="{ProcessedRecord>state}" width="8rem" class="stateColor"/>
+											<Text text="{=${ProcessedRecord>regType}==='REGULAR'?'':${ProcessedRecord>regType}}" class="stateColor fontSmall"/>
+										</HBox>
+										<HBox alignContent="Start" justifyContent="SpaceBetween">
+											<Link text="{ProcessedRecord>gstin}" emphasized="true" press="onPressGstr1Summary"/>
+											<core:Icon src="sap-icon://circle-task-2" size="0.8rem" tooltip="{=${ProcessedRecord>authToken}==='I'?'Inactive':'Active'}"
+												visible="{=${ProcessedRecord>state}===''?false:true}" press="onActivateAuthToken(${ProcessedRecord>gstin},${ProcessedRecord>authToken})">
+												<core:customData>
+													<core:CustomData key="authToken" value="{=!${ProcessedRecord>authToken}?'':${ProcessedRecord>authToken}}" writeToDom="true"/>
+												</core:customData>
+											</core:Icon>
+										</HBox>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column>
+								<Label text="Requested By" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Text text="{ProcessedRecord>requestedBy}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column>
+								<Label text="Mode" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Text text="{ProcessedRecord>mode}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column>
+								<Label text="Completion Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Text text="{ProcessedRecord>completedOn}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column>
+								<Label text="Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<HBox>
+										<Text text="{ProcessedRecord>status}" width="8rem"/>
+										<core:Icon src="sap-icon://message-information" tooltip="" press="onPressDetailStatus" class="sapUiTinyMarginBegin iconMarginTop"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+					</ui:Table>
+				</VBox>
+			</f:content>
+		</f:DynamicPage>
+		<f:DynamicPage id="dpGetDetails" class="sapUiNoContentPadding sapUiNoMargin" visible="{Property>/visiSumm}">
+			<f:title>
+				<f:DynamicPageTitle>
+					<f:heading>
+						<HBox>
+							<Button type="Transparent" icon="sap-icon://nav-back" class="sapUiSmallMarginEnd" tooltip="{i18>back}" press="onPressBack"/>
+							<Title text="Get Inward E-Invoices" titleStyle="H3" class="sapUiMediumMarginEnd sapUiTinyMarginTop"/>
+							<core:Icon src="sap-icon://open-command-field" size="1rem" class="sapUiMediumMarginEnd sapUiTinyMarginTop"/>
+							<Label text="{HeaderValue>/gstin}" design="Bold" class="sapUiSmallMarginEnd sapUiTinyMarginTop font15"/>
+							<ObjectStatus text="{=${HeaderValue>/authToken}==='I'?'Inactive':'Active'}" inverted="true" class="sapUiSmallMarginEnd sapUiTinyMarginTop"
+								state="{=${HeaderValue>/authToken}==='I' ? 'Error' : 'Success'}"/>
+						</HBox>
+					</f:heading>
+				</f:DynamicPageTitle>
+			</f:title>
+			<f:header>
+				<f:DynamicPageHeader pinnable="false">
+					<fb:FilterBar id="fbGetDetails" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+						class="sapUiNoContentPadding">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>gstin}" visibleInFilterBar="true">
+								<fb:control>
+									<Select items="{IsdGstin>/}" selectedKey="{HeaderValue>/gstin}" width="100%">
+										<core:Item key="{IsdGstin>gstin}" text="{IsdGstin>gstin}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Return Period" tooltip="E-Invoice generation Period"
+								visibleInFilterBar="true">
+								<fb:control>
+									<DatePicker id="dtSummary" displayFormat="MMM yyyy" valueFormat="MMyyyy" value="{HeaderValue>/taxPeriod}" maxDate="{HeaderValue>/maxDate}"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="IRN Status" visibleInFilterBar="true">
+								<fb:control>
+									<MultiComboBox selectedKeys="{HeaderValue>/irnStatus}" selectionChange="selectAll">
+										<core:Item key="All" text="All"/>
+										<core:Item key="ACT" text="Active"/>
+										<core:Item key="CNL" text="Cancelled"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+					<HBox justifyContent="End" class="clMain" width="10%">
+						<Button id="bProcessClearD" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onGstnClear"/>
+						<Button id="bProcessGoD" class="buttoncolor" text="Filter" press="onGstnSearch"/>
+					</HBox>
+				</f:DynamicPageHeader>
+			</f:header>
+			<f:content>
+				<ui:TreeTable id="tabDetails" rows="{path:'SummaryRecord>/', parameters:{ arrayNames:['level2','level3'], numberOfExpandedLevels:2 }}"
+					selectionMode="None" enableSelectAll="false" fixedColumnCount="1" enableColumnReordering="false" visibleRowCount="12"
+					toggleOpenState="onToggleGstr3bSummary" visible="true" class="sapUiTinyMarginTop sapUiLargeMarginBottom">
+					<ui:extension>
+						<OverflowToolbar>
+							<ToolbarSpacer/>
+							<Button text="Download Table Data" press="onDownloadTabData" class="buttoncolorSec"/>
+							<MenuButton text="Download Reports" class="buttoncolorSec sapUiTinyMarginBegin">
+								<menu>
+									<Menu itemSelected="onDownloadGstnReport">
+										<MenuItem key="summary" text="Summary Report"/>
+										<MenuItem key="detail" text="Detailed Report (Line Item level)"/>
+										<MenuItem key="json" text="JSON Data"/>
+										<!--<MenuItem key="table" text="Table Data"/>-->
+										<MenuItem key="nested" text="Preceding Document &amp; Other details"/>
+									</Menu>
+								</menu>
+							</MenuButton>
+						</OverflowToolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="14rem">
+							<Label text="Table" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Label text="{SummaryRecord>supplyType}" design="{=${SummaryRecord>level} ==='L1' ? 'Bold' : 'Standard'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Label text="{SummaryRecord>count}" design="{=${SummaryRecord>level} ==='L1' ? 'Bold' : 'Standard'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Label text="{path:'SummaryRecord>taxableVal',formatter:'.formatter.amountValue'}"
+									design="{=${SummaryRecord>level} ==='L1' ? 'Bold' : 'Standard'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Label text="{path:'SummaryRecord>igst',formatter:'.formatter.amountValue'}"
+									design="{=${SummaryRecord>level} ==='L1' ? 'Bold' : 'Standard'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Label text="{path:'SummaryRecord>cgst',formatter:'.formatter.amountValue'}"
+									design="{=${SummaryRecord>level} ==='L1' ? 'Bold' : 'Standard'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Label text="{path:'SummaryRecord>sgst',formatter:'.formatter.amountValue'}"
+									design="{=${SummaryRecord>level} ==='L1' ? 'Bold' : 'Standard'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Label text="{path:'SummaryRecord>cess',formatter:'.formatter.amountValue'}"
+									design="{=${SummaryRecord>level} ==='L1' ? 'Bold' : 'Standard'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Label text="{path:'SummaryRecord>totalTax',formatter:'.formatter.amountValue'}"
+									design="{=${SummaryRecord>level} ==='L1' ? 'Bold' : 'Standard'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Total Invoice Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Label text="{path:'SummaryRecord>totInvVal',formatter:'.formatter.amountValue'}"
+									design="{=${SummaryRecord>level} ==='L1' ? 'Bold' : 'Standard'}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+			</f:content>
+		</f:DynamicPage>
+	</VBox>
+</mvc:View>

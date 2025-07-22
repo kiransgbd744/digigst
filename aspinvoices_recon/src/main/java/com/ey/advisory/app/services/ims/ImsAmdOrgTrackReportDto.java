@@ -1,0 +1,84 @@
+package com.ey.advisory.app.services.ims;
+
+import lombok.Data;
+
+@Data
+public class ImsAmdOrgTrackReportDto {
+    private String difference;
+    private String tableTypeAmd;
+    private String tableTypeOrg;
+    private String recipientGstinAmd;
+    private String recipientGstinOrg;
+    private String supplierGstinAmd;
+    private String supplierLegalNameAmd;
+    private String supplierTradeNameAmd;
+    private String supplierGstinOrg;
+    private String supplierLegalNameOrg;
+    private String supplierTradeNameOrg;
+    private String documentTypeAmd;
+    private String documentTypeOrg;
+    private String documentNumberAmd;
+    private String documentNumberOrg;
+    private String documentDateAmd;
+    private String documentDateOrg;
+    private String taxableValueAmd;
+    private String taxableValueOrg;
+    private String igstAmd;
+    private String igstOrg;
+    private String cgstAmd;
+    private String cgstOrg;
+    private String sgstAmd;
+    private String sgstOrg;
+    private String cessAmd;
+    private String cessOrg;
+    private String totalTaxAmd;
+    private String totalTaxOrg;
+    private String invoiceValueAmd;
+    private String invoiceValueOrg;
+    private String posAmd;
+    private String posOrg;
+    private String formTypeAmd;
+    private String formTypeOrg;
+    private String gstr1FilingStatusAmd;
+    private String gstr1FilingStatusOrg;
+    private String gstr1FilingPeriodAmd;
+    private String gstr1FilingPeriodOrg;
+    private String originalDocumentNumberAmd;
+    private String originalDocumentNumberOrg;
+    private String originalDocumentDateAmd;
+    private String originalDocumentDateOrg;
+    private String imsResponseRemarksAmd;
+    private String imsResponseRemarksOrg;
+    private String actionGstnAmd;
+    private String actionGstnOrg;
+    private String actionDigiGstAmd;
+    private String actionDigiGstOrg;
+    private String actionDigiGstDateTimeAmd;
+    private String actionDigiGstDateTimeOrg;
+    private String savedToGstnAmd;
+    private String savedToGstnOrg;
+    private String activeInImsGstnAmd;
+    private String activeInImsGstnOrg;
+    private String pendingActionBlockedAmd;
+    private String pendingActionBlockedOrg;
+    private String gstnErrorAmd;
+    private String gstnErrorOrg;
+    private String checksumAmd;
+    private String checksumOrg;
+    private String getCallDateTimeAmd;
+    private String getCallDateTimeOrg;
+    private String imsUniqueIdAmd;
+    private String imsUniqueIdOrg;
+    private String itcReductionRequiredAmd;
+    private String itcReductionRequiredOrg;
+    private String igstDeclToRedItcAmd;
+    private String igstDeclToRedItcOrg;
+    private String cgstDeclToRedItcAmd;
+    private String cgstDeclToRedItcOrg;
+    private String sgstDeclToRedItcAmd;
+    private String sgstDeclToRedItcOrg;
+    private String cessDeclToRedItcAmd;
+    private String cessDeclToRedItcOrg;
+
+}	
+

@@ -1,0 +1,39 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.f">
+	<Dialog id="copyDataID" title="Do you want to Copy Data to ASP User Input?" type="Message" class="sapUiSizeCompact cl_saveHeader"
+		showHeader="true" contentWidth="30%">
+		<!--<f:DynamicPage id="liablityId">
+			<f:title>
+				<f:DynamicPageTitle>
+					<f:heading>
+						<Title text="Do you want to Copy Data to ASP User Input?"/>
+					</f:heading>
+				</f:DynamicPageTitle>
+			</f:title>
+		</f:DynamicPage>-->
+		<VBox>
+			<Label text="Outward" design="Bold"/>
+			<RadioButtonGroup id="rbgCopyType" selectedIndex="1" columns="3">
+				<RadioButton id="RBDigiCompId" text="DigiGST Computed"/>
+				<RadioButton id="RBDigiGstnId" text="GSTN Computed"/>
+				<RadioButton id="RBBlankId" text="Blank Values"/>
+			</RadioButtonGroup>
+			<Label text="Inward" design="Bold"/>
+			<RadioButtonGroup id="rbgCopyType1" selectedIndex="0" columns="3">
+				<RadioButton id="RBDigiComInwrdId" text="DigiGST Computed"/>
+				<RadioButton id="RBDigiGstnInwrdId" text="GSTN Computed"/>
+				<RadioButton id="RBBlankInwrdId" text="Blank Values"/>
+			</RadioButtonGroup>
+			<Label text="Interest and Late Fee" design="Bold"/>
+			<RadioButtonGroup id="rbgCopyType2" selectedIndex="1" columns="2">
+				<RadioButton id="RBDigiIntId" text="DigiGST Computed" editable="false"/>
+				<RadioButton id="RBDigiIntId1" text="GSTN Computed"/>
+			</RadioButtonGroup>
+		</VBox>
+		<beginButton>
+			<Button text="Submit" class="buttoncolorSec" press="onDialogCopySubmit"/>
+		</beginButton>
+		<endButton>
+			<Button text="Cancel" class="buttoncolorSec" press="onCloseDialogCopy"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,72 @@
+URL : /getUserInfo.do
+Service : POST 
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+
+Request Payload :
+
+{
+  "req":{
+          "groupCode":"ern00002"
+  }
+}
+
+
+URL : /updateUserCreation.do
+Service : POST 
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+
+Request Payload :
+
+{
+	"req":[
+			{
+				"entityId":1,
+				"groupCode":"ern00002",
+				"entityName":"SAP_POC_Sandbox",
+				"id":null,
+				"userName": "Rohan",
+                "firstName": "Mahato",
+                "lastName": "M",
+                "email": "rohan@ey.com",
+                "mobile":"7626487438",
+				"userRole": "User",
+				"status":true
+			}
+		]
+}
+
+
+
+
+URL : /deleteUserCreation.do
+Service : POST 
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+
+Request Payload :
+
+{
+	"req":[
+			{
+				"entityId":1,
+				"groupCode":"ern00002",
+				"entityName":"SAP_POC_Sandbox",
+				"id":null,
+				"userName": "Rohan",
+                "firstName": "Mahato",
+                "lastName": "M",
+                "email": "rohan@ey.com",
+                "mobile":"7626487438",
+				"userRole": "User",
+				"status":false
+			}
+		]
+}

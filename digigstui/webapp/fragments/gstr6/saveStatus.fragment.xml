@@ -1,0 +1,103 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form">
+	<Dialog id="dDifference1" title="Save Status" type="Message" class="sapUiSizeCompact cl_saveHeader" contentHeight="70%">
+		<customHeader>
+            <Toolbar>
+                <ToolbarSpacer/>
+                <Label text="Save Status" />
+                <ToolbarSpacer/>
+                <Button icon="sap-icon://refresh" press="fnGoForSaveStatus" tooltip="Refresh" class="buttoncolorSec"/>
+            </Toolbar>
+        </customHeader>
+		<beginButton>
+			<Button text="OKAY" press="onCloseDialogSaveSattus"/>
+		</beginButton>
+		<f:Form width="55rem">
+			<f:layout>
+				<f:ResponsiveGridLayout columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false"/>
+			</f:layout>
+			<f:formContainers>
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement label="GSTIN">
+							<f:fields>
+								<HBox renderType="Bare" alignItems="Center">
+									<Select id="slGstinSave1" items="{Gstin>/}" width="13rem" class="sapUiMediumMarginEnd">
+										<core:Item key="{Gstin>value}" text="{Gstin>value}"/>
+									</Select>
+									<Label text=" Request (DigiGST Format)(Request Initiated)"/>
+								</HBox>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="Tax Period">
+							<f:fields>
+								<HBox alignItems="Center">
+									<DatePicker id="TaxDP4" displayFormat="MMM yyyy" valueFormat="MMyyyy" width="13rem" class="sapUiMediumMarginEnd"/>
+									<core:Icon src="sap-icon://download" tooltip="{i18n>download}" color="#0070b1" press="onDownloadConsGstnErrors($event,'aspError',null)"/>
+									<Link text=" Consolidated Error Report (GST Portal Format)" class="sapUiTinyMarginBegin sapUiMediumMarginEnd"/>
+									<Button text="Filter" type="Emphasized" press="fnGoForSaveStatus" class="buttoncolorSec"/>
+								</HBox>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+		<Table id="idTableSave" items="{path:'Gstr6SaveStatusIng>/resp'}" noDataText="No Products" sticky="ColumnHeaders">
+			<columns>
+				<Column hAlign="End" width="5rem">
+					<Label text="S.No"/>
+				</Column>
+				<Column hAlign="Center" width="6rem">
+					<Text text="Date" id="id_ID"/>
+				</Column>
+				<Column hAlign="Center" width="6rem">
+					<Text text="Time"/>
+				</Column>
+				<Column hAlign="Center" width="12rem">
+					<Text text="Action"/>
+				</Column>
+				<Column hAlign="Center" width="15rem">
+					<Text text="Section"/>
+				</Column>
+				<Column width="20rem" hAlign="Center">
+					<Text text="Reference ID"/>
+				</Column>
+				<Column hAlign="Center" width="5rem">
+					<Text text="Status"/>
+				</Column>
+				<Column hAlign="Center" width="6rem">
+					<Text text="Error Count"/>
+				</Column>
+				<Column hAlign="Center" width="12rem">
+					<Text text="Message from GSTN Portal"/>
+				</Column>
+				<Column hAlign="Center" width="6rem">
+					<Label text="Error Report"/>
+				</Column>
+				<Column hAlign="Center" width="6rem">
+					<Label text="Error Json"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem vAlign="Middle">
+					<cells>
+						<Text text="{Gstr6SaveStatusIng>sno}" wrapping="false"/>
+						<Text text="{Gstr6SaveStatusIng>date}" wrapping="false"/>
+						<Text text="{Gstr6SaveStatusIng>time}" wrapping="false"/>
+						<Text text="{Gstr6SaveStatusIng>action}" wrapping="false"/>
+						<Text text="{Gstr6SaveStatusIng>section}" wrapping="false"/>
+						<Text text="{Gstr6SaveStatusIng>refId}"/>
+						<Text text="{Gstr6SaveStatusIng>status}"/>
+						<Text text="{Gstr6SaveStatusIng>errorCount}"/>
+						<Text text="{Gstr6SaveStatusIng>errorMsg}"/>
+						<core:Icon src="sap-icon://download" tooltip="{i18n>gstnErrorRpt}" size="0.9rem" color="#0070b1"
+							visible="{=${Gstr6SaveStatusIng>errorCount}!=='0'}" press="onDownloadConsGstnErrors($event,'aspError',${Gstr6SaveStatusIng>refId})"/>
+						<core:Icon src="sap-icon://download" tooltip="{i18n>gstnErrorRpt}" size="0.9rem" color="#0070b1"
+							visible="{=${Gstr6SaveStatusIng>status}==='ER'}" press="onDownloadErrorJson(${Gstr6SaveStatusIng>section},${Gstr6SaveStatusIng>refId})"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</Dialog>
+</core:FragmentDefinition>

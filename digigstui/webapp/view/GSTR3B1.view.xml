@@ -1,0 +1,32 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.GSTR3B1"
+	busyIndicatorDelay="0">
+	<IconTabBar id="iditbgstrThreeB" select="handleIconTabBarSelect3B" expanded="true" class="sapUiNoContentPadding sapUiNoMargin"
+		backgroundDesign="Transparent" stretchContentHeight="true" selectedKey="GSRT3BSummary" expandable="false">
+		<items>
+			<IconTabFilter text="GSTR-3B Summary" tooltip="GSTR-3B Summary" key="GSRT3BSummary" class="sapUiSmallMarginEnd">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr3b.gstr3bSummary" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="GSTR-3B Liability Set Off" tooltip="GSTR-3B Liability SetOff" key="gstr3bSetoff" enabled="true">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr3b.gstr3bSetOff" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="GSTR-1 &amp; 1A vs GSTR-3B" tooltip="GSTR-1 &amp; 1A vs GSTR-3B" key="gstr1vs3b" enabled="true">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr3b.gstr1vs3B" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="GSTR-2A Vs GSTR-3B" enabled="true" tooltip="GSTR-2A Vs GSTR-3B" key="gstr2avs3b">
+				<mvc:XMLView viewName="com.ey.digigst.view.Gstr2A3B"/>
+			</IconTabFilter>
+			<IconTabFilter text="GSTR-2B Vs GSTR-3B" enabled="true" tooltip="GSTR-2B Vs GSTR-3B" key="gstr2bVs3b">
+				<mvc:XMLView viewName="com.ey.digigst.view.Gstr2bVs3b"/>
+			</IconTabFilter>
+			<IconTabFilter text="DRC01B" enabled="true" tooltip="DRC01B" key="DRC01B">
+				<mvc:XMLView viewName="com.ey.digigst.view.DRC01B"/>
+			</IconTabFilter>
+			<IconTabFilter text="DRC01C" enabled="true" tooltip="DRC01C" key="DRC01C">
+				<mvc:XMLView viewName="com.ey.digigst.view.DRC01C"/>
+			</IconTabFilter>
+			<IconTabFilter text="DRC01 Communication" tooltip="DRC01 Communication" key="drcCommunication" visible="{userPermission>/appPermission/R9}">
+				<mvc:XMLView viewName="com.ey.digigst.view.DRC01Communication"/>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</mvc:View>

@@ -1,0 +1,47 @@
+URL : /inwardSvErrDocSearch.do
+Service : POST
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+Request Payload :
+
+{  
+   "hdr":{  
+      "pageNum":0,
+      "pageSize":25
+   },
+   "req":{  
+	  "entityId":["8"],
+      "criteria":"",
+      "receivFromDate":null,
+      "receivToDate":null,
+      "returnFromDate":null,
+      "returnToDate":null,
+      "docNo":null,     
+	  "processingStatus": null,
+	  "fileId": null,
+	  "dataCategory":[],
+	  "tableNumber":[],
+	  "docType":[],
+	  "returnType":[],
+	  "counterPartyGstin":[],
+      "counterPartyFlag":null,
+      "dataSecAttrs":{  
+        "PC":[],
+        "GSTIN":[],
+        "Plant":[],
+        "D":[],
+        "SO":[],
+        "PO":[],
+        "DC":[],
+        "L":[],
+        "UD1":[],
+        "UD2":[],                                        
+        "UD3":[],                                       
+        "UD4":[],                                        
+        "UD5":[],                                       
+        "UD6":[]                                       
+      }
+   }
+}

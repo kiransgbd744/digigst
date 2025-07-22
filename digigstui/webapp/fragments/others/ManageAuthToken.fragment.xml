@@ -1,0 +1,94 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:u="sap.ui.unified" xmlns:ux="sap.uxap" xmlns:ui="sap.ui.table" xmlns:form="sap.ui.layout.form"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading >
+					<Title text="Manage Auth Token"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader visible="false">
+				<f:content>
+					<fb:FilterBar reset="onReset" search="onSearchAuthToken" showFilterConfiguration="false" useToolbar="false" showGoOnFB="true" width="30%"
+						class="sapUiNoContentPadding">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>entity}" visibleInFilterBar="true">
+								<fb:control>
+									<Select id="slEntity" items="{EntityModel>/}" change="onEntityChange" width="100%">
+										<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table id="idtablemanageauth" rows="{path:'AuthtokenRecord>/',sorter: { path: 'gstin' }}" selectionMode="None" visibleRowCount="15">
+				<ui:extension>
+					<OverflowToolbar>
+						<!--	<Label text="Showing:" design="Bold"/>
+						<CheckBox text="Active" selected="true" select="onSelectCheckBox"/>
+						<CheckBox text="Inactive" selected="true" select="onSelectCheckBoxInActive"/>-->
+						<ToolbarSpacer/>
+						<Select id="slSummary1" items="{DropDown>/Otherfilter}" change="onFilterChange" width="7rem">
+							<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+						</Select>
+					</OverflowToolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="12rem" sortProperty="gstin" sorted="true">
+						<ui:multiLabels>
+							<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<HBox alignContent="Center" justifyContent="SpaceBetween">
+								<Label text="{AuthtokenRecord>gstin}" design="Bold"/>
+								<!--<core:Icon src="sap-icon://circle-task-2" size="0.8rem" color="{=${Anx2>highlight}==='Success'?'#00ff00':'#ff0000'}"
+									press="onPressGenerateOTP11a"/>-->
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<ui:multiLabels>
+							<Label text="Mobile Number" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{AuthtokenRecord>mobileNo}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<ui:multiLabels>
+							<Label text="Email Address" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{AuthtokenRecord>email}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<ui:multiLabels>
+							<Label text="Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<ObjectStatus state="{= ${AuthtokenRecord>status} ==='A' ?'Success':'Error'}"
+								text="{parts:[{path : 'AuthtokenRecord>status'}], formatter : '.formatter.AciveValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<ui:multiLabels>
+							<Label text="Action" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Button icon="sap-icon://refresh" type="Emphasized" text="Generate" width="40%" press="openAuthDialogGenerate"
+								enabled="{= (${userPermission>/appPermission/P99} || ${userPermission>/appPermission/P30})}"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

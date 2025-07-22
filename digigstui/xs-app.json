@@ -1,0 +1,36 @@
+{
+  "welcomeFile": "index.html",
+  "authenticationMethod": "route",
+  "logout": {
+    "logoutEndpoint": "/do/logout",
+    "logoutPage": "/logout.html"
+  },
+  "routes": [
+    {
+      "source": "^/index.html$",
+      "localDir": "webapp",
+      "identityProvider": "sap.custom",
+      "dynamicIdentityProvider": true,
+      "cacheControl": "no-cache, no-store, must-revalidate"
+    },
+    {
+      "source": "^/aspsapapi/(.*)$",
+      "target": "$1",
+      "destination": "aspsapapi",
+      "authenticationType": "xsuaa",
+      "csrfProtection": false
+    },
+    {
+      "source": "^/(.*)$",
+      "target": "$1",
+      "localDir": "webapp",
+      "authenticationType": "xsuaa",
+      "csrfProtection": false
+    },
+    {
+      "source": "^/user-api(.*)",
+      "target": "$1",
+      "service": "sap-approuter-userapi"
+    }
+  ]
+}

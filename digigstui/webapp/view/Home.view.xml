@@ -1,0 +1,919 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.Home"
+	xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" xmlns:viz="sap.viz.ui5.controls" xmlns:mic="sap.suite.ui.microchart"
+	xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data" xmlns:commons="sap.suite.ui.commons"
+	busyIndicatorDelay="0">
+	<Page title="Dashboard" showHeader="false" id="idHomeAdaptFiltr">
+		<VBox id="dashVBoxId" visible="true">
+			<Panel class="panelColor sapUiTinyMarginTop sapUiTinyMarginBeginEnd">
+				<HBox width="100%">
+					<VBox alignItems="Center" justifyContent="Center" width="10%" class="actionColor sapUiSmallMarginEnd">
+						<core:Icon src="sap-icon://activity-items" ariaLabelledBy="iOnboarding" size="1.5rem" color="#2e2e38"/>
+						<HBox justifyContent="Center" width="100%">
+							<Link id="iOnboarding" text="Onboarding Configurations" press="onOnboardingConfig" emphasized="true" textAlign="Center" width="6.5rem"
+								wrapping="true" class="linkhstyle sapUiTinyMarginBeginEnd"/>
+						</HBox>
+					</VBox>
+					<VBox alignItems="Center" justifyContent="Center" width="10%" class="actionColor sapUiSmallMarginEnd">
+						<ObjectStatus text="" active="true" state="Error" tooltip="Pending Task" class="cl_TextBgColor3"/>
+						<core:Icon src="sap-icon://expense-report" ariaLabelledBy="lDashboard" size="1.5rem" color="#2e2e38"/>
+						<Link id="lDashboard" text="E-Invoice vs GSTR-1" press="onPressGstinValidator" emphasized="true" textAlign="Center" wrapping="true"
+							class="linkhstyle"/>
+					</VBox>
+					<VBox alignItems="Center" justifyContent="Center" width="10%" class="actionColor sapUiSmallMarginEnd">
+						<HBox justifyContent="End" width="100%">
+							<ObjectStatus text="{HomeOldTableData>/authTokenInActive}/{HomeOldTableData>/authTokenTotal}" state="Error" tooltip="Inactive"
+								class="cl_TextBgColor3 sapUiTinyMarginEnd"/>
+						</HBox>
+						<core:Icon src="sap-icon://two-keys" ariaLabelledBy="lValidator" size="1.5rem" color="#2e2e38"/>
+						<Link id="lValidator" text="Auth Token" press="onPressGstinValidator" emphasized="true" class="linkhstyle"/>
+					</VBox>
+					<VBox alignItems="Center" justifyContent="Center" width="10%" class="actionColor sapUiSmallMarginEnd">
+						<core:Icon src="sap-icon://bbyd-active-sales" ariaLabelledBy="lInsight" size="1.5rem" color="#2e2e38"/>
+						<Link id="lInsight" text="GSTIN Validator" press="onPressGstinValidator" emphasized="true" class="linkhstyle"/>
+					</VBox>
+					<VBox alignItems="Center" justifyContent="Center" width="10%" class=" actionColor sapUiSmallMarginEnd">
+						<core:Icon src="sap-icon://chain-link" ariaLabelledBy="lDocSearch" size="1.5rem" tooltip="Coming soon" color="#2e2e38"/>
+						<Link id="lDocSearch" text="Common Credit Reversal" press="onPressGstinValidator" textAlign="Center" wrapping="true" emphasized="true"
+							class="linkhstyle"/>
+					</VBox>
+					<VBox alignItems="Center" justifyContent="Center" width="10%" class="actionColor sapUiSmallMarginEnd">
+						<core:Icon src="sap-icon://manager-insight" ariaLabelledBy="lMaster" size="1.5rem" color="#2e2e38"/>
+						<Link id="lMaanage" text="TDS/TCS Credit" press="onPressGstinValidator" emphasized="true" class="linkhstyle"/>
+					</VBox>
+					<VBox alignItems="Center" justifyContent="Center" width="10%" class="actionColor sapUiSmallMarginEnd">
+						<core:Icon src="sap-icon://create-form" ariaLabelledBy="lMaster" size="1.5rem" color="#2e2e38"/>
+						<Link id="lMaster" text="Masters" press="onpressMasters" emphasized="true" class="linkhstyle"
+							enabled="{= (${userPermission>/appPermission/P1} || ${userPermission>/appPermission/P32})}"/>
+					</VBox>
+					<VBox alignItems="Center" justifyContent="Center" width="10%" class="actionColor sapUiSmallMarginEnd">
+						<core:Icon src="sap-icon://customer" ariaLabelledBy="lMaster" size="1.5rem" color="#2e2e38"/>
+						<Link id="lCompl" text="Non Compliant Vendors" press="onPressGstinValidator" textAlign="Center" wrapping="true" emphasized="true"
+							class="linkhstyle"/>
+					</VBox>
+					<VBox alignItems="Center" justifyContent="Center" width="10%" class="actionColor sapUiSmallMarginEnd"
+						visible="{userPermission>/appPermission/R10}">
+						<core:Icon src="sap-icon://it-host" ariaLabelledBy="lMaster" size="1.5rem" color="#2e2e38"/>
+						<Link id="lGlRecon" text="GL Recon" press="onPressGstinValidator" emphasized="true" class="linkhstyle"/>
+					</VBox>
+					<VBox alignItems="Center" justifyContent="Center" width="10%" class="actionColor">
+						<core:Icon src="sap-icon://collections-management" ariaLabelledBy="lAuthToken" size="1.5rem" color="#2e2e38"/>
+						<Link id="lAuthToken" text="Manage NIC/IRP Credentials" press="onPressGstinValidator" emphasized="true" textAlign="Center" wrapping="true"
+							class="linkhstyle" enabled="{=(${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}"/>
+					</VBox>
+				</HBox>
+			</Panel>
+			<Toolbar class="cl_ToolPGroup">
+				<Title id="idtitleold" text="DEMO GROUP" titleStyle="H3" class="sapUiTinyMarginBegin" visible="false"/>
+				<core:Icon src="sap-icon://arrow-right" visible="false"/>
+				<Title text="DEMO ENTITY" titleStyle="H3" id="demoEntiyId"/>
+				<ToolbarSpacer/>
+				<DatePicker id="iDateold" valueFormat="MMyyyy" displayFormat="MMM yyyy" width="10rem"/>
+				<Button text="Go" class="sapUiTinyMarginBegin buttoncolor" press="onNewPressGO"/>
+				<Button tooltip="{HomeOldOutwardStatusDetails>/tooltip}" type="Transparent" icon="sap-icon://synchronize" class="sapUiTinyMarginBegin"
+					press="onPressRefresh" enabled="{HomeOldOutwardStatusDetails>/enabled}"/>
+				<Text text="Last Refresh on : {HomeOldOutwardStatusDetails>/lastRefreshedOn}" class="sapUiTinyMarginBegin"
+					visible="{=${HomeOldOutwardStatusDetails>/lastRefreshedOn}=== null ? false : ture}"/>
+			</Toolbar>
+			<l:BlockLayout background="Dashboard">
+				<l:BlockLayoutRow class="sapUiNoContentPadding">
+					<l:BlockLayoutCell width="2" class="clBlockLayout1">
+						<Toolbar class="colorToolbar">
+							<Link text="Return Status" emphasized="true" press="onPressGstinValidator" class="titleFont"/>
+							<ToolbarSpacer/>
+							<Label text="{Period>/year}" design="Bold"/>
+						</Toolbar>
+						<HBox width="100%" class="sapUiMediumMarginTop sapUiTinyMarginBegin sapUiTinyMarginEnd">
+							<HBox class="" width="25%">
+								<mic:RadialMicroChart size="S" fraction="{path:'HomeOldFilterData>/gstr1TotalAvailableCount',formatter:'.formatter.MicroChart'}"
+									total="{path:'HomeOldFilterData>/gstr1TotalCount' ,formatter:'.formatter.MicroChart1'}" valueColor="#FFE600" width="4rem" tooltip=""/>
+								<VBox alignItems="Start">
+									<Link text="GSTR-1" emphasized="true" press="onpressRetStatusItems" class="linkfont linkhstyle"
+										enabled="{= ${userPermission>/appPermission/P1}}"/>
+									<Text
+										text="{parts:[{path:'HomeOldFilterData>/gstr1TotalAvailableCount'},{path:'HomeOldFilterData>/gstr1TotalCount'}],formatter:'.formatter.HomeoutOf'}"/>
+								</VBox>
+							</HBox>
+							<HBox class="sapUiMediumMarginBegin" width="25%">
+								<mic:RadialMicroChart size="S" fraction="{path:'HomeOldFilterData>/gstr1ATotalAvailableCount',formatter:'.formatter.MicroChart'}"
+									total="{path:'HomeOldFilterData>/gstr1ATotalCount' ,formatter:'.formatter.MicroChart1'}" valueColor="#FFE600" width="4rem" tooltip=""/>
+								<VBox alignItems="Start">
+									<Link text="GSTR-1A" emphasized="true" press="onpressRetStatusItems" class="linkfont linkhstyle"
+										enabled="{= ${userPermission>/appPermission/P1}}"/>
+									<Text
+										text="{parts:[{path:'HomeOldFilterData>/gstr1ATotalAvailableCount'},{path:'HomeOldFilterData>/gstr1ATotalCount'}],formatter:'.formatter.HomeoutOf'}"/>
+								</VBox>
+							</HBox>
+							<HBox class="sapUiMediumMarginBegin" width="25%">
+								<mic:RadialMicroChart size="S" fraction="{path:'HomeOldFilterData>/gstr3bTotalAvailableCount',formatter:'.formatter.MicroChart'}"
+									total="{path:'HomeOldFilterData>/gstr3bTotalCount' ,formatter:'.formatter.MicroChart1'}" valueColor="#FFE600" width="4rem" tooltip=""/>
+								<VBox alignItems="Start">
+									<Link text="GSTR-3B" emphasized="true" press="onpressRetStatusItems" enabled="{= ${userPermission>/appPermission/P1}}"
+										class="linkfont linkhstyle"/>
+									<Text
+										text="{parts:[{path:'HomeOldFilterData>/gstr3bTotalAvailableCount'},{path:'HomeOldFilterData>/gstr3bTotalCount'}],formatter:'.formatter.HomeoutOf'}"/>
+								</VBox>
+							</HBox>
+						</HBox>
+						<HBox width="100%" class="sapUiSmallMarginTop sapUiTinyMarginBegin sapUiTinyMarginEnd">
+							<HBox class="" width="25%">
+								<mic:RadialMicroChart size="S" fraction="{path:'HomeOldFilterData>/gstr9TotalAvailableCount',formatter:'.formatter.MicroChart'}"
+									total="{path:'HomeOldFilterData>/gstr9TotalCount' ,formatter:'.formatter.MicroChart1'}" valueColor="#FFE600" width="4rem" tooltip=""/>
+								<VBox alignItems="Start">
+									<Link text="GSTR-9" press="onpressRetStatusItems" emphasized="true" class="linkfont linkhstyle"/>
+									<Text
+										text="{parts:[{path:'HomeOldFilterData>/gstr9TotalAvailableCount'},{path:'HomeOldFilterData>/gstr9TotalCount'}],formatter:'.formatter.HomeoutOf'}"/>
+								</VBox>
+							</HBox>
+							<HBox class="sapUiMediumMarginBegin" width="25%">
+								<mic:RadialMicroChart size="S" fraction="{path:'HomeOldFilterData>/gstr6TotalAvailableCount',formatter:'.formatter.MicroChart'}"
+									total="{path:'HomeOldFilterData>/gstr6TotalCount' ,formatter:'.formatter.MicroChart1'}" valueColor="#FFE600" width="4rem" tooltip=""/>
+								<VBox alignItems="Start">
+									<Link text="GSTR-6" press="onpressRetStatusItems" enabled="{= ${userPermission>/appPermission/P1}}" emphasized="true"
+										class="linkfont linkhstyle"/>
+									<Text
+										text="{parts:[{path:'HomeOldFilterData>/gstr6TotalAvailableCount'},{path:'HomeOldFilterData>/gstr6TotalCount'}],formatter:'.formatter.HomeoutOf'}"/>
+								</VBox>
+							</HBox>
+							<HBox class="sapUiMediumMarginBegin" width="25%">
+								<mic:RadialMicroChart size="S" fraction="{path:'HomeOldFilterData>/gstr7TotalAvailableCount',formatter:'.formatter.MicroChart'}"
+									total="{path:'HomeOldFilterData>/gstr7TotalCount' ,formatter:'.formatter.MicroChart1'}" valueColor="#FFE600" width="4rem" tooltip=""/>
+								<VBox alignItems="Start">
+									<Link text="GSTR-7" press="onpressRetStatusItems" emphasized="true" class="linkfont linkhstyle"/>
+									<Text
+										text="{parts:[{path:'HomeOldFilterData>/gstr7TotalAvailableCount'},{path:'HomeOldFilterData>/gstr7TotalCount'}],formatter:'.formatter.HomeoutOf'}"/>
+								</VBox>
+							</HBox>
+						</HBox>
+						<HBox width="100%" class="sapUiSmallMarginTop sapUiTinyMarginBegin sapUiTinyMarginEnd">
+							<HBox class="" width="25%">
+								<mic:RadialMicroChart size="S" fraction="{path:'HomeOldFilterData>/itc04TotalAvailableCount',formatter:'.formatter.MicroChart'}"
+									total="{path:'HomeOldFilterData>/itc04TotalCount' ,formatter:'.formatter.MicroChart1'}" valueColor="#FFE600" width="4rem" tooltip=""/>
+								<VBox alignItems="Start">
+									<Link text="ITC-04 ({HomeOldFilterData1>/yearDivison})" press="onpressRetStatusItems" emphasized="true" class="linkfont linkhstyle"/>
+									<Text
+										text="{parts:[{path:'HomeOldFilterData>/itc04TotalAvailableCount'},{path:'HomeOldFilterData>/itc04TotalCount'}],formatter:'.formatter.HomeoutOf'}"/>
+								</VBox>
+							</HBox>
+						</HBox>
+					</l:BlockLayoutCell>
+					<l:BlockLayoutCell width="3" class="clBlockLayout1">
+						<Toolbar class="colorToolbar">
+							<Label text="Recon Summary" design="Bold" class="titleFont"/>
+							<ToolbarSpacer/>
+							<Label text="Recon completed for {HomeOldReconSummary>/reconPerformed} out of {HomeOldReconSummary>/totalGstns}'"
+								class="Fontstyle sapUiSmallMarginEnd"/>
+							<Switch change="on2A2B" id="id2a2b" state="false" customTextOn="2B" customTextOff="2A"/>
+						</Toolbar>
+						<l:Grid id="iReconGridnew" hSpacing="2" vSpacing="1" defaultSpan="L4 M4 S4" class="sapUiSmallMarginTop">
+							<l:content>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="#15173e" tooltip=""/>
+									<Text text="{parts:[{path : 'HomeOldReconSummary>/exactMatch'}], formatter : '.formatter.matchedPercent1'}% Exact Match"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+								</HBox>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="#082c65" tooltip=""/>
+									<Text text="{parts:[{path : 'HomeOldReconSummary>/matchWithTolerance'}], formatter : '.formatter.matchedPercent1'}% Match With Tolerance"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+								</HBox>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="#004f4f" tooltip=""/>
+									<Text text="{parts:[{path : 'HomeOldReconSummary>/valueMismatch'}], formatter : '.formatter.matchedPercent1'}% Value Mismatch"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+								</HBox>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="#13652a" tooltip=""/>
+									<Text text="{parts:[{path : 'HomeOldReconSummary>/posMismatch'}], formatter : '.formatter.matchedPercent1'}% POS Mismatch"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+								</HBox>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="#7a130d" tooltip=""/>
+									<Text text="{parts:[{path : 'HomeOldReconSummary>/documentDateMismatch'}], formatter : '.formatter.matchedPercent1'}% Doc Date Mismatch"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+								</HBox>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="#351c21" tooltip=""/>
+									<Text text="{parts:[{path : 'HomeOldReconSummary>/documentTypeMismatch'}], formatter : '.formatter.matchedPercent1'}% Doc Type Mismatch"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+								</HBox>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="#240d75" tooltip=""/>
+									<Text text="{parts:[{path : 'HomeOldReconSummary>/documentNumberMismatch1'}], formatter : '.formatter.matchedPercent1'}% Doc No Mismatch I"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+								</HBox>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="#1777cf" tooltip=""/>
+									<Text text="{parts:[{path : 'HomeOldReconSummary>/multiMismatch'}], formatter : '.formatter.matchedPercent1'}% Multi-Mismatch"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+								</HBox>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="#109090" tooltip=""/>
+									<Text text="{parts:[{path : 'HomeOldReconSummary>/potential1'}], formatter : '.formatter.matchedPercent1'}% Potential-I"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+									<!--<Text text="**" class="redLabel"/>-->
+								</HBox>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="#189d3e" tooltip=""/>
+									<Text text="{parts:[{path : 'HomeOldReconSummary>/documentNumberMismatch2'}], formatter : '.formatter.matchedPercent1'}% Doc No Mismatch II"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+								</HBox>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="#e0362c" tooltip=""/>
+									<Text
+										text="{parts:[{path : 'HomeOldReconSummary>/documentNumberDocDateMismatch'}], formatter : '.formatter.matchedPercent1'}% Doc No &amp; Date Mismatch"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+								</HBox>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="#5a0a42" tooltip=""/>
+									<Text text="{parts:[{path : 'HomeOldReconSummary>/potential2'}], formatter : '.formatter.matchedPercent1'}% Potential-II"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+								</HBox>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="#542ea5" tooltip=""/>
+									<Text text="{parts:[{path : 'HomeOldReconSummary>/logicalMatch'}], formatter : '.formatter.matchedPercent1'}% Logical Match"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+								</HBox>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="#35a4e8" tooltip=""/>
+									<Text text="{parts:[{path : 'HomeOldReconSummary>/forcedMatch'}], formatter : '.formatter.matchedPercent1'}% Forced Match"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+								</HBox>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="#42c9c2" tooltip=""/>
+									<Text text="{parts:[{path : 'HomeOldReconSummary>/additionalInPR'}], formatter : '.formatter.matchedPercent1'}% Additional in PR"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+								</HBox>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="#34c768" tooltip=""/>
+									<Text text="*" class="redLabel"/>
+									<Text visible="{=${Display>/Label}==='2A'?true:false}"
+										text="{parts:[{path : 'HomeOldReconSummary>/additionalIn2A'}], formatter : '.formatter.matchedPercent1'}% Additional in 2A"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+									<Text visible="{=${Display>/Label}==='2B'?true:false}"
+										text="{parts:[{path : 'HomeOldReconSummary>/additionalIn2B'}], formatter : '.formatter.matchedPercent1'}% Additional in 2B"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+								</HBox>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="#f95d54" tooltip=""/>
+									<Text text="{parts:[{path : 'HomeOldReconSummary>/exactMatchImpg'}], formatter : '.formatter.matchedPercent1'}% Match (Imports)"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+								</HBox>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="#922b73" tooltip=""/>
+									<Text text="{parts:[{path : 'HomeOldReconSummary>/misMatchImpg'}], formatter : '.formatter.matchedPercent1'}% Mismatch (Imports)"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+								</HBox>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="#93f0e6" tooltip=""/>
+									<Text
+										text="{parts:[{path : 'HomeOldReconSummary>/additionInPRImports'}], formatter : '.formatter.matchedPercent1'}% Addition in PR (Imports)"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+								</HBox>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="#8ce8ad" tooltip=""/>
+									<Text visible="{=${Display>/Label}==='2A'}"
+										text="{parts:[{path : 'HomeOldReconSummary>/additionIn2AImports'}], formatter : '.formatter.matchedPercent1'}% Addition in 2A (Imports)"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+									<Text visible="{=${Display>/Label}==='2B'}"
+										text="{parts:[{path : 'HomeOldReconSummary>/additionIn2BImports'}], formatter : '.formatter.matchedPercent1'}% Addition in 2B (Imports)"
+										class="sapUiTinyMarginBegin" tooltip=""/>
+								</HBox>
+							</l:content>
+						</l:Grid>
+						<Text id="textIdnew" visible="true" text="*Additional in GSTR-{Display>/Label} is calculated based on GSTR-{Display>/Label} records"
+							class="redLabel1 sapUiMediumMarginBegin sapUiTinyMarginBottom"/>
+					</l:BlockLayoutCell>
+					<l:BlockLayoutCell id="anx-1old1" width="2" class="clBlockLayout1">
+						<Toolbar class="colorToolbar">
+							<Label text="Outward Supply - GSTR-1&amp;1A vs GSTR-3B" design="Bold" class="titleFont"/>
+							<ToolbarSpacer/>
+							<Label text="Values in %" class="fonttypeLabel" id="bchartpercntageold1" visible="false"/>
+							<Switch change="onButtonPress1" state="false" customTextOn=" " customTextOff=" "/>
+						</Toolbar>
+						<VBox id="idOutwardTotal" visible="false">
+							<FlexBox justifyContent="Center" class="sapUiTinyMarginTop">
+								<Label text="Total Tax" design="Bold"/>
+							</FlexBox>
+							<viz:VizFrame id="vfAnx1old1" xmlns="sap.viz" class="cl_vizHeig" uiConfig="{applicationSet:'fiori'}" vizType='vertical_bullet'>
+								<viz:dataset>
+									<viz.data:FlattenedDataset data="{HomeOldOutwardStatusDetails>/resp/det/totalTax/}">
+										<viz.data:dimensions>
+											<viz.data:DimensionDefinition name="Return" value="{HomeOldOutwardStatusDetails>action}"/>
+										</viz.data:dimensions>
+										<viz.data:measures>
+											<viz.data:MeasureDefinition name="Saved to GSTN" value="{HomeOldOutwardStatusDetails>resp}"/>
+										</viz.data:measures>
+									</viz.data:FlattenedDataset>
+								</viz:dataset>
+								<viz:feeds>
+									<viz.feeds:FeedItem id='valueAxisFeed1' uid="valueAxis" type="Measure" values="Saved to GSTN"/>
+									<viz.feeds:FeedItem id='categoryAxisFeed1' uid="categoryAxis" type="Dimension" values="Return"/>
+								</viz:feeds>
+							</viz:VizFrame>
+						</VBox>
+						<VBox id="vfAnx1old112" visible="true">
+							<FlexBox justifyContent="SpaceAround" class="sapUiTinyMarginTop">
+								<Label text="Taxable Value" design="Bold"/>
+							</FlexBox>
+							<viz:VizFrame id="vfAnx1old11" xmlns="sap.viz" class="cl_vizHeig" uiConfig="{applicationSet:'fiori'}" vizType='vertical_bullet'>
+								<viz:dataset>
+									<viz.data:FlattenedDataset data="{HomeOldOutwardStatusDetails>/resp/det/taxValue/}">
+										<viz.data:dimensions>
+											<viz.data:DimensionDefinition name="Return" value="{HomeOldOutwardStatusDetails>action}"/>
+										</viz.data:dimensions>
+										<viz.data:measures>
+											<viz.data:MeasureDefinition name="Taxable Value" value="{HomeOldOutwardStatusDetails>resp}"/>
+										</viz.data:measures>
+									</viz.data:FlattenedDataset>
+								</viz:dataset>
+								<viz:feeds>
+									<viz.feeds:FeedItem id='valueAxisFeed11' uid="valueAxis" type="Measure" values="Taxable Value"/>
+									<viz.feeds:FeedItem id='categoryAxisFeed11' uid="categoryAxis" type="Dimension" values="Return"/>
+								</viz:feeds>
+							</viz:VizFrame>
+						</VBox>
+					</l:BlockLayoutCell>
+				</l:BlockLayoutRow>
+			</l:BlockLayout>
+			<Panel>
+				<commons:ChartContainer id="iRetCompl" fullScreen="{DashProperty>/fullScreen}" showFullScreen="false" showZoom="false"
+					showPersonalization="false" autoAdjustHeight="true">
+					<commons:toolbar>
+						<OverflowToolbar class="colorToolbar toolbarHeight">
+							<Label id="lStatusold" text="Return Compliance Status" design="Bold" class="titleFont" width="15rem"/>
+							<ToolbarSpacer/>
+							<Button type="Transparent" icon="sap-icon://full-screen" tooltip="Open Full Screen" press="onRetComplFullScreen('O')"
+								visible="{=!${DashProperty>/fullScreen}}"/>
+							<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="Close Full Screen" press="onRetComplFullScreen('C')"
+								visible="{DashProperty>/fullScreen}"/>
+							<commons:ChartContainerToolbarPlaceholder/>
+						</OverflowToolbar>
+					</commons:toolbar>
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<ui:Table id="tabRetCompl" rows="{path:'HomeOldTableData>/supplyDetailsDto',sorter: {path:'supplierGstin'}}" selectionMode="None"
+									visibleRowCount="{DashProperty>/tabSize}" fixedBottomRowCount="1">
+									<ui:columns class="headercss">
+										<ui:Column hAlign="Left" width="14rem" visible="{Visi>/gstin}" sortProperty="supplierGstin" sorted="true">
+											<Label text="GSTIN" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<VBox width="100%">
+													<HBox visible="{=!!${HomeOldTableData>supplierGstin}}">
+														<Text text="{HomeOldTableData>gstinState}" class="stateColor" width="8rem"/>
+														<Text text="{=${HomeOldTableData>regType}==='REGULAR'?'':${HomeOldTableData>regType}}" class="stateColor fontSmall"/>
+													</HBox>
+													<HBox alignContent="Start" justifyContent="SpaceBetween" visible="{=!!${HomeOldTableData>supplierGstin}}">
+														<Link text="{HomeOldTableData>supplierGstin}" press="handleLinkPressGSTINMain"/>
+														<core:Icon src="sap-icon://circle-task-2" size="0.8rem" tooltip="{=${HomeOldTableData>status}==='A'?'Active':'Inactive'}"
+															color="{=${HomeOldTableData>status}==='A'?'#00ff00':'red'}" press="onPressGenerateOTP" class="sapUiTinyMarginBegin"/>
+													</HBox>
+													<ObjectIdentifier title="Total" visible="{=!${HomeOldTableData>Total}}" class="lasrow"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" class="cl_TotValClass">
+											<Label text="Outward Supply" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'HomeOldTableData>outwardSupply'}], formatter : '.formatter.amountValue'}"
+													design="{=!${HomeOldTableData>supplierGstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label text="Total Tax" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'HomeOldTableData>totalTax'}], formatter : '.formatter.amountValue'}"
+													design="{=!${HomeOldTableData>supplierGstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'HomeOldTableData>iGST'}], formatter : '.formatter.amountValue'}"
+													design="{=!${HomeOldTableData>supplierGstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'HomeOldTableData>cGST'}], formatter : '.formatter.amountValue'}"
+													design="{=!${HomeOldTableData>supplierGstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label text="SGST" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'HomeOldTableData>sGST'}], formatter : '.formatter.amountValue'}"
+													design="{=!${HomeOldTableData>supplierGstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'HomeOldTableData>cESS'}], formatter : '.formatter.amountValue'}"
+													design="{=!${HomeOldTableData>supplierGstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label text="Cash Ledger" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'HomeOldTableData>cashLedger'}], formatter : '.formatter.amountValue'}"
+													design="{=!${HomeOldTableData>supplierGstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label text="Credit Ledger" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'HomeOldTableData>creditLedger'}], formatter : '.formatter.amountValue'}"
+													design="{=!${HomeOldTableData>supplierGstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label text="Liability Ledger" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'HomeOldTableData>liabilityLedger'}], formatter : '.formatter.amountValue'}"
+													design="{=!${HomeOldTableData>supplierGstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="7rem">
+											<Label text="Filing Status" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<HBox alignItems="Center" alignContent="Center" justifyContent="Center" width="100%">
+													<core:Icon src="sap-icon://circle-task-2" size="0.8rem" color="{=${HomeOldTableData>gstr1Flag}?'#00ff00':'#ff0000'}"
+														tooltip="{=${HomeOldTableData>gstr1Flag}?'GSTR-1 Filed':'GSTR-1 Not Filed'}"
+														visible="{=${HomeOldTableData>gstr1Flag}=== undefined ? false : ture}" class="sapUiTinyMarginBegin"/>
+													<core:Icon src="sap-icon://circle-task-2" size="0.8rem" color="{=${HomeOldTableData>gstr1AFlag}?'#00ff00':'#ff0000'}"
+														tooltip="{=${HomeOldTableData>gstr1AFlag}?'GSTR-1A Filed':'GSTR-1A Not Filed'}"
+														visible="{=${HomeOldTableData>gstr1AFlag}=== undefined ? false : ture}" class="sapUiTinyMarginBegin"/>
+													<core:Icon src="sap-icon://circle-task-2" size="0.8rem" color="{=${HomeOldTableData>gstr3BFlag}?'#00ff00':'#ff0000'}"
+														tooltip="{=${HomeOldTableData>gstr3BFlag}?'GSTR-3B Filed':'GSTR-3B Not Filed'}"
+														visible="{=${HomeOldTableData>gstr3BFlag}=== undefined ? false : ture}" class="sapUiTinyMarginBegin"/>
+													<core:Icon src="sap-icon://circle-task-2" size="0.8rem" color="{=${HomeOldTableData>gstr6Flag}?'#00ff00':'#ff0000'}"
+														tooltip="{=${HomeOldTableData>gstr6Flag}?'GSTR-6 Filed':'GSTR-6 Not Filed'}"
+														visible="{=${HomeOldTableData>gstr6Flag}=== undefined ? false : ture}" class="sapUiTinyMarginBegin"/>
+													<core:Icon src="sap-icon://circle-task-2" size="0.8rem" color="{=${HomeOldTableData>gstr7Flag}?'#00ff00':'#ff0000'}"
+														tooltip="{=${HomeOldTableData>gstr7Flag}?'GSTR-7 Filed':'GSTR-7 Not Filed'}"
+														visible="{=${HomeOldTableData>gstr7Flag}=== undefined ? false : ture}" class="sapUiTinyMarginBegin"/>
+												</HBox>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<ui:footer>
+										<HBox>
+											<Label text="Note:" design="Bold" class="sapUiTinyMarginEnd"/>
+											<core:Icon src="sap-icon://circle-task-2" size="0.8rem" color="#00ff00"/>
+											<Text text="Auth Token Active" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+											<core:Icon src="sap-icon://circle-task-2" size="0.8rem" color="#ff0000"/>
+											<Text text="Auth Token Inactive (Click to activate)" class="sapUiTinyMarginBegin"/>
+										</HBox>
+									</ui:footer>
+								</ui:Table>
+							</commons:content>
+						</commons:ChartContainerContent>
+					</commons:content>
+				</commons:ChartContainer>
+			</Panel>
+			<Toolbar class="cl_ToolPGroup" visible="false">
+				<Title id="idtitle" text="DEMO GROUP" titleStyle="H3" class="sapUiTinyMarginBegin"/>
+				<core:Icon src="sap-icon://arrow-right"/>
+				<Title text="DEMO ENTITY" titleStyle="H3"/>
+				<ToolbarSpacer/>
+				<DatePicker id="iDate" valueFormat="MMyyyy" displayFormat="MMM yyyy" width="10rem"/>
+				<Button text="Go" type="Emphasized" press="onPrsGOHome" class="sapUiTinyMarginBegin"/>
+			</Toolbar>
+			<l:BlockLayout background="Dashboard" visible="false">
+				<l:BlockLayoutRow class="sapUiNoContentPadding">
+					<l:BlockLayoutCell width="4" class="clBlockLayout1">
+						<Toolbar class="colorToolbar">
+							<Label text="Return Status" design="Bold" class="titleFont"/>
+						</Toolbar>
+						<l:VerticalLayout width="24%" class="layoutBorder">
+							<HBox width="100%" justifyContent="Center" class="sapUiTinyMarginTop">
+								<Label text="Save" design="Bold"/>
+							</HBox>
+							<HBox class="sapUiSmallMarginTop sapUiSmallMarginBegin">
+								<mic:RadialMicroChart size="S" fraction="{path:'HomeFilterData>gstrReturnStatus/anx1S',formatter:'.formatter.MicroChart'}"
+									total="{path:'HomeFilterData>gstrReturnStatus/anx1T',formatter:'.formatter.MicroChart1'}" width="4rem"/>
+								<VBox alignItems="Start">
+									<Title text="ANX-1" level="H3"/>
+									<Text
+										text="{parts:[{path:'HomeFilterData>gstrReturnStatus/anx1S'},{path:'HomeFilterData>gstrReturnStatus/anx1T'}],formatter:'.formatter.HomeoutOf'}"/>
+								</VBox>
+							</HBox>
+							<HBox class="sapUiMediumMarginTop sapUiSmallMarginBegin">
+								<mic:RadialMicroChart size="S" fraction="{path:'HomeFilterData>gstrReturnStatus/anx2S',formatter:'.formatter.MicroChart'}"
+									total="{path:'HomeFilterData>gstrReturnStatus/anx2T',formatter:'.formatter.MicroChart1'}" width="4rem"/>
+								<VBox alignItems="Start">
+									<Title text="ANX-2"/>
+									<Text
+										text="{parts:[{path:'HomeFilterData>gstrReturnStatus/anx2S'},{path:'HomeFilterData>gstrReturnStatus/anx2T'}],formatter: '.formatter.HomeoutOf'}"/>
+								</VBox>
+							</HBox>
+						</l:VerticalLayout>
+						<l:VerticalLayout width="50%" class="layoutBorder">
+							<HBox width="100%" justifyContent="Center" class="sapUiTinyMarginTop">
+								<Label text="Return Filing" design="Bold"/>
+							</HBox>
+							<HBox width="100%" class="sapUiSmallMarginTop">
+								<HBox class="sapUiTinyMarginBegin" width="50%">
+									<mic:RadialMicroChart size="S" fraction="{path:'HomeFilterData>gstrReturnStatus/ret1F',formatter:'.formatter.MicroChart'}"
+										total="{path:'HomeFilterData>gstrReturnStatus/ret1T',formatter:'.formatter.MicroChart1'}" width="4rem"/>
+									<VBox alignItems="Start">
+										<Title text="RET-1" level="H3"/>
+										<Text
+											text="{parts:[{path:'HomeFilterData>gstrReturnStatus/ret1F'},{path:'HomeFilterData>gstrReturnStatus/ret1T'}],formatter: '.formatter.HomeoutOf'}"/>
+									</VBox>
+								</HBox>
+								<HBox class="sapUiTinyMarginBegin" width="50%">
+									<mic:RadialMicroChart size="S" fraction="{path:'HomeFilterData>gstrReturnStatus/gstr6F',formatter:'.formatter.MicroChart'}"
+										total="{path:'HomeFilterData>gstrReturnStatus/gstr6T',formatter:'.formatter.MicroChart1'}" width="4rem"/>
+									<VBox alignItems="Start" height="50px">
+										<Title text="GSTR-6"/>
+										<Text
+											text="{parts:[{path:'HomeFilterData>gstrReturnStatus/gstr6F'},{path:'HomeFilterData>gstrReturnStatus/gstr6T'}], formatter:'.formatter.HomeoutOf'}"/>
+									</VBox>
+								</HBox>
+							</HBox>
+							<HBox width="100%" class="sapUiMediumMarginTop">
+								<HBox class="sapUiTinyMarginBegin" width="50%">
+									<mic:RadialMicroChart size="S" fraction="{path:'HomeFilterData>gstrReturnStatus/gstr7F',formatter:'.formatter.MicroChart'}"
+										total="{path:'HomeFilterData>gstrReturnStatus/gstr7T',formatter:'.formatter.MicroChart1'}" width="4rem"/>
+									<VBox alignItems="Start">
+										<Title text="GSTR-7" level="H3"/>
+										<Text
+											text="{parts:[{path:'HomeFilterData>gstrReturnStatus/gstr7F'},{path:'HomeFilterData>gstrReturnStatus/gstr7T'}],formatter:'.formatter.HomeoutOf'}"/>
+									</VBox>
+								</HBox>
+								<HBox class="sapUiTinyMarginBegin" width="50%">
+									<mic:RadialMicroChart size="S" fraction="{path:'HomeFilterData>gstrReturnStatus/gstr8F',formatter:'.formatter.MicroChart'}"
+										total="{path:'HomeFilterData>gstrReturnStatus/gstr8T',formatter:'.formatter.MicroChart1'}" width="4rem"/>
+									<VBox alignItems="Start">
+										<Title text="GSTR-8" level="H3"/>
+										<Text
+											text="{parts:[{path:'HomeFilterData>gstrReturnStatus/gstr8F'},{path:'HomeFilterData>gstrReturnStatus/gstr8T'}],formatter:'.formatter.HomeoutOf'}"/>
+									</VBox>
+								</HBox>
+							</HBox>
+						</l:VerticalLayout>
+						<l:VerticalLayout width="25%">
+							<HBox width="100%" justifyContent="Center" class="sapUiTinyMarginTop">
+								<Label text="Amendment" design="Bold"/>
+							</HBox>
+							<HBox class="sapUiSmallMarginTop sapUiTinyMarginBegin" width="100%">
+								<Text text="{path:'HomeFilterData>gstrReturnStatus/anx1AA',formatter:'.formatter.MicroChart'}" class="cl_TextBgColor1" width="3.5rem"
+									textAlign="Center"/>
+								<l:VerticalLayout class="sapUiTinyMarginTop sapUiTinyMarginBegin">
+									<Title text="ANX-1A" titleStyle="H4"/>
+									<Text text="{path:'HomeFilterData>gstrReturnStatus/anx1AT',formatter: '.formatter.HomeoutOf1'}"/>
+								</l:VerticalLayout>
+							</HBox>
+							<HBox class="sapUiMediumMarginTop sapUiTinyMarginBegin" width="100%">
+								<Text text="{path:'HomeFilterData>gstrReturnStatus/ret1AA',formatter:'.formatter.MicroChart'}" class="cl_TextBgColor2" width="3.5rem"
+									textAlign="Center"/>
+								<l:VerticalLayout class="sapUiTinyMarginTop sapUiTinyMarginBegin">
+									<Title text="RET-1A" titleStyle="H4"/>
+									<Text text="{path:'HomeFilterData>gstrReturnStatus/ret1AT',formatter: '.formatter.HomeoutOf1'}"/>
+								</l:VerticalLayout>
+							</HBox>
+						</l:VerticalLayout>
+					</l:BlockLayoutCell>
+					<l:BlockLayoutCell width="3" class="clBlockLayout1">
+						<Toolbar class="colorToolbar sapUiTinyMarginBottom">
+							<Label text="Recon Details" design="Bold" class="titleFont"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+						<l:Grid id="iReconGrid" defaultSpan="L6" hSpacing="2" vSpacing="2" class="sapUiMediumMarginTop">
+							<HBox>
+								<core:Icon src="sap-icon://circle-task-2" color="#008000" visible="{= ${ReconDetails>/reconSummary/matchedPercent} !== undefined}"
+									tooltip="Matched"/>
+								<Text text="{parts:[{path : 'ReconDetails>/reconSummary/matchedPercent'}], formatter : '.formatter.matchedPercent1'}% Match"
+									visible="{= ${ReconDetails>/reconSummary/matchedPercent} !== undefined}" class="sapUiTinyMarginBegin"/>
+							</HBox>
+							<HBox>
+								<core:Icon src="sap-icon://circle-task-2" color="#CD853F"/>
+								<Text text="{parts:[{path : 'ReconDetails>/reconSummary/mismatchedPercent'}], formatter : '.formatter.matchedPercent1'}% Mismatch"
+									class="sapUiTinyMarginBegin"/>
+							</HBox>
+							<HBox>
+								<core:Icon src="sap-icon://circle-task-2" color="#8A2BE2"/>
+								<Text
+									text="{parts:[{path : 'ReconDetails>/reconSummary/probableMatchedPercent'}], formatter : '.formatter.matchedPercent1'}% Probable Match"
+									class="sapUiTinyMarginBegin"/>
+							</HBox>
+							<HBox>
+								<core:Icon src="sap-icon://circle-task-2" color="#702026"/>
+								<Text text="{parts:[{path : 'ReconDetails>/reconSummary/forcedMatchPercent'}], formatter : '.formatter.matchedPercent1'}% Forced Match"
+									class="sapUiTinyMarginBegin"/>
+							</HBox>
+							<HBox>
+								<core:Icon src="sap-icon://circle-task-2" color="#FF0000"/>
+								<Text text="{parts:[{path : 'ReconDetails>/reconSummary/addlPR'}], formatter : '.formatter.matchedPercent1'}% Additional in PR"
+									class="sapUiTinyMarginBegin"/>
+							</HBox>
+							<HBox>
+								<core:Icon src="sap-icon://circle-task-2" color="#F1C40F"/>
+								<Text text="{parts:[{path : 'ReconDetails>/reconSummary/addlA2'}], formatter : '.formatter.matchedPercent1'}% Additional in ANX-2 **"
+									class="sapUiTinyMarginBegin"/>
+							</HBox>
+						</l:Grid>
+						<Text id="textId" visible="true" text="**Additional in ANX-2 is calculated based on ANX-2 records" class="redLabel sapUiMediumMarginBegin"/>
+						<l:Grid id="iRespGrid" defaultSpan="L6" hSpacing="2" vSpacing="2" class="sapUiMediumMarginTop" visible="false">
+							<HBox>
+								<core:Icon src="sap-icon://circle-task-2" color="#008000"/>
+								<Text text="{parts:[{path : 'ReconDetails>/reconResponse/acceptAnx2Percent'}], formatter : '.formatter.matchedPercent1'}% Accept"
+									class="sapUiTinyMarginBegin"/>
+							</HBox>
+							<HBox>
+								<core:Icon src="sap-icon://circle-task-2" color="#FF0000"/>
+								<Text text="{parts:[{path : 'ReconDetails>/reconResponse/rejectAnx2Percent'}], formatter : '.formatter.matchedPercent1'}% Reject"
+									class="sapUiTinyMarginBegin"/>
+							</HBox>
+							<HBox>
+								<core:Icon src="sap-icon://circle-task-2" color="#CD853F"/>
+								<Text
+									text="{parts:[{path : 'ReconDetails>/reconResponse/provisinalAddlPRCreditPercent'}], formatter : '.formatter.matchedPercent1'}% Pending"
+									class="sapUiTinyMarginBegin"/>
+							</HBox>
+							<HBox>
+								<core:Icon src="sap-icon://circle-task-2" color="#8A2BE2"/>
+								<Text text="{parts:[{path : 'ReconDetails>/reconResponse/noActionAnx2Percent'}], formatter : '.formatter.matchedPercent1'}% No Action"
+									class="sapUiTinyMarginBegin"/>
+							</HBox>
+							<HBox>
+								<core:Icon src="sap-icon://circle-task-2" color="#F1C40F"/>
+								<Text
+									text="{parts:[{path : 'ReconDetails>/reconResponse/pendingAnx2Percent'}], formatter : '.formatter.matchedPercent1'}% Provisional Credit (PR)*"
+									class="sapUiTinyMarginBegin"/>
+							</HBox>
+							<HBox>
+								<core:Icon src="sap-icon://circle-task-2" color="#C0C0C0"/>
+								<Text text="{parts:[{path : 'ReconDetails>/reconResponse/pendingPRPercent'}], formatter : '.formatter.matchedPercent1'}% Pending PR *"
+									class="sapUiTinyMarginBegin"/>
+							</HBox>
+						</l:Grid>
+						<Text id="textId1" visible="false" text="** % basis PR Records" class="redLabel sapUiMediumMarginBegin"/>
+						<SegmentedButton id="sbReconDet" selectedKey="recon" selectionChange="onSelectionChange" width="97%" class="sapUiTinyMarginBegin">
+							<items>
+								<SegmentedButtonItem text="Recon Summary" key="recon"/>
+								<SegmentedButtonItem text="Response Summary" key="response"/>
+							</items>
+						</SegmentedButton>
+					</l:BlockLayoutCell>
+					<l:BlockLayoutCell id="anx-1" width="3" class="clBlockLayout1">
+						<Toolbar class="colorToolbar">
+							<Label text="ANX-1 vs Response" design="Bold" class="titleFont"/>
+							<ToolbarSpacer/>
+							<Label text="Values in %" class="fonttypeLabel" id="bchartpercntage" visible="false"/>
+							<Button id="bChartAnx1" icon="sap-icon://pie-chart" press="onButtonPress" visible="true"/>
+							<Button id="bTableAnx1" icon="sap-icon://table-chart" press="onButtonPress" visible="false"/>
+						</Toolbar>
+						<viz:VizFrame id="vfAnx1" xmlns="sap.viz" class="cl_vizHeig" uiConfig="{applicationSet:'fiori'}" visible="false">
+							<viz:dataset>
+								<viz.data:FlattenedDataset data="{Data>/saveToGstn/}">
+									<viz.data:dimensions>
+										<viz.data:DimensionDefinition name="Action" value="{Data>action}"/>
+									</viz.data:dimensions>
+									<viz.data:measures>
+										<viz.data:MeasureDefinition name="Saved to GSTN" value="{Data>resp}"/>
+									</viz.data:measures>
+								</viz.data:FlattenedDataset>
+							</viz:dataset>
+							<viz:feeds>
+								<viz.feeds:FeedItem id='valueAxisFeed' uid="valueAxis" type="Measure" values="Saved to GSTN"/>
+								<viz.feeds:FeedItem id='categoryAxisFeed' uid="categoryAxis" type="Dimension" values="Action"/>
+							</viz:feeds>
+						</viz:VizFrame>
+						<HBox id="iPrAnx1" width="100%" visible="false" class="sapUiLargeMarginBegin">
+							<HBox width="50%">
+								<Label text="Saved To GSTN" class="cl_TextColLab sapUiTinyMarginEnd"/>
+								<Text text="{Data>/prAnx1/saveToGstn}" class="sapUiTinyMarginBottom"/>
+							</HBox>
+							<HBox width="50%">
+								<Label text="Not Saved To GSTN" class="cl_TextColLab sapUiTinyMarginEnd"/>
+								<Text text="{Data>/prAnx1/notSaveToGstn}" class="sapUiTinyMarginBottom"/>
+							</HBox>
+						</HBox>
+						<Panel id="linegrid" class="sapUiNoContentPadding" visible="true" height="13.4rem">
+							<HBox width="100%" class="sapUiSmallMarginTop cl_flexBCol sapUiSmallMarginEnd">
+								<VBox alignItems="Center" justifyContent="Center" width="50%" class="layoutBorder2" tooltip="Total Tax = 192.84 Crores">
+									<HBox>
+										<Label text="93" design="Bold" class="fontBoldLarge"/>
+										<Label text="%" design="Bold" class="sapUiTinyMarginTop fontBoldLargeb"/>
+									</HBox>
+									<Text text="Saved To GSTN" class="cl_TextColLab" tooltip="Total Tax = 192.84 Crores"/>
+								</VBox>
+								<VBox alignItems="Center" justifyContent="Center" width="50%" tooltip="Total Tax = 14.51 Crores">
+									<HBox>
+										<Label text="7" design="Bold" class="fontBoldLarge"/>
+										<Label text="%" design="Bold" class="sapUiTinyMarginTop fontBoldLargeb"/>
+									</HBox>
+									<Text text="Not Saved to GSTN" class="cl_TextColLab" tooltip="Total Tax = 14.51 Crores"/>
+								</VBox>
+							</HBox>
+							<HBox width="100%" class="sapUiSmallMarginTop">
+								<VBox alignItems="Center" justifyContent="Center" width="19%" class="colorT4 sapUiTinyMarginBeginEnd" tooltip="Total Tax = 107.82 Crores">
+									<HBox>
+										<Label text="52" design="Bold" class="fontBoldLarge"/>
+										<Label text="%" design="Bold" class="sapUiTinyMarginTop fontBoldLargeb"/>
+									</HBox>
+									<Text text="Accept" tooltip="Total Tax = 107.82 Crores"/>
+								</VBox>
+								<VBox alignItems="Center" justifyContent="Center" width="19%" class="colorT4 cl_rejectCol sapUiTinyMarginEnd"
+									tooltip="Total Tax = 45.62 Crores">
+									<HBox>
+										<Label text="22" design="Bold" class="fontBoldLarge"/>
+										<Label text="%" design="Bold" class="sapUiTinyMarginTop fontBoldLargeb"/>
+									</HBox>
+									<Text text="Reject" tooltip="Total Tax = 45.62 Crores"/>
+								</VBox>
+								<VBox alignItems="Center" justifyContent="Center" width="19%" class="colorT5 sapUiTinyMarginEnd" tooltip="Total Tax = 16.59 Crores">
+									<HBox>
+										<Label text="8" design="Bold" class="fontBoldLarge"/>
+										<Label text="%" design="Bold" class="sapUiTinyMarginTop fontBoldLargeb"/>
+									</HBox>
+									<Text text="Pending" tooltip="Total Tax = 16.59 Crores"/>
+								</VBox>
+								<VBox alignItems="Center" justifyContent="Center" width="19%" class="colorT6 sapUiTinyMarginEnd" tooltip="Total Tax = 26.96 Crores">
+									<HBox>
+										<Label text="13" design="Bold" class="fontBoldLarge"/>
+										<Label text="%" design="Bold" class="sapUiTinyMarginTop fontBoldLargeb"/>
+									</HBox>
+									<Text text="Unlock" tooltip="Total Tax = 26.96 Crores"/>
+								</VBox>
+								<VBox alignItems="Center" justifyContent="Center" width="19%" class="colorT6 cl_noActn sapUiTinyMarginEnd"
+									tooltip="Total Tax = 10.37 Crores">
+									<HBox>
+										<Label text="5" design="Bold" class="fontBoldLarge"/>
+										<Label text="%" design="Bold" class="sapUiTinyMarginTop fontBoldLargeb"/>
+									</HBox>
+									<Text text="No Action" tooltip="Total Tax = 10.37 Crores"/>
+								</VBox>
+							</HBox>
+							<Label text="* Based on Responses by Counter Party (Recipient)" class="sapUiSmallMarginTop sapUiTinyMarginBegin fonttypeLabel"/>
+						</Panel>
+					</l:BlockLayoutCell>
+				</l:BlockLayoutRow>
+			</l:BlockLayout>
+			<Panel class="sapUiNoContentPadding sapUiTinyMarginTop" visible="false">
+				<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="true"
+					class="sapUiTinyMarginBeginEnd cl_ChartConHeight" customZoomInPress="fnZoomPress">
+					<commons:toolbar>
+						<OverflowToolbar class="colorToolbar toolbarHeight">
+							<Label id="lStatus" text="Return Compliance Status" design="Bold" class="titleFont" width="15rem"/>
+							<ToolbarSpacer/>
+							<Text text="View by:" class="sapUiTinyMarginEnd"/>
+							<MenuButton id="bCompliance" type="Ghost" text="GSTIN" class="cl_menu menuStatus" width="6rem">
+								<Menu itemSelected="onChangeMenu">
+									<MenuItem key="G" text="GSTIN"/>
+									<MenuItem key="D" text="Division"/>
+									<MenuItem key="P" text="Plant"/>
+								</Menu>
+							</MenuButton>
+							<Select>
+								<core:Item key="digi" text="DigiGST Values"/>
+								<core:Item key="gstn" text="GSTN Values"/>
+							</Select>
+							<MenuButton id="bRupees" text="Rupees in Absolute" class="cl_menu">
+								<Menu itemSelected="onChangeMenu">
+									<MenuItem key="A" text="Absolute"/>
+									<MenuItem key="L" text="Lakhs"/>
+									<MenuItem key="C" text="Crores"/>
+									<MenuItem key="M" text="Millions"/>
+									<MenuItem key="B" text="Billions"/>
+								</Menu>
+							</MenuButton>
+							<Button id="bHomeFilter" icon="sap-icon://filter" tooltip="{i18n>adaptFilter}" press="onPrsHomeAdaptFilter"/>
+							<commons:ChartContainerToolbarPlaceholder/>
+						</OverflowToolbar>
+					</commons:toolbar>
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<ui:Table rows="{HomeFilterData>/supplyStatus}" selectionMode="None" visibleRowCount="7" fixedBottomRowCount="1" class="cl_TotValClass">
+									<ui:columns class="headercss">
+										<ui:Column hAlign="Left" width="14rem" visible="{Visi>/gstin}">
+											<Label text="GSTIN" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<VBox width="100%">
+													<HBox visible="{=!!${HomeFilterData>gstin}}">
+														<Text text="{HomeFilterData>stateName}" class="stateColor" width="8rem"/>
+														<Text text="{HomeFilterData>type}" class="stateColor fontSmall"/>
+													</HBox>
+													<HBox alignContent="Start" justifyContent="SpaceBetween" visible="{=!!${HomeFilterData>gstin}}">
+														<Link text="{HomeFilterData>gstin}" press="handleLinkPressGSTINMain"/>
+														<core:Icon src="sap-icon://circle-task-2" size="0.8rem" visible="{=${HomeFilterData>authStatus}===''?false:true}"
+															tooltip="{=${HomeFilterData>authStatus}==='A'?'Active':'Inactive'}" color="{=${HomeFilterData>authStatus}==='A'?'#00ff00':'red'}"
+															press="onPressGenerateOTP" class="sapUiTinyMarginBegin"/>
+													</HBox>
+													<ObjectIdentifier title="Total" visible="{=!${HomeFilterData>gstin}}" class="lasrow"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="14rem" visible="{Visi>/division}">
+											<Label text="Division" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<HBox>
+													<Label text="{Data>division}" design="Bold" visible="{=!!${Data>division}}"/>
+													<ObjectIdentifier title="Total" visible="{=!${Data>division}}"/>
+												</HBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="14rem" visible="{Visi>/plant}">
+											<Label text="Plant" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<HBox>
+													<Label text="{Data>plant}" design="Bold" visible="{=!!${Data>plant}}"/>
+													<ObjectIdentifier title="Total" visible="{=!${Data>plant}}"/>
+												</HBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" class="cl_TotValClass">
+											<Label text="Outward Supply" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'HomeFilterData>outSup'}], formatter : '.formatter.HomeTAbValue'}"
+													design="{=!${HomeFilterData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label text="Output Tax" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'HomeFilterData>outTax'}], formatter : '.formatter.HomeTAbValue'}"
+													design="{=!${HomeFilterData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label text="Inward Supply" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'HomeFilterData>inwSup'}], formatter : '.formatter.HomeTAbValue'}"
+													design="{=!${HomeFilterData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label text="Tax Amount" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'HomeFilterData>taxAmt'}], formatter : '.formatter.HomeTAbValue'}"
+													design="{=!${HomeFilterData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label text="Available Credit" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'HomeFilterData>avbCred'}], formatter : '.formatter.HomeTAbValue'}"
+													design="{=!${HomeFilterData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" visible="{Visi>/colVisi}">
+											<Label text="Cash Ledger" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'HomeFilterData>cashLed'}], formatter : '.formatter.HomeTAbValue'}"
+													design="{=!${HomeFilterData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" visible="{Visi>/colVisi}">
+											<Label text="Credit Ledger" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'HomeFilterData>crdLed'}], formatter : '.formatter.HomeTAbValue'}"
+													design="{=!${HomeFilterData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" visible="{Visi>/colVisi}">
+											<Label text="Liability Ledger" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'HomeFilterData>libLed'}], formatter : '.formatter.HomeTAbValue'}"
+													design="{=!${HomeFilterData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column visible="{Visi>/colVisi}">
+											<Label text="Filing Status" textAlign="Center" design="Bold" width="100%"/>
+											<ui:template>
+												<ObjectStatus text="{HomeFilterData>filStat}" state="{=${HomeFilterData>filStat}==='Filed'?'Success':'Error'}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<ui:footer>
+										<OverflowToolbar>
+											<Label text="Note :" design="Bold"/>
+											<core:Icon src="sap-icon://circle-task-2" size="0.8rem" color="#00ff00" press="onPressAuthToken"/>
+											<Text text="Auth Token Active"/>
+											<Text text=""/>
+											<core:Icon src="sap-icon://circle-task-2" size="0.8rem" color="#ff0000" press="pressOTP"/>
+											<Text text="Auth Token Inactive (Click to activate)"/>
+										</OverflowToolbar>
+									</ui:footer>
+								</ui:Table>
+							</commons:content>
+						</commons:ChartContainerContent>
+					</commons:content>
+				</commons:ChartContainer>
+			</Panel>
+		</VBox>
+		<!--<footer>-->
+		<!--	<Toolbar height="3rem">-->
+		<!--		<ToolbarSpacer/>-->
+		<!--		<Label text="© 2021 | All Rights Reserved. Content within this application is confidential and meant for EY staff and EY clients only."-->
+		<!--			class="logoText"/>-->
+		<!--		<ToolbarSpacer/>-->
+		<!--	</Toolbar>-->
+		<!--</footer>-->
+	</Page>
+</mvc:View>

@@ -1,0 +1,152 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fm="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"
+	class="sapUiNoContentPadding sapUiSizeCompact">
+	<f:DynamicPage visible="true">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Extraction Design"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Document Name" visibleInFilterBar="true">
+							<fb:control>
+								<Input id="DNId"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="f" label="EY App" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox id="eyAppId" width="100%" items="{path:'SectionSet>/'}" selectionChange="selectAll">
+									<core:Item key="{SectionSet>Eyapp}" text="{SectionSet>Eyapp}"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Company Code" visibleInFilterBar="true">
+							<fb:control>
+								<Input/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Sales org." visibleInFilterBar="true">
+							<fb:control>
+								<Input/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="BIlling Type" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox width="100%" items="{path:'BillingType>/'}" selectionChange="selectAll">
+									<core:Item key="{BillingType>Fkart}" text="{BillingType>Fkart} - {BillingType>Vtext}"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Extraction EVent" visibleInFilterBar="true">
+							<fb:control>
+								<Select forceSelection="false">
+									<core:Item key="BTE" text="BTE"/>
+									<core:Item key="SD Output" text="SD Output"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="Go" type="Emphasized" press="onChange2" class="input sapUiTinyMarginBegin"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<SplitApp initialDetail="detail" initialMaster="master" orientationChange="onOrientationChange">
+				<detailPages>
+					<Page showHeader="true" class="sapUiTiniMarginTop">
+						<headerContent>
+							<Button text="Submit" press="onSubmit" type="Emphasized"/>
+						</headerContent>
+						<content>
+							<Table items="{TabName123>/}" id="idTable" noDataText="No Products" mode="MultiSelect">
+								<columns>
+									<Column hAlign="Center">
+										<Text text="Field Name"/>
+									</Column>
+									<Column hAlign="Center">
+										<Text text="Data Type"/>
+									</Column>
+									<Column hAlign="Center">
+										<Text text="Table Name"/>
+									</Column>
+									<Column hAlign="Center">
+										<Text text="Int Type"/>
+									</Column>
+									<Column hAlign="Center">
+										<Text text="ScrtextL"/>
+									</Column>
+									<Column hAlign="Center">
+										<Text text="Intlen"/>
+									</Column>
+								</columns>
+								<items>
+									<ColumnListItem vAlign="Middle">
+										<cells>
+											<Text text="{TabName123>Fieldname}" wrapping="false"/>
+											<Text text="{TabName123>Datatype}" wrapping="false"/>
+											<Text text="{TabName123>Tabname}" wrapping="false"/>
+											<Text text="{TabName123>Inttype}" wrapping="false"/>
+											<Text text="{TabName123>ScrtextL}" wrapping="false"/>
+											<Text text="{TabName123>Intlen}" wrapping="false"/>
+										</cells>
+									</ColumnListItem>
+								</items>
+							</Table>
+						</content>
+						<!--<footer>
+							<OverflowToolbar>
+								<ToolbarSpacer/>
+								<Button text="Import definition" type="Emphasized"/>
+							</OverflowToolbar>
+						</footer>-->
+					</Page>
+				</detailPages>
+				<masterPages>
+					<Page title="EY - One tax Data Segment">
+						<content>
+							<!--<VBox height="50%">-->
+							<!--<SearchField id="searchId" liveChange="onSearchGstins1" width="100%"/>-->
+							<List mode="SingleSelectMaster" id="idList" items="{TabName12>/}" growing="true" growingTriggerText="More" selectionChange="onListPress">
+								<items>
+									<StandardListItem title="{TabName12>Tabname}" description="{TabName12>Description}"/>
+								</items>
+							</List>
+							<!--</VBox>-->
+						</content>
+					</Page>
+				</masterPages>
+			</SplitApp>
+			<!--<Panel height="30rem">
+				<headerToolbar>
+					<OverflowToolbar>
+						<Title text="Table Name"/>
+						<ToolbarSpacer/>
+						<Button text="Submit" press="onSubmitTab" type="Emphasized"/>
+					</OverflowToolbar>
+				</headerToolbar>
+				<List mode="MultiSelect" id="idList" items="{TabName12>/}" growing="true" growingTriggerText="More">
+					<items>
+						<StandardListItem title="{TabName12>Tabname}" description="{TabName12>Description}"/>
+					</items>
+				</List>
+			</Panel>-->
+			<!--<Panel>
+				<Button text="Submit" press="onSubmitCode" type="Emphasized"/>
+			</Panel>-->
+		</f:content>
+		<!--<f:footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button text="Submit" press="onSubmitCode" type="Emphasized"/>
+			</OverflowToolbar>
+		</f:footer>-->
+	</f:DynamicPage>
+</core:FragmentDefinition>

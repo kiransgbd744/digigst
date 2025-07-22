@@ -1,0 +1,81 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="dynamicTS">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Label text="Entity :" class="sapUiTinyMarginTop" design="Bold"/>
+						<Select items="{tsEntity>/resp}" change="onSelectionChangeEntity" width="12rem" id="idEntityTS" class="sapUiTinyMarginBegin">
+							<core:Item key="{tsEntity>entityId}" text="{tsEntity>entityName}"/>
+						</Select>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<Button type="Emphasized" icon="sap-icon://save" text="Submit" id="idTSSubmit" press="onSubmit" enabled="false"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel height="100%" class="sapUiNoContentPadding">
+				<HBox class="sapUiSmallMarginTop">
+					<Label text="Goods -Tax Invoice :" class="sapUiTinyMarginTop" textAlign="Right" design="Bold" width="15rem"/>
+					<Select id="idgoodsTaxInv" items="{TemplateSelection>/goodsTaxInv}" selectedKey="{TemplateSelection>/item/goodsTaxInv}" width="15rem"
+						class="sapUiTinyMarginBegin">
+						<core:Item key="{TemplateSelection>id}" text="{TemplateSelection>tempType}"/>
+					</Select>
+				</HBox>
+				<HBox class="sapUiSmallMarginTop">
+					<Label text="Goods - Credit Debit notes :" class="sapUiTinyMarginTop" textAlign="Right" design="Bold" width="15rem"/>
+					<Select id="idgoodsCDNotes" items="{TemplateSelection>/goodsCDNotes}" selectedKey="{TemplateSelection>/item/goodsCDNotes}" width="15rem"
+						class="sapUiTinyMarginBegin">
+						<core:Item key="{TemplateSelection>id}" text="{TemplateSelection>tempType}"/>
+					</Select>
+				</HBox>
+				<HBox class="sapUiSmallMarginTop">
+					<Label text="Service-Tax Invoice :" class="sapUiTinyMarginTop" textAlign="Right" design="Bold" width="15rem"/>
+					<Select id="idserviceTaxInv" items="{TemplateSelection>/serviceTaxInv}" selectedKey="{TemplateSelection>/item/serviceTaxInv}" width="15rem"
+						class="sapUiTinyMarginBegin">
+						<core:Item key="{TemplateSelection>id}" text="{TemplateSelection>tempType}"/>
+					</Select>
+				</HBox>
+				<HBox class="sapUiSmallMarginTop">
+					<Label text="Service-Credit Debit notes :" class="sapUiTinyMarginTop" textAlign="Right" design="Bold" width="15rem"/>
+					<Select id="idserviceCDNotes" items="{TemplateSelection>/serviceCDNotes}" selectedKey="{TemplateSelection>/item/serviceCDNotes}"
+						width="15rem" class="sapUiTinyMarginBegin">
+						<core:Item key="{TemplateSelection>id}" text="{TemplateSelection>tempType}"/>
+					</Select>
+				</HBox>
+				<HBox class="sapUiSmallMarginTop">
+					<Label text="ISD Distribution Invoice :" class="sapUiTinyMarginTop" textAlign="Right" design="Bold" width="15rem"/>
+					<Select id="idgstr6IsdDistribution" items="{TemplateSelection>/gstr6IsdDistribution}"
+						selectedKey="{TemplateSelection>/item/gstr6IsdDistribution}" width="15rem" class="sapUiTinyMarginBegin">
+						<core:Item key="{TemplateSelection>id}" text="{TemplateSelection>tempType}"/>
+					</Select>
+				</HBox>
+				<HBox class="sapUiSmallMarginTop">
+					<Label text="ISD Distribution Credit Note :" class="sapUiTinyMarginTop" textAlign="Right" design="Bold" width="15rem"/>
+					<Select id="idgstr6CRDistribution" items="{TemplateSelection>/gstr6CRDistribution}"
+						selectedKey="{TemplateSelection>/item/gstr6CRDistribution}" width="15rem" class="sapUiTinyMarginBegin">
+						<core:Item key="{TemplateSelection>id}" text="{TemplateSelection>tempType}"/>
+					</Select>
+				</HBox>
+				<HBox class="sapUiSmallMarginTop">
+					<Label text="ISD Redistribution Invoice :" class="sapUiTinyMarginTop" textAlign="Right" design="Bold" width="15rem"/>
+					<Select id="idgstr6IsdReDistribution" items="{TemplateSelection>/gstr6IsdReDistribution}"
+						selectedKey="{TemplateSelection>/item/gstr6IsdReDistribution}" width="15rem" class="sapUiTinyMarginBegin">
+						<core:Item key="{TemplateSelection>id}" text="{TemplateSelection>tempType}"/>
+					</Select>
+				</HBox>
+				<HBox class="sapUiSmallMarginTop sapUiSmallMarginBottom">
+					<Label text="ISD Redistribution Credit Note :" class="sapUiTinyMarginTop" textAlign="Right" design="Bold" width="15rem"/>
+					<Select id="idgstr6CRReDistribution" items="{TemplateSelection>/gstr6CRReDistribution}"
+						selectedKey="{TemplateSelection>/item/gstr6CRReDistribution}" width="15rem" class="sapUiTinyMarginBegin">
+						<core:Item key="{TemplateSelection>id}" text="{TemplateSelection>tempType}"/>
+					</Select>
+				</HBox>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

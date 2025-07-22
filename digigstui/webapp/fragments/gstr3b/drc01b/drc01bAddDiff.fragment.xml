@@ -1,0 +1,70 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:f="sap.ui.layout.form">
+	<Dialog title="Add Differential amount" type="Message" class="sapUiSizeCompact cl_saveHeader" xmlns:fb="sap.ui.comp.filterbar">
+		<!--<content>-->
+		<!--	<layout:VerticalLayout>-->
+		<!--		<layout:Grid defaultSpan="L4 M4 S12" vSpacing="0" class="sapUiTinyMarginTop">-->
+		<!--			<layout:content>-->
+		<!--				<VBox>-->
+		<!--					<Label text="DCR01 ID" required="false"/>-->
+		<!--					<Input width="10rem"></Input>-->
+		<!--				</VBox>-->
+		<!--				<VBox class="sapUiTinyMarginBegin">-->
+		<!--					<Label text="Challan No." required="false"/>-->
+		<!--					<Input width="10rem"></Input>-->
+		<!--				</VBox>-->
+		<!--				<VBox class="sapUiTinyMarginBegin">-->
+		<!--					<Label text="Challan Date" required="false"/>-->
+		<!--					<DatePicker displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" editable="true" width="10rem"/>-->
+		<!--				</VBox>-->
+		<!--			</layout:content>-->
+		<!--		</layout:Grid>-->
+		<!--	</layout:VerticalLayout>-->
+		<!--</content>-->
+		<ScrollContainer horizontal="false" vertical="true" height="10rem" class="sapUiNoMargin sapUiNoContentPadding">
+			<Table id="tabAddDiff" items="{AddDiff>/}" sticky="ColumnHeaders" mode="MultiSelect" noDataText="No Data" class="sapUiNoContentPadding">
+				<columns >
+					<Column hAlign="Center" width="10rem">
+						<Label text="DCR03 ARN" design="Bold" required="true"/>
+					</Column>
+					<Column hAlign="Center" width="10rem">
+						<Label text="Challan No." design="Bold" required="true"/>
+					</Column>
+					<Column hAlign="Center" width="10rem">
+						<Label text="Challan Date" design="Bold" required="true"/>
+					</Column>
+					<Column hAlign="Center" width="10rem">
+						<Label text="IGST" design="Bold"/>
+					</Column>
+					<Column hAlign="Center" width="10rem">
+						<Label text="CGST" design="Bold"/>
+					</Column>
+					<Column hAlign="Center" width="10rem">
+						<Label text="SGST" design="Bold"/>
+					</Column>
+					<Column hAlign="Center" width="10rem">
+						<Label text="CESS" design="Bold"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem vAlign="Middle">
+						<cells>
+							<Input value="{AddDiff>drc03arn}" width="100%"></Input>
+							<Input value="{AddDiff>challanNo}" width="100%"></Input>
+							<DatePicker value="{AddDiff>challanDate}" displayFormat="MMM dd, yyyy" valueFormat="dd/MM/yyyy" editable="true" width="100%"/>
+							<Input value="{AddDiff>igst}" width="100%"></Input>
+							<Input value="{AddDiff>cgst}" width="100%"></Input>
+							<Input value="{AddDiff>sgst}" width="100%"></Input>
+							<Input value="{AddDiff>cess}" width="100%"></Input>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</ScrollContainer>
+		<buttons>
+			<Button class="buttoncolorSec" text="Add Row" press="onAddRow"/>
+			<Button class="buttoncolorSec" text="Delete Row" press="OnDeleteRow"/>
+			<Button class="buttoncolorSec" text="Save" press="onSaveDialog('S')"/>
+			<Button class="buttoncolorSec" text="Cancel" press="onSaveDialog('C')"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

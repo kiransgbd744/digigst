@@ -1,0 +1,251 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="dynamicERP" class="sapUiSizeCompact">
+		<f:content>
+			<VBox>
+				<ui:Table id="idTableGenNIC" rows="{nicCrdTabData>/}" selectionMode="MultiToggle" visibleRowCount="10" fixedRowCount="0"
+					fixedColumnCount="0" enableSelectAll="true" rowSelectionChange="onPrsRowChnge1" class="sapUiSizeCompact">
+					<ui:extension>
+						<Toolbar>
+							<SearchField placeholder="Filter" value="{ui>/globalFilter}" search="filterGlobally" width="15rem"/>
+							<HBox>
+								<CheckBox id="cbCopyNicCred" selected="true" select="onMainNICSelectChckbx" class="sapUiTinyMarginBottom" visible="false" enabled="false"/>
+								<Text text="Do you want to copy the EINV credentials to EWB credentials" class="sapUiTinyMarginTop"  visible="false" ></Text>
+							</HBox>
+							<ToolbarSpacer/>
+							<Button type="Emphasized" class="buttoncolorSec" text="Copy NIC Credentials" press="onCopyCredentials('NIC')"/>
+							<Button type="Emphasized" class="buttoncolorSec" text="Copy IRP Credentials" press="onCopyCredentials('IRP')"/>
+							<Button type="Emphasized" class="buttoncolorSec" text="Edit" press="onEdit"/>
+							<Button type="Emphasized" class="buttoncolorSec" text="Save Changes" id="idERPSubmit" press="onSavChnges"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="14rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{nicCrdTabData>gstin}"/>
+							</ui:template>
+							<ui:template>
+							<VBox>
+								<HBox>
+									<Text text="{nicCrdTabData>state}" width="8rem" class="stateColor"/>
+									<Text text="{=${nicCrdTabData>regType}==='REGULAR'?'':${nicCrdTabData>regType}}" class="stateColor fontSmall"/>
+								</HBox>
+								<HBox alignContent="Start" justifyContent="SpaceBetween">
+									<Link text="{nicCrdTabData>gstin}" emphasized="true" press="onPressGstr1Summary"/>
+									<core:Icon src="sap-icon://circle-task-2" visible="{=${nicCrdTabData>state}===''?false:true}" size="0.8rem"
+										tooltip="{nicCrdTabData>authToken}" color="{=${nicCrdTabData>authToken}==='Active'?'#00ff00':'#ff0000'}"
+										press="onActivateAuthToken(${nicCrdTabData>gstin},${nicCrdTabData>authToken})"/>
+								</HBox>
+							</VBox>
+						</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Active IRP" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{nicCrdTabData>activeIRP}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem" hAlign="Center" headerSpan="8,4">
+							<ui:multiLabels>
+								<Label text="NIC" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="EINV" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="User Name" required="true" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{nicCrdTabData>einvUserName}" maxLength="50" enabled="{nicCrdTabData>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label/>
+								<Label/>
+								<Label text="Password" required="true" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{nicCrdTabData>einvPassword}" maxLength="50" enabled="{nicCrdTabData>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="12rem">
+							<ui:multiLabels>
+								<Label/>
+								<Label/>
+								<Label text="Client ID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{nicCrdTabData>einvClientId}" maxLength="100" enabled="{nicCrdTabData>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label/>
+								<Label/>
+								<Label text="Client Secret" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{nicCrdTabData>einvClientSecret}" maxLength="100" enabled="{nicCrdTabData>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem" hAlign="Center" headerSpan="8,4">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="EWB" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="User Name" required="true" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{nicCrdTabData>ewbUserName}" enabled="{nicCrdTabData>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label/>
+								<Label/>
+								<Label text="Password" required="true" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{nicCrdTabData>ewbPassword}" enabled="{nicCrdTabData>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label/>
+								<Label/>
+								<Label text="Client ID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{nicCrdTabData>ewbClientId}" enabled="{nicCrdTabData>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label/>
+								<Label/>
+								<Label text="Client Secret" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{nicCrdTabData>ewbClientSecret}" enabled="{nicCrdTabData>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem" hAlign="Center" headerSpan="8,4">
+							<ui:multiLabels>
+								<Label text="IRP" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="EINV" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="User Name" required="true" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{nicCrdTabData>einvUserNameIRP}" maxLength="50" enabled="{nicCrdTabData>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label/>
+								<Label/>
+								<Label text="Password" required="true" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{nicCrdTabData>einvPasswordIRP}" maxLength="50" enabled="{nicCrdTabData>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="12rem">
+							<ui:multiLabels>
+								<Label/>
+								<Label/>
+								<Label text="Client ID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{nicCrdTabData>einvClientIdIRP}" maxLength="100" enabled="{nicCrdTabData>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label/>
+								<Label/>
+								<Label text="Client Secret" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{nicCrdTabData>einvClientSecretIRP}" maxLength="100" enabled="{nicCrdTabData>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem" hAlign="Center" headerSpan="8,4">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="EWB" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="User Name" required="true" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{nicCrdTabData>ewbUserNameIRP}" enabled="false"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label/>
+								<Label/>
+								<Label text="Password" required="true" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{nicCrdTabData>ewbPasswordIRP}" enabled="false"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label/>
+								<Label/>
+								<Label text="Client ID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{nicCrdTabData>ewbClientIdIRP}" enabled="false"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label/>
+								<Label/>
+								<Label text="Client Secret" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{nicCrdTabData>ewbClientSecretIRP}" enabled="false"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+					<ui:footer>
+						<HBox width="100%" justifyContent="Center">
+							<Button id="btnFirst" type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" class="sapUiTinyMarginBeginEnd" enabled="false"
+								press="onPressPagination"/>
+							<Button id="btnPrev" type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="false"
+								press="onPressPagination"/>
+							<Input id="inPageNo" type="Number" textAlign="End" width="4rem" submit="onSubmitPagination" enabled="false" class="sapUiTinyMarginBegin"
+								value="0"/>
+							<Text id="txtPageNo" text="/ 0" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+							<Button id="btnNext" type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="false" press="onPressPagination"/>
+							<Button id="btnLast" type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" class="sapUiTinyMarginBeginEnd" enabled="false"
+								press="onPressPagination"/>
+						</HBox>
+					</ui:footer>
+				</ui:Table>
+				<VBox>
+					<Toolbar height="3.5rem">
+						<VBox>
+						<HBox>
+							<Text text="*" class="cl_star1"/>
+							<Text
+								text="If any change is required in the credentials, the same should be done in the active IRP (NIC/IRP5) which is active for EINV/EWB generations"/>
+						</HBox>
+						<HBox>
+							<Text text="**" class="cl_star1"/>
+							<Text
+								text="In Production, User Name &amp; Password are only required"/>
+						</HBox>
+						</VBox>
+					</Toolbar>
+				</VBox>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

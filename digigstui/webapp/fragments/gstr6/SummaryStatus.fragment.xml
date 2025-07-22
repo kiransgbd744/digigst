@@ -1,0 +1,300 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table"
+	xmlns:layout="sap.ui.layout">
+	<Dialog type="Message" class="sapUiSizeCompact" showHeader="false">
+		<beginButton>
+			<Button text="Close" press="onCloseSummDialog"/>
+		</beginButton>
+		<Bar>
+			<contentMiddle>
+				<Title text="GET GSTR-6 Last Call Status" visible="true" id="idgettitlesum"/>
+				<Title text="GET GSTR-6 Last Success Status" visible="false" id="idGetSucessTitleSum"/>
+			</contentMiddle>
+		</Bar>
+		<layout:Grid defaultSpan="L2 M2 S12" vSpacing="0" class="sapUiTinyMarginTop">
+			<layout:content>
+				<VBox>
+					<Label text="Tax Period" required="false"/>
+					<DatePicker displayFormat="MMM yyyy" value="Oct 2019"/>
+				</VBox>
+			</layout:content>
+		</layout:Grid>
+		<Toolbar>
+			<CheckBox text="Select All" selected="{showing>/check}"/>
+			<ToolbarSpacer/>
+			<Button text="Download Reports" type="Emphasized"/>
+			<Button text="GET GSTR-6" type="Emphasized"/>
+			<SegmentedButton id="idSummaryStatusBtn" selectedKey="LCS" selectionChange="onChangeSegmentProcessStatus" class="sapUiSmallMarginEnd">
+				<items>
+					<SegmentedButtonItem text="Last Call Status" key="LCS" width="10rem"/>
+					<SegmentedButtonItem text="Last Success Status" key="LSS" width="10rem"/>
+				</items>
+			</SegmentedButton>
+		</Toolbar>
+		<ui:Table id="idgetVtablegstr6sum" rows="{path:'oModelProcessGstr6>/'}" selectionMode="Multi" selectionBehavior="Row" visibleRowCount="10"
+			class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop" fixedColumnCount="1" width="85rem">
+			<ui:extension>
+				<!--<Toolbar>-->
+				<!--	<CheckBox text="Select All" selected="{showing>/check}"/>-->
+				<!--	<ToolbarSpacer/>-->
+				<!--	<Button text="GET GSTR-6A" type="Emphasized"/>-->
+				<!--	<SegmentedButton id="sbUpdatStatusGstr6" selectedKey="LCS" selectionChange="onChangeSegmentStatus" class="sapUiSmallMarginEnd">-->
+				<!--		<items>-->
+				<!--			<SegmentedButtonItem text="Last Call Status" key="LCS" width="10rem"/>-->
+				<!--			<SegmentedButtonItem text="Last Success Status" key="LSS" width="10rem"/>-->
+				<!--		</items>-->
+				<!--	</SegmentedButton>-->
+				<!--</Toolbar>-->
+			</ui:extension>
+			<ui:columns>
+				<ui:Column hAlign="Center">
+					<HBox>
+						<Label text="GSTN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiSmallMarginBegin sapUiMediumMarginEnd"/>
+					</HBox>
+					<ui:template>
+						<Text text="{oModelProcessGstr6>gstn}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center" width="12rem">
+					<HBox>
+						<Label text="B2B" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiSmallMarginBegin sapUiMediumMarginEnd"/>
+					</HBox>
+					<ui:template>
+						<HBox>
+							<CheckBox text="" visible="{= ${Gstr6ASucess>b2bStatus} ==='Failed' ?true:false}" selected="{showing>/check}"/>
+							<VBox>
+								<HBox>
+									<ObjectStatus text="{oModelProcessGstr6>status}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+										state="{= ${oModelProcessGstr6>status} ==='Success' ?'Success':'Success'}"/>
+									<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiTinyMarginTop sapUiMediumMarginEnd"/>
+								</HBox>
+								<Text text="{oModelProcessGstr6>timeStamp}"/>
+							</VBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Left" width="12rem">
+					<HBox>
+						<Label text="CDN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiSmallMarginBegin sapUiMediumMarginEnd"/>
+					</HBox>
+					<ui:template>
+						<HBox>
+							<CheckBox text="" visible="{= ${Gstr6ASucess>b2baStatus} ==='Failed' ?true:false}" selected="{showing>/check}"/>
+							<VBox>
+								<HBox>
+									<ObjectStatus text="{oModelProcessGstr6>status}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+										state="{= ${oModelProcessGstr6>status} ==='Success' ?'Success':'Success'}"/>
+									<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiTinyMarginTop sapUiMediumMarginEnd"/>
+								</HBox>
+								<Text text="{oModelProcessGstr6>timeStamp}"/>
+							</VBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Left" width="12rem">
+					<HBox>
+						<Label text="B2BA" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiSmallMarginBegin sapUiMediumMarginEnd"/>
+					</HBox>
+					<ui:template>
+						<HBox>
+							<CheckBox text="" visible="{= ${Gstr6ASucess>cdnStatus} ==='Failed' ?true:false}" selected="{showing>/check}"/>
+							<VBox>
+								<HBox>
+									<ObjectStatus text="{oModelProcessGstr6>status}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+										state="{= ${oModelProcessGstr6>status} ==='Success' ?'Success':'Success'}"/>
+									<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiTinyMarginTop sapUiMediumMarginEnd"/>
+								</HBox>
+								<Text text="{oModelProcessGstr6>timeStamp}"/>
+							</VBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Left" width="12rem">
+					<HBox>
+						<Label text="CDNA" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiSmallMarginBegin sapUiMediumMarginEnd"/>
+					</HBox>
+					<ui:template>
+						<HBox>
+							<CheckBox text="" visible="{= ${Gstr6ASucess>cdnStatus} ==='Failed' ?true:false}" selected="{showing>/check}"/>
+							<VBox>
+								<HBox>
+									<ObjectStatus text="{oModelProcessGstr6>status}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+										state="{= ${oModelProcessGstr6>status} ==='Success' ?'Success':'Success'}"/>
+									<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiTinyMarginTop sapUiMediumMarginEnd"/>
+								</HBox>
+								<Text text="{oModelProcessGstr6>timeStamp}"/>
+							</VBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Left" width="12rem">
+					<HBox>
+						<Label text="ISD" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiSmallMarginBegin sapUiMediumMarginEnd"/>
+					</HBox>
+					<ui:template>
+						<HBox>
+							<CheckBox text="" visible="{= ${Gstr6ASucess>cdnStatus} ==='Failed' ?true:false}" selected="{showing>/check}"/>
+							<VBox>
+								<HBox>
+									<ObjectStatus text="{oModelProcessGstr6>status}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+										state="{= ${oModelProcessGstr6>status} ==='Success' ?'Success':'Success'}"/>
+									<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiTinyMarginTop sapUiMediumMarginEnd"/>
+								</HBox>
+								<Text text="{oModelProcessGstr6>timeStamp}"/>
+							</VBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Left" width="12rem">
+					<HBox>
+						<Label text="ISDA" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiSmallMarginBegin sapUiMediumMarginEnd"/>
+					</HBox>
+					<ui:template>
+						<HBox>
+							<CheckBox text="" visible="{= ${Gstr6ASucess>cdnStatus} ==='Failed' ?true:false}" selected="{showing>/check}"/>
+							<VBox>
+								<HBox>
+									<ObjectStatus text="{oModelProcessGstr6>status}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+										state="{= ${oModelProcessGstr6>status} ==='Success' ?'Success':'Success'}"/>
+									<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiTinyMarginTop sapUiMediumMarginEnd"/>
+								</HBox>
+								<Text text="{oModelProcessGstr6>timeStamp}"/>
+							</VBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<!--<ui:Column hAlign="Left" width="13rem">-->
+				<!--	<HBox>-->
+				<!--		<Label text="Distribution CR" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+				<!--		<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiSmallMarginBegin sapUiMediumMarginEnd"/>-->
+				<!--	</HBox>-->
+				<!--	<ui:template>-->
+				<!--		<HBox>-->
+				<!--			<CheckBox text="" visible="{= ${Gstr6ASucess>cdnStatus} ==='Failed' ?true:false}" selected="{showing>/check}"/>-->
+				<!--			<VBox>-->
+				<!--				<HBox>-->
+				<!--					<ObjectStatus text="{oModelProcessGstr6>status}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"-->
+				<!--						state="{= ${oModelProcessGstr6>status} ==='Success' ?'Success':'Success'}"/>-->
+				<!--					<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiTinyMarginTop sapUiMediumMarginEnd"/>-->
+				<!--				</HBox>-->
+				<!--				<Text text="{oModelProcessGstr6>timeStamp}"/>-->
+				<!--			</VBox>-->
+				<!--		</HBox>-->
+				<!--	</ui:template>-->
+				<!--</ui:Column>-->
+				<!--<ui:Column hAlign="Left" width="13rem">-->
+				<!--	<HBox>-->
+				<!--		<Label text="Re- Distribution INV" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+				<!--		<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiSmallMarginBegin sapUiMediumMarginEnd"/>-->
+				<!--	</HBox>-->
+				<!--	<ui:template>-->
+				<!--		<HBox>-->
+				<!--			<CheckBox text="" visible="{= ${Gstr6ASucess>cdnStatus} ==='Failed' ?true:false}" selected="{showing>/check}"/>-->
+				<!--			<VBox>-->
+				<!--				<HBox>-->
+				<!--					<ObjectStatus text="{oModelProcessGstr6>status}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"-->
+				<!--						state="{= ${oModelProcessGstr6>status} ==='Success' ?'Success':'Success'}"/>-->
+				<!--					<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiTinyMarginTop sapUiMediumMarginEnd"/>-->
+				<!--				</HBox>-->
+				<!--				<Text text="{oModelProcessGstr6>timeStamp}"/>-->
+				<!--			</VBox>-->
+				<!--		</HBox>-->
+				<!--	</ui:template>-->
+				<!--</ui:Column>-->
+				<!--<ui:Column hAlign="Left" width="13rem">-->
+				<!--	<HBox>-->
+				<!--		<Label text="Re- Distribution CR" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+				<!--		<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiSmallMarginBegin sapUiMediumMarginEnd"/>-->
+				<!--	</HBox>-->
+				<!--	<ui:template>-->
+				<!--		<HBox>-->
+				<!--			<CheckBox text="" visible="{= ${Gstr6ASucess>cdnStatus} ==='Failed' ?true:false}" selected="{showing>/check}"/>-->
+				<!--			<VBox>-->
+				<!--				<HBox>-->
+				<!--					<ObjectStatus text="{oModelProcessGstr6>status}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"-->
+				<!--						state="{= ${oModelProcessGstr6>status} ==='Success' ?'Success':'Success'}"/>-->
+				<!--					<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiTinyMarginTop sapUiMediumMarginEnd"/>-->
+				<!--				</HBox>-->
+				<!--				<Text text="{oModelProcessGstr6>timeStamp}"/>-->
+				<!--			</VBox>-->
+				<!--		</HBox>-->
+				<!--	</ui:template>-->
+				<!--</ui:Column>-->
+			</ui:columns>
+		</ui:Table>
+		<ui:Table id="idgetSumStatusgstr6" rows="{path:'Gstr6ASucess>/resp/lastSuccess'}" selectionMode="None" selectionBehavior="Row"
+			visibleRowCount="10" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop" fixedColumnCount="1" visible="false">
+			<ui:extension>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column hAlign="Center">
+					<Label text="GSTN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{Gstr6ASucess>gstin}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<HBox>
+						<Label text="B2B" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiTinyMarginTop sapUiMediumMarginEnd"/>
+					</HBox>
+					<ui:template>
+						<HBox>
+							<CheckBox text="" visible="{= ${Gstr6ASucess>b2bStatus} ==='Failed' ?true:false}" selected="{showing>/check}"/>
+							<VBox>
+								<ObjectStatus text="{Gstr6ASucess>b2bStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+									state="{= ${Gstr6ASucess>b2bStatus} ==='Success' ?'Success':'Error'}"/>
+								<Text text="{Gstr6ASucess>b2baTimeStamp}"/>
+							</VBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Left">
+					<Label text="B2BA" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<CheckBox text="" visible="{= ${Gstr6ASucess>b2baStatus} ==='Failed' ?true:false}" selected="{showing>/check}"/>
+							<VBox>
+								<ObjectStatus text="{Gstr6ASucess>b2baStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+									state="{= ${Gstr6ASucess>b2baStatus} ==='Success' ?'Success':'Error'}"/>
+								<Text text="{Gstr6ASucess>b2baTimeStamp}"/>
+							</VBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Left">
+					<Label text="CDN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<CheckBox text="" visible="{= ${Gstr6ASucess>cdnStatus} ==='Failed' ?true:false}" selected="{showing>/check}"/>
+							<VBox>
+								<ObjectStatus text="{Gstr6ASucess>cdnStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+									state="{= ${Gstr6ASucess>cdnStatus} ==='Success' ?'Success':'Error'}"/>
+								<Text text="{Gstr6ASucess>cdnTimeStamp}"/>
+							</VBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Left">
+					<Label text="CDNA" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<CheckBox text="" visible="{= ${Anx2>sezwstatus} ==='Failed' ?true:false}" selected="{showing>/check}"/>
+							<VBox>
+								<ObjectStatus text="{Gstr6ASucess>cdnaStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+									state="{= ${Gstr6ASucess>cdnaStatus} ==='Success' ?'Success':'Error'}"/>
+								<Text text="{Gstr6ASucess>cdnaTimeStamp}"/>
+							</VBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+	</Dialog>
+</core:FragmentDefinition>

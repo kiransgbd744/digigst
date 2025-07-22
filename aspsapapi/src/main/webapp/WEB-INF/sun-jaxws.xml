@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<endpoints xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime"
+	version="2.0">
+	<endpoint name="EwbWebService"
+		implementation="com.ey.advisory.controller.soap.ManageVendorApiSoapController"
+		url-pattern="/wsapi/vendorAPIs" />
+	<endpoint name="ItcReversalWebService"
+		implementation="com.ey.advisory.controller.soap.ITCReversal180DayApiSoapController"
+		url-pattern="/wsapi/itcReversalAPIs" />	
+		
+	<endpoint name="GstinValidatorWebService"
+		implementation="com.ey.advisory.controller.soap.GstinValidatorApiSoapController"
+		url-pattern="/wsapi/gstinValidatorAPIs" />	
+
+</endpoints>

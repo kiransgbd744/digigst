@@ -1,0 +1,62 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.Others"
+	busyIndicatorDelay="0">
+	<IconTabBar expanded="true" id="iditbReports" select="handleIconTabBarSelect" class="sapUiNoContentPadding clOther"
+		backgroundDesign="Transparent" stretchContentHeight="true" selectedKey="ManageAuthToken" expandable="false">
+		<items>
+			<IconTabFilter showAll="true" count="Others" enabled="false"/>
+			<IconTabSeparator/>
+			<IconTabFilter id="itfManageAuthToken" icon="sap-icon://trip-report" text="Manage Auth Token" tooltip="Manage Auth Token"
+				key="ManageAuthToken" enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P30})}">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.others.ManageAuthToken" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter id="itfComplianceHistory" icon="sap-icon://trip-report" text="Compliance History" tooltip="Compliance History"
+				key="ComplianceHistory" enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}">
+				<mvc:XMLView viewName="com.ey.digigst.view.ComplianceHistory"/>
+			</IconTabFilter>
+			<IconTabFilter text="GSTIN Validator" icon="sap-icon://filter" tooltip="GSTIN Validator" key="GSTINValidator"
+				enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P9})}">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.others.GSTINValidator" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Return Filing Status" icon="sap-icon://compare" tooltip="Return Filing Status" key="VenRetFilngStatus"
+				enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P10})}">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.others.VendorReturn" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter icon="sap-icon://expense-report" text="Common Credit Reversal" id="idcreditreversal" class="cl_ccr" tooltip="CreditReversal"
+				key="Creditreversal" enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}">
+				<mvc:XMLView viewName="com.ey.digigst.view.Reversal"/>
+			</IconTabFilter>
+			<IconTabFilter icon="sap-icon://customer-order-entry" text="ITC Reversal - 180 Days" tooltip="B2C Dynamic QR Code" key="180DCredit"
+				visible="true" enabled="{= ${userPermission>/appPermission/P13}}">
+				<mvc:XMLView viewName="com.ey.digigst.view.ITCReversal" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter icon="sap-icon://activity-2" text="Non Compliant Vendors" class="cl_ccr" tooltip="Non Compliant Vendors"
+				key="NonCompliantVendors" enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P31})}">
+				<mvc:XMLView viewName="com.ey.digigst.view.NonCompliantVendors"/>
+			</IconTabFilter>
+			<IconTabFilter icon="sap-icon://activity-2" text="TDS/TCS" class="cl_ccr" tooltip="TDS/TCS" key="TDSTCS"
+				enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}">
+				<mvc:XMLView viewName="com.ey.digigst.view.TDSTCS"/>
+			</IconTabFilter>
+			<IconTabFilter icon="sap-icon://activity-2" text="GL Summary" class="cl_ccr" tooltip="GL Summary" key="GLSummary"
+				enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}">
+				<mvc:XMLView viewName="com.ey.digigst.view.GLRECON"/>
+			</IconTabFilter>
+			<IconTabFilter icon="sap-icon://bar-code" text="B2C DQR SetUp" tooltip="B2C Dynamic QR Code" key="B2CDynamicQRNew"
+				enabled="{= ${userPermission>/appPermission/P11}}">
+				<mvc:XMLView viewName="com.ey.digigst.view.B2CN" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter icon="sap-icon://bar-code" text="Customize Report" tooltip="Customize Report" key="CustomizeReport"
+				enabled="{= (${userPermission>/appPermission/P34})}">
+				<mvc:XMLView viewName="com.ey.digigst.view.CustomizeReport" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter icon="sap-icon://activity-2" text="GL Recon" class="cl_ccr" tooltip="GL Recon" key="GLRecon"
+				enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}" visible="{userPermission>/appPermission/R10}">
+				<mvc:XMLView viewName="com.ey.digigst.view.VGLRecon"/>
+			</IconTabFilter>
+			<IconTabFilter icon="sap-icon://trip-report" class="cl_ccr" text="Manage NIC/IRP Credentials" tooltip="Manage NIC/IRP Credentials"
+				key="ManageNIC" enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}">
+				<mvc:XMLView viewName="com.ey.digigst.view.ManageNIC"/>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</mvc:View>

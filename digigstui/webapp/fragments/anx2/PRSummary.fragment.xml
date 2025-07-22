@@ -1,0 +1,791 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons" xmlns:l="sap.ui.layout">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button icon="sap-icon://nav-back" tooltip="Go Back to Processed Data" type="Transparent" press="handleLinkPressGSTINMainBack"
+							id="idPRSummaryMainNavBack" visible="false"/>
+						<Title text="Processed Data" id="idPRSummaryMainTitle" class="sapUiSmallMarginBegin clTitleMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" width="90%" id="idfbPRSummary" search="onSearch"
+					clear="onClearFilter" useToolbar="false" class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<Select items="{path:'EntityModel>/'}" change="onSelectionChange" id="idfgiEntity">
+									<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>-->
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Tax Period" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<DatePicker value="" id="idfgiTaxPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="handleChange" width="12rem"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" id="idfgiGSINTComboMain">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Table Type" visibleInFilterBar="true" id="idfgiTableType">
+							<fb:control>
+								<MultiComboBox id="idComcoTableType">
+									<!--	<core:Item key="All" text="All"/>-->
+									<core:Item key="B2B" text="B2B - 3B "/>
+									<core:Item key="SEZWP" text="SEZWP - 3E"/>
+									<core:Item key="SEZWOP" text="SEZWOP - 3F"/>
+									<core:Item key="DXP" text="Deemed Exports - 3G"/>
+									<core:Item key="ISD" text="5 - ISD"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Document Type" visibleInFilterBar="true" id="idfgiDocTypeMain">
+							<fb:control>
+								<MultiComboBox id="idComcoDocType">
+									<!--<core:Item key="All" text="All"/>-->
+									<core:Item key="INV" text="Invoice"/>
+									<core:Item key="DR" text="Debit Note"/>
+									<core:Item key="CR" text="Credit Note"/>
+									<core:Item key="RINV" text="Revised Invoice"/>
+									<core:Item key="RDR" text="Revised Debit Note"/>
+									<core:Item key="RCR" text="Revised Credit Note"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="Data" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<MultiComboBox id="iddropdata" selectedKeys="CP">
+									<!--<core:Item key="All" text="All"/>-->
+									<core:Item key="CP" text="Current Period"/>
+									<core:Item key="RCR" text="Rollover-Credit Availed"/>
+									<core:Item key="RNCR" text="Rollover-Credit Not Availed"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" width="90%" id="idfbPRSummaryD" search="onSearch"
+					clear="onClearFilter" useToolbar="false" class="sapUiNoContentPadding" visible="false">
+					<fb:filterGroupItems>
+						<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="true">
+							<fb:control>
+								<Select items="{path:'EntityModel>/'}" change="onSelectionChange" id="idfgiDEntity">
+									<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>-->
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="idfgiTaxPeriodD" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="handleChange" width="12rem"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" id="idfgiGSINTComboMainD">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Table Type" visibleInFilterBar="true" id="idfgiTableTypeIn">
+							<fb:control>
+								<MultiComboBox id="idComcoTableTypeIn">
+									<!--	<core:Item key="All" text="All"/>-->
+									<core:Item key="B2B" text="B2B - 3B "/>
+									<core:Item key="SEZWP" text="SEZWP - 3E"/>
+									<core:Item key="SEZWOP" text="SEZWOP - 3F"/>
+									<core:Item key="DXP" text="Deemed Exports - 3G"/>
+									<core:Item key="ISD" text="5 - ISD"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Document Type" visibleInFilterBar="true" id="idfgiDocTypeMainIn">
+							<fb:control>
+								<MultiComboBox id="idComcoDocTypeIn">
+									<!--<core:Item key="All" text="All"/>-->
+									<core:Item key="INV" text="Invoice"/>
+									<core:Item key="DR" text="Debit Note"/>
+									<core:Item key="CR" text="Credit Note"/>
+									<core:Item key="RINV" text="Revised Invoice"/>
+									<core:Item key="RDR" text="Revised Debit Note"/>
+									<core:Item key="RCR" text="Revised Credit Note"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="Data" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<MultiComboBox width="12rem" selectedKeys="CP" selectionChange="OnchangeDataDrop" selectionFinish="OnchangeDataDropFinish" id="idDataFilter">
+									<core:Item key="All" text="All"/>
+									<core:Item key="CP" text="Current Period"/>
+									<core:Item key="RCR" text="Rollover-Credit Availed"/>
+									<core:Item key="RNCR" text="Rollover-Credit Not Availed"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" id="fbStatusHbox" width="10%">
+					<Button id="bAdaptFilter" icon="sap-icon://filter" tooltip="Adapt Filters" press="onPressAdaptFilters"/>
+					<Button text="Clear" class="sapUiTinyMarginBeginEnd" press="clearAdpatFilter"/>
+					<Button text="Go" id="idButPRSummary" type="Emphasized" press="onSearch"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel>
+				<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false" id="idPREntity">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<ui:Table rowSelectionChange="onSelection" rows="{path:'PRSProcessedData>/resp/'}" selectionMode="MultiToggle" visibleRowCount="8"
+									enableSelectAll="true" fixedBottomRowCount="0" fixedColumnCount="2" id="idPREntityTable">
+									<ui:columns>
+										<ui:Column width="11rem">
+											<Label design="Bold" text="GSTIN" width=""/>
+											<ui:template>
+												<VBox>
+													<HBox>
+														<Text text="{PRSProcessedData>state}" width="8rem" class="stateColor"/>
+													</HBox>
+													<HBox alignContent="Start" justifyContent="SpaceBetween">
+														<Link text="{PRSProcessedData>gstin}" press="handleLinkPressGSTINMain"/>
+														<core:Icon src="sap-icon://circle-task-2" size="0.8rem" class="sapUiSmallMarginBegin" tooltip="Generate OTP"
+															visible="{=${PRSProcessedData>gstin}=== '' ?false:true}" color="{=${PRSProcessedData>authToken}=== 'Active'?'#00ff00':'#ff0000'}"
+															press="onPressIcon"/>
+													</HBox>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem">
+											<Label design="Bold" text="Last Updated" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox>
+													<HBox>
+														<ObjectNumber number="{PRSProcessedData>status}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"/>
+													</HBox>
+													<HBox>
+														<Text text="{PRSProcessedData>lastUpdated}"/>
+													</HBox>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Count" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{PRSProcessedData>count}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Invoice Value" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{parts:[{path : 'PRSProcessedData>invValue'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Taxable Value" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{path : 'PRSProcessedData>taxableValue', formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End" id="idPREntityTableCol6">
+											<HBox>
+												<Label design="Bold" text="Total Tax Payable" textAlign="Center" width="100%" wrapping="true"/>
+											</HBox>
+											<ui:template>
+												<Text text="{parts:[{path : 'PRSProcessedData>totalTaxPayable'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End" id="idPREntityTableCol7">
+											<HBox>
+												<Label design="Bold" text="IGST" textAlign="Center" width="100%" wrapping="true"/>
+												<core:Icon src="sap-icon://favorite" size="0.8rem" color="#346187" class="sapUiTinyMarginBegin"/>
+											</HBox>
+											<ui:template>
+												<Text text="{parts:[{path : 'PRSProcessedData>tpIGST'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End" id="idPREntityTableCol8">
+											<HBox>
+												<Label design="Bold" text="CGST" textAlign="Center" width="100%" wrapping="true"/>
+												<core:Icon src="sap-icon://favorite" size="0.8rem" color="#346187" class="sapUiTinyMarginBegin"/>
+											</HBox>
+											<ui:template>
+												<Text text="{parts:[{path : 'PRSProcessedData>tpCGST'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End" id="idPREntityTableCol9">
+											<HBox>
+												<Label design="Bold" text="SGST" textAlign="Center" width="100%" wrapping="true"/>
+												<core:Icon src="sap-icon://favorite" size="0.8rem" color="#346187" class="sapUiTinyMarginBegin"/>
+											</HBox>
+											<ui:template>
+												<Text text="{parts:[{path : 'PRSProcessedData>tpSGST'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End" id="idPREntityTableCol10">
+											<HBox>
+												<Label design="Bold" text="Cess" textAlign="Center" width="100%" wrapping="true"/>
+												<core:Icon src="sap-icon://favorite" size="0.8rem" color="#346187" class="sapUiTinyMarginBegin"/>
+											</HBox>
+											<ui:template>
+												<Text text="{parts:[{path : 'PRSProcessedData>tpCess'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End" id="idPREntityTableCol11">
+											<HBox>
+												<Label design="Bold" text="Total Credit Eligible" textAlign="Center" width="100%" wrapping="true"/>
+											</HBox>
+											<ui:template>
+												<Text text="{parts:[{path : 'PRSProcessedData>totalCreditEligible'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End" id="idPREntityTableCol12">
+											<HBox>
+												<Label design="Bold" text="IGST " textAlign="Center" width="100%" wrapping="true"/>
+												<core:Icon src="sap-icon://number-sign" color="#000000" size="0.8rem" class="sapUiTinyMarginBegin"/>
+											</HBox>
+											<ui:template>
+												<Text text="{parts:[{path : 'PRSProcessedData>ceIGST'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End" id="idPREntityTableCol13">
+											<HBox>
+												<Label design="Bold" text="CGST " textAlign="Center" width="100%" wrapping="true"/>
+												<core:Icon src="sap-icon://number-sign" color="#000000" size="0.8rem" class="sapUiTinyMarginBegin"/>
+											</HBox>
+											<ui:template>
+												<Text text="{parts:[{path : 'PRSProcessedData>ceCGST'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End" id="idPREntityTableCol14">
+											<HBox>
+												<Label design="Bold" text="SGST" textAlign="Center" width="100%" wrapping="true"/>
+												<core:Icon src="sap-icon://number-sign" color="#000000" size="0.8rem" class="sapUiTinyMarginBegin"/>
+											</HBox>
+											<ui:template>
+												<Text text="{parts:[{path : 'PRSProcessedData>ceSGST'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End" id="idPREntityTableCol15">
+											<HBox>
+												<Label design="Bold" text="Cess" textAlign="Center" width="100%" wrapping="true"/>
+												<core:Icon src="sap-icon://number-sign" color="#000000" size="0.8rem" class="sapUiTinyMarginBegin"/>
+											</HBox>
+											<ui:template>
+												<Text text="{parts:[{path : 'PRSProcessedData>ceCess'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<ui:footer>
+										<Toolbar>
+											<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+											<Text text="Auth Token Active"/>
+											<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+											<Text text="Auth Token Inactive"/>
+											<ToolbarSpacer/>
+										</Toolbar>
+									</ui:footer>
+								</ui:Table>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar>
+							<Label text="Showing:" design="Bold"/>
+							<CheckBox text="Tax Payable" select="onSelectCheckBoxCol1" selected="true"/>
+							<core:Icon src="sap-icon://favorite" color="#346187" size="0.8rem"/>
+							<CheckBox text="Credit Eligible" select="onSelectCheckBoxCol2" selected="true"/>
+							<core:Icon src="sap-icon://number-sign" size="0.8rem"/>
+							<ToolbarSpacer/>
+							<MenuButton text="Entity Level Summary" type="Emphasized" enabled="false">
+								<menu>
+									<Menu itemSelected="fnBoardingMenuItemPress">
+										<items>
+											<MenuItem text="Download Report" key="DownloadReport" icon="sap-icon://create-session"/>
+											<MenuItem text="Online View" key="OnlineView" icon="sap-icon://create-form"/>
+										</items>
+									</Menu>
+								</menu>
+							</MenuButton>
+							<MenuButton text="Processed Data" type="Emphasized" enabled="false">
+								<menu>
+									<Menu itemSelected="fnBoardingMenuItemPress">
+										<items>
+											<MenuItem text="Download Report" key="DownloadReport" icon="sap-icon://create-session"/>
+											<MenuItem text="Online View" key="OnlineView" icon="sap-icon://create-form"/>
+										</items>
+									</Menu>
+								</menu>
+							</MenuButton>
+							<MenuButton text="Error Data" type="Emphasized" enabled="false">
+								<menu>
+									<Menu itemSelected="fnBoardingMenuItemPress">
+										<items>
+											<MenuItem text="Download Report" key="DownloadReport" icon="sap-icon://create-session"/>
+											<MenuItem text="Online Correction" key="OnlineView" icon="sap-icon://create-form"/>
+										</items>
+									</Menu>
+								</menu>
+							</MenuButton>
+							<MenuButton type="Emphasized" text="Download Reports">
+								<Menu itemSelected="onMenuItemPressAnx2down">
+									<MenuItem text="Processed Records (Current Period)" key="CurrentPeriod"/>
+									<MenuItem text="Processed record- Rollover (Credit Availed)" key="CreditAvailed"/>
+									<MenuItem text="Processed record- Rollover (Credit not Availed)" key="CreditnotAvailed"/>
+									<MenuItem text="Processed records-ALL" key="ALL"/>
+									<MenuItem text="Consolidated ASP Error" key="ASPError"/>
+									<MenuItem text="Entity Level Summary Report" key="EntLevsureport"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Reject" text="Delete Data" press="onButtonExtractPress" enabled="false"/>
+							<Button type="Transparent" icon="sap-icon://download" tooltip="download" press="onButtonExtractPress"/>
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+				<l:BlockLayout background="Dashboard" class="cl_shadow" id="idPRGSTIN" visible="false">
+					<l:BlockLayoutRow class="sapUiNoContentPadding">
+						<l:BlockLayoutCell id="id_BlCell2" width="12">
+							<Toolbar height="2.2rem" class="supplToolbar supplToolbarCol">
+								<Label text="Table 3A(ANX-2)" design="Bold" textAlign="Center" width="100%"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<HBox class="sapUiTinyMarginTopBottom">
+								<VBox width="3rem">
+									<Text/>
+									<Label text="Total" class="sapUiTinyMarginBegin sapUiTinyMarginTop" design="Bold"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Label text="Taxable Value" design="Bold"/>
+									<Label design="Bold" text="{path : 'PRHeader>/threeA/Total/taxableValue', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Label text="IGST" design="Bold"/>
+									<Label design="Bold" text="{path : 'PRHeader>/threeA/Total/igst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Label text="CGST" design="Bold"/>
+									<Label design="Bold" text="{path : 'PRHeader>/threeA/Total/cgst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Label text="SGST" design="Bold"/>
+									<Label design="Bold" text="{path : 'PRHeader>/threeA/Total/sgst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Label text="CESS" design="Bold"/>
+									<Label design="Bold" text="{path : 'PRHeader>/threeA/Total/cess', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+								</VBox>
+							</HBox>
+							<HBox class="sapUiTinyMarginTopBottom" visible="{BlockDataPR>/Expand}">
+								<VBox width="3rem">
+									<Label text="INV" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/INV/taxableValue', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/INV/igst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/INV/cgst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/INV/sgst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/INV/cess', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+							</HBox>
+							<HBox class="sapUiTinyMarginTopBottom" visible="{BlockDataPR>/Expand}">
+								<VBox width="3rem">
+									<Label text="DR" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/DR/taxableValue', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/DR/igst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/DR/cgst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/DR/sgst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/DR/cess', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+							</HBox>
+							<HBox class="sapUiTinyMarginTopBottom" visible="{BlockDataPR>/Expand}">
+								<VBox width="3rem">
+									<Label text="CR" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/CR/taxableValue', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/CR/igst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/CR/cgst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/CR/sgst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/CR/cess', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+							</HBox>
+							<HBox class="sapUiTinyMarginTopBottom" visible="{BlockDataPR>/Expand}">
+								<VBox width="3rem">
+									<Label text="INV-A" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/INVA/taxableValue', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/INVA/igst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/INVA/cgst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/INVA/sgst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/INVA/cess', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+							</HBox>
+							<HBox class="sapUiTinyMarginTopBottom" visible="{BlockDataPR>/Expand}">
+								<VBox width="3rem">
+									<Label text="DR-A" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/DRA/taxableValue', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/DRA/igst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/DRA/cgst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/DRA/sgst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/DRA/cess', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+							</HBox>
+							<HBox class="sapUiTinyMarginTopBottom" visible="{BlockDataPR>/Expand}">
+								<VBox width="3rem">
+									<Label text="CR-A" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/CRA/taxableValue', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/CRA/igst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/CRA/cgst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/CRA/sgst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/threeA/CRA/cess', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+							</HBox>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell width="12">
+							<Toolbar height="2.2rem" class="supplToolbar supplToolbarCol">
+								<Label text="Table 5-ISD(ANX-2)" design="Bold" textAlign="Center" width="100%"/>
+								<ToolbarSpacer/>
+								<core:Icon src="sap-icon://navigation-down-arrow" size="1rem" id="idPRExpandIcon" press="onPressExpandCollapse" color="#ffffff"
+									class="sapUiTinyMarginEnd"/>
+								<core:Icon src="sap-icon://navigation-up-arrow" size="1rem" id="idPRCollapseIcon" color="#ffffff" press="onPressExpandCollapse"
+									visible="false" class="sapUiTinyMarginEnd"/>
+							</Toolbar>
+							<HBox class="sapUiTinyMarginTopBottom">
+								<VBox width="3rem">
+									<Text/>
+									<Label text="Total" class="sapUiTinyMarginBegin sapUiTinyMarginTop" design="Bold"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Label text="Taxable Value" design="Bold"/>
+									<Label design="Bold" text="{path : 'PRHeader>/ISD/Total/taxableValue', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Label text="IGST" design="Bold"/>
+									<Label design="Bold" text="{path : 'PRHeader>/ISD/Total/igst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Label text="CGST" design="Bold"/>
+									<Label design="Bold" text="{path : 'PRHeader>/ISD/Total/cgst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Label text="SGST" design="Bold"/>
+									<Label design="Bold" text="{path : 'PRHeader>/ISD/Total/sgst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Label text="CESS" design="Bold"/>
+									<Label design="Bold" text="{path : 'PRHeader>/ISD/Total/cess', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+								</VBox>
+							</HBox>
+							<HBox class="sapUiTinyMarginTopBottom" visible="{BlockDataPR>/Expand}">
+								<VBox width="3rem">
+									<Label text="INV" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/ISD/INV/taxableValue', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/ISD/INV/igst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/ISD/INV/cgst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/ISD/INV/sgst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/ISD/INV/cess', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+							</HBox>
+							<HBox class="sapUiTinyMarginTopBottom" visible="{BlockDataPR>/Expand}">
+								<VBox width="3rem">
+									<Label text="CR" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/ISD/CR/taxableValue', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/ISD/CR/igst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/ISD/CR/cgst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/ISD/CR/sgst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/ISD/CR/cess', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+							</HBox>
+							<HBox class="sapUiTinyMarginTopBottom" visible="{BlockDataPR>/Expand}">
+								<VBox width="3rem">
+									<Label text="INV-A" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/ISD/INVA/taxableValue', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/ISD/INVA/igst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/ISD/INVA/cgst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/ISD/INVA/sgst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/ISD/INVA/cess', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+							</HBox>
+							<HBox class="sapUiTinyMarginTopBottom" visible="{BlockDataPR>/Expand}">
+								<VBox width="3rem">
+									<Label text="CR-A" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/ISD/CRA/taxableValue', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/ISD/CRA/igst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/ISD/CRA/cgst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/ISD/CRA/sgst', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+								<VBox alignItems="Center" width="17%">
+									<Text text="{path : 'PRHeader>/ISD/CRA/cess', formatter : '.formatter.amountValue'}"/>
+								</VBox>
+							</HBox>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+				<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false" id="idPRGSTIN1"
+					visible="false">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<Panel>
+									<ui:TreeTable id="tabRet1m" rows="{path:'PRSDetail>/resp', parameters:{ arrayNames:['items'], numberOfExpandedLevels:0 }}" visible="true"
+										selectionMode="None" enableSelectAll="false" fixedColumnCount="2" enableColumnReordering="false" visibleRowCount="8">
+										<ui:columns>
+											<ui:Column width="15rem">
+												<Label text="Table(ANX-2)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Text text="{PRSDetail>table}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End">
+												<Label design="Bold" text="Count" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{PRSDetail>count}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End">
+												<Label design="Bold" text="Invoice Value" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{path : 'PRSDetail>invValue', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End">
+												<Label design="Bold" text="Taxable Value" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{path : 'PRSDetail>taxableValue', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End" id="idPREntityTableCol6td">
+												<HBox>
+													<Label design="Bold" text="Total Tax Payable" textAlign="Center" width="100%" wrapping="true"/>
+													<!--<core:Icon src="sap-icon://favorite" size="0.8rem" color="#346187" class="sapUiTinyMarginBegin"/>-->
+												</HBox>
+												<ui:template>
+													<Text text="{path : 'PRSDetail>totalTaxPayable', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End" id="idPREntityTableCol7td">
+												<HBox>
+													<Label design="Bold" text="IGST" textAlign="Center" width="100%" wrapping="true"/>
+													<core:Icon src="sap-icon://favorite" size="0.8rem" color="#346187" class="sapUiTinyMarginBegin"/>
+												</HBox>
+												<ui:template>
+													<Text text="{path : 'PRSDetail>IGST', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End" id="idPREntityTableCol8td">
+												<HBox>
+													<Label design="Bold" text="CGST" textAlign="Center" width="100%" wrapping="true"/>
+													<core:Icon src="sap-icon://favorite" size="0.8rem" color="#346187" class="sapUiTinyMarginBegin"/>
+												</HBox>
+												<ui:template>
+													<Text text="{path : 'PRSDetail>CGST', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End" id="idPREntityTableCol9td">
+												<HBox>
+													<Label design="Bold" text="SGST" textAlign="Center" width="100%" wrapping="true"/>
+													<core:Icon src="sap-icon://favorite" size="0.8rem" color="#346187" class="sapUiTinyMarginBegin"/>
+												</HBox>
+												<ui:template>
+													<Text text="{path : 'PRSDetail>SGST', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End" id="idPREntityTableCol10td">
+												<HBox>
+													<Label design="Bold" text="Cess" textAlign="Center" width="100%" wrapping="true"/>
+													<core:Icon src="sap-icon://favorite" size="0.8rem" color="#346187" class="sapUiTinyMarginBegin"/>
+												</HBox>
+												<ui:template>
+													<Text text="{path : 'PRSDetail>Cess', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End" id="idPREntityTableCol11td">
+												<HBox>
+													<Label design="Bold" text="Total Credit Eligible" textAlign="Center" width="100%" wrapping="true"/>
+												</HBox>
+												<ui:template>
+													<Text text="{path : 'PRSDetail>totalCreditEligible', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End" id="idPREntityTableCol12td">
+												<HBox>
+													<Label design="Bold" text="IGST " textAlign="Center" width="100%" wrapping="true"/>
+													<core:Icon src="sap-icon://number-sign" color="#000000" size="0.8rem" class="sapUiTinyMarginBegin"/>
+												</HBox>
+												<ui:template>
+													<Text text="{path : 'PRSDetail>ceIGST', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End" id="idPREntityTableCol13td">
+												<HBox>
+													<Label design="Bold" text="CGST " textAlign="Center" width="100%" wrapping="true"/>
+													<core:Icon src="sap-icon://number-sign" color="#000000" size="0.8rem" class="sapUiTinyMarginBegin"/>
+												</HBox>
+												<ui:template>
+													<Text text="{path : 'PRSDetail>ceCGST', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End" id="idPREntityTableCol14td">
+												<HBox>
+													<Label design="Bold" text="SGST" textAlign="Center" width="100%" wrapping="true"/>
+													<core:Icon src="sap-icon://number-sign" color="#000000" size="0.8rem" class="sapUiTinyMarginBegin"/>
+												</HBox>
+												<ui:template>
+													<Text text="{path : 'PRSDetail>ceSGST', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End" id="idPREntityTableCol15td">
+												<HBox>
+													<Label design="Bold" text="Cess" textAlign="Center" width="100%" wrapping="true"/>
+													<core:Icon src="sap-icon://number-sign" color="#000000" size="0.8rem" class="sapUiTinyMarginBegin"/>
+												</HBox>
+												<ui:template>
+													<Text text="{path : 'PRSDetail>ceCess', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+										</ui:columns>
+									</ui:TreeTable>
+								</Panel>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar>
+							<Label text="Showing:" design="Bold" id="idHBoxShowing1"/>
+							<CheckBox text="Tax Payable" select="onSelectCheckBoxCol1t" selected="true" id="idHBoxShowing2"/>
+							<core:Icon src="sap-icon://favorite" color="#346187" size="0.8rem" id="idHBoxShowing3"/>
+							<CheckBox text="Credit Eligible" select="onSelectCheckBoxCol2t" selected="true" id="idHBoxShowing4"/>
+							<core:Icon src="sap-icon://number-sign" size="0.8rem" id="idHBoxShowing5"/>
+							<ToolbarSpacer/>
+							<MenuButton text="Processed Data" type="Emphasized" enabled="false">
+								<menu>
+									<Menu itemSelected="fnBoardingMenuItemPress">
+										<items>
+											<MenuItem text="Download Report" key="DownloadReport" icon="sap-icon://create-session"/>
+											<MenuItem text="Online View" key="OnlineView" icon="sap-icon://create-form"/>
+										</items>
+									</Menu>
+								</menu>
+							</MenuButton>
+							<MenuButton text="Error Data" type="Emphasized" enabled="false">
+								<menu>
+									<Menu itemSelected="fnBoardingMenuItemPress">
+										<items>
+											<MenuItem text="Download Report" key="DownloadReport" icon="sap-icon://create-session"/>
+											<MenuItem text="Online Correction" key="OnlineView" icon="sap-icon://create-form"/>
+										</items>
+									</Menu>
+								</menu>
+							</MenuButton>
+							<Button type="Reject" text="Delete Data" press="onButtonExtractPress" enabled="false"/>
+							<Button type="Transparent" icon="sap-icon://download" tooltip="download" press="onButtonExtractPress"/>
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

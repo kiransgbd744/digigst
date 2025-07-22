@@ -1,0 +1,181 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:table="sap.ui.table"
+	xmlns:fb="sap.ui.comp.filterbar">
+	<f:DynamicPage id="pReqIdWise" fitContent="true" class="ReconResponce">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button icon="sap-icon://nav-back" type="Transparent" press="onNavBackToRecon"/>
+						<Title text="Request Id Wise" class="TitleColor dpTitlePadding"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" class="btnFilterBar" width="90%">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem name="A" groupName="Group1" label="Initiated Date From" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="reconInitFrom" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" placeholder="DD-MM-YYYY" maxDate="{Property>/maxDate}"
+									value="{Property>/initiationDateFrom}" change="onChangeReconInitiateDate($event,'F')"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem name="B" groupName="Group1" label="Initiated Date To" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="reconInitTo" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" placeholder="DD-MM-YYYY" maxDate="{Property>/maxDate}"
+									minDate="{Property>/minReconDate}" value="{Property>/initiationDateTo}" change="onChangeReconInitiateDate($event,'T')"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem name="C" groupName="Group1" label="Request ID" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox items="{GlReconReqIds>/}" selectedKeys="{Property>/requestIds}" selectionChange="selectAll" width="100%">
+									<core:Item key="{GlReconReqIds>requestId}" text="{GlReconReqIds>requestId}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem name="D" groupName="Group1" label="Initiated By(User ID)" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox items="{path:'UserModel>/',sorter: {path: 'userName',descending:false}}" selectedKeys="{Property>/initUserIds}"
+									selectionChange="selectAll" width="100%">
+									<core:Item key="{UserModel>userName}" text="{UserModel>userName}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem name="E" groupName="Group1" label="Initiated By(User Email ID)" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox items="{EmailModel>/}" selectedKeys="{Property>/initEmailIds}" selectionChange="selectAll" width="100%">
+									<core:Item key="{EmailModel>email}" text="{EmailModel>email}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem name="F" groupName="Group1" label="Recon Status" visibleInFilterBar="true">
+							<fb:control>
+								<Select forceSelection="false" selectedKey="{Property>/status}">
+									<core:Item key="REPORT GENERATED" text="REPORT GENERATED"/>
+									<core:Item key="REPORT GENERATION FAILED" text="REPORT GENERATION FAILED"/>
+									<core:Item key="RECON COMPLETED" text="RECON COMPLETED"/>
+									<core:Item key="RECON FAILED" text="RECON FAILED"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="Clear" press="onClearReconResult" visible="true" class="sapUiTinyMarginEnd buttoncolorSec"/>
+					<Button text="Filter" press="onReconResults" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<table:Table id="tabReconReqIdWise" rows="{ReconReqIdWise>/}" selectionMode="None">
+				<table:extension>
+					<Toolbar>
+						<Title titleStyle="H3" text="Request Status"/>
+						<ToolbarSpacer/>
+						<!--<Button text="Refresh" icon="sap-icon://refresh" class="buttoncolor"/>-->
+					</Toolbar>
+				</table:extension>
+				<table:columns>
+					<table:Column width="8rem">
+						<Label text="Request Id" design="Bold" textAlign="Center" width="100%"/>
+						<table:template>
+							<Text text="{ReconReqIdWise>requestId}"/>
+						</table:template>
+					</table:Column>
+					<table:Column width="16rem">
+						<Label text="Initiated By" design="Bold" textAlign="Center" width="100%"/>
+						<table:template>
+							<HBox direction="Column">
+								<Text text="{ReconReqIdWise>initiatedBy}"/>
+								<Text text="{ReconReqIdWise>emailId}"/>
+							</HBox>
+						</table:template>
+					</table:Column>
+					<table:Column width="8rem">
+						<Label text="Type of Recon" design="Bold" textAlign="Center" width="100%"/>
+						<table:template>
+							<Text text="{ReconReqIdWise>reconType}"/>
+						</table:template>
+					</table:Column>
+					<table:Column minWidth="300">
+						<Label text="File Name" design="Bold" textAlign="Center" width="100%"/>
+						<table:template>
+							<Text text="{ReconReqIdWise>path}"/>
+						</table:template>
+					</table:Column>
+					<table:Column hAlign="End" width="7rem">
+						<Label text="No of GSTINs" design="Bold" textAlign="Center" width="100%"/>
+						<table:template>
+							<Link text="{ReconReqIdWise>gstinCount}" press="onReconGstinCount"/>
+						</table:template>
+					</table:Column>
+					<table:Column width="8rem">
+						<Label text="Tax Period From" design="Bold" textAlign="Center" width="100%"/>
+						<table:template>
+							<Text text="{path:'ReconReqIdWise>fromTaxPeriod',formatter:'._formatTaxPeriod'}"/>
+						</table:template>
+					</table:Column>
+					<table:Column width="7rem">
+						<Label text="Tax Period To" design="Bold" textAlign="Center" width="100%"/>
+						<table:template>
+							<Text text="{path:'ReconReqIdWise>toTaxPeriod',formatter:'._formatTaxPeriod'}"/>
+						</table:template>
+					</table:Column>
+					<table:Column width="10rem">
+						<Label text="Initiation Date/Time" design="Bold" textAlign="Center" width="100%"/>
+						<table:template>
+							<Text text="{ReconReqIdWise>initiatedOn}"/>
+						</table:template>
+					</table:Column>
+					<table:Column width="11rem">
+						<Label text="Completion Date/Time" design="Bold" textAlign="Center" width="100%"/>
+						<table:template>
+							<Text text="{ReconReqIdWise>completionOn}"/>
+						</table:template>
+					</table:Column>
+					<table:Column width="8rem">
+						<Label text="View Summary" design="Bold" textAlign="Center" width="100%"/>
+						<table:template>
+							<HBox justifyContent="Center">
+								<core:Icon src="sap-icon://show" press="onViewReconSummary"/>
+							</HBox>
+						</table:template>
+					</table:Column>
+					<table:Column width="12rem">
+						<Label text="Status" design="Bold" textAlign="Center" width="100%"/>
+						<table:template>
+							<HBox renderType="Bare" justifyContent="SpaceBetween">
+								<Text text="{ReconReqIdWise>status}" class="sapUiTinyMarginEnd"/>
+								<core:Icon src="sap-icon://download" visible="{=${ReconReqIdWise>status}==='REPORT_GENERATED'}"
+									press="onDownloadReconFile(${ReconReqIdWise>path})"/>
+							</HBox>
+						</table:template>
+					</table:Column>
+				</table:columns>
+				<table:footer>
+					<HBox justifyContent="Center" visible="false">
+						<Button type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" class="sapUiTinyMarginBeginEnd"
+							enabled="{Property>/bFirstReq}" press="onPaginationReqIdWise('F')"/>
+						<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="{Property>/bPrevReq}"
+							press="onPaginationReqIdWise('P')"/>
+						<Input type="Number" textAlign="End" width="4rem" submit="onReqIdWisePagination('I')" enabled="{Property>/ePageNoReq}"
+							class="sapUiTinyMarginBegin" value="{Property>/pageNoReq}"/>
+						<Text text="/ {Property>/pgTotalReq}" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+						<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="{Property>/bNextReq}"
+							press="onPaginationReqIdWise('N')"/>
+						<Button type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" class="sapUiTinyMarginBeginEnd"
+							enabled="{Property>/bLastReq}" press="onPaginationReqIdWise('L')"/>
+						<Select selectedKey="{Property>/pgSizeReq}" change="onReqIdWisePagination('S')" forceSelection="true" width="10%">
+							<core:Item key="10" text="10"/>
+							<core:Item key="25" text="25"/>
+							<core:Item key="50" text="50"/>
+							<core:Item key="75" text="75"/>
+							<core:Item key="100" text="100"/>
+						</Select>
+					</HBox>
+				</table:footer>
+			</table:Table>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

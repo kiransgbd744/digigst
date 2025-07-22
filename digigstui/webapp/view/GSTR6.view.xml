@@ -1,0 +1,26 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.GSTR6"
+	busyIndicatorDelay="0">
+	<IconTabBar expanded="true" id="itbGstr6" select="onPressIconTabBar" class="sapUiNoContentPadding sapUiSmallMarginBottom"
+		backgroundDesign="Transparent" stretchContentHeight="true" selectedKey="gstr6Summary" expandable="false">
+		<items>
+			<IconTabFilter text="{i18n>gstr6Summary}" key="gstr6Summary" class="sapUiNoMargin">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr6.Gstr6Summary" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="GSTR-6A" key="gstr6" class="sapUiNoMargin">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr6.Gstr6" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="GSTR-6A Summary" key="get6a" class="sapUiNoMargin" enabled="true">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr6.GetGstr6A" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Cross ITC" key="reconInitiate" enabled="true">
+				<mvc:XMLView viewName="com.ey.digigst.view.crossitc"/>
+			</IconTabFilter>
+			<IconTabFilter text="{i18n>determination}" key="determination" enabled="true">
+				<mvc:XMLView viewName="com.ey.digigst.view.DeterminationGstr6"/>
+			</IconTabFilter>
+			<IconTabFilter text="{i18n>distribution}" key="distribution" enabled="true">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr6.Distribution" type="XML"/>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</mvc:View>

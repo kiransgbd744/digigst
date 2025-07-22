@@ -1,0 +1,17 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m">
+	<Dialog title="Auth Token Confirmation" type="Message" showHeader="false" class="sapUiSizeCompact">
+		<beginButton>
+			<Button text="Verify" press="closeDialogOTP"/>
+		</beginButton>
+		<Panel>
+			<VBox alignItems="Center">
+				<Title text="An OTP has been sent to the registered mobile number and email." titleStyle="H3" class="sapUiTinyMarginTop"/>
+				<Title text="OTP is Not Activate the Auth Token" titleStyle="H5" class="sapUiTinyMarginTop"/>
+				<HBox>
+					<Input/>
+					<Link text="Resend OTP" class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+				</HBox>
+			</VBox>
+		</Panel>
+	</Dialog>
+</core:FragmentDefinition>

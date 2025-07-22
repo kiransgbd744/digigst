@@ -1,0 +1,39 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Popover title="List of GSTIN" class="sapUiContentPadding" placement="Auto"  width="65rem">
+		<!--<List items="{path:'gstins2A>/', sorter: {path: 'gstin',descending:false}}">-->
+		<!--	<items>-->
+		<!--		<StandardListItem title="{gstins2A>gstin}"/>-->
+		<!--	</items>-->
+		<!--</List>-->
+		<Table items="{path:'gstins2A>/', sorter: {path: 'gstin',descending:false}}" width="60rem">
+			<columns>
+				<Column width="12em" hAlign="Center">
+					<Text text="GSTIN"/>
+				</Column>
+				<Column width="12em" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+					<Text text="Status"/>
+				</Column>
+				<Column width="12em" minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
+					<Text text="Initiated On"/>
+				</Column>
+				<Column width="12em" minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
+					<Text text="Completed On"/>
+				</Column>
+				<Column  width="12em" hAlign="Center">
+					<Text text="ERP Status"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem vAlign="Middle">
+					<cells>
+						<Text text="{gstins2A>gstin}"/>
+						<Text text="{gstins2A>status}"/>
+						<Text text="{gstins2A>initiatedOn}"/>
+						<Text text="{gstins2A>completedOn}"/>
+						<Text text="{gstins2A>erpStatus}"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</Popover>
+</core:FragmentDefinition>

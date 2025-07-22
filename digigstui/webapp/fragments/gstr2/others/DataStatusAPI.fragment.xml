@@ -1,0 +1,163 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:ui="sap.ui.table">
+	<ui:Table id="tabDataPR" rows="{Data>/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10" fixedRowCount="1"
+		fixedColumnCount="2" enableSelectAll="false" visible="true">
+		<ui:extension>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button type="Emphasized" id="idDSSummary" text="Summary" press="onButtonPress"/>
+				<Button type="Emphasized" id="idDSRequestforApproval" text="Request for Approval" press="onButtonPressRequestforApproval"/>
+				<Button type="Accept" id="idDSStatSave" text="Save to GSTN" press="onPressSave"/>
+				<Button type="Reject" id="idDSStatDelASP" text="Delete Data" press="onMessageInformationDialogPress"/>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="7rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<ObjectIdentifier title="{Data>date}" titleActive="true" titlePress="onPressDate"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text="SAP" textAlign="Center" width="100%" design="Bold"/>
+					<Label text="Total" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{Data>sapTotal}"/>
+						<!--<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>-->
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text="Difference" textAlign="Center" width="100%" wrapping="true" design="Bold"
+						tooltip="Diffrenece between data sent by SAP and data recieved by ASP"/>
+					<Label text="(In Count)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{Data>diffCount}"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="6" hAlign="End" width="7rem">
+				<ui:multiLabels>
+					<Label text="ASP" textAlign="Center" width="100%" design="Bold"/>
+					<Label text="Total" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{Data>aspTotal}"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text="ASP" design="Bold"/>
+					<Label text="Processed" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Link text="{Data>aspProcess}" press="onAspProcessLink"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="7rem">
+				<ui:multiLabels>
+					<Label text="ASP" textAlign="Center" width="100%" design="Bold"/>
+					<HBox alignItems="Start" justifyContent="Center">
+						<Label text="Errors" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"/>
+					</HBox>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Link text="{Data>aspError}" press="onAspErrorLink"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="9rem">
+				<ui:multiLabels>
+					<Label text="ASP" textAlign="Center" width="100%" design="Bold"/>
+					<HBox alignItems="Start" justifyContent="Center">
+						<Label text="Information" textAlign="Center" width="100%" wrapping="true" design="Bold" tooltip="Information is part of Processed records"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"/>
+					</HBox>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{Data>aspInfo}"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="9rem">
+				<ui:multiLabels>
+					<Label text="ASP" textAlign="Center" width="100%" design="Bold"/>
+					<HBox alignItems="Start" justifyContent="Center">
+						<Label text="Rectified" textAlign="Center" width="100%" wrapping="true" design="Bold" tooltip="Rectified"/>
+						<!--	<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Rectified Catalog" class="sapUiTinyMarginBegin"/>-->
+					</HBox>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{Data>aspRect}"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="9rem">
+				<ui:multiLabels>
+					<Label text="ASP" design="Bold"/>
+					<Label text="Save Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{Data>aspStatus}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="2" hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text="GSTN" design="Bold" textAlign="Center" width="100%"/>
+					<Label text="Processed" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Link text="{Data>gstinProcess}" press="onGstinProcessLink"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" visible="{=${Data>GSTIN/Process}==='0'?false:true}"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="7rem">
+				<ui:multiLabels>
+					<Label text="GSTN" design="Bold"/>
+					<HBox alignItems="Start" justifyContent="Center">
+						<Label text="Error" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"/>
+					</HBox>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Link text="{Data>gstinError}" press="onGstinErrorLink"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" visible="{=${Data>GSTIN/Error}==='0'?false:true}"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="10rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Review Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<ObjectIdentifier title="{Data>reviewstatus}" titleActive="true" titlePress="onPressDetail"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+	</ui:Table>
+</core:FragmentDefinition>

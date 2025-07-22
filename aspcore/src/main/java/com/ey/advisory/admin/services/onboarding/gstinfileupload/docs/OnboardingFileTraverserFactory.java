@@ -1,0 +1,15 @@
+package com.ey.advisory.admin.services.onboarding.gstinfileupload.docs;
+
+import com.ey.advisory.common.eyfileutils.tabular.TabularDataSourceTraverser;
+
+/**
+ * This interface is responsible for providing traverser 
+ * methods to be implemented
+ * @author Mohana.Dasari
+ *
+ */
+public interface OnboardingFileTraverserFactory {
+	
+	public TabularDataSourceTraverser getTraverser(String fileName);
+
+}

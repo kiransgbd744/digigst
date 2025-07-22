@@ -1,0 +1,87 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form">
+	<Dialog id="FSid" title="Filing Status" type="Message" class="sapUiSizeCompact cl_saveHeader" showHeader="true">
+		<beginButton>
+			<Button text="OKAY" class="buttoncolorSec" press="onCloseDialogFS"/>
+		</beginButton>
+		<!--<VBox class="sapUiSmallMargin">-->
+		<f:Form editable="true" class="sapUiSizeCompact" width="70rem">
+			<f:layout>
+				<f:ResponsiveGridLayout columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false"/>
+			</f:layout>
+			<f:formContainers>
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement label="GSTIN" class="cl_label1">
+							<f:fields>
+								<ComboBox id="FsGstin" width="15rem" items="{path:'DataPermission>/respData/dataSecurity/gstin/'}">
+									<core:Item key="{DataPermission>value}" text="{DataPermission>value}"/>
+								</ComboBox>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="Tax Period">
+							<f:fields>
+								<DatePicker id="FStp" displayFormat="MMM yyyy" valueFormat="MMyyyy" class="sapUiSmallMarginBottom" width="15rem"/>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement label="">
+							<Label/>
+						</f:FormElement>
+						<f:FormElement label=""></f:FormElement>
+						<f:FormElement label=""></f:FormElement>
+						<f:FormElement>
+							<Button text="Filter" width="20%" class="buttoncolorSec" type="Emphasized" press="onSaveOkay12"/>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+		<Table items="{TableFS>/details}" id="idTableFS">
+			<columns>
+				<Column hAlign="Left">
+					<Text text="S.No"/>
+				</Column>
+				<Column hAlign="Center">
+					<Text text="Filing Mode"/>
+				</Column>
+				<Column hAlign="Center" width="18rem">
+					<Text text="Date &amp; Time"/>
+				</Column>
+				<Column hAlign="Center">
+					<Text text="Reference ID"/>
+				</Column>
+				<Column hAlign="Center">
+					<Text text="Status"/>
+				</Column>
+				<Column hAlign="Center">
+					<Text text="Ack. Ref. No."/>
+				</Column>
+				<Column hAlign="Center">
+					<Text text="Download Error Report"/>
+				</Column>
+				<Column hAlign="Center">
+					<Text text="Filing Type"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem vAlign="Middle">
+					<cells>
+						<Text text="{TableFS>id}" wrapping="false"/>
+						<Text text="{TableFS>filingMode}"/>
+						<Text text="{TableFS>createdTime}"/>
+						<Text text="{TableFS>refId}"/>
+						<Text text="{TableFS>status}"/>
+						<Text text="{TableFS>ackNo}"/>
+						<!--<Text text="{TableFS>error}"/>-->
+						<core:Icon src="sap-icon://download" visible="{path:'TableFS>status', formatter:'.formatter.iconFS'}" press="onSaveStatusDownload1"/>
+						<Text text="{TableFS>filingType}"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</Dialog>
+</core:FragmentDefinition>

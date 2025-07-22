@@ -1,0 +1,229 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage >
+		<!--<f:title>
+			<f:DynamicPageTitle>
+				<f:heading></f:heading>
+				<f:actions>
+					<Button type="Emphasized" id="idMasterCustomerSubmit" icon="sap-icon://save" text="Submit" press="onSubmit"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>-->
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<f:content>
+					<fb:FilterBar id="fbCustomer" reset="onReset" search="onSearchMaster" useToolbar="false" showGoOnFB="false" showFilterConfiguration="false"
+						filterContainerWidth="10rem" class="sapUiNoContentPadding">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="true">
+								<fb:control>
+									<Select id="slCustEntity" items="{EntityModel>/resp}" change="onSelectChangeProduct">
+										<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>
+									</Select>
+									<!--<Select forceSelection="true" change="onSelectChange" items="{ path: 'DropDown>/criteria' }">-->
+									<!--	<core:Item key="{DropDown>key}" text="{DropDown>text}"/>-->
+									<!--</Select>-->
+								</fb:control>
+							</fb:FilterGroupItem>
+							<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Entity" visibleInFilterBar="true">-->
+							<!--	<fb:control>-->
+							<!--		<Select items="{DropDown>/Entity}" change="onSelectionChange" width="100%">-->
+							<!--			<core:Item key="{DropDown>key}" text="{DropDown>text}"/>-->
+							<!--		</Select>-->
+							<!--	</fb:control>-->
+							<!--</fb:FilterGroupItem>-->
+							<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="GSTIN" visibleInFilterBar="true">-->
+							<!--	<fb:control>-->
+							<!--		<MultiComboBox items="{GSTIN>/}" change="onSelectChange" width="100%">-->
+							<!--			<core:Item key="{GSTIN>key}" text="{GSTIN>text}"/>-->
+							<!--		</MultiComboBox>-->
+							<!--	</fb:control>-->
+							<!--</fb:FilterGroupItem>-->
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<ui:Table rows="{MasterCustomer>/}" id="idMasterCustomerTab" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10"
+					fixedRowCount="0" fixedColumnCount="1" enableSelectAll="true">
+					<ui:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<!--<Button icon="sap-icon://download" press="onExportExcel"/>-->
+							<!--<Button type="Accept" icon="sap-icon://edit" tooltip="Edit rows" id="idMasterCustomerEditRows" press="onEditRows"/>-->
+							<!--<Button type="Accept" icon="sap-icon://add" tooltip="Add row" press="onAddrow"/>-->
+							<Button type="Reject" icon="sap-icon://delete" tooltip="Delete rows" id="idMasterCustomerDeleteRows" press="onDeleteRows"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="4rem" headerSpan="1">
+							<ui:multiLabels>
+								<Label text="" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="S.No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{MasterCustomer>sno}"/>
+							</ui:template>
+						</ui:Column>
+						<!--<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Data Fields" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{MasterCustomer>gstinOrPan}" />
+							</ui:template>
+						</ui:Column>-->
+						<!--<ui:Column minWidth="10rem">
+							<ui:multiLabels>
+								<Label text="" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Supplier GSTIN/PAN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{MasterCustomer>supplierGstnOrPan}"/>
+							</ui:template>
+						</ui:Column>-->
+						<ui:Column minWidth="10rem">
+							<ui:multiLabels>
+								<Label text="" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Recipient GSTIN/PAN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{MasterCustomer>recipientGstnOrPan}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="10rem">
+							<ui:multiLabels>
+								<Label text="" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Legal Name " textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{MasterCustomer>legalName}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="10rem">
+							<ui:multiLabels>
+								<Label text="" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Trade Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{MasterCustomer>tradeName}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="10rem">
+							<ui:multiLabels>
+								<Label text="" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Recipient Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{MasterCustomer>recipientType}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="10rem" headerSpan="2">
+							<ui:multiLabels>
+								<Label text="Simplified – notify after saving to verify" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Recipient Code" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{MasterCustomer>recipientCode}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="10rem">
+							<ui:multiLabels>
+								<Label text="Simplified – notify after saving to verify" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Outside India" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{MasterCustomer>outSideIndia}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="10rem" headerSpan="9">
+							<ui:multiLabels>
+								<Label text="E-Way Bill" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="E-MailID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{MasterCustomer>emailId}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="10rem">
+							<ui:multiLabels>
+								<Label text="E-Way Bill" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Mobile Number" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{MasterCustomer>mobileNum}"/>
+							</ui:template>
+						</ui:Column>
+						<!--<ui:Column width="10rem">-->
+						<!--	<ui:multiLabels>-->
+						<!--		<Label text="E-Way Bill" textAlign="Center" width="100%" design="Bold"/>-->
+						<!--		<Label text="Place" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+						<!--	</ui:multiLabels>-->
+						<!--	<ui:template>-->
+						<!--		<Text text="{MasterCustomer>place}" />-->
+						<!--	</ui:template>-->
+						<!--</ui:Column>-->
+						<!--<ui:Column width="10rem">-->
+						<!--	<ui:multiLabels>-->
+						<!--		<Label text="E-Way Bill" textAlign="Center" width="100%" design="Bold"/>-->
+						<!--		<Label text="Supplier PIN Code" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+						<!--	</ui:multiLabels>-->
+						<!--	<ui:template>-->
+						<!--		<Text text="{MasterCustomer>suppPinCode}" />-->
+						<!--	</ui:template>-->
+						<!--</ui:Column>-->
+						<!--<ui:Column width="10rem">-->
+						<!--	<ui:multiLabels>-->
+						<!--		<Label text="E-Way Bill" textAlign="Center" width="100%" design="Bold"/>-->
+						<!--		<Label text="Customer PIN Code" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+						<!--	</ui:multiLabels>-->
+						<!--	<ui:template>-->
+						<!--		<Text text="{MasterCustomer>custPinCode}" />-->
+						<!--	</ui:template>-->
+						<!--</ui:Column>-->
+						<!--<ui:Column width="10rem">-->
+						<!--	<ui:multiLabels>-->
+						<!--		<Label text="E-Way Bill" textAlign="Center" width="100%" design="Bold"/>-->
+						<!--		<Label text="Email ID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+						<!--	</ui:multiLabels>-->
+						<!--	<ui:template>-->
+						<!--		<Text text="{MasterCustomer>}" change="emailValidation" />-->
+						<!--	</ui:template>-->
+						<!--</ui:Column>-->
+						<!--<ui:Column width="10rem">-->
+						<!--	<ui:multiLabels>-->
+						<!--		<Label text="E-Way Bill" textAlign="Center" width="100%" design="Bold"/>-->
+						<!--		<Label text="Mobile Numner" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+						<!--	</ui:multiLabels>-->
+						<!--	<ui:template>-->
+						<!--		<Text text="{MasterCustomer>}" type="Number" change="phoneValidation" />-->
+						<!--	</ui:template>-->
+						<!--</ui:Column>-->
+						<!--<ui:Column width="10rem">-->
+						<!--	<ui:multiLabels>-->
+						<!--		<Label text="E-Way Bill" textAlign="Center" width="100%" design="Bold"/>-->
+						<!--		<Label text="State" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+						<!--	</ui:multiLabels>-->
+						<!--	<ui:template>-->
+						<!--		<Text text="{MasterCustomer>stateCode}" />-->
+						<!--	</ui:template>-->
+						<!--</ui:Column>-->
+						<!--<ui:Column width="10rem">-->
+						<!--	<ui:multiLabels>-->
+						<!--		<Label text="E-Way Bill" textAlign="Center" width="100%" design="Bold"/>-->
+						<!--		<Label text="Approximate Distance" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+						<!--	</ui:multiLabels>-->
+						<!--	<ui:template>-->
+						<!--		<Text text="{MasterCustomer>aproDistance}" />-->
+						<!--	</ui:template>-->
+						<!--</ui:Column>-->
+					</ui:columns>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

@@ -1,0 +1,378 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:ui="sap.ui.table">
+	<ui:Table rows="{invOutward>/resp}" visibleRowCount="6" id="idtableInvNew" selectionMode="MultiToggle" selectionBehavior="Row"
+		enableSelectAll="true" fixedColumnCount="0">
+		<ui:extension>
+			<Toolbar>
+				<Title id="txtRecords" level="H3"/>
+				<ToolbarSpacer width="1rem"/>
+				<Label text="Showing:" design="Bold" class="sapUiSmallMarginBegin"/>
+				<!--<CheckBox selected="{invManage>/checkBox/B}" text="Details"/>-->
+				<CheckBox selected="{invManage>/checkBox/einv}" text="E-Invoice"/>
+				<CheckBox selected="{invManage>/checkBox/ewbA}" text="EWB"/>
+				<!--<CheckBox selected="{invManage>/checkBox/ewbB}" text="EWB Part-B"/>-->
+				<CheckBox selected="{invManage>/checkBox/gst}" text="GST Returns"/>
+				<ToolbarSpacer/>
+				<Button class="buttoncolorSec" enabled="{invOutward>/hdr/isInvLvlSaveApplicable}" text="Save to GSTN" press="onPressSaveToGstn" visible="{retType>/retTypeFlag}"/>
+				<Button class="buttoncolorSec" enabled="{invOutward>/hdr/isInvLvlSaveApplicable}" text="Delete from GSTN" press="onDeleteFromGSTN"
+					visible="false"/>
+				<Button class="buttoncolorSec" enabled="{invOutward>/hdr/isInvLvlSaveApplicable}" text="Save Status" press="onSaveStatus" visible="{retType>/retTypeFlag}"/>
+				<MenuButton text="Generate" class="buttoncolorSec" visible="{retType>/retTypeFlag}"
+					enabled="{= ((${userPermission>/appPermission/R2} &amp;&amp; ${userPermission>/appPermission/P102}) || (${userPermission>/appPermission/R3} &amp;&amp; ${userPermission>/appPermission/P101}))}">
+					<menu>
+						<Menu >
+							<MenuItem key="EINVGenerate" text="E-Invoice " icon="sap-icon://generate-shortcut" press="onPress"
+								enabled="{= (${userPermission>/appPermission/R2} &amp;&amp; ${userPermission>/appPermission/P102})}"/>
+							<MenuItem key="EWBGenerate" text="EWB " icon="sap-icon://generate-shortcut" press="onPress"
+								enabled="{= (${userPermission>/appPermission/R3} &amp;&amp; ${userPermission>/appPermission/P101})}"/>
+							<MenuItem key="EINVEWBGenerate" text="E-Invoice and EWB " icon="sap-icon://generate-shortcut" press="onPress"
+								enabled="{= (((${userPermission>/appPermission/R2} &amp;&amp; ${userPermission>/appPermission/R3}) ? true: false) &amp;&amp; ((${userPermission>/appPermission/P101} &amp;&amp; ${userPermission>/appPermission/P102}) ? true: false))}"/>
+						</Menu>
+					</menu>
+				</MenuButton>
+				<MenuButton text="Cancel" class="buttoncolorSec" visible="{retType>/retTypeFlag}"
+					enabled="{= ((${userPermission>/appPermission/R2} &amp;&amp; ${userPermission>/appPermission/P102}) || (${userPermission>/appPermission/R3} &amp;&amp; ${userPermission>/appPermission/P101}))}">
+					<menu>
+						<Menu >
+							<MenuItem key="EINVCancel" text="E-Invoice " icon="sap-icon://cancel" press="onPress"
+								enabled="{= (${userPermission>/appPermission/R2} &amp;&amp; ${userPermission>/appPermission/P102})}"/>
+							<MenuItem key="EWBCancel" text="EWB " icon="sap-icon://cancel" press="onPress"
+								enabled="{= (${userPermission>/appPermission/R3} &amp;&amp; ${userPermission>/appPermission/P101})}"/>
+							<!--<MenuItem key="EWBCancel" text="E-Invoice and EWB " icon="sap-icon://cancel" press="onPress"/>-->
+						</Menu>
+					</menu>
+				</MenuButton>
+				<MenuButton text="EWB Action" class="buttoncolorSec" visible="{retType>/retTypeFlag}"
+					enabled="{= (${userPermission>/appPermission/R3} &amp;&amp; ${userPermission>/appPermission/P101})}">
+					<menu>
+						<Menu>
+							<!--<MenuItem key="EWBGenerate" text="Generate" icon="sap-icon://generate-shortcut" press="onPress"/>-->
+							<!--<MenuItem key="EWBCancel" text="Cancel" icon="sap-icon://cancel" press="onPress"/>-->
+							<MenuItem key="EWBUpdate" text="Update Part - B" icon="sap-icon://request" press="onPress"/>
+							<MenuItem key="EWBExtend" text="Extend" icon="sap-icon://request" press="onPress"/>
+							<MenuItem key="EWBTransporter" text="Update Transporter " icon="sap-icon://request" press="onPress"/>
+						</Menu>
+					</menu>
+				</MenuButton>
+				<MenuButton text="Print" class="buttoncolorSec" visible="{retType>/retTypeFlag}"
+					enabled="{= ((${userPermission>/appPermission/R2} &amp;&amp; ${userPermission>/appPermission/P102}) || (${userPermission>/appPermission/R3} &amp;&amp; ${userPermission>/appPermission/P101}) || ${userPermission>/appPermission/P99})}">
+					<menu>
+						<Menu >
+							<MenuItem key="EINVPrint" text="E-Invoice" icon="sap-icon://print" press="onPress"
+								enabled="{= (${userPermission>/appPermission/R2} &amp;&amp; ${userPermission>/appPermission/P102})}"/>
+							<!--<MenuItem key="EINVPrint" text="E-Invoice" icon="sap-icon://print" press="onPress"/>-->
+							<MenuItem key="B2CPrint" text="B2C Print" icon="sap-icon://print" press="onPress" enabled="{= ${userPermission>/appPermission/P99}}"/>
+							<MenuItem key="EWBDetailed" text="EWB Detailed" icon="sap-icon://print" press="onPress"
+								enabled="{= (${userPermission>/appPermission/R3} &amp;&amp; ${userPermission>/appPermission/P101})}"/>
+							<MenuItem key="EWBSummary" text="EWB Summary" icon="sap-icon://print" press="onPress"
+								enabled="{= (${userPermission>/appPermission/R3} &amp;&amp; ${userPermission>/appPermission/P101})}"/>
+						</Menu>
+					</menu>
+				</MenuButton>
+				<!--<Button type="Accept" text="Detailed Print" tooltip="Detailed Print" press="onPressPrintInvoice" enabled="{userPermission>/appPermission/R1}"/>-->
+				<!--<Button type="Accept" text="Summary Print" tooltip="Summary Print" press="onPressEWBSummaryReport" enabled="{userPermission>/appPermission/R1}"/>-->
+				<!--<Button type="Emphasized" text="Download" press="onPressScreenOutwardDownload"/>-->
+				<Button class="buttoncolorSec" text="Sync GSTIN API" enabled="{= ${userPermission>/appPermission/P99}}" visible="{retType>/retTypeFlag}" press="onPressSyncGSTINAPI"/>
+				<MenuButton text="Download Reports" class="buttoncolorSec"
+					enabled="{= ((${userPermission>/appPermission/R2} &amp;&amp; ${userPermission>/appPermission/P102}) || (${userPermission>/appPermission/R3} &amp;&amp; ${userPermission>/appPermission/P101}) || ${userPermission>/appPermission/P99})}">
+					<menu>
+						<Menu >
+							<MenuItem key="EINVRP" text="E-invoice Response download" icon="sap-icon://print" press="onPress" visible="{retType>/retTypeFlag}"
+								enabled="{= (${userPermission>/appPermission/R2} &amp;&amp; ${userPermission>/appPermission/P102})}"/>
+							<MenuItem key="IMR" text="Invoice Management Records" icon="sap-icon://print" press="onPress"
+								enabled="{= ${userPermission>/appPermission/P99}}"/>
+							<MenuItem key="SBD" text="Missing Shipping Bill Details" icon="sap-icon://print" press="onPress"
+								enabled="{= ${userPermission>/appPermission/P99}}" visible="{retType>/retTypeFlag}"/>
+						</Menu>
+					</menu>
+				</MenuButton>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column headerSpan="7" hAlign="Center" width="12rem">
+				<ui:multiLabels>
+					<Label text="Document Details" textAlign="Center" width="100%" design="Bold"/>
+					<Label text="GSTIN" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Label text="{invOutward>gstin}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left" width="10rem">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Doc Type" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>docType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left" width="10rem">
+				<ui:multiLabels>
+					<Label/>
+					<HBox>
+						<Label text="Doc Number" textAlign="Center" design="Bold" width="100%"/>
+						<!--<core:Icon src="sap-icon://filter" press="onFP"/>-->
+					</HBox>
+				</ui:multiLabels>
+				<ui:template>
+					<Link text="{invOutward>docNo}" press="onPressLink($event,${invOutward>id})"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left" width="10rem">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Doc Date" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>docDate}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left" width="12rem">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Counter Party GSTIN" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>counterPartyGstin}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="12rem">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="DigiGST Error Code" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>aspErrorCode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="25rem">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="DigiGST Error Description" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>aspErrorDesc}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="5" hAlign="Begin" width="12rem" visible="{invManage>/checkBox/einv}">
+				<ui:multiLabels>
+					<Label text="E-Invoice" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="E-Invoice Status" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<VBox width="100%" class="sapUiTinyMarginTopBottom">
+						<ObjectStatus text="{path : 'invOutward>irnStatus', formatter : '.formatter.einvStatus'}" active="true"/>
+						<!--<Text text="{invOutward>EWBPartADateTime}" class="timeStmpClr"/>-->
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="18rem" visible="{invManage>/checkBox/einv}">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="IRN Number" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>irnResponse}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="10rem" visible="{invManage>/checkBox/einv}">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="IRN Date" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>ackDate}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="10rem" visible="{invManage>/checkBox/einv}">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="IRP Error Code" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>einvErrorCode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="10rem" visible="{invManage>/checkBox/einv}">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="IRP Error Description" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>einvErrorDesc}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="11" hAlign="Begin" width="12rem" visible="{invManage>/checkBox/ewbA}">
+				<ui:multiLabels>
+					<Label text="EWB" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="EWB Status" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<VBox width="100%" class="sapUiTinyMarginTopBottom">
+						<ObjectStatus text="{path : 'invOutward>EWBPartAStatus', formatter : '.formatter.ewbStatus'}" active="true" press="fnTableSCPress"
+							tooltip="{invOutward>EWBpartbtooltip}"/>
+						<Text text="{invOutward>EWBPartADateTime}" class="timeStmpClr"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="10rem" visible="{invManage>/checkBox/ewbA}">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="EWB Number" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>ewbNoresp}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="10rem" visible="{invManage>/checkBox/ewbA}">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="EWB Date" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>ewbDateResp}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="10rem" visible="{invManage>/checkBox/ewbA}">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Transporter ID" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>EWBPartATransId}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="10rem" visible="{invManage>/checkBox/ewbA}">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Valid Upto" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>EWBValidUpto}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="10rem" visible="{invManage>/checkBox/ewbA}">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Sub-Supply Type" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>EWBSubSupplyType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="10rem" visible="{invManage>/checkBox/ewbA}">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Error Point" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path : 'invOutward>EWBErrorPoint', formatter : '.formatter.ewbPoint'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="15rem" visible="{invManage>/checkBox/ewbA}">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Error Code" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>EWBErrorCode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="25rem" visible="{invManage>/checkBox/ewbA}">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Error Description" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>EWBErrorDesc}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="12rem" visible="{invManage>/checkBox/ewbA}">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Info Error Code" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>infoErrCode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="25rem" visible="{invManage>/checkBox/ewbA}">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Info Error Description" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>infoErrDesc}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="7" hAlign="Begin" width="12rem" visible="{invManage>/checkBox/gst}">
+				<ui:multiLabels>
+					<Label text="GST Returns" textAlign="Center" width="100%" design="Bold"/>
+					<Label text="Return Status" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<VBox width="100%" class="sapUiTinyMarginTopBottom">
+						<ObjectStatus text="{invOutward>GSTStatus}" active="true" press="fnTableSCPress" tooltip="{invOutward>gstReturnstooltip}"/>
+						<Text text="{invOutward>timestamp4}" class="timeStmpClr"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="10rem" visible="{invManage>/checkBox/gst}">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Ref. ID" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>refId}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="10rem" visible="{invManage>/checkBox/gst}">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Return Type" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>GSTRetType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="10rem" visible="{invManage>/checkBox/gst}">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Table Number" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox direction="Column">
+						<Text text="{invOutward>GSTTableNo}"/>
+						<Link text="Show more" press="onShowMoreTables($event,${invOutward>id})" visible="{invOutward>multiSupplyApplicable}"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="15rem" visible="{invManage>/checkBox/gst}">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Error Code" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>GSTErrorCode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="25rem" visible="{invManage>/checkBox/gst}">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Error Description" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{invOutward>GSTErrorDesc}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+	</ui:Table>
+	<HBox id="hbNewError" width="100%" justifyContent="Center" visible="true">
+		<Button id="bPrevErr" class="buttoncolorSec" icon="sap-icon://navigation-left-arrow" tooltip="Previous" press="onPressPagination"
+			enabled="false"/>
+		<Input id="inPageNoErr" type="Number" textAlign="End" width="4rem" submit="onSubmitPagination" class="sapUiTinyMarginBegin" value="1"/>
+		<Text id="txtPageNoErr" text="/ 0" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+		<Button id="bNextErr" class="buttoncolorSec" icon="sap-icon://navigation-right-arrow" tooltip="Next" press="onPressPagination"
+			enabled="false"/>
+	</HBox>
+</core:FragmentDefinition>

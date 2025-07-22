@@ -1,0 +1,73 @@
+package com.ey.advisory.app.glrecon;
+
+import lombok.Data;
+
+@Data
+public class PRFileUploadDto {
+
+    private String returnPeriod;
+    private String documentType;
+    private String supplyType;
+    private String documentNumber;
+    private String documentDate;
+    private String originalDocumentNumber;
+    private String originalDocumentDate;
+    private String reasonForCreditDebitNote;
+    private String supplierCode;
+    private String supplierGSTIN;
+    private String originalSupplierGSTIN;
+    private String supplierName;
+    private String recipientGSTIN;
+    private String POS;
+    private String lineNumber;
+    private String HSNorSAC;
+    private String itemDescription;
+    private String itemCode;
+    private String categoryOfItem;
+    private String unitOfMeasurement;
+    private String quantity;
+    private String taxableValue;
+    private String integratedTaxRate;
+    private String integratedTaxAmount;
+    private String centralTaxRate;
+    private String centralTaxAmount;
+    private String stateUTTaxRate;
+    private String stateUTTaxAmount;
+    private String cessRateAdvalorem;
+    private String cessAmountAdvalorem;
+    private String cessRateSpecific;
+    private String cessAmountSpecific;
+    private String invoiceValue;
+    private String portCode;
+    private String billOfEntry;
+    private String billOfEntryDate;
+    private String CIFValue;
+    private String customDuty;
+    private String eligibilityIndicator;
+    private String commonSupplyIndicator;
+    private String ITCReversalIdentifier;
+    private String availableIGST;
+    private String availableCGST;
+    private String availableSGST;
+    private String availableCess;
+    private String contractNumber;
+    private String contractDate;
+    private String contractValue;
+    private String reverseChargeFlag;
+    private String CRDRPreGST;
+    private String paymentVoucherNumber;
+    private String paymentDate;
+    private String sourceIdentifier;
+    private String sourceFileName;
+    private String plantCode;
+    private String division;
+    private String subDivision;
+    private String profitCentre1;
+    private String profitCentre2;
+    private String GLAccountCode;
+    private String purchaseVoucherNumber;
+    private String purchaseVoucherDate;
+    private String userdefinedfield1;
+    private String userdefinedfield2;
+    private String userdefinedfield3;
+}

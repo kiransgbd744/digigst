@@ -1,0 +1,75 @@
+URL : /getDataSecurity.do
+Service : POST 
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+
+Request Payload :
+
+{
+  "req":{
+          "groupCode":"ern00002"
+  }
+}
+
+
+
+
+
+
+URL : /getDataPermission.do
+Service : POST 
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+
+Request Payload :
+
+{
+  "req":{
+          "groupCode":"ern00002"
+  }
+}
+
+
+
+
+
+URL : /updateDataPermission.do
+Service : POST 
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+
+Request Payload :
+
+{
+	"req":
+	{
+		"groupCode":"ern00002",
+        "entityId": 1,
+		"entityName": "SAP_POC_Sandbox",
+		"userDetails":[
+			{	
+				"userId":5,
+				"userName": "Ramsundar",
+        		"profitCenter": [6,7],
+        		"plant": [],
+        		"division": [],
+        		"location":[],
+        		"salesOrg": [],
+        		"purchOrg": [],
+        		"distChannel": [],
+        		"userDefined1": [],
+        		"userDefined2": [],
+        		"userDefined3": [],
+        		"userDefined4": [],
+        		"userDefined5": [],
+        		"userDefined6": []
+    		}
+       ]
+    }
+}

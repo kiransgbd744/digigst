@@ -1,0 +1,121 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:table="sap.ui.table">
+	<f:DynamicPage fitContent="true" class="ReconResponce">
+		<!--<f:title>-->
+		<!--	<f:DynamicPageTitle>-->
+		<!--		<f:heading>-->
+		<!--			<Title text="{=!${Property>/reqIdWise}?'GL Recon':'Request ID wise'}" class="TitleColor dpTitlePadding"/>-->
+		<!--		</f:heading>-->
+		<!--	</f:DynamicPageTitle>-->
+		<!--</f:title>-->
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<HBox justifyContent="SpaceBetween">
+					<HBox>
+						<Label text="File Type:" labelFor="rgbFileType" design="Bold" width="5rem" class="sapUiTinyMarginTop"/>
+						<RadioButtonGroup id="rgbFileType" columns="6">
+							<RadioButton id="rbGlCode" text="GL Code Master"/>
+							<RadioButton id="rbBusiUnit" text="Business Unit"/>
+							<RadioButton id="rbDocType" text="Document Type"/>
+							<RadioButton id="rbSuppType" text="Supply Type"/>
+							<RadioButton id="rbTaxCode" text="Tax Code Master"/>
+						</RadioButtonGroup>
+					</HBox>
+					<HBox>
+						<Button text="{i18n>downTemp}" tooltip="{i18n>downTemp}" press="onDownloadTemplate" class="buttoncolorSec"/>
+						<Button text=" {i18n>downAll}" tooltip="{i18n>downAllTip}" press="onPressDownload" visible="false" class="buttoncolorSec"/>
+					</HBox>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<VBox>
+				<HBox renderType="Bare">
+					<u:FileUploader xmlns:u="sap.ui.unified" id="fileUploaderGL" name="file" fileType="xlsx,csv,xlsm" sameFilenameAllowed="false"
+						multiple="false" sendXHR="true" useMultipart="true" style="Emphasized" uploadComplete="onUploadComplete"
+						class="sapUiTinyMarginBegin buttoncolorSec" placeholder="Select file to upload..." width="30rem"/>
+					<Button text="{i18n>upload}" press="onPressUpload" class="sapUiTinyMarginBegin buttoncolor"/>
+				</HBox>
+				<HBox renderType="Bare" direction="Column">
+					<table:Table rows="{FileStatus>/GlReportsData}" enableColumnReordering="false" enableSelectAll="false" minAutoRowCount="10"
+						selectionMode="None" visibleRowCountMode="Auto" class="sapUiSmallMarginTop">
+						<table:extension>
+							<Toolbar>
+								<Title text="Uploaded Files" titleStyle="H3"/>
+								<ToolbarSpacer/>
+								<Button type="Ghost" icon="sap-icon://filter" press="onFilterGLMasterData" class="buttoncolorSec"/>
+							</Toolbar>
+						</table:extension>
+						<table:columns>
+							<table:Column width="10rem">
+								<Label text="Uploaded By" design="Bold" textAlign="Center" width="100%"/>
+								<table:template>
+									<Text text="{FileStatus>uploadedBy}"/>
+								</table:template>
+							</table:Column>
+							<table:Column width="13rem">
+								<Label text="File Type" design="Bold" textAlign="Center" width="100%"/>
+								<table:template>
+									<Text text="{FileStatus>fileType}"/>
+								</table:template>
+							</table:Column>
+							<table:Column>
+								<Label text="File Name" design="Bold" textAlign="Center" width="100%"/>
+								<table:template>
+									<Text text="{FileStatus>fileName}"/>
+								</table:template>
+							</table:Column>
+							<table:Column width="12rem">
+								<Label text="File Status" design="Bold" textAlign="Center" width="100%"/>
+								<table:template>
+									<HBox justifyContent="SpaceBetween">
+										<HBox renderType="Bare">
+											<Text text="{FileStatus>status}" class="sapUiTinyMarginEnd"/>
+											<core:Icon src="sap-icon://message-information" tooltip="{FileStatus>errorDescription}"
+												visible="{=${FileStatus>status}==='Failed'&amp;&amp;!!${FileStatus>errorDescription}}"/>
+										</HBox>
+										<core:Icon src="sap-icon://download" visible="{=${FileStatus>status}==='Failed'&amp;&amp;!!${FileStatus>downloadFlag}}"
+											press="onDownloadFailedFile(${FileStatus>fileId},${FileStatus>fileType})"/>
+									</HBox>
+								</table:template>
+							</table:Column>
+							<table:Column width="12rem">
+								<Label text="Uploaded Date/Time" design="Bold" textAlign="Center" width="100%"/>
+								<table:template>
+									<Text text="{FileStatus>createdOn}"/>
+								</table:template>
+							</table:Column>
+							<table:Column hAlign="Center" width="7rem">
+								<Label text="Download" design="Bold" textAlign="Center" width="100%"/>
+								<table:template>
+									<core:Icon src="sap-icon://download" press="onDownloadFile(${FileStatus>fileName})"/>
+								</table:template>
+							</table:Column>
+						</table:columns>
+						<table:footer>
+							<HBox justifyContent="Center">
+								<Button type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" class="sapUiTinyMarginBeginEnd" enabled="{Property>/bFirst}"
+									press="onPressPagination('F')"/>
+								<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="{Property>/bPrev}"
+									press="onPressPagination('P')"/>
+								<Input type="Number" textAlign="End" width="4rem" submit="onSubmitPagination('I')" enabled="{Property>/ePageNo}"
+									class="sapUiTinyMarginBegin" value="{Property>/pageNo}"/>
+								<Text text="/ {Property>/pgTotal}" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+								<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="{Property>/bNext}"
+									press="onPressPagination('N')"/>
+								<Button type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" class="sapUiTinyMarginBeginEnd" enabled="{Property>/bLast}"
+									press="onPressPagination('L')"/>
+								<Select selectedKey="{Property>/pgSize}" change="onSubmitPagination('S')" forceSelection="true" width="10%">
+									<core:Item key="10" text="10"/>
+									<core:Item key="25" text="25"/>
+									<core:Item key="50" text="50"/>
+									<core:Item key="75" text="75"/>
+									<core:Item key="100" text="100"/>
+								</Select>
+							</HBox>
+						</table:footer>
+					</table:Table>
+				</HBox>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

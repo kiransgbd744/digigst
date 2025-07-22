@@ -1,0 +1,36 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:f="sap.ui.layout.form">
+	<Dialog title="Reason for Difference" type="Message" class="sapUiSizeCompact cl_saveHeader" xmlns:fb="sap.ui.comp.filterbar">
+		<ScrollContainer horizontal="false" vertical="true" width="70rem" height="20rem" class="sapUiNoMargin sapUiNoContentPadding">
+			<Table id="tabReasonDiff" items="{ReasonDiff>/}" sticky="ColumnHeaders" mode="MultiSelect" noDataText="No Data" class="sapUiNoContentPadding">
+				<columns >
+					<Column hAlign="Center" width="10rem">
+						<Label text="Reason Code" required="true" textAlign="Center"  design="Bold"/>
+					</Column>
+					<Column hAlign="Center" width="24rem">
+						<Label text="Reason Description" textAlign="Center" design="Bold"/>
+					</Column>
+					<Column hAlign="Center" width="10rem">
+						<Label text="Explanation" design="Bold"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem vAlign="Middle">
+						<cells>
+							<ComboBox width="100%" items="{Reason>/resp/reasons/}" selectedKey="{ReasonDiff>readonCode}" >
+								<core:ListItem key="{Reason>reasonCode}" text="{Reason>reasonCode}" additionalText="{Reason>reasonDesc}"/>
+							</ComboBox>
+							<ExpandableText text="{path:'ReasonDiff>readonCode',formatter:'.getReasonDesc'}" overflowMode="Popover" maxCharacters="80"/>
+							<Input value="{ReasonDiff>explanation}" width="100%" maxLength="500"></Input>	
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</ScrollContainer>
+		<buttons>
+			<Button class="buttoncolorSec" text="Add New Reason" press="onAddReasonRow"/>
+			<Button class="buttoncolorSec" text="Delete" press="OnDeleteReasonRow"/>
+			<Button class="buttoncolorSec" text="Save" press="onSaveReasonDialog('S')"/>
+			<Button class="buttoncolorSec" text="Cancel" press="onSaveReasonDialog('C')"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

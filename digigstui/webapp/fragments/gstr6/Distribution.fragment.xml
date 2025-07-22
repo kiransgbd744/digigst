@@ -1,0 +1,845 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt"
+	xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage id="dpBulkSavegstrDist1">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<SegmentedButton id="idActionInformationDistGstr6" selectedKey="Invoice" selectionChange="onSelectionGstr6Distribution" width="100%">
+						<items>
+							<SegmentedButtonItem key="Invoice" text="Distribution (INV &amp; CR Eligible)"/>
+							<SegmentedButtonItem key="InfInvoice" text="Distribution (INV &amp; CR Ineligible)"/>
+							<SegmentedButtonItem key="ForcNote" text="Re-Distribution (RNV &amp; RCR Eligible)"/>
+							<SegmentedButtonItem key="Ineli" text="Re-Distribution (RNV &amp; RCR Ineligible)" width="28%"/>
+						</items>
+					</SegmentedButton>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<l:VerticalLayout id="id_layout1" width="100%" >
+					<l:Grid defaultSpan="L2 M2 S12" vSpacing="0" class="sapUiTinyMarginTop">
+						<l:content>
+							<VBox>
+								<Label text="GSTIN"/>
+								<MultiComboBox id="idgstinDist" width="100%" items="{Gstin>/}" selectionChange="onSelectionChangeGstn">
+									<core:Item key="{Gstin>value}" text="{Gstin>value}"/>
+								</MultiComboBox>
+							</VBox>
+							<VBox>
+								<Label text="Tax Period" required="true"/>
+								<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" id="id_disCrEligTax" change="onDateChange"/>
+							</VBox>
+							<VBox>
+								<Label text=""/>
+								<HBox>
+									<Button icon="sap-icon://filter" tooltip="Adapt Filters" press="onPressGSTR1AdaptFilters" class="sapUiTinyMarginBegin buttoncolorSec"/>
+									<Button text="Filter" class="sapUiTinyMarginBegin buttoncolor" press="onPressGoCrElig"/>
+								</HBox>
+							</VBox>
+						</l:content>
+					</l:Grid>
+				</l:VerticalLayout>
+				<l:VerticalLayout id="id_layout2" width="100%" visible="false" >
+					<l:Grid defaultSpan="L2 M2 S12" vSpacing="0" class="sapUiTinyMarginTop">
+						<l:content>
+							<VBox>
+								<Label text="GSTIN"/>
+								<MultiComboBox id="idgstinDist1" width="100%" items="{Gstin>/}" selectionChange="onSelectionChangeGstn">
+									<core:Item key="{Gstin>value}" text="{Gstin>value}"/>
+								</MultiComboBox>
+							</VBox>
+							<VBox>
+								<Label text="Tax Period" required="true"/>
+								<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" id="id_disCrEligTax1" change="onDateChange"/>
+							</VBox>
+							<VBox>
+								<Label text=""/>
+								<HBox>
+									<Button icon="sap-icon://filter" tooltip="Adapt Filters" press="onPressGSTR1AdaptFilters" class="sapUiTinyMarginBegin buttoncolorSec"/>
+									<Button text="Filter" class="sapUiTinyMarginBegin buttoncolor" press="onPressGoCrInElig"/>
+								</HBox>
+							</VBox>
+						</l:content>
+					</l:Grid>
+				</l:VerticalLayout>
+				<l:VerticalLayout id="id_layout3" width="100%" visible="false" >
+					<l:Grid defaultSpan="L2 M2 S12" vSpacing="0" class="sapUiTinyMarginTop">
+						<l:content>
+							<VBox>
+								<Label text="GSTIN"/>
+								<MultiComboBox id="idgstinDist2" width="100%" items="{Gstin>/}" selectionChange="onSelectionChangeGstn">
+									<core:Item key="{Gstin>value}" text="{Gstin>value}"/>
+								</MultiComboBox>
+							</VBox>
+							<VBox>
+								<Label text="Tax Period" required="true"/>
+								<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" id="id_disCrEligTax2" change="onDateChange"/>
+							</VBox>
+							<VBox>
+								<Label text=""/>
+								<HBox>
+									<Button icon="sap-icon://filter" type="Default" tooltip="Adapt Filters" press="onPressGSTR1AdaptFilters"
+										class="sapUiTinyMarginBegin buttoncolorSec"/>
+									<Button text="Filter" class="sapUiTinyMarginBegin buttoncolor" press="onPressRcrElig"/>
+								</HBox>
+							</VBox>
+						</l:content>
+					</l:Grid>
+				</l:VerticalLayout>
+				<l:VerticalLayout id="id_layout4" width="100%" visible="false" >
+					<l:Grid defaultSpan="L2 M2 S12" vSpacing="0" class="sapUiTinyMarginTop">
+						<l:content>
+							<VBox>
+								<Label text="GSTIN"/>
+								<MultiComboBox id="idgstinDist3" width="100%" items="{Gstin>/}" selectionChange="onSelectionChangeGstn">
+									<core:Item key="{Gstin>value}" text="{Gstin>value}"/>
+								</MultiComboBox>
+							</VBox>
+							<VBox>
+								<Label text="Tax Period" required="true"/>
+								<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" id="id_disCrEligTax3" change="onDateChange"/>
+							</VBox>
+							<VBox>
+								<Label text=""/>
+								<HBox>
+									<Button icon="sap-icon://filter" tooltip="Adapt Filters" press="onPressGSTR1AdaptFilters" class="sapUiTinyMarginBegin buttoncolorSec"/>
+									<Button text="Filter" class="sapUiTinyMarginBegin buttoncolor" press="onPressRcrInElig"/>
+								</HBox>
+							</VBox>
+						</l:content>
+					</l:Grid>
+				</l:VerticalLayout>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel>
+				<commons:ChartContainer id="idPREntitydist" showFullScreen="true" contentChange="onCustomZoomInPress"
+					personalizationPress="onCustomZoomOutPress" showZoom="false" showPersonalization="false" autoAdjustHeight="false">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<ui:Table id="idisdinvEGstr6" selectionMode="MultiToggle" rows="{path:'Gstr6DistCrEligData>/'}" fixedRowCount="0" fixedColumnCount="0">
+									<ui:columns>
+										<ui:Column width="10rem" sortProperty="returnPeriod" filterProperty="returnPeriod">
+											<Label text="Return Period" textAlign="Center" width="100%" design="Bold"/>
+											<ui:template>
+												<HBox>
+													<Input value="{Gstr6DistCrEligData>returnPeriod}" editable="{Gstr6DistCrEligData>edit}"/>
+												</HBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="isdGstin" filterProperty="isdGstin">
+											<Label text="ISD GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<Text text="{Gstr6DistCrEligData>isdGstin}" class="sapUiTinyMarginTop"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="15rem" sortProperty="recipientGSTIN" filterProperty="recipientGSTIN">
+											<Label text="Recipient GSTIN" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrEligData>recipientGSTIN}" editable="{Gstr6DistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" sortProperty="stateCode">
+											<Label text="State Code" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<ComboBox editable="{Gstr6DistCrEligData>edit}" change="onSelectChangeFinacial" items="{path:'GstStateCode>/states'}"
+													selectedKey="{Gstr6DistCrEligData>stateCode}" width="100%" showSecondaryValues="false">
+													<!--<core:Item key="{GstStateCode>stateCode}" text="{GstStateCode>stateCode}"/>-->
+													<core:ListItem key="{GstStateCode>stateCode}" text="{GstStateCode>stateCode} - {GstStateCode>stateName}"
+														additionalText="{GstStateCode>stateCode}"/>
+												</ComboBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="documentType" filterProperty="documentType">
+											<Label text="Document Type" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Text text="{Gstr6DistCrEligData>documentType}" wrapping="false"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="supplyType" filterProperty="supplyType">
+											<Label text="Supply Type" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrEligData>supplyType}" editable="{Gstr6DistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="docNum" filterProperty="docNum">
+											<Label text="Document Number" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Text text="{Gstr6DistCrEligData>docNum}" wrapping="false"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="docDate" filterProperty="docDate">
+											<Label text="Document Date" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Text text="{Gstr6DistCrEligData>docDate}" wrapping="false"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="13rem" sortProperty="origDocNumber" filterProperty="origDocNumber">
+											<Label text="Original Document Number" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrEligData>origDocNumber}" editable="{Gstr6DistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" sortProperty="origDocDate" filterProperty="origDocDate">
+											<Label text="Original Document Date" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrEligData>origDocDate}" editable="{Gstr6DistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" sortProperty="eligibleIndicator" filterProperty="eligibleIndicator">
+											<Label text="Eligible Indicator" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrEligData>eligibleIndicator}" editable="{Gstr6DistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="igstAsIgst" filterProperty="igstAsIgst">
+											<Label text="IGST as IGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrEligData>igstAsIgst}" editable="{Gstr6DistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="igstAsSgst" filterProperty="igstAsSgst">
+											<Label text="IGST as SGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrEligData>igstAsSgst}" editable="{Gstr6DistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="igstAsCgst" filterProperty="igstAsCgst">
+											<Label text="IGST as CGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrEligData>igstAsCgst}" editable="{Gstr6DistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="sgstAsSgst" filterProperty="sgstAsSgst">
+											<Label text="SGST as SGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrEligData>sgstAsSgst}" editable="{Gstr6DistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="sgstAsIgst" filterProperty="sgstAsIgst">
+											<Label text="SGST as IGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrEligData>sgstAsIgst}" editable="{Gstr6DistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="cgstAsCgst" filterProperty="cgstAsCgst">
+											<Label text="CGST as CGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrEligData>cgstAsCgst}" editable="{Gstr6DistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="cgstAsIgst" filterProperty="cgstAsIgst">
+											<Label text="CGST as IGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrEligData>cgstAsIgst}" editable="{Gstr6DistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="cessAmount" filterProperty="cessAmount">
+											<Label text="CESS Amount" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrEligData>cessAmount}" editable="{Gstr6DistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<ui:footer>
+										<HBox width="100%" justifyContent="Center">
+											<Button id="btnFirstN" type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" class="sapUiTinyMarginBeginEnd" enabled="true"
+												press="onPressPagination"/>
+											<Button id="btnPrevN" type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="false"
+												press="onPressPagination"/>
+											<Input id="inPageNoN" type="Number" textAlign="End" width="4rem" submit="onSubmitPagination" enabled="false" class="sapUiTinyMarginBegin"
+												value="0"/>
+											<Text id="txtPageNoN" text="/ 0" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+											<Button id="btnNextN" type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="false" press="onPressPagination"/>
+											<Button id="btnLastN" type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" class="sapUiTinyMarginBeginEnd" enabled="true"
+												press="onPressPagination"/>
+											<Select id="idPageN" change="onPNChange" selectedKey="10" forceSelection="true" width="10%">
+												<core:Item key="10" text="10"/>
+												<core:Item key="25" text="25"/>
+												<core:Item key="50" text="50"/>
+												<core:Item key="75" text="75"/>
+												<core:Item key="100" text="100"/>
+											</Select>
+										</HBox>
+									</ui:footer>
+								</ui:Table>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar >
+							<ToolbarSpacer/>
+							<Button class="buttoncolorSec" enabled="{buttonVis>/dataEditable}" press="onPressDistribEdit" text="Edit" ariaLabelledBy="actionButtonLabel"
+								id="idEdit1"/>
+							<Button class="buttoncolorSec" enabled="{buttonVis>/dataEditable}" press="onPressDistribSave" text=" Save"
+								ariaLabelledBy="actionButtonLabel" type="Accept" id="idSave1"/>
+							<Button class="buttoncolorSec" enabled="{buttonVis>/dataEditable}" press="onPressDelete" text="Delete Data"
+								ariaLabelledBy="actionButtonLabel" id="idDelete1"/>
+							<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" id="idPRSummaryEDNew6A" press="onExportExcelGstr6A1"/>
+							<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="Download Pdf" class="sapUiTinyMarginEnd" press="onPressDownloadPDF"/>
+							<!--<Button icon="sap-icon://download" press="onPress" text="Download" ariaLabelledBy="actionButtonLabel" type="Emphasized"/>-->
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+				<commons:ChartContainer id="idPREntitydist1" showFullScreen="true" contentChange="onCustomZoomInPress"
+					personalizationPress="onCustomZoomOutPress" showZoom="false" showPersonalization="false" autoAdjustHeight="false" visible="false">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<ui:Table id="idsecondGstrtab" selectionMode="MultiToggle" rows="{path:'Gstr6DistCrInEligData>/'}" fixedRowCount="0" fixedColumnCount="0">
+									<ui:columns>
+										<ui:Column width="10rem" sortProperty="returnPeriod" filterProperty="returnPeriod">
+											<Label text="Return Period" textAlign="Center" width="100%" design="Bold"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrInEligData>returnPeriod}" editable="{Gstr6DistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="isdGstin" filterProperty="isdGstin">
+											<Label text="ISD GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<Text text="{Gstr6DistCrInEligData>isdGstin}" wrapping="false"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="15rem" sortProperty="recipientGSTIN" filterProperty="recipientGSTIN">
+											<Label text="Recipient GSTIN" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrInEligData>recipientGSTIN}" editable="{Gstr6DistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" sortProperty="stateCode">
+											<Label text="State Code" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<ComboBox change="onSelectChangeFinacial" items="{path:'GstStateCode>/states'}" selectedKey="{Gstr6DistCrInEligData>stateCode}" width="100%"
+													editable="{Gstr6DistCrInEligData>edit}" showSecondaryValues="false">
+													<core:ListItem key="{GstStateCode>stateCode}" text="{GstStateCode>stateCode} - {GstStateCode>stateName}"
+														additionalText="{GstStateCode>stateCode}"/>
+												</ComboBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="documentType" filterProperty="documentType">
+											<Label text="Document Type" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Text text="{Gstr6DistCrInEligData>documentType}" wrapping="false"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="supplyType" filterProperty="supplyType">
+											<Label text="Supply Type" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrInEligData>supplyType}" editable="{Gstr6DistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="docNum" filterProperty="docNum">
+											<Label text="Document Number" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Text text="{Gstr6DistCrInEligData>docNum}" wrapping="false"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="docDate" filterProperty="docDate">
+											<Label text="Document Date" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Text text="{Gstr6DistCrInEligData>docDate}" wrapping="false"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="13rem" sortProperty="origDocNumber" filterProperty="origDocNumber">
+											<Label text="Original Document Number" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrInEligData>origDocNumber}" editable="{Gstr6DistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" sortProperty="origDocDate" filterProperty="origDocDate">
+											<Label text="Original Document Date" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrInEligData>origDocDate}" editable="{Gstr6DistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" sortProperty="eligibleIndicator" filterProperty="eligibleIndicator">
+											<Label text="Eligible Indicator" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrInEligData>eligibleIndicator}" editable="{Gstr6DistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="igstAsIgst" filterProperty="igstAsIgst">
+											<Label text="IGST as IGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrInEligData>igstAsIgst}" editable="{Gstr6DistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="igstAsSgst" filterProperty="igstAsSgst">
+											<Label text="IGST as SGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrInEligData>igstAsSgst}" editable="{Gstr6DistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="igstAsCgst" filterProperty="igstAsCgst">
+											<Label text="IGST as CGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrInEligData>igstAsCgst}" editable="{Gstr6DistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="sgstAsSgst" filterProperty="sgstAsSgst">
+											<Label text="SGST as SGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrInEligData>sgstAsSgst}" editable="{Gstr6DistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="sgstAsIgst" filterProperty="sgstAsIgst">
+											<Label text="SGST as IGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrInEligData>sgstAsIgst}" editable="{Gstr6DistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="cgstAsCgst" filterProperty="cgstAsCgst">
+											<Label text="CGST as CGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrInEligData>cgstAsCgst}" editable="{Gstr6DistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="cgstAsIgst" filterProperty="cgstAsIgst">
+											<Label text="CGST as IGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrInEligData>cgstAsIgst}" editable="{Gstr6DistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="cessAmount" filterProperty="cessAmount">
+											<Label text="CESS Amount" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6DistCrInEligData>cessAmount}" editable="{Gstr6DistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<ui:footer>
+										<HBox width="100%" justifyContent="Center">
+											<Button id="btnFirstN1" type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" class="sapUiTinyMarginBeginEnd"
+												enabled="true" press="onPressPagination1"/>
+											<Button id="btnPrevN1" type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="false"
+												press="onPressPagination1"/>
+											<Input id="inPageNoN1" type="Number" textAlign="End" width="4rem" submit="onSubmitPagination1" enabled="false" class="sapUiTinyMarginBegin"
+												value="0"/>
+											<Text id="txtPageNoN1" text="/ 0" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+											<Button id="btnNextN1" type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="false"
+												press="onPressPagination1"/>
+											<Button id="btnLastN1" type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" class="sapUiTinyMarginBeginEnd" enabled="true"
+												press="onPressPagination1"/>
+											<Select id="idPageN1" change="onPNChange1" selectedKey="10" forceSelection="true" width="10%">
+												<core:Item key="10" text="10"/>
+												<core:Item key="25" text="25"/>
+												<core:Item key="50" text="50"/>
+												<core:Item key="75" text="75"/>
+												<core:Item key="100" text="100"/>
+											</Select>
+										</HBox>
+									</ui:footer>
+								</ui:Table>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar >
+							<ToolbarSpacer/>
+							<Button class="buttoncolorSec" enabled="{buttonVis>/dataEditable}" press="onPressDistribEdit" text="Edit" ariaLabelledBy="actionButtonLabel"
+								id="idEdit2"/>
+							<Button class="buttoncolorSec" enabled="{buttonVis>/dataEditable}" press="onPressDistribSave" text=" Save"
+								ariaLabelledBy="actionButtonLabel" id="idSave2"/>
+							<Button class="buttoncolorSec" enabled="{buttonVis>/dataEditable}" press="onPressDelete" text="Delete Data"
+								ariaLabelledBy="actionButtonLabel" id="idDelete2"/>
+							<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" id="idPRSummaryEDNew6A2" press="onExportExcelGstr6A2"/>
+							<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="Download Pdf" class="sapUiTinyMarginEnd" press="onPressDownloadPDF1"/>
+							<!--<Button icon="sap-icon://download" press="onPress" text="Download" ariaLabelledBy="actionButtonLabel" type="Emphasized"/>-->
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+				<commons:ChartContainer id="idPREntitydist2" showFullScreen="true" contentChange="onCustomZoomInPress"
+					personalizationPress="onCustomZoomOutPress" showZoom="false" showPersonalization="false" autoAdjustHeight="false" visible="false">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<ui:Table id="idThirdGstrtab" selectionMode="MultiToggle" rows="{path:'Gstr6ReDistCrEligData>/'}" fixedRowCount="0" fixedColumnCount="0">
+									<ui:columns>
+										<ui:Column width="10rem" sortProperty="returnPeriod" filterProperty="returnPeriod">
+											<Label text="Return Period" textAlign="Center" width="100%" design="Bold"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrEligData>returnPeriod}" editable="{Gstr6ReDistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="isdGstin" filterProperty="isdGstin">
+											<Label text="ISD GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<Text text="{Gstr6ReDistCrEligData>isdGstin}" class="sapUiTinyMarginTop"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="15rem" sortProperty="recipientGSTIN" filterProperty="recipientGSTIN">
+											<Label text="Recipient GSTIN" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrEligData>recipientGSTIN}" editable="{Gstr6ReDistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" sortProperty="stateCode">
+											<Label text="State Code" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<ComboBox change="onSelectChangeFinacial" items="{path:'GstStateCode>/states'}" selectedKey="{Gstr6ReDistCrEligData>stateCode}" width="100%"
+													editable="{Gstr6ReDistCrEligData>edit}" showSecondaryValues="false">
+													<core:ListItem key="{GstStateCode>stateCode}" text="{GstStateCode>stateCode} - {GstStateCode>stateName}"
+														additionalText="{GstStateCode>stateCode}"/>
+													<!--<core:Item key="{GstStateCode>stateCode}" text="{GstStateCode>stateCode}"/>-->
+												</ComboBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="15rem" sortProperty="originalRecipeintGstin" filterProperty="originalRecipeintGstin">
+											<Label text="Original Recipient GSTIN" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrEligData>originalRecipeintGstin}" editable="{Gstr6ReDistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="15rem" sortProperty="originalStatecode" filterProperty="originalStatecode">
+											<Label text="Original State code" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrEligData>originalStatecode}" editable="{Gstr6ReDistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="documentType" filterProperty="documentType">
+											<Label text="Document Type" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Text text="{Gstr6ReDistCrEligData>documentType}" wrapping="false"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="supplyType" filterProperty="supplyType">
+											<Label text="Supply Type" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrEligData>supplyType}" editable="{Gstr6ReDistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="docNum" filterProperty="docNum">
+											<Label text="Document Number" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Text text="{Gstr6ReDistCrEligData>docNum}" wrapping="false"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="docDate" filterProperty="docDate">
+											<Label text="Document Date" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Text text="{Gstr6ReDistCrEligData>docDate}" wrapping="false"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="13rem" sortProperty="origDocNumber" filterProperty="origDocNumber">
+											<Label text="Original Document Number" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrEligData>origDocNumber}" editable="{Gstr6ReDistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" sortProperty="origDocDate" filterProperty="origDocDate">
+											<Label text="Original Document Date" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrEligData>origDocDate}" editable="{Gstr6ReDistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" sortProperty="origCrNoteNumber" filterProperty="origCrNoteNumber">
+											<Label text="Original CreditNote Number" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrEligData>origCrNoteNumber}" editable="{Gstr6ReDistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" sortProperty="origCrNoteDate" filterProperty="origCrNoteDate">
+											<Label text="Original CreditNote Date" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrEligData>origCrNoteDate}" editable="{Gstr6ReDistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" sortProperty="eligibleIndicator" filterProperty="eligibleIndicator">
+											<Label text="Eligible Indicator" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrEligData>eligibleIndicator}" editable="{Gstr6ReDistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="igstAsIgst" filterProperty="igstAsIgst">
+											<Label text="IGST as IGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrEligData>igstAsIgst}" editable="{Gstr6ReDistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="igstAsSgst" filterProperty="igstAsSgst">
+											<Label text="IGST as SGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrEligData>igstAsSgst}" editable="{Gstr6ReDistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="igstAsCgst" filterProperty="igstAsCgst">
+											<Label text="IGST as CGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrEligData>igstAsCgst}" editable="{Gstr6ReDistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="sgstAsSgst" filterProperty="sgstAsSgst">
+											<Label text="SGST as SGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrEligData>sgstAsSgst}" editable="{Gstr6ReDistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="sgstAsIgst" filterProperty="sgstAsIgst">
+											<Label text="SGST as IGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrEligData>sgstAsIgst}" editable="{Gstr6ReDistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="cgstAsCgst" filterProperty="cgstAsCgst">
+											<Label text="CGST as CGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrEligData>cgstAsCgst}" editable="{Gstr6ReDistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="cgstAsIgst" filterProperty="cgstAsIgst">
+											<Label text="CGST as IGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrEligData>cgstAsIgst}" editable="{Gstr6ReDistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="cessAmount" filterProperty="cessAmount">
+											<Label text="CESS Amount" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrEligData>cessAmount}" editable="{Gstr6ReDistCrEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<ui:footer>
+										<HBox width="100%" justifyContent="Center">
+											<Button id="btnFirstN2" type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" class="sapUiTinyMarginBeginEnd"
+												enabled="true" press="onPressPagination2"/>
+											<Button id="btnPrevN2" type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="false"
+												press="onPressPagination2"/>
+											<Input id="inPageNoN2" type="Number" textAlign="End" width="4rem" submit="onSubmitPagination2" enabled="false" class="sapUiTinyMarginBegin"
+												value="0"/>
+											<Text id="txtPageNoN2" text="/ 0" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+											<Button id="btnNextN2" type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="false"
+												press="onPressPagination2"/>
+											<Button id="btnLastN2" type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" class="sapUiTinyMarginBeginEnd" enabled="true"
+												press="onPressPagination2"/>
+											<Select id="idPageN2" change="onPNChange1" selectedKey="10" forceSelection="true" width="10%">
+												<core:Item key="10" text="10"/>
+												<core:Item key="25" text="25"/>
+												<core:Item key="50" text="50"/>
+												<core:Item key="75" text="75"/>
+												<core:Item key="100" text="100"/>
+											</Select>
+										</HBox>
+									</ui:footer>
+								</ui:Table>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar >
+							<ToolbarSpacer/>
+							<Button class="buttoncolorSec" enabled="{buttonVis>/dataEditable}" press="onPressDistribEdit" text="Edit" ariaLabelledBy="actionButtonLabel"
+								id="idEdit3"/>
+							<Button class="buttoncolorSec" enabled="{buttonVis>/dataEditable}" press="onPressDistribSave" text=" Save"
+								ariaLabelledBy="actionButtonLabel" id="idSave3"/>
+							<Button class="buttoncolorSec" enabled="{buttonVis>/dataEditable}" press="onPressDelete" text="Delete Data"
+								ariaLabelledBy="actionButtonLabel" id="idDelete3"/>
+							<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" id="idPRSummaryEDNew6A3" press="onExportExcelGstr6A3"/>
+							<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="Download Pdf" class="sapUiTinyMarginEnd" press="onPressDownloadPDF2"/>
+							<!--<Button icon="sap-icon://download" press="onPress" text="Download" ariaLabelledBy="actionButtonLabel" type="Emphasized"/>-->
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+				<commons:ChartContainer id="idPREntitydist3" showFullScreen="true" contentChange="onCustomZoomInPress"
+					personalizationPress="onCustomZoomOutPress" showZoom="false" showPersonalization="false" autoAdjustHeight="false" visible="false">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<ui:Table id="idvoiceisdcr1Gstr6" selectionMode="MultiToggle" rows="{path:'Gstr6ReDistCrInEligData>/'}" fixedRowCount="0"
+									fixedColumnCount="0">
+									<ui:columns>
+										<ui:Column width="10rem" sortProperty="returnPeriod" filterProperty="returnPeriod">
+											<Label text="Return Period" textAlign="Center" width="100%" design="Bold"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrInEligData>returnPeriod}" editable="{Gstr6ReDistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="isdGstin" filterProperty="isdGstin">
+											<Label text="ISD GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<Text text="{Gstr6ReDistCrInEligData>isdGstin}" class="sapUiTinyMarginTop"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="15rem" sortProperty="recipientGSTIN" filterProperty="recipientGSTIN">
+											<Label text="Recipient GSTIN" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrInEligData>recipientGSTIN}" editable="{Gstr6ReDistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" sortProperty="stateCode">
+											<Label text="State Code" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<ComboBox change="onSelectChangeFinacial" items="{path:'GstStateCode>/states'}" selectedKey="{Gstr6ReDistCrInEligData>stateCode}"
+													width="100%" editable="{Gstr6ReDistCrInEligData>edit}" showSecondaryValues="false">
+													<core:ListItem key="{GstStateCode>stateCode}" text="{GstStateCode>stateCode} - {GstStateCode>stateName}"
+														additionalText="{GstStateCode>stateCode}"/>
+												</ComboBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="15rem" sortProperty="originalRecipeintGstin" filterProperty="originalRecipeintGstin">
+											<Label text="Original Recipient GSTIN" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrInEligData>originalRecipeintGstin}" editable="{Gstr6ReDistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="15rem" sortProperty="originalStatecode" filterProperty="originalStatecode">
+											<Label text="Original State code" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrInEligData>originalStatecode}" editable="{Gstr6ReDistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="documentType" filterProperty="documentType">
+											<Label text="Document Type" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Text text="{Gstr6ReDistCrInEligData>documentType}" wrapping="false"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="supplyType" filterProperty="supplyType">
+											<Label text="Supply Type" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrInEligData>supplyType}" editable="{Gstr6ReDistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="docNum" filterProperty="docNum">
+											<Label text="Document Number" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Text text="{Gstr6ReDistCrInEligData>docNum}" wrapping="false"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="docDate" filterProperty="docDate">
+											<Label text="Document Date" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Text text="{Gstr6ReDistCrInEligData>docDate}" wrapping="false"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="13rem" sortProperty="origDocNumber" filterProperty="origDocNumber">
+											<Label text="Original Document Number" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrInEligData>origDocNumber}" editable="{Gstr6ReDistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" sortProperty="origDocDate" filterProperty="origDocDate">
+											<Label text="Original Document Date" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrInEligData>origDocDate}" editable="{Gstr6ReDistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" sortProperty="origCrNoteNumber" filterProperty="origCrNoteNumber">
+											<Label text="Original CreditNote Number" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrInEligData>origCrNoteNumber}" editable="{Gstr6ReDistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" sortProperty="origCrNoteDate" filterProperty="origCrNoteDate">
+											<Label text="Original CreditNote Date" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrInEligData>origCrNoteDate}" editable="{Gstr6ReDistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" sortProperty="eligibleIndicator" filterProperty="eligibleIndicator">
+											<Label text="Eligible Indicator" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrInEligData>eligibleIndicator}" editable="{Gstr6ReDistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="igstAsIgst" filterProperty="igstAsIgst">
+											<Label text="IGST as IGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrInEligData>igstAsIgst}" editable="{Gstr6ReDistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="igstAsSgst" filterProperty="igstAsSgst">
+											<Label text="IGST as SGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrInEligData>igstAsSgst}" editable="{Gstr6ReDistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="igstAsCgst" filterProperty="igstAsCgst">
+											<Label text="IGST as CGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrInEligData>igstAsCgst}" editable="{Gstr6ReDistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="sgstAsSgst" filterProperty="sgstAsSgst">
+											<Label text="SGST as SGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrInEligData>sgstAsSgst}" editable="{Gstr6ReDistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="sgstAsIgst" filterProperty="sgstAsIgst">
+											<Label text="SGST as IGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrInEligData>sgstAsIgst}" editable="{Gstr6ReDistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="cgstAsCgst" filterProperty="cgstAsCgst">
+											<Label text="CGST as CGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrInEligData>cgstAsCgst}" editable="{Gstr6ReDistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="cgstAsIgst" filterProperty="cgstAsIgst">
+											<Label text="CGST as IGST" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrInEligData>cgstAsIgst}" editable="{Gstr6ReDistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" sortProperty="cessAmount" filterProperty="cessAmount">
+											<Label text="CESS Amount" design="Bold" textAlign="Center" width="100%"/>
+											<ui:template>
+												<Input value="{Gstr6ReDistCrInEligData>cessAmount}" editable="{Gstr6ReDistCrInEligData>edit}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<ui:footer>
+										<HBox width="100%" justifyContent="Center">
+											<Button id="btnFirstN3" type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" class="sapUiTinyMarginBeginEnd"
+												enabled="true" press="onPressPagination3"/>
+											<Button id="btnPrevN3" type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="false"
+												press="onPressPagination3"/>
+											<Input id="inPageNoN3" type="Number" textAlign="End" width="4rem" submit="onSubmitPagination3" enabled="false" class="sapUiTinyMarginBegin"
+												value="0"/>
+											<Text id="txtPageNoN3" text="/ 0" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+											<Button id="btnNextN3" type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="false"
+												press="onPressPagination3"/>
+											<Button id="btnLastN3" type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" class="sapUiTinyMarginBeginEnd" enabled="true"
+												press="onPressPagination3"/>
+											<Select id="idPageN3" change="onPNChange3" selectedKey="10" forceSelection="true" width="10%">
+												<core:Item key="10" text="10"/>
+												<core:Item key="25" text="25"/>
+												<core:Item key="50" text="50"/>
+												<core:Item key="75" text="75"/>
+												<core:Item key="100" text="100"/>
+											</Select>
+										</HBox>
+									</ui:footer>
+								</ui:Table>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar >
+							<ToolbarSpacer/>
+							<Button class="buttoncolorSec" enabled="{buttonVis>/dataEditable}" press="onPressDistribEdit" text="Edit" ariaLabelledBy="actionButtonLabel"
+								id="idEdit4"/>
+							<Button class="buttoncolorSec" enabled="{buttonVis>/dataEditable}" press="onPressDistribSave" text=" Save"
+								ariaLabelledBy="actionButtonLabel" id="idSave4"/>
+							<Button class="buttoncolorSec" enabled="{buttonVis>/dataEditable}" press="onPressDelete" text="Delete Data"
+								ariaLabelledBy="actionButtonLabel" id="idDelete4"/>
+							<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" id="idPRSummaryEDNew6A4" press="onExportExcelGstr6A4"/>
+							<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="Download Pdf" class="sapUiTinyMarginEnd" press="onPressDownloadPDF3"/>
+							<!--<Button icon="sap-icon://download" press="onPress" text="Download" ariaLabelledBy="actionButtonLabel" type="Emphasized"/>-->
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

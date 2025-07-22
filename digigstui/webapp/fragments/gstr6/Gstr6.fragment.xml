@@ -1,0 +1,291 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="dpGetGstr2aProcessNew" visible="{Get2aProp>/process}">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="GSTIN Data"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false">
+					<fb:filterGroupItems>
+						<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>taxPeriod}" visibleInFilterBar="true">-->
+						<!--	<fb:control>-->
+						<!--		<DatePicker id="dtGet2aProcessNew" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>-->
+						<!--	</fb:control>-->
+						<!--</fb:FilterGroupItem>-->
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<!--<MultiComboBox id="slGet2aProcessGstinNew" items="{path:'userPermission>/respData/dataSecurity/gstin'}" selectionChange="selectAll">-->
+								<!--	<core:Item key="{userPermission>value}" text="{userPermission>value}"/>-->
+								<!--</MultiComboBox>-->
+								<MultiComboBox id="slGet6aProcessGstinNew" width="100%" items="{allISDGstin>/}" selectionChange="selectAll">
+									<core:Item key="{allISDGstin>value}" text="{allISDGstin>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Financial Year" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<Select width="100%" id="dtFinYearGstrNew12" items="{oFyModel>/finYears}">
+									<core:Item key="{oFyModel>fy}" text="{oFyModel>fy}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" press="onPressClear('getGstr6A')" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+					<Button text="Filter" class="buttoncolor" press="_getGstr6A"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer showFullScreen="false" id="G2B" showZoom="true" showPersonalization="false" autoAdjustHeight="false">
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table id="idgetVtablegstr6progstr2New" rows="{path:'Gstr6ANewPRSumData>/'}" selectionMode="Multi" visibleRowCount="10"
+								class="sapUiTinyMarginTop cl_popupCheck" fixedColumnCount="1" width="85rem" rowSelectionChange="onRowSelectionChange2A">
+								<ui:extension></ui:extension>
+								<ui:columns>
+									<ui:Column hAlign="Left" width="15rem">
+										<HBox>
+											<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</HBox>
+										<ui:template>
+											<HBox alignContent="Center" justifyContent="SpaceBetween">
+												<!--<Label text="{GSTR2BTable>gstin}" design="Bold" textAlign="Center" width="100%"/>-->
+												<VBox width="100%">
+													<HBox>
+														<Text text="{Gstr6ANewPRSumData>stateName}" class="stateColor" width="8rem"/>
+														<Text text="{Gstr6ANewPRSumData>regType}" class="stateColor fontSmall"/>
+													</HBox>
+													<HBox alignContent="Start" justifyContent="SpaceBetween">
+														<Link text="{Gstr6ANewPRSumData>gstin}"/>
+														<core:Icon src="sap-icon://circle-task-2" size="0.8rem" tooltip="{=${Gstr6ANewPRSumData>authStatus}==='I'?'Inactive' : 'Active'}"
+															color="{=${Gstr6ANewPRSumData>authStatus}==='I'?'red' : '#00ff00'}" class="sapUiTinyMarginBegin" press="onPressGenerateOTP"/>
+													</HBox>
+												</VBox>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Left" width="12rem">
+										<HBox>
+											<CheckBox text="" selected="{month>/aprFlag}"/>
+											<Label text="April" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+										</HBox>
+										<ui:template>
+											<!--<ObjectStatus text="{Gstr6ANewPRSumData>april}"/>-->
+											<VBox width="100%">
+												<ObjectStatus text="{Gstr6ANewPRSumData>statusAprl}" state="{path:'Gstr6ANewPRSumData>statusAprl', formatter:'.formatter.Gstr2BStatus'}"
+													press="onPressGetGstr2a($event,'2A',${Gstr6ANewPRSumData>gstin},'apr')" active="true"/>
+												<Text text="{Gstr6ANewPRSumData>initiatedOnApril}" class="timeStmpClr"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Left" width="12rem">
+										<HBox>
+											<CheckBox text="" selected="{month>/mayFlag}"/>
+											<Label text="May" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+										</HBox>
+										<ui:template>
+											<!--<ObjectStatus text="{Gstr6ANewPRSumData>may}"/>-->
+											<VBox width="100%">
+												<ObjectStatus text="{Gstr6ANewPRSumData>statusMay}" state="{path:'Gstr6ANewPRSumData>statusMay', formatter:'.formatter.Gstr2BStatus'}"
+													press="onPressGetGstr2a($event,'2A',${Gstr6ANewPRSumData>gstin},'may')" active="true"/>
+												<Text text="{Gstr6ANewPRSumData>initiatedOnMay}" class="timeStmpClr"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Left" width="12rem">
+										<HBox>
+											<CheckBox text="" selected="{month>/junFlag}"/>
+											<Label text="June" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+										</HBox>
+										<ui:template>
+											<!--<ObjectStatus text="{Gstr6ANewPRSumData>june}"/>-->
+											<VBox width="100%">
+												<ObjectStatus text="{Gstr6ANewPRSumData>statusJune}" state="{path:'Gstr6ANewPRSumData>statusJune', formatter:'.formatter.Gstr2BStatus'}"
+													press="onPressGetGstr2a($event,'2A',${Gstr6ANewPRSumData>gstin},'jun')" active="true"/>
+												<Text text="{Gstr6ANewPRSumData>initiatedOnJune}" class="timeStmpClr"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Left" width="12rem">
+										<HBox>
+											<CheckBox text="" selected="{month>/julFlag}"/>
+											<Label text="July" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+										</HBox>
+										<ui:template>
+											<!--<ObjectStatus text="{Gstr6ANewPRSumData>july}"/>-->
+											<VBox width="100%">
+												<ObjectStatus text="{Gstr6ANewPRSumData>statusJuly}" state="{path:'Gstr6ANewPRSumData>statusJuly', formatter:'.formatter.Gstr2BStatus'}"
+													press="onPressGetGstr2a($event,'2A',${Gstr6ANewPRSumData>gstin},'jul')" active="true"/>
+												<Text text="{Gstr6ANewPRSumData>initiatedOnJuly}" class="timeStmpClr"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Left" width="12rem">
+										<HBox>
+											<CheckBox text="" selected="{month>/augFlag}"/>
+											<Label text="August" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+										</HBox>
+										<ui:template>
+											<!--<ObjectStatus text="{Gstr6ANewPRSumData>aug}"/>-->
+											<VBox width="100%">
+												<ObjectStatus text="{Gstr6ANewPRSumData>statusAug}" state="{path:'Gstr6ANewPRSumData>statusAug', formatter:'.formatter.Gstr2BStatus'}"
+													press="onPressGetGstr2a($event,'2A',${Gstr6ANewPRSumData>gstin},'aug')" active="true"/>
+												<Text text="{Gstr6ANewPRSumData>initiatedOnAug}" class="timeStmpClr"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Left" width="12rem">
+										<HBox>
+											<CheckBox text="" selected="{month>/sepFlag}"/>
+											<Label text="September" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+										</HBox>
+										<ui:template>
+											<!--<ObjectStatus text="{Gstr6ANewPRSumData>sep}"/>-->
+											<VBox width="100%">
+												<ObjectStatus text="{Gstr6ANewPRSumData>statusSept}" state="{path:'Gstr6ANewPRSumData>statusSept', formatter:'.formatter.Gstr2BStatus'}"
+													press="onPressGetGstr2a($event,'2A',${Gstr6ANewPRSumData>gstin},'sep')" active="true"/>
+												<Text text="{Gstr6ANewPRSumData>initiatedOnSept}" class="timeStmpClr"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Left" width="12rem">
+										<HBox>
+											<CheckBox text="" selected="{month>/octFlag}"/>
+											<Label text="October" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+										</HBox>
+										<ui:template>
+											<!--<ObjectStatus text="{Gstr6ANewPRSumData>oct}"/>-->
+											<VBox width="100%">
+												<ObjectStatus text="{Gstr6ANewPRSumData>statusOct}" state="{path:'Gstr6ANewPRSumData>statusOct', formatter:'.formatter.Gstr2BStatus'}"
+													press="onPressGetGstr2a($event,'2A',${Gstr6ANewPRSumData>gstin},'oct')" active="true"/>
+												<Text text="{Gstr6ANewPRSumData>initiatedOnOct}" class="timeStmpClr"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Left" width="12rem">
+										<HBox>
+											<CheckBox text="" selected="{month>/novFlag}"/>
+											<Label text="November" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+										</HBox>
+										<ui:template>
+											<!--<ObjectStatus text="{Gstr6ANewPRSumData>nov}"/>-->
+											<VBox width="100%">
+												<ObjectStatus text="{Gstr6ANewPRSumData>statusNov}" state="{path:'Gstr6ANewPRSumData>statusNov', formatter:'.formatter.Gstr2BStatus'}"
+													press="onPressGetGstr2a($event,'2A',${Gstr6ANewPRSumData>gstin},'nov')" active="true"/>
+												<Text text="{Gstr6ANewPRSumData>initiatedOnNov}" class="timeStmpClr"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Left" width="12rem">
+										<HBox>
+											<CheckBox text="" selected="{month>/decFlag}"/>
+											<Label text="December" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+										</HBox>
+										<ui:template>
+											<!--<ObjectStatus text="{Gstr6ANewPRSumData>dec}"/>-->
+											<VBox width="100%">
+												<ObjectStatus text="{Gstr6ANewPRSumData>statusDec}" state="{path:'Gstr6ANewPRSumData>statusDec', formatter:'.formatter.Gstr2BStatus'}"
+													press="onPressGetGstr2a($event,'2A',${Gstr6ANewPRSumData>gstin},'dec')" active="true"/>
+												<Text text="{Gstr6ANewPRSumData>initiatedOnDec}" class="timeStmpClr"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Left" width="12rem">
+										<HBox>
+											<CheckBox text="" selected="{month>/janFlag}"/>
+											<Label text="January" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+										</HBox>
+										<ui:template>
+											<!--<ObjectStatus text="{Gstr6ANewPRSumData>jan}"/>-->
+											<VBox width="100%">
+												<ObjectStatus text="{Gstr6ANewPRSumData>statusJan}" state="{path:'Gstr6ANewPRSumData>statusJan', formatter:'.formatter.Gstr2BStatus'}"
+													press="onPressGetGstr2a($event,'2A',${Gstr6ANewPRSumData>gstin},'jan')" active="true"/>
+												<Text text="{Gstr6ANewPRSumData>initiatedOnJan}" class="timeStmpClr"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Left" width="12rem">
+										<HBox>
+											<CheckBox text="" selected="{month>/febFlag}"/>
+											<Label text="February" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+										</HBox>
+										<ui:template>
+											<!--<ObjectStatus text="{Gstr6ANewPRSumData>feb}"/>-->
+											<VBox width="100%">
+												<ObjectStatus text="{Gstr6ANewPRSumData>statusFeb}" state="{path:'Gstr6ANewPRSumData>statusFeb', formatter:'.formatter.Gstr2BStatus'}"
+													press="onPressGetGstr2a($event,'2A',${Gstr6ANewPRSumData>gstin},'feb')" active="true"/>
+												<Text text="{Gstr6ANewPRSumData>initiatedOnFeb}" class="timeStmpClr"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Left" width="12rem">
+										<HBox>
+											<CheckBox text="" selected="{month>/marFlag}"/>
+											<Label text="March" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+										</HBox>
+										<ui:template>
+											<!--<ObjectStatus text="{Gstr6ANewPRSumData>march}"/>-->
+											<VBox width="100%">
+												<ObjectStatus text="{Gstr6ANewPRSumData>statusMar}" state="{path:'Gstr6ANewPRSumData>statusMar', formatter:'.formatter.Gstr2BStatus'}"
+													press="onPressGetGstr2a($event,'2A',${Gstr6ANewPRSumData>gstin},'mar')" active="true"/>
+												<Text text="{Gstr6ANewPRSumData>initiatedOnMar}" class="timeStmpClr"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+								<ui:footer>
+									<Toolbar>
+										<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+										<Text text="Auth Token Active"/>
+										<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+										<Text text="Auth Token Inactive"/>
+										<ToolbarSpacer/>
+									</Toolbar>
+								</ui:footer>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+				<commons:toolbar>
+					<OverflowToolbar>
+						<!--<HBox>
+							<Label required="true"/>
+							<Text text="Mandatory" class="sapUiTinyMarginBegin"/>
+						</HBox>
+						<Button type="Emphasized" tooltip="Download Table Data" text="Download Table Data" press="onDwnldTablData" class="sapUiTinyMarginBegin"
+							enabled="{= ${userPermission>/appPermission/P8}}"/>-->
+						<ToolbarSpacer/>
+						<!--<Label text="View detailed Information"/>
+						<Switch state="false" customTextOn="" customTextOff="" change="onChngeAPICallSwith"/>-->
+						<Button text="GET GSTR-6A" press="onPressGetGstr6A" class="sapUiTinyMarginBegin buttoncolorSec"
+							enabled="{= ${userPermission>/appPermission/P8}}"/>
+						<!--<Button type="Emphasized" text="Request Status" press="onGstr2BRequestStatus" class="sapUiTinyMarginBegin"
+							enabled="{= ${userPermission>/appPermission/P8}}"/>-->
+						<!--<MenuButton type="Emphasized" text="Download Reports" enabled="{= ${userPermission>/appPermission/P8}}">
+							<Menu itemSelected="onMenuItemPressGSTR2B">
+								<MenuItem text="GSTR-6A(Complete Data)" key="GSTR-2B(Complete Data)"/>
+								<MenuItem text="GSTR-6A(Available ITC Data)" key="GSTR-2B(Available ITC Data)"/>
+								<MenuItem text="GSTR-6A(Non Available ITC Data)" key="GSTR-2B(Non Available ITC Data)"/>
+							</Menu>
+						</MenuButton>-->
+						<Button text="Download Report" press="onDownloadnewGet6AReport" class="sapUiTinyMarginBegin buttoncolorSec"
+							enabled="{= ${userPermission>/appPermission/P8}}"/>
+						<Button type="Transparent" id="openbut2B" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="true"
+							press="onGstr2BFullScreen('open')"/>
+						<Button type="Transparent" id="closebut2B" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="false"
+							press="onGstr2BFullScreen('close')"/>
+						<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+					</OverflowToolbar>
+				</commons:toolbar>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

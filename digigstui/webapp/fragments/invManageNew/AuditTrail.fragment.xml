@@ -1,0 +1,219 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:ui="sap.ui.table" xmlns:l="sap.ui.layout">
+	<Panel class="">
+		<HBox>
+			<Label text="{=${InvoiceItemModel>/tranType} ==='O'? ${InvoiceItemModel>/suppGstin} : ${InvoiceItemModel>/custGstin}}" design="Bold"
+				class="sapUiMediumMarginEnd font15"/>
+			<core:Icon src="sap-icon://open-command-field" size="1rem" class="sapUiMediumMarginEnd"/>
+			<Label text="{InvoiceItemModel>/docNo}" design="Bold" class="sapUiMediumMarginEnd font15"/>
+			<core:Icon src="sap-icon://open-command-field" size="1rem" class="sapUiMediumMarginEnd"/>
+			<Label text="{InvoiceItemModel>/docDate}" design="Bold" class="sapUiMediumMarginEnd font15"/>
+			<core:Icon src="sap-icon://open-command-field" size="1rem" class="sapUiMediumMarginEnd"/>
+			<Label text="{InvoiceItemModel>/docType}" design="Bold" class="sapUiMediumMarginEnd font15"/>
+			<core:Icon src="sap-icon://open-command-field" size="1rem" class="sapUiMediumMarginEnd"
+				visible="{=${InvoiceItemModel>/tranType} ==='O'? false : true}"/>
+			<Label text="{=${InvoiceItemModel>/suppGstin} !== null ? ${InvoiceItemModel>/suppGstin} : ${InvoiceItemModel>/custOrSupName}}" design="Bold" class="sapUiMediumMarginEnd font15"
+				visible="{=${InvoiceItemModel>/tranType} ==='O'? false : true}"/>
+		</HBox>
+	</Panel>
+	<l:BlockLayout background="Dashboard">
+		<l:BlockLayoutRow class="sapUiNoContentPadding">
+			<l:BlockLayoutCell class="clBlockLayout1" width="2">
+				<Toolbar class="colorToolbar">
+					<ToolbarSpacer/>
+					<Label text="Record Processing Frequency" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+					<ToolbarSpacer/>
+				</Toolbar>
+				<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+					<ToolbarSpacer/>
+					<Label text="{AuditTril>/resp/processingFrequency} times" class=" " design="Bold"/>
+					<ToolbarSpacer/>
+				</Toolbar>
+			</l:BlockLayoutCell>
+			<l:BlockLayoutCell class="clBlockLayout1" width="2">
+				<Toolbar class="colorToolbar">
+					<ToolbarSpacer/>
+					<Label text="Latest Status" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+					<ToolbarSpacer/>
+				</Toolbar>
+				<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+					<ToolbarSpacer/>
+					<Label text="{AuditTril>/resp/latestStatus}" class=" " design="Bold"/>
+					<ToolbarSpacer/>
+				</Toolbar>
+			</l:BlockLayoutCell>
+			<l:BlockLayoutCell class="clBlockLayout1" width="2">
+				<Toolbar class="colorToolbar">
+					<ToolbarSpacer/>
+					<Label text="Latest Processing Status Date" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+					<ToolbarSpacer/>
+				</Toolbar>
+				<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+					<ToolbarSpacer/>
+					<Label text="{AuditTril>/resp/latestStatusDate}" class=" " design="Bold"/>
+					<ToolbarSpacer/>
+				</Toolbar>
+			</l:BlockLayoutCell>
+			<l:BlockLayoutCell class="clBlockLayout1" width="2">
+				<Toolbar class="colorToolbar">
+					<ToolbarSpacer/>
+					<Label text="Latest Processing Status Time" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+					<ToolbarSpacer/>
+				</Toolbar>
+				<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+					<ToolbarSpacer/>
+					<Label text="{AuditTril>/resp/latestStatusTime}" class=" " design="Bold"/>
+					<ToolbarSpacer/>
+				</Toolbar>
+			</l:BlockLayoutCell>
+			<l:BlockLayoutCell class="clBlockLayout1" width="2">
+				<Toolbar class="colorToolbar">
+					<ToolbarSpacer/>
+					<Label text="Table Type" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+					<ToolbarSpacer/>
+				</Toolbar>
+				<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+					<ToolbarSpacer/>
+					<Label text="{AuditTril>/resp/tableType}" class=" " design="Bold"/>
+					<ToolbarSpacer/>
+				</Toolbar>
+			</l:BlockLayoutCell>
+		</l:BlockLayoutRow>
+	</l:BlockLayout>
+	<!--<Panel class="panelColor">-->
+	<!--	<HBox width="100%">-->
+	<!--		<VBox alignItems="Center" justifyContent="Center" width="20%" class="actionColor sapUiSmallMarginEnd">-->
+	<!--			<Label text="Record Processing Frequency" design="Bold"/>-->
+	<!--			<Text text="{AuditTril>/resp/processingFrequency}" class="sapUiTinyMarginTop"/>-->
+	<!--		</VBox>-->
+	<!--		<VBox alignItems="Center" justifyContent="Center" width="20%" class="actionColor sapUiSmallMarginEnd">-->
+	<!--			<Label text="Latest Status" design="Bold"/>-->
+	<!--			<Text text="{AuditTril>/resp/latestStatus}" class="sapUiTinyMarginTop"/>-->
+	<!--		</VBox>-->
+	<!--		<VBox alignItems="Center" justifyContent="Center" width="20%" class="actionColor sapUiSmallMarginEnd">-->
+	<!--			<Label text="Latest Processing Status Date" design="Bold"/>-->
+	<!--			<Text text="{AuditTril>/resp/latestStatusDate}" class="sapUiTinyMarginTop"/>-->
+	<!--		</VBox>-->
+	<!--		<VBox alignItems="Center" justifyContent="Center" width="20%" class="actionColor sapUiSmallMarginEnd">-->
+	<!--			<Label text="Latest Processing Status Time" design="Bold"/>-->
+	<!--			<Text text="{AuditTril>/resp/latestStatusTime}" class="sapUiTinyMarginTop"/>-->
+	<!--		</VBox>-->
+	<!--		<VBox alignItems="Center" justifyContent="Center" width="20%" class="actionColor sapUiSmallMarginEnd">-->
+	<!--			<Label text="Table Type" design="Bold"/>-->
+	<!--			<Text text="{AuditTril>/resp/tableType}" class="sapUiTinyMarginTop"/>-->
+	<!--		</VBox>-->
+	<!--	</HBox>-->
+	<!--</Panel>-->
+	<ui:Table rows="{AuditTril>/resp/items}" visibleRowCount="10" id="idtableAuditTrail" selectionMode="None" selectionBehavior="Row"
+		fixedColumnCount="0">
+		<ui:extension>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<MenuButton text="Download Report" class="buttoncolorSec"
+					enabled="{= (${userPermission>/appPermission/P1} || ${userPermission>/appPermission/P28})}">
+					<Menu >
+						<MenuItem key="Summary" text="Summary Report" press="onPressAuditTrilDownload('S')"/>
+						<MenuItem key="Detailed" text="Detailed Report" press="onPressAuditTrilDownload('D')"/>
+					</Menu>
+				</MenuButton>
+				<!--	<Button text="Download Report - Summay / Detailed" tooltip="Download Report - Summay / Detailed"
+					enabled="{= ${userPermission>/appPermission/P99}}" press="onPressScreenOutwardDownload"/>-->
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column hAlign="Center" width="12rem">
+				<ui:multiLabels>
+					<Label text="Processing Frequency" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Label text="{AuditTril>processingFrequency}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left" width="12rem">
+				<ui:multiLabels>
+					<Label text="Processing Date &amp; Time" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Label text="{AuditTril>processingDateTime}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left" width="18rem">
+				<ui:multiLabels>
+					<Label text="User ID" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Label text="{AuditTril>userID}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left" width="12rem">
+				<ui:multiLabels>
+					<Label text="Processing Source" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Label text="{AuditTril>processingSource}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left" width="12rem">
+				<ui:multiLabels>
+					<Label text="Processing Status" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Label text="{AuditTril>processingStatus}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left" width="12rem">
+				<ui:multiLabels>
+					<Label text="Whether Cancel?" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Label text="{AuditTril>whetherCancel}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left" width="12rem">
+				<ui:multiLabels>
+					<Label text="{=${InvoiceItemModel>/tranType} ==='O'? 'Customer GSTIN' : 'Supplier GSTIN'}" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Label text="{AuditTril>customerGSTIN}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="10rem">
+				<ui:multiLabels>
+					<Label text="No. of line items" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Label text="{AuditTril>noLineItems}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<ui:multiLabels>
+					<Label text="Total Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Label text="{path:'AuditTril>totalTaxableValue', formatter:'.formatter.amountValue'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<ui:multiLabels>
+					<Label text="Total Tax" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Label text="{path:'AuditTril>totalTax', formatter:'.formatter.amountValue'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<ui:multiLabels>
+					<Label text="Invoice Value" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Label text="{path:'AuditTril>invoiceValue', formatter:'.formatter.amountValue'}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+		<ui:footer>
+			<HBox>
+				<ObjectStatus text="Note - For detailed view please download detailed report" class="sapUiTinyMarginBegin italicFont" state="Information"/>
+				<!--<Label design="Bold" text="Note - For detailed view please download detailed report" class="sapUiTinyMarginBegin"/>-->
+			</HBox>
+		</ui:footer>
+	</ui:Table>
+</core:FragmentDefinition>

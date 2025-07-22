@@ -1,0 +1,434 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<Dialog type="Message" class="sapUiSizeCompact" contentWidth="100%">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="{Property>/title}" design="Bold"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<beginButton>
+			<Button text="{i18n>close}" class="buttoncolorSec" press="onCloseDialog('advances')"/>
+		</beginButton>
+		<Toolbar>
+			<Label text="{i18n>gstin}:" design="Bold" class="sapUiTinyMarginBegin"/>
+			<Text text="{Payload>/dataSecAttrs/GSTIN/0}"/>
+			<Label text="{i18n>taxPeriod}:" design="Bold" class="sapUiSmallMarginBegin"/>
+			<Text text="{path:'Payload>/taxPeriod',formatter:'.formatter.periodFormat'}"/>
+			<ToolbarSpacer/>
+			<SegmentedButton selectedKey="{Property>/segment}">
+				<items>
+					<SegmentedButtonItem text="{i18n>summary}" key="summary" width="6rem"/>
+					<SegmentedButtonItem text="{i18n>verticalData}" key="detail" width="6rem"/>
+				</items>
+			</SegmentedButton>
+		</Toolbar>
+		<ui:Table rows="{path:'Advances>/summary/'}" selectionMode="None" enableColumnReordering="false" visibleRowCount="3"
+			class="sapUiSmallMarginTop" visible="{=${Property>/segment}==='summary'?true:false}">
+			<ui:columns>
+				<ui:Column width="14rem">
+					<Label text="{i18n>gstr1_b2cs}" textAlign="Center" width="100%" design="Bold" visible="false"/>
+					<ui:template>
+						<!--<HBox>-->
+						<!--	<Link text="{Advances>type}" emphasized="true" press="onVerticalLink('adv')"/>-->
+						<!--</HBox>-->
+						<HBox>
+							<Label text="{Advances>type}" design="Bold" visible="{=${Advances>type}==='TOTAL'?true:false}"/>
+							<Link text="{Advances>type}" emphasized="true" press="onVerticalLinkADV(${Advances>type})" visible="{=${Advances>type}==='TOTAL'?false:true}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>count}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{Advances>count}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>invoiceValue}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Advances>invoiceValue',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>taxableVal}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Advances>taxableValue',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>igst}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Advances>igst',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>cgst}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Advances>cgst',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>sgst}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Advances>sgst',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>cess}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Advances>cess',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+		<ui:Table rows="{path:'Advances>/gstnView'}" selectionMode="None" enableColumnReordering="false" visibleRowCount="7"
+			class="sapUiMediumMarginTop" visible="{=${Property>/segment}==='summary'?true:false}">
+			<ui:extension>
+				<Toolbar>
+					<Label text="{i18n>gstnView}" design="Bold" class="titleFont"/>
+					<ToolbarSpacer/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column width="14rem">
+					<Label text="{i18n>pos}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{Advances>pos}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column >
+					<Label text="{i18n>TransType}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{Advances>transType}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="false">
+					<Label text="{i18n>rate}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Advances>rate',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>taxableVal}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Advances>taxableValue',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>igst}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Advances>igst',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>cgst}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Advances>cgst',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>sgst}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Advances>sgst',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>cess}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Advances>cess',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+		<ui:Table id="tabAdvVertical" rows="{path:'Advances>/verticalData'}" selectionBehavior="Row" enableColumnReordering="false"
+			class="sapUiTinyMarginTop" visible="{=${Property>/segment}==='summary'?false:true}">
+			<ui:extension>
+				<Toolbar>
+					<ToolbarSpacer/>
+					<Button class="buttoncolorSec" text="{i18n>save}" press="onSaveAdvance" enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" icon="sap-icon://delete" tooltip="{i18n>delete}" press="onDeleteAdvance('adv')"
+						enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" icon="sap-icon://edit" tooltip="{i18n>edit}" press="onEditAdvance" enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" icon="sap-icon://add" tooltip="{i18n>add}" press="onAddAdvance" enabled="{buttonVis>/dataEditable}"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column width="9rem">
+					<Label text="{i18n>TransType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{Advances>transType}" visible="{=!${Advances>visi}}"/>
+							<Select selectedKey="{Advances>transType}" valueState="{Advances>transTypeState}" valueStateText="{Advances>transTypeStateText}"
+								visible="{Advances>visi}">
+								<core:Item key="N" text="N"/>
+								<core:Item key="L65" text="L65"/>
+								<core:Item key="ZL65" text="ZL65"/>
+							</Select>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="14rem" hAlign="Center">
+					<Label text="{i18n>newPos}" textAlign="Center" design="Bold" textDirection="RTL" required="true" width="100%"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{Advances>newPos} - {Advances>newStateName}" visible="{=!${Advances>visi}}"/>
+							<ComboBox items="{path:'PosMaster>/',sorter:{path:'stateCode'},templateShareable:false}" selectedKey="{Advances>newPos}"
+								valueState="{Advances>newPosState}" valueStateText="{Advances>newPosStateText}" visible="{Advances>visi}">
+								<core:Item key="{PosMaster>stateCode}" text="{PosMaster>stateCode}-{PosMaster>stateName}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="7rem">
+					<Label text="{i18n>newRate}" textAlign="Center" design="Bold" textDirection="RTL" required="true" wrapping="true" width="100%"/>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{path:'Advances>newRate',formatter:'.formatter.amountValue'}" visible="{=!${Advances>visi}}"/>
+							<ComboBox items="{path:'RateMaster>/',sorter:{path:'value'},templateShareable:false}" selectedKey="{Advances>newRate}"
+								valueState="{Advances>newRateState}" valueStateText="{Advances>newRateStateText}" visible="{Advances>visi}">
+								<core:Item key="{RateMaster>value}" text="{RateMaster>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="14rem">
+					<Label text="{Property>/newGrossAdv}" textAlign="Center" design="Bold" textDirection="RTL" required="true" wrapping="true" width="100%"/>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{path:'Advances>newTaxableValue',formatter:'.formatter.amountValue'}" visible="{=!${Advances>visi}}"/>
+							<Input value="{Advances>newTaxableValue}" textAlign="End" valueState="{Advances>newTaxableValueState}"
+								valueStateText="{Advances>newTaxableValueStateText}" visible="{Advances>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>igst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{path:'Advances>igst',formatter:'.formatter.amountValue'}" visible="{=!${Advances>visi}}"/>
+							<Input value="{Advances>igst}" textAlign="End" valueState="{Advances>igstState}" valueStateText="{Advances>igstStateText}"
+								visible="{Advances>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>cgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{path:'Advances>cgst',formatter:'.formatter.amountValue'}" visible="{=!${Advances>visi}}"/>
+							<Input value="{Advances>cgst}" textAlign="End" valueState="{Advances>cgstState}" valueStateText="{Advances>cgstStateText}"
+								visible="{Advances>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>sgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{path:'Advances>sgst',formatter:'.formatter.amountValue'}" visible="{=!${Advances>visi}}"/>
+							<Input value="{Advances>sgst}" textAlign="End" valueState="{Advances>sgstState}" valueStateText="{Advances>sgstStateText}"
+								visible="{Advances>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>cess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{path:'Advances>cess',formatter:'.formatter.amountValue'}" visible="{=!${Advances>visi}}"/>
+							<Input value="{Advances>cess}" textAlign="End" valueState="{Advances>cessState}" valueStateText="{Advances>cessStateText}"
+								visible="{Advances>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<Label text="{i18n>profitCtr}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{Advances>profitCntr}" visible="{=!${Advances>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/profitCenter',templateShareable:false}" selectedKey="{Advances>profitCntr}"
+								visible="{Advances>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<Label text="{i18n>plant}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{Advances>plant}" visible="{=!${Advances>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/plant',templateShareable:false}" selectedKey="{Advances>plant}"
+								visible="{Advances>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<Label text="{i18n>division}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{Advances>division}" visible="{=!${Advances>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/division',templateShareable:false}" selectedKey="{Advances>division}"
+								visible="{Advances>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="14rem">
+					<Label text="{i18n>location}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{Advances>location}" visible="{=!${Advances>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/location',templateShareable:false}" selectedKey="{Advances>location}"
+								visible="{Advances>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<Label text="{i18n>salesOrg}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{Advances>salesOrg}" visible="{=!${Advances>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/salesOrg',templateShareable:false}" selectedKey="{Advances>salesOrg}"
+								visible="{Advances>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<Label text="{i18n>distrChannel}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{Advances>distrChannel}" visible="{=!${Advances>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/distChannel',templateShareable:false}" selectedKey="{Advances>distrChannel}"
+								visible="{Advances>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<Label text="{i18n>userAccess1}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{Advances>usrAccess1}" visible="{=!${Advances>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess1',templateShareable:false}" selectedKey="{Advances>usrAccess1}"
+								visible="{Advances>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<Label text="{i18n>userAccess2}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{Advances>usrAccess2}" visible="{=!${Advances>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess2',templateShareable:false}" selectedKey="{Advances>usrAccess2}"
+								visible="{Advances>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<Label text="{i18n>userAccess3}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{Advances>usrAccess3}" visible="{=!${Advances>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess3',templateShareable:false}" selectedKey="{Advances>usrAccess3}"
+								visible="{Advances>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<Label text="{i18n>userAccess4}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{Advances>usrAccess4}" visible="{=!${Advances>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess4',templateShareable:false}" selectedKey="{Advances>usrAccess4}"
+								visible="{Advances>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<Label text="{i18n>userAccess5}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{Advances>usrAccess5}" visible="{=!${Advances>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess5',templateShareable:false}" selectedKey="{Advances>usrAccess5}"
+								visible="{Advances>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<Label text="{i18n>userAccess6}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{Advances>usrAccess6}" visible="{=!${Advances>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess6',templateShareable:false}" selectedKey="{Advances>usrAccess6}"
+								visible="{Advances>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<Label text="{i18n>userDefinedField1}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{Advances>usrDefined1}" visible="{=!${Advances>visi}}"/>
+							<Input value="{Advances>usrDefined1}" visible="{Advances>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<Label text="{i18n>userDefinedField2}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{Advances>usrDefined2}" visible="{=!${Advances>visi}}"/>
+							<Input value="{Advances>usrDefined2}" visible="{Advances>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<Label text="{i18n>userDefinedField3}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{Advances>usrDefined3}" visible="{=!${Advances>visi}}"/>
+							<Input value="{Advances>usrDefined3}" visible="{Advances>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+			<!--<ui:footer>-->
+			<!--	<HBox width="100%" justifyContent="Center">-->
+			<!--		<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="false"/>-->
+			<!--		<Input type="Number" value="1" textAlign="End" width="4rem" submit="onSubmitPagination" enabled="false"/>-->
+			<!--		<Text text="/ 1" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>-->
+			<!--		<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="false"/>-->
+			<!--		<Label text="{i18n>recordPerPage}:" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>-->
+			<!--		<ComboBox selectedKey="50" width="5rem">-->
+			<!--			<core:Item key="50" text="50"/>-->
+			<!--			<core:Item key="100" text="100"/>-->
+			<!--			<core:Item key="200" text="200"/>-->
+			<!--			<core:Item key="500" text="500"/>-->
+			<!--		</ComboBox>-->
+			<!--	</HBox>-->
+			<!--</ui:footer>-->
+		</ui:Table>
+	</Dialog>
+</core:FragmentDefinition>

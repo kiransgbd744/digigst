@@ -1,0 +1,64 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="idDPFileUpload">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<!--<SegmentedButton id="sbFileUpload" selectedKey="API" selectionChange="onButtonChange" class="sapUiLargeMarginBegin" visible="true">
+							<items>
+								<SegmentedButtonItem text="FIle Upload" key="Upload" width="6rem"/>
+								<SegmentedButtonItem text="File Status" key="Status" width="6rem"/>
+							</items>
+						</SegmentedButton>-->
+						<Label text="File Upload" design="Bold"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader>
+				<f:content>
+					<HBox id="hbRbgFileStatus" visible="true">
+						<Label id="lRbgStatus" text="Template Type:" labelFor="rbgStatus" design="Bold" class="sapUiTinyMarginTop sapUiTinyMarginEnd"/>
+						<RadioButtonGroup id="rbgStatus" columns="10" width="100%" select="onSelectChangeRadioButton">
+							<buttons>
+								<RadioButton text="EL Registration"/>
+								<RadioButton text="EL Details"/>
+								<RadioButton text="Registration Details"/>
+								<RadioButton text="Organization"/>
+								<RadioButton text="User Creation"/>
+								<RadioButton text="Data Security" enabled="true"/>
+								<RadioButton text="App Permission" enabled="true"/>
+								<RadioButton text="Maker Checker" enabled="false"/>
+								<RadioButton text="Vendor Due Date"/>
+								<RadioButton text="E-invoice Applicability" visible="true" id="EinvoiceId"/>
+							</buttons>
+						</RadioButtonGroup>
+					</HBox>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<l:HorizontalLayout id="idHorizontalLayout">
+				<Label text="Entity :" class="sapUiTinyMarginTop" design="Bold" id="idEntityLabelFileUpload" visible="false"/>
+				    <ComboBox items="{entity>/resp}" change="onSelectionChangeEntity" showSecondaryValues="true" width="15rem" visible="false"
+					id="idEntityFileUpload" class="sapUiTinyMarginBegin">
+					<!--<core:Item key="{entity>entityId}" text="{entity>entityId} - {entity>entityName}"/>-->
+					<core:ListItem key="{entity>entityId}" text="{entity>entityName}"/>
+				     </ComboBox>
+				<!--additionalData="1 - SAP_POS_Sandbox"-->
+				<u:FileUploader id="ucFileUpload" width="25rem" name="file" fileType="xlsx,csv,xls" sameFilenameAllowed="false" sendXHR="true"
+					style="Emphasized" class="sapUiSmallMarginBegin" tooltip="Upload your file to the local server" uploadComplete="handleUploadComplete"/>
+				<Button text="Upload File" press="handleUploadPress" class="sapUiTinyMarginBegin"/>
+				<Button text="Template Download" press="handleDownloadPress" class="sapUiLargeMarginBegin"/>
+				<HBox class="sapUiLargeMarginBegin" id="EinvId" visible="true">
+					<Label text="NIC Master last Updated on :" class="sapUiTinyMarginTop"/>
+					<DatePicker id="DateId" visible="true" value ="{getDateModel>/date}" valueFormat="dd-MMM-yyyy" displayFormat="dd MMM yyyy" class="sapUiTinyMarginBegin"/>
+					<Button text="Save" press="onSubmitInv" class="sapUiSmallMarginBegin"/>
+				</HBox>
+			</l:HorizontalLayout>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

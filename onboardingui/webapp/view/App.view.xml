@@ -1,0 +1,61 @@
+<mvc:View height="100%" controllerName="com.ey.onboarding.controller.App" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:tnt="sap.tnt"
+	xmlns:x="com.ey.onboarding.controls" xmlns:u="sap.ui.unified" xmlns:f="sap.f">
+	<tnt:ToolPage id="app" class="sapUiDemoToolPage">
+		<tnt:header>
+			<tnt:ToolHeader>
+				<Image src="images/4-layers.png" alt="On Boarding" densityAware="false" height="2rem" class="sapUiTinyMarginBegin"/>
+				<ToolbarSpacer width="1rem"/>
+				<MenuButton text="On Boarding" type="Transparent">
+					<menu>
+						<Menu itemSelected="fnBoardingMenuItemPress">
+							<items>
+								<MenuItem text="File Upload" key="FileUpload" icon="sap-icon://upload-to-cloud"/>
+								<MenuItem text="EL Details" key="ELExtract" icon="sap-icon://manager-insight"/>
+								<MenuItem text="Registration Details" key="GSTNDetails" icon="sap-icon://detail-view"/>
+								<MenuItem text="Organization" key="Organization" icon="sap-icon://building"/>
+								<MenuItem text="User Creation" key="UserCreation" icon="sap-icon://create"/>
+								<MenuItem text="Data Security" key="DataSecurity" icon="sap-icon://role"/>
+								<MenuItem text="Entity Level App Permission" key="AppPermission1" icon="sap-icon://permission" enabled="true"/>
+								<MenuItem text="Group Level App Permission" key="GroupPermission" icon="sap-icon://kpi-managing-my-area" enabled="true"/>
+								<MenuItem text="Source Registration" key="ERPRegistration" icon="sap-icon://ppt-attachment" enabled="true"/>
+								<MenuItem text="Company Code Mapping" key="companycodeMapping" icon="sap-icon://activity-2"/>
+								<MenuItem text="Scenario Permission" key="StandardIntegration" icon="sap-icon://role"/>
+								<MenuItem text="Service Options" key="ServiceOptions" icon="sap-icon://crm-service-manager"/>
+								<MenuItem text="Maker Checker" key="MakerChecker" icon="sap-icon://bbyd-active-sales"/>
+								<MenuItem text="EINV Configuration" key="EINVCnnfig" icon="sap-icon://activity-2"/>
+								<MenuItem text="Feedback" key="Feedback" icon="sap-icon://feedback"
+									visible="{=(${GroupCdModel>/code}==='sp0002' || ${GroupCdModel>/code}==='y8nvcqp4f9')}"/>
+							</items>
+						</Menu>
+					</menu>
+				</MenuButton>
+				<MenuButton text="Configuration" type="Transparent">
+					<menu>
+						<Menu itemSelected="fnBoardingMenuItemPress">
+							<items>
+								<MenuItem text="Configurable Parameter" key="ConfigurableParameter" icon="sap-icon://create-session"/>
+								<MenuItem text="Master" key="Master" icon="sap-icon://create-form">
+									<items>
+										<MenuItem text="File Upload" key="MasterFileUpload" icon="sap-icon://upload-to-cloud"/>
+										<MenuItem text="Product Master" key="ProductMaster" icon="sap-icon://product"/>
+										<MenuItem text="Item Master" key="ItemMaster" icon="sap-icon://activity-items"/>
+										<MenuItem text="Customer Master" key="CustomerMaster" icon="sap-icon://customer"/>
+										<MenuItem text="Vendor Master" key="VendorMaster" icon="sap-icon://supplier"/>
+									</items>
+								</MenuItem>
+							</items>
+						</Menu>
+					</menu>
+				</MenuButton>
+				<Button type="Transparent" text="Downtime Maintenance" tooltip="DowntimeMaintenance" press="onPressDowntime"/>
+				<ToolbarSpacer/>
+				<ToolbarSpacer/>
+				<Button id="bGroupCode" type="Transparent" tooltip="Press to change Group Code" press="getUserGroupCode"/>
+				<f:Avatar id="iAvatar" initials="{=(${UserInfo>/firstName}[0]+${UserInfo>/lastName}[0])}" displaySize="XS" press="fnAvatarPress"/>
+			</tnt:ToolHeader>
+		</tnt:header>
+		<tnt:mainContents>
+			<App id="mainContents" backgroundColor="#ffffff"/>
+		</tnt:mainContents>
+	</tnt:ToolPage>
+</mvc:View>

@@ -1,0 +1,9 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Popover title="List of Request Made To" class="sapUiContentPadding" placement="Auto">
+		<List items="{path:'requestMadeTo>/', sorter: {path: 'userEmailStr',descending:false}}">
+			<items>
+				<StandardListItem title="{requestMadeTo>userEmailStr}"/>
+			</items>
+		</List>
+	</Popover>
+</core:FragmentDefinition>

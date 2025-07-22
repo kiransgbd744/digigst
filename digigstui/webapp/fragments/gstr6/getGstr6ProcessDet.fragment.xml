@@ -1,0 +1,39 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:f="sap.ui.layout.form">
+	<Dialog title="Get GSTR-6 Detail Data" type="Message" class="sapUiSizeCompact cl_saveHeader">
+		<content>
+			<layout:VerticalLayout >
+					<layout:Grid defaultSpan="L2 M2 S12" vSpacing="0" class="sapUiTinyMarginTop">
+						<layout:content>
+							<VBox>
+								<Label text="Tax Period" required="false"/>
+								<DatePicker displayFormat="MMM yyyy" value="Oct 2019"/>
+							</VBox>
+						</layout:content>
+					</layout:Grid>
+				<HBox class="sapUiSmallMarginTop">
+					<Label text="Select All" design="Bold"/>
+					<CheckBox selected="{showing>/check}" class="cl_check sapUiTinyMarginBottom"/>
+				</HBox>
+				<layout:Grid defaultSpan="L3 M3 S12" vSpacing="0" class="sapUiTinyMarginTop">
+					<layout:content>
+						<CheckBox text="B2B" selected="{showing>/check}"/>
+						<CheckBox text="CDN" selected="{showing>/check}"/>
+						<CheckBox text="B2BA" selected="{showing>/check}"/>
+						<CheckBox text="CDNA" selected="{showing>/check}"/>
+						<CheckBox text="Eligible/ Ineligible ITC" selected="{showing>/check}"/>
+						<CheckBox text="Distribution INV" selected="{showing>/check}"/>
+						<CheckBox text="Distribution CR" selected="{showing>/check}"/>
+						<CheckBox text="Re-Distribution INV" selected="{showing>/check}"/>
+						<CheckBox text="Re-Distribution CR" selected="{showing>/check}"/>
+					</layout:content>
+				</layout:Grid>
+			</layout:VerticalLayout>
+		</content>
+		<beginButton>
+			<Button text="Ok" press="onSaveGst6CloseDialogProcess1"/>
+		</beginButton>
+		<endButton>
+			<Button text="Close" press="onSaveGst6CloseDialogProcess1"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

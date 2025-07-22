@@ -1,0 +1,146 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table">
+	<f:DynamicPage id="dpProcessRet1a" class="sapUiNoContentPadding sapUiNoMargin" visible="true">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="{i18n>ret1a}" titleStyle="H3"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader>
+				<fb:FilterBar id="fbProcessRet1a" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>entity}" visibleInFilterBar="true">-->
+						<!--	<fb:control>-->
+						<!--		<Select id="slEntity" items="{EntityModel>/}" change="onEntityChange" width="100%">-->
+						<!--			<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>-->
+						<!--		</Select>-->
+						<!--	</fb:control>-->
+						<!--</fb:FilterGroupItem>-->
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slGstin" width="100%" items="{userPermission>/respData/dataSecurity/gstin}">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>taxPeriod}" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dtProcessed" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" id="fbProcessHbox1a" width="10%">
+					<Button id="bProcessClear" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd" press="onPressClear"/>
+					<Button id="bProcessGo" text="{i18n>go}" type="Emphasized" press="onSearch"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table id="tabProcessRet1a" rows="{ProcessedRecord>/}" selectionMode="MultiToggle" visibleRowCount="8" fixedColumnCount="1"
+				enableColumnReordering="false" rowSelectionChange="onRowSelectionChange" class="sapUiTinyMarginBeginEnd sapUiSmallMarginTop">
+				<ui:extension>
+					<Toolbar>
+						<Label text="{i18n>fileNilReturn}" design="Bold"/>
+						<Button type="Emphasized" text="Yes" press="onPressNilReturn"/>
+						<ToolbarSpacer/>
+						<MenuButton type="Emphasized" text="{i18n>downReport}">
+							<Menu id="bDownloadRpt1a" itemSelected="onPressDownloadReport">
+								<MenuItem key="entityLevel" text="{i18n>entityLevel}" enabled="false"/>
+							</Menu>
+						</MenuButton>
+						<Button type="Emphasized" text="{i18n>requestApproval}" press="onRequestApproval" enabled="false"/>
+						<Button type="Reject" id="bDeleteGstn1a" text="{i18n>deleteData}" press="onPressDeleteData" enabled="false"/>
+						<Button type="Accept" id="bSaveToGstn1a" text="{i18n>saveGstn}" press="onPressSaveGstn" enabled="false"/>
+						<Button type="Emphasized" text="{i18n>submit}" press="onPressSubmit" enabled="false"/>
+						<Button type="Emphasized" text="{i18n>signFile}" press="onPressSignNFile" enabled="false"/>
+						<Button type="Default" text="{i18n>generateRet1a}" press="onGenerateRet1a" enabled="false"/>
+						<MenuButton id="bRupeesView" type="Emphasized" text="{i18n>rupeesIn} {i18n>A}">
+							<Menu itemSelected="onDisplayRupeesValue">
+								<MenuItem key="A" text="{i18n>A}"/>
+								<MenuItem key="L" text="{i18n>L}"/>
+								<MenuItem key="C" text="{i18n>C}"/>
+								<MenuItem key="M" text="{i18n>M}"/>
+								<MenuItem key="B" text="{i18n>B}"/>
+							</Menu>
+						</MenuButton>
+						<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" press="onExportExcel" enabled="false"/>
+						<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="Download Pdf" press="onExportPdf" enabled="false"/>
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="14rem">
+						<Label text="{i18n>gstin}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<VBox>
+								<HBox>
+									<Text text="{ProcessedRecord>state}" width="8rem" class="stateColor"/>
+									<Text text="{ProcessedRecord>regType}" class="stateColor fontSmall"/>
+								</HBox>
+								<HBox alignContent="Start" justifyContent="SpaceBetween">
+									<Link text="{ProcessedRecord>gstin}" emphasized="true" press="onPressRet1aSummary"/>
+									<core:Icon src="sap-icon://circle-task-2" visible="{=${ProcessedRecord>state}===''?false:true}" size="0.8rem"
+										tooltip="{ProcessedRecord>authToken}" color="{=${ProcessedRecord>authToken}==='Active'?'#00ff00':'#ff0000'}"/>
+								</HBox>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column >
+						<Label text="{i18n>status}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<VBox width="100%">
+								<ObjectStatus text="{ProcessedRecord>status}" state="{path:'ProcessedRecord>status', formatter:'.formatter.statusClr'}" active="true"
+									press="onPressSaveStatus"/>
+								<Text text="{ProcessedRecord>timeStamp}" class="timeStmpClr"/>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="{i18n>taxLaibility}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>liability', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="{i18n>reverseCharge}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>revCharge', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="{i18n>otherRevCharge}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>otherCharge', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="{i18n>netAvailItc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>itc', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<Label text="Difference" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox justifyContent="Center">
+								<core:Icon src="sap-icon://show" size="1.3rem" tooltip="{i18n>viewDiff}" color="#5496cd" press="onPressDifference"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+				<ui:footer>
+					<HBox>
+						<core:Icon src="sap-icon://circle-task-2" ariaLabelledBy="txtActive" color="#00ff00" size="0.8rem"/>
+						<Text id="txtActive1a" text="Auth Token Active" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+						<core:Icon src="sap-icon://circle-task-2" ariaLabelledBy="txtInactive" color="red" size="0.8rem"/>
+						<Text id="txtInactive1a" text="Auth Token Inactive" class="sapUiTinyMarginBegin"/>
+					</HBox>
+				</ui:footer>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

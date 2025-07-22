@@ -1,0 +1,79 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:ui="sap.ui.table">
+	<ui:Table rows="{invInward>/resp}" visibleRowCount="10" id="idIWtableInvNew" selectionMode="MultiToggle" selectionBehavior="Row"
+		enableSelectAll="true" fixedColumnCount="0" visible="false">
+		<ui:extension>
+			<Toolbar>
+				<Title id="txtIWRecords" level="H3"/>
+				<ToolbarSpacer width="1rem"/>
+				<ToolbarSpacer/>
+				<Button text="Delete" class="buttoncolorSec" tooltip="Delete" press="onPressDelete"/>
+				<Button class="buttoncolorSec" icon="sap-icon://download" tooltip="download" press="onPressScreenInwardDownload"/>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column hAlign="Center" width="12rem">
+				<Label text="GSTIN" textAlign="Center" design="Bold" width="100%"/>
+				<ui:template>
+					<Label text="{invInward>gstin}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left" width="10rem">
+				<Label text="Doc Type" textAlign="Center" design="Bold" width="100%"/>
+				<ui:template>
+					<Text text="{invInward>docType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left" width="10rem">
+				<Label text="Doc Number" textAlign="Center" design="Bold" width="100%"/>
+				<ui:template>
+					<Link text="{invInward>docNo}" press="onPressLink($event,${invInward>id},${invInward>is240Format})"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left" width="10rem">
+				<Label text="Doc Date" textAlign="Center" design="Bold" width="100%"/>
+				<ui:template>
+					<Text text="{invInward>docDate}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left" width="12rem">
+				<Label text="Counter Party GSTIN" textAlign="Center" design="Bold" width="100%"/>
+				<ui:template>
+					<Text text="{invInward>counterPartyGstin}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left" width="10rem">
+				<Label text="Supplier Name" textAlign="Center" design="Bold" width="100%"/>
+				<ui:template>
+					<Text text="{invInward>supplierLegalName}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left" width="12rem">
+				<Label text="Accounting Voucher No." textAlign="Center" design="Bold" width="100%"/>
+				<ui:template>
+					<Text text="{invInward>accVoucherNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin" width="12rem">
+				<Label text="DigiGST Error Code" textAlign="Center" design="Bold" width="100%"/>
+				<ui:template>
+					<Text text="{invInward>aspErrorCode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Begin">
+				<Label text="DigiGST Error Description" textAlign="Center" design="Bold" width="100%"/>
+				<ui:template>
+					<Text text="{invInward>aspErrorDesc}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+	</ui:Table>
+	<HBox id="hbIWNewError" width="100%" justifyContent="Center" visible="false">
+		<Button id="bIWPrevErr" class="buttoncolorSec" icon="sap-icon://navigation-left-arrow" tooltip="Previous" enabled="false"
+			press="onPressInwardPagination"/>
+		<Input id="inIWPageNoErr" type="Number" textAlign="End" width="4rem" submit="onSubmitPagination" enabled="true" class="sapUiTinyMarginBegin"
+			value="1"/>
+		<Text id="txtIWPageNoErr" text="/ 0" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+		<Button id="bIWNextErr" class="buttoncolorSec" icon="sap-icon://navigation-right-arrow" tooltip="Next" enabled="false"
+			press="onPressInwardPagination"/>
+	</HBox>
+</core:FragmentDefinition>

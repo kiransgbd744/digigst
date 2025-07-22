@@ -1,0 +1,157 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<Dialog title="Multi-Unlock Recon Result" class="sapUiSizeCompact">
+		<ui:Table rows="{ReconMultiUnlock>/data}" selectionMode="None" visibleRowCount="20">
+			<ui:extension>
+				<Toolbar>
+					<core:Icon src="sap-icon://circle-task-2" color="#0187f7" size="0.8rem"/>
+					<Text text="PR Data"/>
+					<core:Icon src="sap-icon://circle-task-2" color="#333333" size="0.8rem"/>
+					<Text text="GSTR-{Display>/LabelRR} Data"/>
+					<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+					<Text text="Difference exists"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column width="9rem">
+					<Label design="Bold" text="Recipient GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{ReconMultiUnlock>gstin}" state="{path:'ReconMultiUnlock>isDocTypeMatch', formatter:'.formatter.reconcolorPR'}"/>
+							<ObjectStatus text="{ReconMultiUnlock>gstin2A}" state="{path:'ReconMultiUnlock>isDocTypeMatch', formatter:'.formatter.reconcolor'}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="9.5rem">
+					<Label design="Bold" text="Vendor GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{ReconMultiUnlock>vendorGstin}" state="{path:'ReconMultiUnlock>isDocTypeMatch', formatter:'.formatter.reconcolorPR'}"/>
+							<ObjectStatus text="{ReconMultiUnlock>vendorGstin2A}" state="{path:'ReconMultiUnlock>isDocTypeMatch', formatter:'.formatter.reconcolor'}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center" width="5rem">
+					<Label design="Bold" text="Doc Type" textAlign="Center" width="100%" wrapping="true"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{path:'ReconMultiUnlock>docTypePR', formatter:'.formatter.docType'}"
+								state="{path:'ReconMultiUnlock>isDocTypeMatch', formatter:'.formatter.reconcolorPR'}"/>
+							<ObjectStatus text="{path:'ReconMultiUnlock>docType2A',formatter:'.formatter.docType'}"
+								state="{path:'ReconMultiUnlock>isDocTypeMatch', formatter:'.formatter.reconcolor'}"/>
+							<ObjectStatus text="{ReconMultiUnlock>docTypePR}" state="{path:'ReconMultiUnlock>isDocTypeMatch', formatter:'.formatter.reconcolorPR'}"/>
+							<ObjectStatus text="{ReconMultiUnlock>docType2A}" state="{path:'ReconMultiUnlock>isDocTypeMatch', formatter:'.formatter.reconcolor'}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column minWidth="150" visible="{=${ReconMultiUnlock>/reconCriteria}!=='Import'}">
+					<Label design="Bold" text="Doc No" textAlign="Center" width="100%" wrapping="true"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{ReconMultiUnlock>docNumberPR}" state="{path:'ReconMultiUnlock>isDocNumberMatch', formatter:'.formatter.reconcolorPR'}"/>
+							<ObjectStatus text="{ReconMultiUnlock>docNumber2A}" state="{path:'ReconMultiUnlock>isDocNumberMatch', formatter:'.formatter.reconcolor'}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center" width="6.5rem" visible="{=${ReconMultiUnlock>/reconCriteria}!=='Import'}">
+					<Label design="Bold" text="Doc Date" textAlign="Center" width="100%" wrapping="true"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{ReconMultiUnlock>docDatePR}" state="{path:'ReconMultiUnlock>isDocDateMatch', formatter:'.formatter.reconcolorPR'}"/>
+							<ObjectStatus text="{ReconMultiUnlock>docDate2A}" state="{path:'ReconMultiUnlock>isDocDateMatch', formatter:'.formatter.reconcolor'}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column minWidth="150" visible="{=${ReconMultiUnlock>/reconCriteria}==='Import'}">
+					<Label design="Bold" text="BOE No" textAlign="Center" width="100%" wrapping="true"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{ReconMultiUnlock>boeNoPR}" state="{path:'ReconMultiUnlock>isBoeNoMatch', formatter:'.formatter.reconcolorPR'}"/>
+							<ObjectStatus text="{ReconMultiUnlock>boeNo2A}" state="{path:'ReconMultiUnlock>isBoeNoMatch', formatter:'.formatter.reconcolor'}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center" width="6.5rem" visible="{=${ReconMultiUnlock>/reconCriteria}==='Import'}">
+					<Label design="Bold" text="BOE Date" textAlign="Center" width="100%" wrapping="true"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{ReconMultiUnlock>boeDatePR}" state="{path:'ReconMultiUnlock>isBoeDateMatch', formatter:'.formatter.reconcolorPR'}"/>
+							<ObjectStatus text="{ReconMultiUnlock>boeDate2A}" state="{path:'ReconMultiUnlock>isBoeDateMatch', formatter:'.formatter.reconcolor'}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" minWidth="105">
+					<Label design="Bold" text="Total Tax" textAlign="Center" width="100%" wrapping="true"/>
+					<ui:template>
+						<VBox alignItems="End">
+							<ObjectStatus text="{ReconMultiUnlock>totalTaxPR}" state="{path:'ReconMultiUnlock>isTotalTaxMatch', formatter:'.formatter.reconcolorPR'}"/>
+							<ObjectStatus text="{ReconMultiUnlock>totalTax2A}" state="{path:'ReconMultiUnlock>isTotalTaxMatch', formatter:'.formatter.reconcolor'}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" minWidth="105">
+					<Label design="Bold" text="IGST" textAlign="Center" width="100%" wrapping="true"/>
+					<ui:template>
+						<VBox alignItems="End">
+							<ObjectStatus text="{ReconMultiUnlock>igstPR}" state="{path:'ReconMultiUnlock>isIgstMatch', formatter:'.formatter.reconcolorPR'}"/>
+							<ObjectStatus text="{ReconMultiUnlock>igst2A}" state="{path:'ReconMultiUnlock>isIgstMatch', formatter:'.formatter.reconcolor'}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" minWidth="105">
+					<Label design="Bold" text="CGST" textAlign="Center" width="100%" wrapping="true"/>
+					<ui:template>
+						<VBox alignItems="End">
+							<ObjectStatus text="{ReconMultiUnlock>cgstPR}" state="{path:'ReconMultiUnlock>isCgstMatch', formatter:'.formatter.reconcolorPR'}"/>
+							<ObjectStatus text="{ReconMultiUnlock>cgst2A}" state="{path:'ReconMultiUnlock>isCgstMatch', formatter:'.formatter.reconcolor'}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" minWidth="105">
+					<Label design="Bold" text="SGST" textAlign="Center" width="100%" wrapping="true"/>
+					<ui:template>
+						<VBox alignItems="End">
+							<ObjectStatus text="{ReconMultiUnlock>sgstPR}" state="{path:'ReconMultiUnlock>isSgstMatch', formatter:'.formatter.reconcolorPR'}"/>
+							<ObjectStatus text="{ReconMultiUnlock>sgst2A}" state="{path:'ReconMultiUnlock>isSgstMatch', formatter:'.formatter.reconcolor'}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" minWidth="105">
+					<Label design="Bold" text="Cess" textAlign="Center" width="100%" wrapping="true"/>
+					<ui:template>
+						<VBox alignItems="End">
+							<ObjectStatus text="{ReconMultiUnlock>cessPR}" state="{path:'ReconMultiUnlock>isCessMatch', formatter:'.formatter.reconcolorPR'}"/>
+							<ObjectStatus text="{ReconMultiUnlock>cess2A}" state="{path:'ReconMultiUnlock>isCessMatch', formatter:'.formatter.reconcolor'}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column minWidth="180">
+					<Label design="Bold" text="Accounting Voucher No" textAlign="Center" width="100%" wrapping="true"/>
+					<ui:template>
+						<Text text="{ReconMultiUnlock>accVoucherNo}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column minWidth="230">
+					<Label design="Bold" text="Mismatch Reason" textAlign="Center" width="100%" wrapping="true"/>
+					<ui:template>
+						<Text text="{ReconMultiUnlock>mismatchReason}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column minWidth="150">
+					<Label design="Bold" text="Response Taken" textAlign="Center" width="100%" wrapping="true"/>
+					<ui:template>
+						<Text text="{path:'ReconMultiUnlock>responseTaken'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="20rem">
+					<Label design="Bold" text="Response Remarks"/>
+					<ui:template>
+						<Text text="{ReconMultiUnlock>respRemarks}" textAlign="Center"/>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+		<buttons>
+			<Button text="Close" press="onRecResultMultiClose"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

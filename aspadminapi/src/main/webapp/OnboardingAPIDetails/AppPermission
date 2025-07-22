@@ -1,0 +1,55 @@
+URL : /getAppPermission.do
+Service : POST 
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+
+Request Payload :
+
+{
+  "req":{
+          "groupCode":"ern00002"
+  }
+}
+
+URL : /updateAppPermission.do
+Service : POST 
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+
+Request Payload :
+
+{
+	"req": [
+        		{
+					"entityId": 1,
+					"id":1,
+					"groupCode":"ern00002",
+					"entityName": "SAP_POC_Sandbox",
+                    "userName": "tes1",
+                    "gstr1FileUpload": false,
+                    "gstr1Save": true,
+                    "gstr1SubmitFile": true,
+                    "gstr1Reports": true,
+                    "gstr2FileUpload": true,
+                    "gstr22AVsPr": true,
+                    "gstr2GetGstr2a": true,
+                    "gstr2Reports": true,
+                    "gstr3bFileUpload": true,
+                    "gstr3Save": true,
+                    "gstr3SubmitFile": false,
+                    "gstr3Reports": true,
+                    "gstr6FileUpload": false,
+                    "gstr66AVsPr": false,
+                    "gstr6GetGstr6a": true,
+                    "gstr6Reports": false,
+                    "gstr9And9cYesOrNo": false,
+                    "dashBoardYesOrNo": false,
+                    "intutDashBoardYesOrNo": false
+                }
+            ]
+}
+

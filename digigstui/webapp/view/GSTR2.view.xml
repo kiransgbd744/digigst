@@ -1,0 +1,55 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.GSTR2"
+	busyIndicatorDelay="0">
+	<IconTabBar id="idIconTabBar" expanded="true" expandable="false" backgroundDesign="Transparent" stretchContentHeight="true"
+		select="onSelectIconTabBar(${$parameters>/selectedKey})" selectedKey="PrSummary" class="sapUiNoContentPadding sapUiNoMargin">
+		<items>
+			<IconTabFilter text="PR Summary" tooltip="PR Summary" key="PrSummary">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.PrSummary" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="GSTR-2A" tooltip="Gstr2a" key="Gstr2a">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.NewGstr" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="GSTR-2A Summary" tooltip="GET GSTR-2A Summary" key="Gstr2asummary" enabled="true">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.GetGstr2aProcess" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="IMS" tooltip="IMS" key="IMS" visible="{=!!${GroupPermission>/GR1}}">
+				<mvc:XMLView viewName="com.ey.digigst.view.IMS" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="GSTR-2B" tooltip="GSTR-2B" key="Gstr2B" enabled="true">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.GetGstr2B" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Auto Get GSTR 2B" tooltip="Auto Get GSTR 2B" key="AutoGstr2B" enabled="true">
+				<mvc:XMLView viewName="com.ey.digigst.view.Auto2B" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="GSTR-2B Summary" tooltip="GSTR-2B Summary" key="Gstr2BSummary" enabled="true">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.GetGstr2BSummary" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Initiate Recon" tooltip="Initiate Recon" key="InitiateRecon2A" visible="false">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.InitiateRecon2A" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Initiate Recon" tooltip="Initiate Recon Beta" key="InitiateReconBeta" enabled="true">
+				<mvc:XMLView viewName="com.ey.digigst.view.initiateReconB" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Recon Summary" tooltip="Recon Summary" key="ReconSummary" enabled="true">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.ReconSummary2A" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Recon Result" tooltip="Recon Results" key="ReconResult">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.ReconResult2A" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Recon Response (i)"
+				tooltip="This functionality enables user to search and lock any PR/2A/2B records combinations to avail ITC." key="ReconResponse">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.ReconResponse" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Permissible ITC" tooltip="Permissible ITC" key="PermissibleITC" enabled="true">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.PermissibleITC" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Vendor Communication" tooltip="Vendor Communication" key="VendorCommunication" enabled="true">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.VendorCommunication" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Credit Availment Tracking Summary" tooltip="Credit Availment Tracking Summary" key="CreditAvailmentTrackingSummary"
+				enabled=" false"/>
+			<IconTabFilter text="Force Match" tooltip="Force Match" key="ForceMatch" enabled=" false"/>
+			<IconTabFilter text="Vendor Summary and Rating" tooltip="Vendor Summary" key="VendorSummary" enabled="false"/>
+		</items>
+	</IconTabBar>
+</mvc:View>

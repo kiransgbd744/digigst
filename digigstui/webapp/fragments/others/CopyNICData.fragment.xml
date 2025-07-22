@@ -1,0 +1,18 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.f">
+	<Dialog id="copyDataID" title="Do you want to Copy {screen>/screenFlag} credentials?" type="Message" class="sapUiSizeCompact cl_saveHeader"
+		showHeader="true" contentWidth="30%">
+		<VBox>
+			<Label text="{screen>/screenFlag}" design="Bold"/>
+			<RadioButtonGroup id="rbgCopyType" selectedIndex="1" columns="2">
+				<RadioButton id="RBDigiCompId" text="E-Invoice to E-WayBill"/>
+				<RadioButton id="RBDigiGstnId" text="E-WayBill to E-Invoice"/>
+			</RadioButtonGroup>
+		</VBox>
+		<beginButton>
+			<Button text="Submit" class="buttoncolorSec" press="onDialogCopySubmit"/>
+		</beginButton>
+		<endButton>
+			<Button text="Cancel" class="buttoncolorSec" press="onCloseDialogCopy"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

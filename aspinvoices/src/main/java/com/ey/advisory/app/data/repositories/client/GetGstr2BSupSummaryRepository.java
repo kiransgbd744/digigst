@@ -1,0 +1,23 @@
+package com.ey.advisory.app.data.repositories.client;
+
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.ey.advisory.app.gstr2b.Gstr2GetGstr2BSuppSmryEntity;
+
+/**
+ * @author Hema G M
+ *
+ */
+
+
+	@Repository("GetGstr2BSupSummaryRepository")
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public interface GetGstr2BSupSummaryRepository
+			extends CrudRepository<Gstr2GetGstr2BSuppSmryEntity, Long>,
+			JpaSpecificationExecutor<Gstr2GetGstr2BSuppSmryEntity> {
+}
+

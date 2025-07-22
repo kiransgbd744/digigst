@@ -1,0 +1,61 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" xmlns:l="sap.ui.layout">
+	<Dialog title="Difference between DigiGST and GSTN" type="Message" class="sapUiSizeCompact">
+		<beginButton>
+			<Button text="Close" class="buttoncolorSec" press="onCDialogDiffGSTR3B"/>
+		</beginButton>
+		<ui:TreeTable id="tabGstr3bSumm1" rows="{LinkTabGSTN1>/}" selectionMode="None" enableSelectAll="false" enableColumnReordering="false"
+			toggleOpenState="onToggleGstr3bSummary">
+			<ui:extension>
+				<Toolbar>
+					<ToolbarSpacer/>
+					<Button text="Update GSTN Data" class="buttoncolorSec" press="onGSTNdataPressFrag" enabled="{= ${userPermission>/appPermission/P4}}"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column width="7rem">
+					<Label text="Table" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'LinkTabGSTN1>table', formatter:'.formatter.tableType'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="18rem">
+					<Label text="Type of Supply" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'LinkTabGSTN1>supplyType', formatter:'.formatter.supplyTypeDesc'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="7rem">
+					<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>diffenceTaxableVal'}], formatter : '.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="7rem">
+					<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>diffenceIGSTVal'}], formatter : '.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="7rem">
+					<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>diffenceCGSTVal'}], formatter : '.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="7rem">
+					<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>diffenceSGSTVal'}], formatter : '.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="7rem">
+					<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>diffenceCESSVal'}], formatter : '.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:TreeTable>
+	</Dialog>
+</core:FragmentDefinition>

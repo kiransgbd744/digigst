@@ -1,0 +1,420 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:ui="sap.ui.table">
+	<ui:Table id="tabErrorEdit" rows="{path:'ErrorItemEdit>/lineItems'}" visibleRowCount="5" enableSelectAll="false" visible="false"  selectionMode="None">
+		<ui:columns>
+	
+			<ui:Column width="10rem" sortProperty="supplierGSTIN" filterProperty="supplierGSTIN">
+				<Label text="Supplier GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{ErrorItemEdit>/supplierGstin}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="Source Identifier" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/sourceIdentifier}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="Source FileName" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/sourceFileName}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="GL Account Code" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/glAccountCode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="6rem">
+				<Label text="Division" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/division}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<Label text="SubDivision" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/subDivision}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="9rem">
+				<Label text="ProfitCenter1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/profitCentre1}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="9rem">
+				<Label text="ProfitCenter1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/profitCentre2}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<Label text="PlantCode" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<HBox>
+						<Input value="{ErrorItemEdit>/plantCode}"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem">
+				<Label text="ReturnPeriod" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+						<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" name="returnPeriod" value="{ErrorItemEdit>/returnPeriod}"
+						change="onChangeErrorReturnPeriod"/>
+				<!--	<Input value="{ErrorItemEdit>/returnPeriod}"/>-->
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="9rem">
+				<Label text="RecipientGSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/supplierGstin}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="9rem">
+				<Label text="DocumentType" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/docType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="9rem">
+				<Label text="SupplyType" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/supplyType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="9rem">
+				<Label text="DocumentNumber" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/docNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="9rem">
+				<Label text="DocumentDate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<DatePicker displayFormat="dd.MM.yyyy" valueFormat="yyyy-MM-dd" name="DOCMENT DATE" value="{ErrorItemEdit>/docDate}"
+						change="onChangePRErrorDocDate"/>
+				<!--	<Input value="{ErrorItemEdit>/docDate}"/>-->
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="OriginalDocumentNumber" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/originalDocNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="OrginalDocumentDate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+							<DatePicker displayFormat="dd.MM.yyyy" valueFormat="yyyy-MM-dd" name="DOCMENT DATE" value="{ErrorItemEdit>/originalDocDate}"
+						change="onChangePRErrorOrgDocDate"/>
+				<!--	<Input value="{ErrorItemEdit>/originalDocDate}"/>-->
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="CRDRPreGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/crDrPreGst}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="LineNumber" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/docAmount}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="SupplierGSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/supplierGstin}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="OriginalSupplierGSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/origSupplierGstin}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="SupplierName" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/custOrSuppName}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="SupplierCode" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/custOrSuppCode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="POS" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/pos}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="PortCode" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/productCode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="BillofEntry" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/billOfEntryNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="BillofEntryDate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/billOfEntryDate}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="CAFvalue" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/cifValue}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="Custom" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/customDuty}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="HSNorSAC" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/hsnsacCode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="ItemCode" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/itemNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="ItemDescription" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/itemDesc}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="CategoryofItem" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/itemType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="UnitofMeasurement" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/itemUqc}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="Quantity" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/itemQty}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="TaxableValue" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/taxableVal}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="IntegratedTaxRate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/docAmount}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="IntegratedTaxAmount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/docAmount}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="CentalTaxRate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/cgstRate}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="CentralTaxAmount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/cgstAmt}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="StateUITaxRate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/sgstRate}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="StateUITaxAmount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/sgstAmt}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="CessRateAdvalorem" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/docAmount}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="CessAmountAdvalorem" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/cessAmtAdvalorem}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="CessRateSpecific" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/cessRateSpecific}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="CessAmountSpecific" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/cessAmtSpecfic}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="InvoiceValue" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/docAmount}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="ReverseChargeFlag" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/reverseCharge}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="EligibleIndicator" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/eligibilityInd}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="CommonSupply" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/docAmount}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="CommonSupplyIndicator" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/commonSupplyInd}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="AvailableIGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/availableIgst}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="AvailableCGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/availableCgst}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="AvailableSGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/availableSgst}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="AvailableCESS" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/availableCess}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="ITCReversalIdentifier" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/itcReversalId}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="ReasonforCreditDebitNote" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/crDrReason}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="PurchaseVoucherNumber" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/accountVoucherNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="PurchaseVoucherDate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+						<DatePicker displayFormat="dd.MM.yyyy" valueFormat="yyyy-MM-dd" name="DOCMENT DATE" value="{ErrorItemEdit>/accountVoucherDate}"
+						change="onChangePRErrorPVDate"/>
+		
+				<!--	<Input value="{ErrorItemEdit>/accountVoucherDate}"/>-->
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="PaymentVoucherNumber" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/paymentVoucherNum}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="PurchaseVoucherDate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/docAmount}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="PaymentDate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/paymentDate}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="ContactNumber" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/contractNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="ContactDate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/contractDate}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="UserDefinedField1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/userDefinedField1}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="UserDefinedfield2" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/userDefinedField2}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="UserDefinedfield3" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{ErrorItemEdit>/userDefinedField3}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+	</ui:Table>
+</core:FragmentDefinition>

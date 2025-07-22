@@ -1,0 +1,14 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.PDFReader"
+	busyIndicatorDelay="0">
+	<IconTabBar expanded="true" id="iconid" select="handleIconTabBar" class="sapUiNoContentPadding" backgroundDesign="Transparent"
+		stretchContentHeight="true" selectedKey="UploadData" expandable="false">
+		<items>
+			<IconTabFilter text="Upload Data" tooltip="Upload Data" key="UploadData">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.APModule.PDFReader.UploadData" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Validated Data" tooltip="Validated Data" key="ValidatedData" visible="false">
+				<!--<core:Fragment fragmentName="com.ey.digigst.fragments.APModule.PDFReader.ValidatedData" type="XML"/>-->
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</mvc:View>

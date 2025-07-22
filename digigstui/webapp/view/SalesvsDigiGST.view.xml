@@ -1,0 +1,14 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.SalesvsDigiGST"
+	busyIndicatorDelay="0">
+	<IconTabBar expanded="true" id="idSalesvsDigiGSTIcon" select="handleIconTabBarSelect" class="sapUiNoContentPadding clOther"
+		backgroundDesign="Transparent" stretchContentHeight="true" selectedKey="UploadSalesReg" expandable="false">
+		<items>
+			<IconTabFilter text="Upload Sales Register" tooltip="Upload Sales Register" key="UploadSalesReg">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.SalesVsDigiGST.UploadSalesReg" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Initiate Recon" tooltip="Initiate Recon" key="InitiateRecon">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.SalesVsDigiGST.InitiateRecon" type="XML"/>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</mvc:View>

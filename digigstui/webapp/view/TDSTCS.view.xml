@@ -1,0 +1,28 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.TDSTCS"
+	busyIndicatorDelay="0">
+	<IconTabBar expanded="true" id="itbtdstcs" select="handleIconTabBarSelect" backgroundDesign="Transparent" expandable="false">
+		<items>
+			<IconTabFilter text="TDS Credit Received" key="tds">
+				<VBox>
+					<core:Fragment fragmentName="com.ey.digigst.fragments.others.tdstcs.TDS" type="XML"/>
+					<core:Fragment fragmentName="com.ey.digigst.fragments.others.tdstcs.TDSSummary" type="XML"/>
+				</VBox>
+			</IconTabFilter>
+			<IconTabFilter text="TDSA Credit Received" key="tdsa">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.others.tdstcs.TDSA" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.others.tdstcs.TDSASummary" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="TCS Credit Received" key="tcs">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.others.tdstcs.TCS" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.others.tdstcs.TCSSummary" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="TCSA Credit Received" key="tcsa">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.others.tdstcs.TCSA" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.others.tdstcs.TCSASummary" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="TDS / TCS vs GSTR-1 Summary" key="TDSTCSvsGSTR1Summary" visible="false">
+				<mvc:XMLView viewName="com.ey.digigst.view.TDSTCSvsGSTR1Summary"/>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</mvc:View>

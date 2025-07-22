@@ -1,0 +1,198 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt">
+	<f:DynamicPage id="IdDPMatchingStatus">
+			<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+				
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader>
+				<f:content>
+					<fb:FilterBar  showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false" class="sapUiNoContentPadding">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="GSTIN" visibleInFilterBar="true">
+								<fb:control>
+									<Select forceSelection="true" change="onSelectChange" items="{ path: 'DropDown>/criteria' }">
+										<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Financial Year" visibleInFilterBar="true">
+								<fb:control>
+									<Select forceSelection="true" change="onSelectChangeYear" items="{ path: 'DropDown>/criteria' }">
+										<core:Item key="{}" text="{}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<ui:Table id="idMatchstatus" rows="{matchstatusmodel>/resp}" selectionMode="None" selectionBehavior="Row" visibleRowCount="10" fixedRowCount="1"
+					fixedColumnCount="3" enableSelectAll="false">
+					<ui:columns>
+						<ui:Column width="70px">
+							<Label text="S.NO" textAlign="Center" width="50%" design="Bold"/>
+							<ui:template>
+								<Text text="{matchstatusmodel>id}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<Label text="GSTIN" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{matchstatusmodel>gstin}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<Label text="April" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<VBox>
+										<ObjectNumber number="{matchstatusmodel>AprilStatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'matchstatusmodel>AprilStatus'}], formatter : '.formatter.color'}"/>
+								
+									<Text text="{matchstatusmodel>ApriltimeStamp}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<Label text="May" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<VBox>
+										<ObjectNumber number="{matchstatusmodel>MayStatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'matchstatusmodel>MayStatus'}], formatter : '.formatter.color'}"/>
+								
+								
+									<Text text="{matchstatusmodel>maytimeStamp}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<Label text="June" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<VBox>
+										<ObjectNumber number="{matchstatusmodel>JuneStatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'matchstatusmodel>JuneStatus'}], formatter : '.formatter.color'}"/>
+					
+
+									<Text text="{matchstatusmodel>JunetimeStamp}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<Label text="July" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<VBox>
+										<ObjectNumber number="{matchstatusmodel>JulyStatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'matchstatusmodel>JulyStatus'}], formatter : '.formatter.color'}"/>
+								
+									
+									<Text text="{matchstatusmodel>JulytimeStamp}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<Label text="August" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<VBox>
+										<ObjectNumber number="{matchstatusmodel>AugestStatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'matchstatusmodel>AugestStatus'}], formatter : '.formatter.color'}"/>
+			
+								
+									<Text text="{matchstatusmodel>AugesttimeStamp}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<Label text="September" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<VBox>
+										<ObjectNumber number="{matchstatusmodel>SeptemberStatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'matchstatusmodel>SeptemberStatus'}], formatter : '.formatter.color'}"/>
+								
+									<Text text="{matchstatusmodel>SeptembertimeStamp}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<Label text="October" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<VBox>
+										<ObjectNumber number="{matchstatusmodel>OctoberStatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'matchstatusmodel>OctoberStatus'}], formatter : '.formatter.color'}"/>
+								
+								
+									<Text text="{matchstatusmodel>OctobertimeStamp}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<Label text="November" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<VBox>
+										<ObjectNumber number="{matchstatusmodel>NovemberStatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'matchstatusmodel>NovemberStatus'}], formatter : '.formatter.color'}"/>
+								
+									<Text text="{matchstatusmodel>NovembertimeStamp}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<Label text="December" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<VBox>
+										<ObjectNumber number="{matchstatusmodel>DecemberStatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'matchstatusmodel>DecemberStatus'}], formatter : '.formatter.color'}"/>
+									
+									<Text text="{matchstatusmodel>DecembertimeStamp}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<Label text="January" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<VBox>
+										<ObjectNumber number="{matchstatusmodel>JanStatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'matchstatusmodel>JanStatus'}], formatter : '.formatter.color'}"/>
+						
+								
+									<Text text="{matchstatusmodel>JantimeStamp}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<Label text="February" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<VBox>
+										<ObjectNumber number="{matchstatusmodel>FebStatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'matchstatusmodel>FebStatus'}], formatter : '.formatter.color'}"/>
+									
+								
+									<Text text="{matchstatusmodel>FebtimeStamp}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<Label text="March" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<VBox>
+										<ObjectNumber number="{matchstatusmodel>MarchStatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'matchstatusmodel>MarchStatus'}], formatter : '.formatter.color'}"/>
+								
+									<Text text="{matchstatusmodel>MarchtimeStamp}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

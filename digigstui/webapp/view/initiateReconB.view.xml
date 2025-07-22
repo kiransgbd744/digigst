@@ -1,0 +1,682 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.initiateReconB"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:commons="sap.suite.ui.commons" busyIndicatorDelay="0">
+	<f:DynamicPage id="idSplitDtl2A" visible="true">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Initiate Recon"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Recon Type" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idReconType" class="input" forceSelection="true" change="onRecontypeChange">
+									<core:Item key="2APR" text="GSTR-2A/6A Vs PR"/>
+									<core:Item key="2BPR" text="GSTR-2B Vs PR"/>
+									<core:Item key="EINVPR" text="Inward E-Inv vs PR"
+										enabled="{=(${userPermission>/appPermission/R8} &amp;&amp; ${userPermission>/appPermission/P41})}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Date Range" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idDateRange2A" class="input" forceSelection="true" change="onDateRangeChange">
+									<core:Item key="Tax Perioid" text="Tax Period"/>
+									<core:Item key="Document Date" text="Document Date" enabled="{= !${isYdtFlag>/resp}}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="PR From Date" visibleInFilterBar="true" id="vBox1ID2A"
+							visible="{Display>/DOC}">
+							<fb:control>
+								<DatePicker displayFormat="dd MMM yyyy" id="idInitiateReconPeriod2A" valueFormat="ddMMyyyy" class="input" change="onFromDateChange"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="PR To Date" visibleInFilterBar="true" id="vBox1ID2A1"
+							visible="{Display>/DOC}">
+							<fb:control>
+								<DatePicker displayFormat="dd MMM yyyy" id="idInitiateReconPeriod12A" valueFormat="ddMMyyyy" class="input"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="PR Tax Period From " visibleInFilterBar="true" id="vBox2ID2A"
+							visible="{Display>/TAX}">
+							<fb:control>
+								<DatePicker displayFormat="MMM yyyy" id="idInitiateReconPeriodTax2A" valueFormat="yyyyMM" class="input " change="onFromTaxPeriodChange"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="PR Tax Period To" visibleInFilterBar="true" id="vBox2ID2A1"
+							visible="{Display>/TAX}">
+							<fb:control>
+								<DatePicker displayFormat="MMM yyyy" id="idInitiateReconPeriodTax12A" valueFormat="yyyyMM" class="input" change="onToTaxPeriodChange"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="H" label="{Display>/Label} Tax Period From" visibleInFilterBar="true"
+							id="vBox2ID2A2" visible="{Display>/TAX}">
+							<fb:control>
+								<DatePicker displayFormat="MMM yyyy" id="idInitiateReconPeriodTax2A1" valueFormat="yyyyMM" class="input" change="onFromTaxPeriodChange2A"
+									editable="{= !${isYdtFlag>/resp} || ${Display>/Label}==='Inward E-Inv' }"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="I" label="{Display>/Label} Tax Period To" visibleInFilterBar="true"
+							id="vBox2ID2A3" visible="{Display>/TAX}">
+							<fb:control>
+								<DatePicker displayFormat="MMM yyyy" id="idInitiateReconPeriodTax12A1" valueFormat="yyyyMM" class="input"
+									editable="{= !${isYdtFlag>/resp} || ${Display>/Label}==='Inward E-Inv'}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<!--<Button text="{i18n>clear}" class="sapUiTinyMarginBeginEnd" press="onPressClear2B"/>-->
+					<Button text="Filter" press="onPressGoForGSTIN2A" class="input sapUiTinyMarginBegin buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Page showHeader="false" class="clMDIntiatRecon">
+				<content>
+					<SplitApp id="splitcheking2A" initialDetail="detail" initialMaster="master" orientationChange="onOrientationChange">
+						<detailPages>
+							<Page showHeader="false" class="">
+								<content>
+									<l:BlockLayout background="Dashboard" class="cl_shadow" visible="true">
+										<l:BlockLayoutRow class="sapUiNoContentPadding">
+											<l:BlockLayoutCell width="20">
+												<Toolbar height="3rem" class="supplToolbarInAnx2 supplToolbarColInAnx2">
+													<core:Icon id="iMoreIniat2A" src="sap-icon://navigation-down-arrow" tooltip="More" press="fnPressDownInit" color="black"/>
+													<core:Icon id="iLessIniat2A" src="sap-icon://slim-arrow-right" tooltip="Less" press="fnPressRightInit" visible="false" color="black"/>
+													<Label text="Report Selection" design="Bold" textAlign="Center" class="fontSize"/>
+													<ToolbarSpacer/>
+													<CheckBox text="IMS Pending Records" id="cbImsPending" select="onSelectImsPending" visible="false"
+														class="fontSize09 cbColorBlue sapUiTinyMarginEnd"/>
+													<Button text="Exclude Vendors" press="fnExcludeVendor" enabled="{=${Display>/Label}==='Inward E-Inv' ? false : true}" class="buttoncolorSec"/>
+													<Button text="Initiate Matching" press="fnIntiniateBtnPress2A" enabled="{= ${userPermission>/appPermission/P8}}" class="buttoncolorSec"/>
+													<Button text="Request ID wise" press="onPressRequestIDwise2A" class="sapUiTinyMarginEnd buttoncolorSec"/>
+												</Toolbar>
+												<VBox id="idvbox12A">
+													<Label text="Primary Reports" design="Bold" class="sapUiSmallMarginBegin sapUiSmallMarginTop"/>
+												</VBox>
+												<VBox id="idMandatory">
+													<CheckBox text="Mandatory" id="idCheckMandatory" selected="{Mandat>/mandat}" select="mandatoryCheckSelct"
+														class="sapUiSmallMarginBegin sapUiSmallMarginTop" editable="true"/>
+												</VBox>
+												<l:Grid id="idGrid12A" defaultSpan="L3 M3 S12" vSpacing="0">
+													<l:content>
+														<CheckBox text="Exact Match" selected="{Mandat>/ExactMatch}" select="checkSelct" editable="true"/>
+														<CheckBox text="Match With Tolerance" selected="{Mandat>/MatchWithTolerance}" select="checkSelct" editable="true"/>
+														<CheckBox text="Value Mismatch" selected="{Mandat>/ValueMismatch}" select="checkSelct" editable="true"/>
+														<CheckBox text="POS Mismatch" selected="{Mandat>/POSMismatch}" select="checkSelct" editable="true"/>
+														<CheckBox text="Doc Date Mismatch" selected="{Mandat>/DocDateMismatch}" select="checkSelct" editable="true"/>
+														<CheckBox text="Doc Type Mismatch" selected="{Mandat>/DocTypeMismatch}" select="checkSelct" editable="true"/>
+														<CheckBox text="Doc No Mismatch I" selected="{Mandat>/DocNoMismatchI}" select="checkSelct" editable="true"/>
+														<CheckBox text="Doc No Mismatch II" select="checkSelct" id="id_DocNoMismatch"/>
+														<CheckBox text="Doc No &amp; Doc Date Mismatch" select="checkSelct" id="id_DocNoDocDateMismatch"/>
+														<CheckBox text="Multi-Mismatch" selected="{Mandat>/MultiMismatch}" select="checkSelct" editable="true"/>
+														<CheckBox text="Potential-I" select="checkSelct" id="id_PotentialI" enabled="{= !${isYdtFlag>/resp} || ${Display>/Label}==='Inward E-Inv'}"/>
+														<CheckBox text="Potential-II" select="checkSelct" id="id_Potential" enabled="{= !${isYdtFlag>/resp} || ${Display>/Label}==='Inward E-Inv'}"/>
+														<CheckBox text="Logical Match" select="checkSelct" id="id_LogicalMatch"
+															enabled="{= !${isYdtFlag>/resp} || ${Display>/Label}==='Inward E-Inv'}"/>
+														<CheckBox text="Addition in PR" selected="{Mandat>/AdditioninPR}" select="checkSelct" editable="true"/>
+														<CheckBox text="Addition in {Display>/Label}" selected="{Mandat>/Additionin2B}" select="checkSelct" editable="true"/>
+														<CheckBox text="Consolidated PR {Display>/Label} Report" selected="true" id="id_Consolidated_PR" editable="true"/>
+														<CheckBox text="ISD Matching Report" id="id_ISDMatching" visible="true" select="checkSelct"/>
+														<HBox>
+															<CheckBox text="Consolidated 2A/6AvsPR + IMS Report" id="id_2aIMSReport" select="checkSelct"/>
+															<CheckBox text="Consolidated 2BvsPR + IMS Report" visible="false" id="id_IMSReport" select="checkSelct"/>
+														</HBox>
+													</l:content>
+												</l:Grid>
+												<VBox id="idvbox2" visible="{=${Display>/Label}==='Inward E-Inv' ? false : true}">
+													<Label text="Other Reports" design="Bold" class="sapUiSmallMarginBegin"/>
+												</VBox>
+												<l:Grid id="idGrid2" defaultSpan="L3 M4 S12" vSpacing="0" visible="{=${Display>/Label}!=='Inward E-Inv'}">
+													<l:content>
+														<CheckBox id="ForceMatchID" text="Force Match" select="checkSelct"/>
+														<CheckBox id="SRCPid" text="Summary Report Calendar Period" select="checkSelct"/>
+														<CheckBox id="SRTPid" text="Summary Report Tax Period" select="checkSelct"/>
+														<CheckBox id="SGSRid" text="Supplier GSTIN Summary Report" select="checkSelct"/>
+														<CheckBox id="SPSRid" text="Supplier PAN Summary Report" select="checkSelct"/>
+														<CheckBox id="RGTPWRid" text="Recipient GSTIN Tax Period Wise Report" select="checkSelct"/>
+														<CheckBox id="RGWRid" text="Recipient GSTIN Wise Report" select="checkSelct"/>
+														<CheckBox id="VGTPWR" text="Vendor GSTIN Tax Period Wise Report" select="checkSelct"/>
+														<CheckBox id="VGWRid" text="Vendor GSTIN Wise Report" select="checkSelct"/>
+														<CheckBox id="VPTPWRid" text="Vendor PAN Tax Period Wise Report" select="checkSelct"/>
+														<CheckBox id="VPWRid" text="Vendor PAN Wise Report" select="checkSelct"/>
+														<CheckBox id="VGWDRid" text="Vendor GSTIN Wise Detailed Report" select="checkSelct"/>
+														<CheckBox id="VPWDRid" text="Vendor PAN Wise Detailed Report" select="checkSelct"/>
+														<CheckBox id="CDNI2Aid" text="CR/DR-Invoice Reference Register- GSTR {Display>/Label}" select="checkSelct"/>
+														<CheckBox id="CDNIPRid" text="CR/DR-Invoice Reference Register- PR" select="checkSelct"/>
+														<CheckBox id="TSis" text="GSTR {Display>/Label} Time Stamp Report" select="checkSelct"/>
+														<CheckBox id="PRid" text="Consolidated PR Register" select="checkSelct"/>
+														<HBox direction="Column">
+															<CheckBox id="LCid" text="Locked CFS-N and Amended Records" select="checkSelct"/>
+															<CheckBox id="amdTrcRpt2b" text="GSTR 2B Amendment Track Report" select="checkSelct" visible="false"/>
+														</HBox>
+														<CheckBox id="RCid" text="Reverse Charge Register" select="checkSelct"/>
+														<CheckBox id="Impg" text="Imports/SEZG Matching Report" select="checkSelct"/>
+														<!--enabled="{=!${isYdtFlag>/resp}}"-->
+														<CheckBox id="DprId" text="Dropped PR Records Report" select="checkSelct"/>
+														<HBox direction="Column">
+															<CheckBox id="Dpr2aId" text="Dropped {Display>/Label} Records Report" select="checkSelct"/>
+															<CheckBox id="D2bId" selected="true" text="Dropped 2B Records Report" editable="false" visible="false"/>
+														</HBox>
+														<HBox direction="Column">
+															<CheckBox id="RGTPWRid2" text="Recipient GSTIN Tax Period Wise Report II" select="checkSelct" visible="false"/>
+															<CheckBox id="Nt" text="ITC Tracking Report" select="checkSelct"/>
+														</HBox>
+													</l:content>
+												</l:Grid>
+											</l:BlockLayoutCell>
+										</l:BlockLayoutRow>
+									</l:BlockLayout>
+									<commons:ChartContainer showFullScreen="false" id="oninreconTab" autoAdjustHeight="false">
+										<commons:content>
+											<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+												<commons:content>
+													<ui:TreeTable rows="{path:'InitiateRecon2A>/'}" id="idintable2A" selectionMode="None" selectionBehavior="Row" fixedColumnCount="2"
+														enableSelectAll="false">
+														<ui:Column width="14rem" visible="false">
+															<ui:multiLabels>
+																<Label text="" design="Bold"/>
+																<Label text="Showing" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox>
+																	<Text text="{Anx2>Showing}"/>
+																	<core:Icon src="sap-icon://message-information" visible="{= ${Anx2>Showing}=== 'Data for Recon' ? true:false }" class="sapUiTinyMarginBegin"
+																		color="#000000" tooltip="Including Rollover"/>
+																	<core:Icon src="sap-icon://message-information" visible="{= ${Anx2>Showing}=== 'Rolled Over Data' ? true:false }"
+																		class="sapUiTinyMarginBegin" color="#000000" tooltip="Based on Response provided in previous period"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="15rem">
+															<ui:multiLabels>
+																<Label text="" design="Bold"/>
+																<Label text="Section" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<Text text="{parts:[{path : 'InitiateRecon2A>section'}], formatter : '.formatter.section'}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column headerSpan="6" hAlign="End" width="8rem" id="idDCRCol82A">
+															<ui:multiLabels>
+																<Label text="Purchase Register" design="Bold" textAlign="Center" width="100%"/>
+																<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{InitiateRecon2A>prCount}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column hAlign="End" width="9rem" id="idDCRCol92A">
+															<ui:multiLabels>
+																<Label text="" design="Bold" textAlign="Center"/>
+																<HBox alignItems="Start" justifyContent="Center">
+																	<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																</HBox>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{parts:[{path : 'InitiateRecon2A>prTaxableValue'}], formatter : '.formatter.amountValue'}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column hAlign="End" width="9rem" id="idDCRCol102A">
+															<ui:multiLabels>
+																<Label text="" design="Bold" textAlign="Center"/>
+																<HBox alignItems="Start" justifyContent="Center">
+																	<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																</HBox>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{parts:[{path : 'InitiateRecon2A>prIGST'}], formatter : '.formatter.amountValue'}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column hAlign="End" width="9rem" id="idDCRCol112A">
+															<ui:multiLabels>
+																<Label text="" design="Bold" textAlign="Center"/>
+																<HBox alignItems="Start" justifyContent="Center">
+																	<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																</HBox>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{parts:[{path : 'InitiateRecon2A>prCGST'}], formatter : '.formatter.amountValue'}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column hAlign="End" width="9rem" id="idDCRCol122A">
+															<ui:multiLabels>
+																<Label text="" design="Bold" textAlign="Center"/>
+																<HBox alignItems="Start" justifyContent="Center">
+																	<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																</HBox>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{parts:[{path : 'InitiateRecon2A>prSGST'}], formatter : '.formatter.amountValue'}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column hAlign="End" width="9rem" id="idDCRCol132A">
+															<ui:multiLabels>
+																<Label text="" design="Bold" textAlign="Center"/>
+																<HBox alignItems="Start" justifyContent="Center">
+																	<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																</HBox>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{parts:[{path : 'InitiateRecon2A>prCess'}], formatter : '.formatter.amountValue'}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column headerSpan="6" hAlign="End" width="8rem" id="idDCRCol22A">
+															<ui:multiLabels>
+																<Label text="{=(${Display>/Label}==='Inward E-Inv' ? '' : 'GSTR - ') + ${Display>/Label}}" textAlign="Center" width="100%" design="Bold"/>
+																<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{InitiateRecon2A>gstr2Count}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column hAlign="End" width="9rem" id="idDCRCol32A">
+															<ui:multiLabels>
+																<Label text="" design="Bold"/>
+																<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{parts:[{path : 'InitiateRecon2A>gstr2TaxableValue'}], formatter : '.formatter.amountValue'}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column hAlign="End" width="9rem" id="idDCRCol42A">
+															<ui:multiLabels>
+																<Label text="" width="100%" design="Bold"/>
+																<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{parts:[{path : 'InitiateRecon2A>gstr2IGST'}], formatter : '.formatter.amountValue'}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column hAlign="End" width="9rem" id="idDCRCol52A">
+															<ui:multiLabels>
+																<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{parts:[{path : 'InitiateRecon2A>gstr2CGST'}], formatter : '.formatter.amountValue'}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column hAlign="End" width="9rem" id="idDCRCol62A">
+															<ui:multiLabels>
+																<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold" tooltip="Rectified"/>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{parts:[{path : 'InitiateRecon2A>gstr2SGST'}], formatter : '.formatter.amountValue'}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="9rem" hAlign="End" id="idDCRCol72A">
+															<ui:multiLabels>
+																<Label text="" design="Bold"/>
+																<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<Text text="{parts:[{path : 'InitiateRecon2A>gstr2Cess'}], formatter : '.formatter.amountValue'}"/>
+															</ui:template>
+														</ui:Column>
+													</ui:TreeTable>
+												</commons:content>
+											</commons:ChartContainerContent >
+										</commons:content>
+										<commons:toolbar>
+											<OverflowToolbar class="supplToolbarInAnx2 supplToolbarColInAnx2">
+												<core:Icon id="iMoreIniatR2A" src="sap-icon://navigation-down-arrow" tooltip="More" press="fnPressDownInitR" color="black"/>
+												<core:Icon id="iLessIniatR2A" src="sap-icon://slim-arrow-right" tooltip="Less" press="fnPressRightInitR" visible="false" color="black"/>
+												<Label text="Data for Recon" design="Bold" textAlign="Center"/>
+												<ToolbarSpacer/>
+												<Button text="Download Summary" class="buttoncolorSec" press="onExcelPress" enabled="{= ${userPermission>/appPermission/P8}}"/>
+												<Button type="Transparent" id="openbut" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="true"
+													press="onIntiateReconFullScreen('open')"/>
+												<Button type="Transparent" id="closebut" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="false"
+													press="onIntiateReconFullScreen('close')"/>
+												<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+											</OverflowToolbar>
+										</commons:toolbar>
+									</commons:ChartContainer>
+								</content>
+							</Page>
+						</detailPages>
+						<masterPages>
+							<Page showHeader="false">
+								<ObjectStatus text="{OptedAnswer>/text}" state="Error"/>
+								<SearchField id="searchId" liveChange="onSearchGstins1" width="99%"/>
+								<ScrollContainer height="90%" vertical="true">
+									<List mode="MultiSelect" id="idInitiateReconList2A" headerText="List of GSTIN" items="{GSTIN2A>/}" selectionChange="onSelectionChange1"
+										updateFinished="updatefinished" sticky="HeaderToolbar">
+										<headerToolbar>
+											<OverflowToolbar>
+												<CheckBox id="checkboxID" selected="true" select="onSelectallGSTIN"/>
+												<Title text="List of GSTIN" level="H2"/>
+												<ToolbarSpacer/>
+											</OverflowToolbar>
+										</headerToolbar>
+										<CustomListItem>
+											<HBox justifyContent="SpaceBetween">
+												<VBox class="sapUiTinyMarginBegin sapUiTinyMarginTopBottom">
+													<Label text="{GSTIN2A>state}"/>
+													<Link text="{GSTIN2A>gstin}" press="handlePress"/>
+													<Label text="{GSTIN2A>statusdate}"/>
+												</VBox>
+												<VBox class="sapUiTinyMarginBegin sapUiTinyMarginTopBottom sapUiTinyMarginEnd">
+													<Label text="{=${GSTIN2A>gstinIdentifier}==='REGULAR'?'':${GSTIN2A>gstinIdentifier}}"/>
+													<Label text="{GSTIN2A>status}"/>
+												</VBox>
+											</HBox>
+										</CustomListItem>
+									</List>
+								</ScrollContainer>
+							</Page>
+						</masterPages>
+					</SplitApp>
+				</content>
+			</Page>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="idRequestIDwisePage2A" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button icon="sap-icon://nav-back" type="Transparent" press="onPressRequestIDwiseBack2A"/>
+						<Title text="Request ID wise" class="sapUiSmallMarginBegin clTitleMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Initiated Date From" visibleInFilterBar="true"
+							visible="{Display>/TAX}">
+							<fb:control>
+								<DatePicker id="InDateFrom" displayFormat="dd MMM yyyy" valueFormat="yyyy-MM-dd" class="input" change="handleChangeF" width="12rem"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Initiated Date To" visibleInFilterBar="true" visible="{Display>/TAX}">
+							<fb:control>
+								<DatePicker id="InDateTo" displayFormat="dd MMM yyyy" valueFormat="yyyy-MM-dd" class="input" change="handleChangeT" width="12rem"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Request ID" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="Reqid" width="100%" items="{path:'getgstr2RequestIds>/', sorter: {path: 'requestId',descending:true}}"
+									selectionChange="selectAll">
+									<core:Item key="{getgstr2RequestIds>requestId}" text="{getgstr2RequestIds>requestId}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="s" label="Recon Type" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idReconType12" class="input" forceSelection="false">
+									<core:Item key="2APR" text="GSTR-2A/6A Vs PR"/>
+									<core:Item key="2APRAU" text="GSTR-2A/6A Vs PR (Auto)"/>
+									<core:Item key="2BPR" text="GSTR-2B Vs PR"/>
+									<core:Item key="EINVPR" text="Inward E-Inv vs PR"
+										enabled="{=(${userPermission>/appPermission/R8} &amp;&amp; ${userPermission>/appPermission/P41})}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Initiated By(User ID)" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="Userid" width="100%" items="{path:'getgstr2UserNames>/',sorter: {path: 'userName',descending:false}}"
+									selectionChange="selectAll">
+									<core:Item key="{getgstr2UserNames>userName}" text="{getgstr2UserNames>userName}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Initiated By(User Email ID)" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="Emailid" width="100%" items="{path:'getgstr2EmailIds>/'}" selectionChange="selectAll">
+									<core:Item key="{getgstr2EmailIds>email}" text="{getgstr2EmailIds>email}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="k" label="Recon Status" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idReconType123" class="input" forceSelection="false">
+									<core:Item key="REPORT GENERATED" text="REPORT GENERATED"/>
+									<core:Item key="REPORT GENERATION FAILED" text="REPORT GENERATION FAILED"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="Filter" press="onPressRequestIDwise2AFilter" class="sapUiTinyMarginBegin buttoncolor"/>
+					<Button text="Clear" press="onPressClearRequestIDwise2A" class="sapUiTinyMarginBegin buttoncolorSec"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false">
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table rows="{path:'ReqWiseData2A>/resp/', sorter: {path:'requestId',descending:true}}" selectionMode="None" visibleRowCount="16">
+								<ui:Column width="8rem">
+									<Label design="Bold" text="Request ID"/>
+									<ui:template>
+										<Text text="{ReqWiseData2A>requestId}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="4rem">
+									<Label design="Bold" text="No. of GSTIN" wrapping="true"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Link text="{ReqWiseData2A>gstinCount}" press="onPressGSTIN"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="8rem">
+									<Label design="Bold" text="Recon Type"/>
+									<ui:template>
+										<HBox renderType="Bare" alignItems="Center" justifyContent="Center">
+											<ObjectStatus text="{path:'ReqWiseData2A>reconType', formatter:'.formatter.ReconType'}"
+												state="{= ${ReqWiseData2A>reconType} === '2BPR' ? 'Information' : ${ReqWiseData2A>reconType} === '2APR' ? 'Warning' : 'None'}"/>
+											<core:Icon src="sap-icon://message-information" size="0.9rem" useIconTooltip="false" class="sapUiTinyMarginBegin"
+												press="onInitiateRec2AReconType($event,${ReqWiseData2A>isItcRejOpted},${ReqWiseData2A>isImsPendingOpted})"
+												visible="{=['Yes','No'].includes(${ReqWiseData2A>isItcRejOpted})}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="9rem">
+									<Label design="Bold" text="Request Type"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{ReqWiseData2A>reqType}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="7rem">
+									<Label design="Bold" text="PR Tax Period From" textAlign="Center" wrapping="true"/>
+									<ui:template>
+										<Text
+											text="{= ${ReqWiseData2A>reqType} === 'Document Date Wise' ? ${ReqWiseData2A>fromDocDate} : ${path:'ReqWiseData2A>fromTaxPeriod', formatter:'.formatter.month'}}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="7rem">
+									<Label design="Bold" text="PR Tax Period To" textAlign="Center" wrapping="true"/>
+									<ui:template>
+										<Text
+											text="{= ${ReqWiseData2A>reqType} === 'Document Date Wise' ? ${ReqWiseData2A>toDocDate} : ${path:'ReqWiseData2A>toTaxPeriod', formatter:'.formatter.month'}}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="7rem">
+									<Label design="Bold" text="2A/6A/2B Tax Period From" textAlign="Center" wrapping="true"/>
+									<ui:template>
+										<Text text="{path:'ReqWiseData2A>fromTaxPeriod2A', formatter:'.formatter.month'}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="7rem">
+									<Label design="Bold" text="2A/6A/2B Tax Period To" textAlign="Center" wrapping="true"/>
+									<ui:template>
+										<Text text="{path:'ReqWiseData2A>toTaxPeriod2A', formatter:'.formatter.month'}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="11rem">
+									<Label design="Bold" text="Initiation"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{ReqWiseData2A>initiatedOn}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" minWidth="250">
+									<Label design="Bold" text="Initiated By"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{ReqWiseData2A>initiatedBy}_{ReqWiseData2A>emailId}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="11rem">
+									<Label design="Bold" text="Completion"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{ReqWiseData2A>completionOn}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="9rem">
+									<Label design="Bold" text="Download"/>
+									<ui:template>
+										<HBox alignItems="Start" justifyContent="Center">
+											<Button text="Report Download" press="onConfigExtractPress2A1" class="buttoncolorSec" enabled="{= ${userPermission>/appPermission/P8}}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="13rem">
+									<Label design="Bold" text="Status"/>
+									<ui:template>
+										<Text text="{parts:[{path : 'ReqWiseData2A>status'}], formatter : '.formatter.statusReplace'}"/>
+									</ui:template>
+								</ui:Column>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+				<commons:toolbar>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+						<Button type="Transparent" icon="sap-icon://download" tooltip="Download Summary" press="onDownloadSummary" visible="false"/>
+						<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+					</OverflowToolbar>
+				</commons:toolbar>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="idExcludeVendor" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button icon="sap-icon://nav-back" type="Transparent" press="onPressExcldVendorBack"/>
+						<Title text="Exclude Vendors" class="sapUiSmallMarginBegin clTitleMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar reset="onReset" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onSearch"
+					clear="onClearFilter" useToolbar="false" class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Vendor GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{oVendorGstin>/resp}" selectionChange="selectAll" id="id_VendorGStn">
+									<core:Item key="{oVendorGstin>vendorGstin}" text="{oVendorGstin>vendorGstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Enter a Keyword to Filter By" visibleInFilterBar="true"
+							mandatory="true">
+							<fb:control>
+								<SearchField width="100%" placeholder="Search Here...." liveChange="onExcludeVendorSearch"></SearchField>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain">
+					<Button tooltip="Delete" text="Delete" press="fnDeleteVendrMastr" class="sapUiSmallMarginBeginEnd buttoncolorSec"
+						enabled="{= ${userPermission>/appPermission/P8}}"/>
+					<Button type="Emphasized" tooltip="Gstr1 Search" text="Search" press="onPressExcludeVendorSrch" class="buttoncolorSec"
+						enabled="{= ${userPermission>/appPermission/P8}}"/>
+					<Button type="Emphasized" tooltip="Download Table Data" text="Download Exclude Vendor List" press="fnDownldVendrMastr"
+						class="sapUiSmallMarginBeginEnd buttoncolorSec" enabled="{= ${userPermission>/appPermission/P8}}"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer showFullScreen="true" showZoom="true">
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table id="idTabExcludeVendr" rows="{oExcludeVendors>/resp/vendorExcludedData}" selectionMode="MultiToggle" selectionBehavior="Row"
+								visibleRowCount="12" fixedRowCount="0" enableSelectAll="true">
+								<ui:columns width="12rem">
+									<ui:Column hAlign="Center" width="15rem">
+										<ui:multiLabels>
+											<Label text="Vendor GSTIN" textAlign="Center" width="100%" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{oExcludeVendors>vendorGstin}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="20rem">
+										<ui:multiLabels>
+											<Label text="Vendor Name" textAlign="Center" width="100%" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{oExcludeVendors>vendorName}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="25rem">
+										<ui:multiLabels>
+											<Label text="Exclude Vendor Remarks" textAlign="Center" width="100%" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{oExcludeVendors>excludeVendorRemarks}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

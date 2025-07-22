@@ -1,0 +1,1040 @@
+{
+	"_version": "1.8.0",
+	"sap.app": {
+		"id": "com.ey.digigst",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"dataSources": {
+			"AspAPI": {
+				"uri": "/aspsapapi"
+			}
+		},
+		"sourceTemplate": {
+			"id": "ui5template.basicSAPUI5ApplicationProject",
+			"version": "1.40.12"
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {
+			"icon": "",
+			"favIcon": "images/favicon.ico",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
+	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "com.ey.digigst.view.App",
+			"type": "XML",
+			"async": true,
+			"id": "App"
+		},
+		"dependencies": {
+			"minUI5Version": "1.60.1",
+			"libs": {
+				"sap.ui.layout": {},
+				"sap.ui.core": {},
+				"sap.m": {}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"": {
+				"dataSource": "AspAPI"
+			},
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "com.ey.digigst.i18n.i18n"
+				}
+			},
+			"EntityModel": {
+				"type": "sap.ui.model.json.JSONModel",
+				"settings": {},
+				"preload": false
+			},
+			"Menu": {
+				"type": "sap.ui.model.json.JSONModel",
+				"uri": "json/Menu.json",
+				"preload": false
+			},
+			"DropDown": {
+				"type": "sap.ui.model.json.JSONModel",
+				"settings": {},
+				"uri": "json/DropDown.json",
+				"preload": false
+			},
+			"ReviewFields": {
+				"type": "sap.ui.model.json.JSONModel",
+				"settings": {},
+				"uri": "json/ReviewFields.json",
+				"preload": false
+			},
+			"Data": {
+				"type": "sap.ui.model.json.JSONModel",
+				"settings": {},
+				"uri": "json/Data.json",
+				"preload": false
+			},
+			"Report": {
+				"type": "sap.ui.model.json.JSONModel",
+				"settings": {},
+				"uri": "json/Report.json",
+				"preload": false
+			},
+			"Revenue": {
+				"type": "sap.ui.model.json.JSONModel",
+				"uri": "model/Revenue.json",
+				"preload": false
+			},
+			"AuthToken": {
+				"type": "sap.ui.model.json.JSONModel",
+				"uri": "model/AuthToken.json",
+				"preload": false
+			},
+			"Anx2": {
+				"type": "sap.ui.model.json.JSONModel",
+				"uri": "model/anx2.json",
+				"preload": false
+			},
+			"Returns": {
+				"type": "sap.ui.model.json.JSONModel",
+				"settings": {},
+				"uri": "json/Returns.json",
+				"preload": false
+			},
+			"invManage": {
+				"type": "sap.ui.model.json.JSONModel",
+				"settings": {},
+				"uri": "model/invManage.json",
+				"preload": false
+			}
+		},
+		"resources": {
+			"css": [
+				{
+					"uri": "css/style.css"
+				},
+				{
+					"uri": "css/styleAnx1.css"
+				},
+				{
+					"uri": "css/styleAnx2.css"
+				}
+			],
+			"js": [
+				{
+					"uri": "libs/rgbcolor.js"
+				},
+				{
+					"uri": "libs/stackblur.js"
+				},
+				{
+					"uri": "libs/canvg.js"
+				},
+				{
+					"uri": "libs/jsPDF.js"
+				},
+				{
+					"uri": "libs/FileSaver.min.js"
+				},
+				{
+					"uri": "libs/jszip.min.js"
+				},
+				{
+					"uri": "libs/exceljs.min.js"
+				}
+			]
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"async": true,
+				"viewPath": "com.ey.digigst.view",
+				"controlAggregation": "pages",
+				"controlId": "mainContents",
+				"clearControlAggregation": false,
+				"bypassed": {
+					"target": []
+				}
+			},
+			"routes": [
+				{
+					"name": "Home",
+					"pattern": "",
+					"target": "Home"
+				},
+				{
+					"name": "GrpLComplianceHistory",
+					"pattern": "GrpLComplianceHistory",
+					"target": "GrpLComplianceHistory"
+				},
+				{
+					"name": "GrpLDashboard",
+					"pattern": "GrpLDashboard",
+					"target": "GrpLDashboard"
+				},
+				{
+					"name": "DataStatus",
+					"pattern": "DataStatus",
+					"target": "DataStatus"
+				},
+				{
+					"name": "DataStatusNew",
+					"pattern": "DataStatusNew",
+					"target": "DataStatusNew"
+				},
+				{
+					"name": "InvoiceManage",
+					"pattern": "InvoiceManagement",
+					"target": "InvoiceManage"
+				},
+				{
+					"name": "InvManageNew",
+					"pattern": "InvManageNew",
+					"target": "InvManageNew"
+				},
+				{
+					"name": "inwardEINV",
+					"pattern": "inwardEINV",
+					"target": "inwardEINV"
+				},
+				{
+					"name": "GstnRecords",
+					"pattern": "GstnRecords",
+					"target": "GstnRecords"
+				},
+				{
+					"pattern": "Returns/{contextPath}/:key:",
+					"name": "Returns",
+					"target": "Returns"
+				},
+				{
+					"pattern": "SACReports",
+					"name": "SACReports",
+					"target": "SACReports"
+				},
+				{
+					"pattern": "SACInward",
+					"name": "SACInward",
+					"target": "SACInward"
+				},
+				{
+					"pattern": "SACGSTR1",
+					"name": "SACGSTR1",
+					"target": "SACGSTR1"
+				},
+				{
+					"name": "AuthToken",
+					"pattern": "AuthToken",
+					"target": "AuthToken"
+				},
+				{
+					"name": "Reports",
+					"pattern": "Reports",
+					"target": "Reports"
+				},
+				{
+					"name": "Others",
+					"pattern": "Others/{contextPath}",
+					"target": "Others"
+				},
+				{
+					"name": "Ledger",
+					"pattern": "Ledger",
+					"target": "Ledger"
+				},
+				{
+					"pattern": "gstr1outward",
+					"name": "gstr1outward",
+					"target": "gstr1outward"
+				},
+				{
+					"pattern": "Outward_Consolidated_Report",
+					"name": "Outward_Consolidated_Report",
+					"target": "Outward_Consolidated_Report"
+				},
+				{
+					"pattern": "Outward_FY_Report",
+					"name": "Outward_FY_Report",
+					"target": "Outward_FY_Report"
+				},
+				{
+					"pattern": "GSTR1/:key:",
+					"name": "GSTR1",
+					"target": "GSTR1"
+				},
+				{
+					"pattern": "GSTR6/:key:",
+					"name": "GSTR6",
+					"target": "GSTR6"
+				},
+				{
+					"pattern": "GSTR7/:key:",
+					"name": "GSTR7",
+					"target": "GSTR7"
+				},
+				{
+					"pattern": "ITC04/:key:",
+					"name": "ITC04",
+					"target": "ITC04"
+				},
+				{
+					"pattern": "GSTR3B:key:",
+					"name": "GSTR3B",
+					"target": "GSTR3B"
+				},
+				{
+					"pattern": "GSTR2/:key:",
+					"name": "GSTR2",
+					"target": "GSTR2"
+				},
+				{
+					"pattern": "asnycReports",
+					"name": "asnycReports",
+					"target": "asnycReports"
+				},
+				{
+					"pattern": "APICallDashboard",
+					"name": "APICallDashboard",
+					"target": "APICallDashboard"
+				},
+				{
+					"pattern": "operMonitoringReport",
+					"name": "operMonitoringReport",
+					"target": "operMonitoringReport"
+				},
+				{
+					"pattern": "operMonitoringReportInward",
+					"name": "operMonitoringReportInward",
+					"target": "operMonitoringReportInward"
+				},
+				{
+					"pattern": "transMonitoringReportOutward",
+					"name": "transMonitoringReportOutward",
+					"target": "transMonitoringReportOutward"
+				},
+				{
+					"pattern": "transMonitoringReportInward",
+					"name": "transMonitoringReportInward",
+					"target": "transMonitoringReportInward"
+				},
+				{
+					"pattern": "SACEinvoice",
+					"name": "SACEinvoice",
+					"target": "SACEinvoice"
+				},
+				{
+					"pattern": "NonCompliantVendors",
+					"name": "NonCompliantVendors",
+					"target": "NonCompliantVendors"
+				},
+				{
+					"name": "EWB",
+					"pattern": "EWB",
+					"target": "EWB"
+				},
+				{
+					"pattern": "Extraction",
+					"name": "Extraction",
+					"target": "Extraction"
+				},
+				{
+					"pattern": "GSTR9/:key:",
+					"name": "GSTR9",
+					"target": "GSTR9"
+				},
+				{
+					"name": "SACDashboardOutward",
+					"pattern": "SACDashboardOutward",
+					"target": "SACDashboardOutward"
+				},
+				{
+					"pattern": "oExtraction1",
+					"name": "oExtraction1",
+					"target": "oExtraction1"
+				},
+				{
+					"pattern": "Masters",
+					"name": "Masters",
+					"target": "Masters"
+				},
+				{
+					"pattern": "TaskInbox",
+					"name": "TaskInbox",
+					"target": "TaskInbox"
+				},
+				{
+					"name": "SACDashboardOutward2",
+					"pattern": "SACDashboardOutward2",
+					"target": "SACDashboardOutward2"
+				},
+				{
+					"name": "SACDashboardOutward3",
+					"pattern": "SACDashboardOutward3",
+					"target": "SACDashboardOutward3"
+				},
+				{
+					"name": "APModule",
+					"pattern": "APModule/{contextPath}/:key:",
+					"target": "APModule"
+				},
+				{
+					"name": "AutoRecon",
+					"pattern": "AutoRecon",
+					"target": "AutoRecon"
+				},
+				{
+					"name": "InwardSAC",
+					"pattern": "InwardSAC",
+					"target": "InwardSAC"
+				},
+				{
+					"name": "EInvoiceDashboard",
+					"pattern": "EInvoiceDashboard",
+					"target": "EInvoiceDashboard"
+				},
+				{
+					"name": "InwardSAC2",
+					"pattern": "InwardSAC2",
+					"target": "InwardSAC2"
+				},
+				{
+					"name": "ThreeWayRecon",
+					"pattern": "ThreeWayRecon",
+					"target": "ThreeWayRecon"
+				},
+				{
+					"pattern": "ReconRsp",
+					"name": "ReconRsp",
+					"target": "ReconRsp"
+				},
+				{
+					"pattern": "ITCReversal",
+					"name": "ITCReversal",
+					"target": "ITCReversal"
+				},
+				{
+					"pattern": "glEntityComplianceHistory",
+					"name": "glEntityComplianceHistory",
+					"target": "glEntityComplianceHistory"
+				},
+				{
+					"name": "SACLiabilityPayment",
+					"pattern": "SACLiabilityPayment",
+					"target": "SACLiabilityPayment"
+				},
+				{
+					"name": "Feedback",
+					"pattern": "Feedback",
+					"target": "Feedback"
+				},
+				{
+					"name": "GDashboardOutward1",
+					"pattern": "GDashboardOutward1",
+					"target": "GDashboardOutward1"
+				},
+				{
+					"name": "GDashboardOutward2",
+					"pattern": "GDashboardOutward2",
+					"target": "GDashboardOutward2"
+				},
+				{
+					"name": "GDashboardInward1",
+					"pattern": "GDashboardInward1",
+					"target": "GDashboardInward1"
+				},
+				{
+					"name": "GDashboardInward2",
+					"pattern": "GDashboardInward2",
+					"target": "GDashboardInward2"
+				},
+				{
+					"name": "GDashboardLiability",
+					"pattern": "GDashboardLiability",
+					"target": "GDashboardLiability"
+				},
+				{
+					"name": "GEInvoiceDashboard",
+					"pattern": "GEInvoiceDashboard",
+					"target": "GEInvoiceDashboard"
+				},
+				{
+					"name": "GAuthToken",
+					"pattern": "GroupAuthToken",
+					"target": "GAuthToken"
+				},
+				{
+					"name": "GReconReqStats",
+					"pattern": "GReconReqStats",
+					"target": "GReconReqStats"
+				},
+				{
+					"name": "GSTNotices",
+					"pattern": "GSTNotices",
+					"target": "GSTNotices"
+				}
+			],
+			"targets": {
+				"Home": {
+					"viewType": "XML",
+					"viewName": "Home"
+				},
+				"AuthToken": {
+					"viewType": "XML",
+					"viewName": "AuthToken"
+				},
+				"Returns": {
+					"viewType": "XML",
+					"viewName": "Returns",
+					"viewId": "Returns"
+				},
+				"ANX1": {
+					"viewType": "XML",
+					"viewName": "ANX1",
+					"parent": "Returns",
+					"controlId": "ifAnx1",
+					"viewPath": "com.ey.digigst.view",
+					"controlAggregation": "content"
+				},
+				"ANX2": {
+					"viewType": "XML",
+					"viewName": "ANX2",
+					"parent": "Returns",
+					"controlId": "ifAnx2",
+					"viewPath": "com.ey.digigst.view",
+					"controlAggregation": "content"
+				},
+				"RET1": {
+					"viewType": "XML",
+					"viewName": "RET1",
+					"parent": "Returns",
+					"controlId": "ifRet1",
+					"viewPath": "com.ey.digigst.view",
+					"controlAggregation": "content"
+				},
+				"ANX1A": {
+					"viewType": "XML",
+					"viewName": "Anx1A",
+					"parent": "Returns",
+					"controlId": "ifAnx1A",
+					"viewPath": "com.ey.digigst.view",
+					"controlAggregation": "content"
+				},
+				"RET1A": {
+					"viewType": "XML",
+					"viewName": "RET1A",
+					"parent": "Returns",
+					"controlId": "ifRet1a",
+					"viewPath": "com.ey.digigst.view",
+					"controlAggregation": "content"
+				},
+				"GSTR1": {
+					"viewType": "XML",
+					"viewName": "GSTR1",
+					"viewId": "gstr1",
+					"parent": "Returns",
+					"controlId": "ifGSTR1",
+					"viewPath": "com.ey.digigst.view",
+					"controlAggregation": "content"
+				},
+				"GSTR1A": {
+					"viewType": "XML",
+					"viewName": "GSTR1A",
+					"viewId": "gstr1A",
+					"parent": "Returns",
+					"controlId": "ifGSTR1A",
+					"viewPath": "com.ey.digigst.view",
+					"controlAggregation": "content"
+				},
+				"GSTR2": {
+					"viewType": "XML",
+					"viewName": "GSTR2",
+					"viewId": "gstr2",
+					"parent": "Returns",
+					"controlId": "ifGSTR2",
+					"viewPath": "com.ey.digigst.view",
+					"controlAggregation": "content"
+				},
+				"GSTR3B": {
+					"viewType": "XML",
+					"viewName": "GSTR3B1",
+					"parent": "Returns",
+					"controlId": "ifGSTR3B",
+					"viewPath": "com.ey.digigst.view",
+					"controlAggregation": "content"
+				},
+				"GSTR6": {
+					"viewType": "XML",
+					"viewName": "GSTR6",
+					"parent": "Returns",
+					"controlId": "ifGSTR6",
+					"viewPath": "com.ey.digigst.view",
+					"controlAggregation": "content"
+				},
+				"GSTR7": {
+					"viewType": "XML",
+					"viewName": "GSTR7",
+					"parent": "Returns",
+					"controlId": "ifGSTR7",
+					"viewPath": "com.ey.digigst.view",
+					"controlAggregation": "content"
+				},
+				"GSTR7_TXN": {
+					"viewType": "XML",
+					"viewName": "GSTR7_TXN",
+					"parent": "Returns",
+					"controlId": "ifGSTR7_TXN",
+					"viewPath": "com.ey.digigst.view",
+					"controlAggregation": "content"
+				},
+				"GSTR8": {
+					"viewType": "XML",
+					"viewName": "GSTR8",
+					"parent": "Returns",
+					"controlId": "ifGSTR8",
+					"viewPath": "com.ey.digigst.view",
+					"controlAggregation": "content"
+				},
+				"ITC04": {
+					"viewType": "XML",
+					"viewName": "ITC04",
+					"parent": "Returns",
+					"controlId": "ifITC04",
+					"viewPath": "com.ey.digigst.view",
+					"controlAggregation": "content"
+				},
+				"SACReports": {
+					"viewType": "XML",
+					"viewName": "SACReports"
+				},
+				"SACInward": {
+					"viewType": "XML",
+					"viewName": "SACInward"
+				},
+				"SACGSTR1": {
+					"viewType": "XML",
+					"viewName": "SACGSTR1"
+				},
+				"DataStatus": {
+					"viewType": "XML",
+					"viewName": "DataStatus"
+				},
+				"DataStatusNew": {
+					"viewType": "XML",
+					"viewName": "DataStatusNew"
+				},
+				"InvoiceManage": {
+					"viewType": "XML",
+					"viewName": "InvoiceManage"
+				},
+				"InvManageNew": {
+					"viewType": "XML",
+					"viewName": "InvManageNew"
+				},
+				"Reports": {
+					"viewType": "XML",
+					"viewName": "Reports"
+				},
+				"ReportHistory": {
+					"viewType": "XML",
+					"viewName": "ReportHistory"
+				},
+				"ReportGenerate": {
+					"viewType": "XML",
+					"viewName": "ReportGenerate"
+				},
+				"Others": {
+					"viewType": "XML",
+					"viewName": "Others"
+				},
+				"Ledger": {
+					"viewType": "XML",
+					"viewName": "Ledger"
+				},
+				"gstr1outward": {
+					"viewType": "XML",
+					"viewName": "gstr1outward"
+				},
+				"asnycReports": {
+					"viewType": "XML",
+					"viewName": "asnycReports"
+				},
+				"APICallDashboard": {
+					"viewType": "XML",
+					"viewName": "APICallDashboard"
+				},
+				"operMonitoringReport": {
+					"viewType": "XML",
+					"viewName": "operMonitoringReport"
+				},
+				"Outward_Consolidated_Report": {
+					"viewType": "XML",
+					"viewName": "Outward_Consolidated_Report"
+				},
+				"Outward_FY_Report": {
+					"viewType": "XML",
+					"viewName": "Outward_FY_Report"
+				},
+				"operMonitoringReportInward": {
+					"viewType": "XML",
+					"viewName": "operMonitoringReportInward"
+				},
+				"transMonitoringReportOutward": {
+					"viewType": "XML",
+					"viewName": "transMonitoringReportOutward"
+				},
+				"TDSTCS": {
+					"viewType": "XML",
+					"viewName": "TDSTCS"
+				},
+				"Reversal": {
+					"viewType": "XML",
+					"viewName": "Reversal"
+				},
+				"transMonitoringReportInward": {
+					"viewType": "XML",
+					"viewName": "transMonitoringReportInward"
+				},
+				"Gstr2A3B": {
+					"viewType": "XML",
+					"viewName": "Gstr2A3B"
+				},
+				"SACEinvoice": {
+					"viewType": "XML",
+					"viewName": "SACEinvoice"
+				},
+				"NonCompliantVendors": {
+					"viewType": "XML",
+					"viewName": "NonCompliantVendors"
+				},
+				"GLRECON": {
+					"viewPath": "com.ey.digigst.view",
+					"viewType": "XML",
+					"viewName": "GLRECON"
+				},
+				"Gstr1PRvsSD": {
+					"viewType": "XML",
+					"viewName": "Gstr1PRvsSD"
+				},
+				"DeterminationGstr6": {
+					"viewType": "XML",
+					"viewName": "DeterminationGstr6"
+				},
+				"GSTR1EINV": {
+					"viewType": "XML",
+					"viewName": "GSTR1EINV"
+				},
+				"Extraction": {
+					"viewType": "XML",
+					"viewName": "Extraction"
+				},
+				"Gstr1PRvsEINV": {
+					"viewType": "XML",
+					"viewName": "Gstr1PRvsEINV"
+				},
+				"TDSTCSvsGSTR1Summary": {
+					"viewType": "XML",
+					"viewName": "TDSTCSvsGSTR1Summary"
+				},
+				"B2C": {
+					"viewType": "XML",
+					"viewName": "B2C"
+				},
+				"ExcludeVendors": {
+					"viewType": "XML",
+					"viewName": "ExcludeVendors"
+				},
+				"Reversal180Days": {
+					"viewType": "XML",
+					"viewName": "Reversal180Days"
+				},
+				"EWB": {
+					"viewType": "XML",
+					"viewName": "EWB"
+				},
+				"B2CN": {
+					"viewType": "XML",
+					"viewName": "B2CN"
+				},
+				"GSTR9": {
+					"viewType": "XML",
+					"viewName": "GSTR9",
+					"parent": "Returns",
+					"controlId": "ifGSTR9",
+					"viewPath": "com.ey.digigst.view",
+					"controlAggregation": "content"
+				},
+				"crossitc": {
+					"viewType": "XML",
+					"viewName": "crossitc"
+				},
+				"oExtraction1": {
+					"viewType": "XML",
+					"viewName": "oExtraction1"
+				},
+				"SACDashboardOutward": {
+					"viewType": "XML",
+					"viewName": "SACDashboardOutward"
+				},
+				"ComplianceHistory": {
+					"viewType": "XML",
+					"viewName": "ComplianceHistory"
+				},
+				"Masters": {
+					"viewType": "XML",
+					"viewName": "Masters"
+				},
+				"Auto2B": {
+					"viewType": "XML",
+					"viewName": "Auto2B"
+				},
+				"SACDashboardOutward2": {
+					"viewType": "XML",
+					"viewName": "SACDashboardOutward2"
+				},
+				"SACDashboardOutward3": {
+					"viewType": "XML",
+					"viewName": "SACDashboardOutward3"
+				},
+				"APModule": {
+					"viewType": "XML",
+					"viewName": "APModule"
+				},
+				"AutoRecon": {
+					"viewType": "XML",
+					"viewName": "AutoRecon",
+					"parent": "APModule",
+					"controlId": "APMid",
+					"viewPath": "com.ey.digigst.view",
+					"controlAggregation": "content"
+				},
+				"QRCode": {
+					"viewType": "XML",
+					"viewName": "QRCode",
+					"parent": "APModule",
+					"controlId": "idQRCode",
+					"viewPath": "com.ey.digigst.view",
+					"controlAggregation": "content"
+				},
+				"VendorTrend": {
+					"viewType": "XML",
+					"viewName": "VendorTrend",
+					"parent": "APModule",
+					"controlId": "idVendorTrend",
+					"viewPath": "com.ey.digigst.view",
+					"controlAggregation": "content"
+				},
+				"PDFReader": {
+					"viewType": "XML",
+					"viewName": "PDFReader",
+					"parent": "APModule",
+					"controlId": "idPDFReader",
+					"viewPath": "com.ey.digigst.view",
+					"controlAggregation": "content"
+				},
+				"InwardSAC": {
+					"viewType": "XML",
+					"viewName": "InwardSAC"
+				},
+				"InwardSAC2": {
+					"viewType": "XML",
+					"viewName": "InwardSAC2"
+				},
+				"EInvoiceDashboard": {
+					"viewType": "XML",
+					"viewName": "EInvoiceDashboard"
+				},
+				"initiateReconB": {
+					"viewType": "XML",
+					"viewName": "initiateReconB"
+				},
+				"VendorRating": {
+					"viewType": "XML",
+					"viewName": "VendorRating"
+				},
+				"E-InvoiceApplicability": {
+					"viewType": "XML",
+					"viewName": "E-InvoiceApplicability"
+				},
+				"E-InvoiceCheck": {
+					"viewType": "XML",
+					"viewName": "E-InvoiceCheck"
+				},
+				"CustomizeReport": {
+					"viewType": "XML",
+					"viewName": "CustomizeReport"
+				},
+				"ThreeWayRecon": {
+					"viewType": "XML",
+					"viewName": "ThreeWayRecon"
+				},
+				"CustomerCH": {
+					"viewType": "XML",
+					"viewName": "CustomerCH"
+				},
+				"MyCH": {
+					"viewType": "XML",
+					"viewName": "MyCH"
+				},
+				"TaskInbox": {
+					"viewType": "XML",
+					"viewName": "TaskInbox"
+				},
+				"ReconRsp": {
+					"viewType": "XML",
+					"viewName": "ReconRsp"
+				},
+				"ITCReversal": {
+					"viewType": "XML",
+					"viewName": "ITCReversal"
+				},
+				"VendorLedger": {
+					"viewType": "XML",
+					"viewName": "VendorLedger"
+				},
+				"GrpLComplianceHistory": {
+					"viewType": "XML",
+					"viewName": "GrpLComplianceHistory"
+				},
+				"GrpLDashboard": {
+					"viewType": "XML",
+					"viewName": "GrpLDashboard"
+				},
+				"ITC04Str": {
+					"viewType": "XML",
+					"viewName": "ITC04Str"
+				},
+				"glEntityComplianceHistory": {
+					"viewType": "XML",
+					"viewName": "glEntityComplianceHistory"
+				},
+				"ITC04vsEWB": {
+					"viewType": "XML",
+					"viewName": "ITC04vsEWB"
+				},
+				"SalesvsDigiGST": {
+					"viewType": "XML",
+					"viewName": "SalesvsDigiGST"
+				},
+				"SACLiabilityPayment": {
+					"viewType": "XML",
+					"viewName": "SACLiabilityPayment"
+				},
+				"Feedback": {
+					"viewType": "XML",
+					"viewName": "Feedback"
+				},
+				"DRC01B": {
+					"viewType": "XML",
+					"viewName": "DRC01B"
+				},
+				"VGLRecon": {
+					"viewType": "XML",
+					"viewName": "VGLRecon"
+				},
+				"DRC01C": {
+					"viewType": "XML",
+					"viewName": "DRC01C"
+				},
+				"inwardEINV": {
+					"viewType": "XML",
+					"viewName": "inwardEINV"
+				},
+				"imGetInwardEINV": {
+					"viewType": "XML",
+					"viewName": "imGetInwardEINV"
+				},
+				"imInwardEINVManage": {
+					"viewType": "XML",
+					"viewName": "imInwardEINVManage"
+				},
+				"Gstr2bVs3b": {
+					"viewType": "XML",
+					"viewName": "Gstr2bVs3b"
+				},
+				"ManageNIC": {
+					"viewType": "XML",
+					"viewName": "ManageNIC"
+				},
+				"GstnRecords": {
+					"viewType": "XML",
+					"viewName": "GstnRecords"
+				},
+				"imInwardJSON": {
+					"viewType": "XML",
+					"viewName": "imInwardJSON"
+				},
+				"GDashboardOutward1": {
+					"viewType": "XML",
+					"viewName": "GDashboardOutward1"
+				},
+				"GDashboardOutward2": {
+					"viewType": "XML",
+					"viewName": "GDashboardOutward2"
+				},
+				"GEInvoiceDashboard": {
+					"viewType": "XML",
+					"viewName": "GEInvoiceDashboard"
+				},
+				"DRC01Communication": {
+					"viewType": "XML",
+					"viewName": "DRC01Communication"
+				},
+				"GDashboardInward1": {
+					"viewType": "XML",
+					"viewName": "GDashboardInward1"
+				},
+				"GDashboardInward2": {
+					"viewType": "XML",
+					"viewName": "GDashboardInward2"
+				},
+				"GDashboardLiability": {
+					"viewType": "XML",
+					"viewName": "GDashboardLiability"
+				},
+				"GAuthToken": {
+					"viewType": "XML",
+					"viewName": "GAuthToken"
+				},
+				"GReconReqStats": {
+					"viewType": "XML",
+					"viewName": "GReconReqStats"
+				},
+				"Gstr1APRvsSD": {
+					"viewType": "XML",
+					"viewName": "Gstr1APRvsSD"
+				},
+				"IMS": {
+					"viewType": "XML",
+					"viewName": "IMS"
+				},
+				"GSTNotices": {
+					"viewType": "XML",
+					"viewName": "GSTNotices"
+				}
+			}
+		}
+	},
+	"sap.platform.hcp": {
+		"uri": "webapp",
+		"_version": "1.1.0"
+	}
+}

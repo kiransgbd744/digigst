@@ -1,0 +1,26 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form">
+	<Dialog id="bulkGstnID" title="GSTR-3B Auto Calculate Status" type="Message" class="sapUiSizeCompact cl_saveHeader" showHeader="true">
+		<beginButton>
+			<Button text="OK" class="buttoncolorSec" press="onCloseDialogBulkGstn"/>
+		</beginButton>
+		<Table items="{AutoCalc3bMsg>/resp}" id="idTableBulkGstn" noDataText="No Products">
+			<columns>
+				<Column hAlign="Center">
+					<Text text="GSTIN"/>
+				</Column>
+				<Column hAlign="Center">
+					<Text text="Message Status"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem vAlign="Middle">
+					<cells>
+						<Text text="{AutoCalc3bMsg>gstin}" wrapping="false"/>
+						<Text text="{AutoCalc3bMsg>msg}" wrapping="true"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</Dialog>
+</core:FragmentDefinition>

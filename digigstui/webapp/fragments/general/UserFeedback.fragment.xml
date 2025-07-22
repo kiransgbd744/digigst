@@ -1,0 +1,16 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:l="sap.ui.layout" xmlns:u="sap.ui.unified">
+	<Dialog title="User Feedback" class="sapUiSizeCompact sapUiContentPadding" contentWidth="60rem">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="User Feedback" class="feedbackFont"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<VBox items="{path:'UserFeedback>/results', factory:'.createContentFeedback'}"/>
+		<buttons>
+			<Button text="Submit" press="onCloseFeedback('submit')" class="buttoncolor sapUiTinyMarginEnd text-shadow"/>
+			<Button text="Close" press="onCloseFeedback('close')" class="buttoncolorSec text-shadow"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

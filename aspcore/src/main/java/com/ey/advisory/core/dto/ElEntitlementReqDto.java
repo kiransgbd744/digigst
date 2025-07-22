@@ -1,0 +1,257 @@
+package com.ey.advisory.core.dto;
+
+import java.util.List;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+/**
+ * @author Umesha.M
+ *
+ */
+public class ElEntitlementReqDto {
+
+	@Expose
+	@SerializedName("groupCode")
+	private String groupCode;
+	
+	
+	@Expose
+	@SerializedName("elId")
+	private Long elId;
+	
+	@Expose
+	@SerializedName("entityName")
+	private String entityName;
+	
+	@Expose
+	@SerializedName("entityId")
+	private Long entityId;
+	
+	
+	/**
+	 * @return the entityId
+	 */
+	public Long getEntityId() {
+		return entityId;
+	}
+
+	/**
+	 * @param entityId the entityId to set
+	 */
+	public void setEntityId(Long entityId) {
+		this.entityId = entityId;
+	}
+
+	@Expose
+	@SerializedName("gstin")
+	private String gstin;
+	
+	@Expose
+	@SerializedName("functionality")
+	private List<String> functionality;
+	
+	@Expose
+	@SerializedName("fromTaxPeriod")
+	private String fromTaxPeriod;
+	
+	@Expose
+	@SerializedName("toTaxPeriod")
+	private String toTaxPeriod;
+
+	@Expose
+	@SerializedName("elValue")
+	private String elValue;
+	
+
+	@Expose
+	@SerializedName("contractStartPeriod")
+	private String contractStartPeriod;
+	
+	@Expose
+	@SerializedName("contractEndPeriod")
+	private String contractEndPeriod;
+	
+	@Expose
+	@SerializedName("renewal")
+	private String renewal;
+	
+	@Expose
+	@SerializedName("gfisId")
+	private String gfisId;
+
+	@Expose
+	@SerializedName("paceId")
+	private String paceId;
+	
+	/**
+	 * @return the groupCode
+	 */
+	public String getGroupCode() {
+		return groupCode;
+	}
+
+	/**
+	 * @param groupCode the groupCode to set
+	 */
+	public void setGroupCode(String groupCode) {
+		this.groupCode = groupCode;
+	}
+
+	/**
+	 * @return the elId
+	 */
+	public Long getElId() {
+		return elId;
+	}
+
+	/**
+	 * @param elId the elId to set
+	 */
+	public void setElId(Long elId) {
+		this.elId = elId;
+	}
+
+	/**
+	 * @return the entityName
+	 */
+	public String getEntityName() {
+		return entityName;
+	}
+
+	/**
+	 * @param entityName the entityName to set
+	 */
+	public void setEntityName(String entityName) {
+		this.entityName = entityName;
+	}
+
+	/**
+	 * @return the gstin
+	 */
+	public String getGstin() {
+		return gstin;
+	}
+
+	/**
+	 * @param gstin the gstin to set
+	 */
+	public void setGstin(String gstin) {
+		this.gstin = gstin;
+	}
+
+	/**
+	 * @return the functionality
+	 */
+	public List<String> getFunctionality() {
+		return functionality;
+	}
+
+	/**
+	 * @param functionality the functionality to set
+	 */
+	public void setFunctionality(List<String> functionality) {
+		this.functionality = functionality;
+	}
+
+	/**
+	 * @return the fromTaxPeriod
+	 */
+	public String getFromTaxPeriod() {
+		return fromTaxPeriod;
+	}
+
+	/**
+	 * @param fromTaxPeriod the fromTaxPeriod to set
+	 */
+	public void setFromTaxPeriod(String fromTaxPeriod) {
+		this.fromTaxPeriod = fromTaxPeriod;
+	}
+
+	/**
+	 * @return the toTaxPeriod
+	 */
+	public String getToTaxPeriod() {
+		return toTaxPeriod;
+	}
+
+	/**
+	 * @param toTaxPeriod the toTaxPeriod to set
+	 */
+	public void setToTaxPeriod(String toTaxPeriod) {
+		this.toTaxPeriod = toTaxPeriod;
+	}
+
+	/**
+	 * @return the elValue
+	 */
+	public String getElValue() {
+		return elValue;
+	}
+
+	/**
+	 * @param elValue the elValue to set
+	 */
+	public void setElValue(String elValue) {
+		this.elValue = elValue;
+	}
+
+	
+	/**
+	 * @return the contractStartPeriod
+	 */
+	public String getContractStartPeriod() {
+		return contractStartPeriod;
+	}
+
+	/**
+	 * @param contractStartPeriod the contractStartPeriod to set
+	 */
+	public void setContractStartPeriod(String contractStartPeriod) {
+		this.contractStartPeriod = contractStartPeriod;
+	}
+
+	/**
+	 * @return the contractEndPeriod
+	 */
+	public String getContractEndPeriod() {
+		return contractEndPeriod;
+	}
+
+	/**
+	 * @param contractEndPeriod the contractEndPeriod to set
+	 */
+	public void setContractEndPeriod(String contractEndPeriod) {
+		this.contractEndPeriod = contractEndPeriod;
+	}
+
+	/**
+	 * @return the renewal
+	 */
+	public String getRenewal() {
+		return renewal;
+	}
+
+	/**
+	 * @param renewal the renewal to set
+	 */
+	public void setRenewal(String renewal) {
+		this.renewal = renewal;
+	}
+
+	public String getGfisId() {
+		return gfisId;
+	}
+
+	public void setGfisId(String gfisId) {
+		this.gfisId = gfisId;
+	}
+
+	public String getPaceId() {
+		return paceId;
+	}
+
+	public void setPaceId(String paceId) {
+		this.paceId = paceId;
+	}
+}

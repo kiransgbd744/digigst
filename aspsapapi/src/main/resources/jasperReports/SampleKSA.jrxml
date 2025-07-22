@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.10.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SampleKSA" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f0917d60-c095-4e26-a504-86fa976b2998">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="bgStatusImage" class="java.awt.Image"/>
+	<parameter name="header" class="java.lang.String"/>
+	<parameter name="header2" class="java.lang.String"/>
+	<parameter name="header3" class="java.lang.String"/>
+	<parameter name="midHead" class="java.lang.String"/>
+	<parameter name="taxInvNo" class="java.lang.String"/>
+	<parameter name="taxInvNoAr" class="java.lang.String"/>
+	<parameter name="note" class="java.lang.String"/>
+	<parameter name="dateInAr" class="java.lang.String"/>
+	<parameter name="date" class="java.lang.String"/>
+	<parameter name="custNoInAr" class="java.lang.String"/>
+	<parameter name="custNo" class="java.lang.String"/>
+	<parameter name="purOrdrNoAr" class="java.lang.String"/>
+	<parameter name="addressEng" class="java.lang.String"/>
+	<parameter name="tableHead" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="96" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="570" height="90" uuid="3cc7d03f-1555-4e07-9441-f13072cb298e"/>
+				<image>
+					<reportElement x="480" y="0" width="85" height="81" uuid="f0eb0039-6839-4e76-b3f9-db8adb303fda"/>
+					<imageExpression><![CDATA[$P{bgStatusImage}]]></imageExpression>
+				</image>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="355" y="0" width="130" height="20" forecolor="#858585" uuid="5e3cb7d6-3818-496c-86c2-598efccb4f28"/>
+					<textElement textAlignment="Right">
+						<font fontName="ArialFont" size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{header}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="360" y="20" width="120" height="50" forecolor="#858585" uuid="8ed8185b-4431-4cfc-847c-f4a918cbccee"/>
+					<textElement textAlignment="Right">
+						<font fontName="ArialFont" size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{header2}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="9" y="9" width="220" height="30" forecolor="#858585" uuid="95b9cde3-7013-4d90-8c7e-c7e53702dd0b"/>
+					<textElement textAlignment="Right">
+						<font fontName="ArialFont" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{header3}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+		<band height="230">
+			<frame>
+				<reportElement x="-10" y="4" width="570" height="226" uuid="7377a422-b54f-42e3-9f68-6ca5b339a924"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="0" y="0" width="570" height="26" uuid="ca35634b-100d-4b33-a1b4-3ed46ffcb72b"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="ArialFont" size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{midHead}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="29" y="29" width="260" height="40" uuid="54330a58-234a-4eb6-92f9-4cf6ea0bb00b"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="60" y="30" width="110" height="20" uuid="8486b0f7-11af-4e52-8c3d-7d0b12883633"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="ArialFont" size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{taxInvNo}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="189" y="30" width="100" height="20" uuid="bb9194ad-6806-492c-a6f6-1eea6ac3b833"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="ArialFont" size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{taxInvNoAr}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="210" y="49" width="79" height="20" forecolor="#858585" uuid="a10a1259-52b7-4133-925b-a57038d35942"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="ArialFont" size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{note}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement mode="Transparent" x="29" y="70" width="261" height="21" uuid="eb43a7c4-797f-44b1-a8b1-ea1217b3a7cc"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="60" y="70" width="110" height="20" uuid="b52c0c27-f3dd-4e02-aa69-1f0aabcfbb3b"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="ArialFont" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{date}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="189" y="69" width="101" height="22" uuid="218029ff-28a0-4d1c-8696-b6cb41aadf6e"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="ArialFont" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{dateInAr}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement mode="Transparent" x="29" y="92" width="261" height="21" uuid="83750078-ac8b-4ddd-8dc4-cdfdbbea3858"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="189" y="93" width="100" height="20" uuid="6d59f5ea-033e-4ef8-a8d1-dd8ac486d54e"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="ArialFont" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{custNoInAr}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="60" y="93" width="110" height="20" uuid="5e9f99a9-e0b5-4474-b384-08b715c97b7a"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="ArialFont" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{custNo}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="460" y="30" width="70" height="50" uuid="a046cd24-ceb7-45fb-8001-7ffaef8b3f0e"/>
+					<textElement textAlignment="Left">
+						<font fontName="ArialFont" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{addressEng}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="29" y="113" width="260" height="21" uuid="088baaf4-78a8-47c1-aa4d-df7d79ebbe56"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="189" y="113" width="101" height="21" uuid="bb116edb-2625-4f28-930c-e4d23a846e4e"/>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font fontName="ArialFont"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{purOrdrNoAr}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="29" y="149" width="261" height="51" uuid="024b880e-9b26-42fe-bbf7-44156c2fca48"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="189" y="149" width="101" height="17" uuid="06a460b2-bed3-4dd9-8f30-c01e47d7ee60">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font fontName="ArialFont" isBold="true"/>
+						<paragraph rightIndent="3"/>
+					</textElement>
+					<text><![CDATA[ﻣﻌﻠﻮﻣﺎﺕ ﺍﻟﺤﻮﺍﻟﺔ ﺍﻟﻤﺎﻟﻴﺔ:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="189" y="160" width="101" height="13" uuid="61dd1760-ac75-4004-b7dc-35b6963008c6">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font fontName="ArialFont" size="9"/>
+						<paragraph rightIndent="3"/>
+					</textElement>
+					<text><![CDATA[ﺍﻟﺒﻨﻚ ﺍﻟﺴﻌﻮﺩﻱ ﺍﻟﺒﺮﻳﻄﺎﻧﻲ 
+]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="160" y="170" width="130" height="20" uuid="fb51d4a0-5a58-4dbb-908d-05de29df7887">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="ArialFont"/>
+						<paragraph rightIndent="3"/>
+					</textElement>
+					<text><![CDATA[ﺭﻗﻢ ﺍﻟﺤﺴﺎﺏ: 154006662001]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="159" y="179" width="131" height="21" uuid="49d4ac87-2273-44f2-ba28-cf66ec024545">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="ArialFont"/>
+						<paragraph rightIndent="3"/>
+					</textElement>
+					<text><![CDATA[SABBSARI :ﺭﻣﺰ ﺍﻟﺴﻮﻳﻔﺖ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="100" y="189" width="189" height="21" uuid="8b00c95f-485d-450e-9c64-dda51bf31062">
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="ArialFont"/>
+						<paragraph rightIndent="3"/>
+					</textElement>
+					<text><![CDATA[ SA4445000000154006662001 :ﺭﻗﻢ ﺍﻵﻳﺒﺎﻥ]]></text>
+				</staticText>
+				<line>
+					<reportElement x="19" y="220" width="551" height="1" uuid="4ce3ca8b-2532-4239-8cc7-18c6f7269fb3"/>
+				</line>
+			</frame>
+		</band>
+		<band height="243">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="19" y="4" width="530" height="20" uuid="bb086d62-eec5-4951-a494-aa2214869e22"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="ArialFont"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tableHead}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="20" y="50" width="389" height="1" uuid="783bb08b-8797-449d-baf0-58bd730a2848"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="20" y="70" width="389" height="1" uuid="04488f2e-d481-441c-aa15-042ac1e9c236"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="20" y="90" width="389" height="1" uuid="cb2b81cb-1fd8-4bf2-b94d-b3ee64bf314f"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="20" y="110" width="389" height="1" uuid="18c6f94b-a1e6-47f8-be56-9a1645039cb0"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<rectangle>
+				<reportElement mode="Transparent" x="20" y="40" width="49" height="90" uuid="91144b12-4184-4ca4-9b38-8e1335b09f7e"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Transparent" x="110" y="30" width="49" height="100" uuid="b3ad0132-771b-421f-8e50-fbd6d57f5c05"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="0">
+				<reportElement mode="Transparent" x="510" y="30" width="50" height="100" uuid="750c71ec-c91b-4655-87d4-81fa947a71be"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Transparent" x="200" y="40" width="49" height="90" uuid="b4eca41f-9665-4ec4-a091-476c367963fc"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Transparent" x="279" y="40" width="75" height="90" uuid="4b51fa96-71c1-4f30-b38b-9e8f3c59f862"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Transparent" x="360" y="30" width="49" height="100" uuid="73ac91c9-e96e-405d-b135-99429a4bd4f0"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="20" y="30" width="48" height="20" uuid="5ffa4fba-f8b4-4b8e-a709-d2314df6c9c7"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="ArialFont"/>
+				</textElement>
+				<text><![CDATA[ ﺇﺟﻤﺎﻟﻲ ﺍﻟﻤﺒﻠﻎ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="30" width="48" height="20" uuid="43e73106-9784-4e19-9436-0392ecff504a"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="ArialFont"/>
+				</textElement>
+				<text><![CDATA[ﻣﺒﻠﻎ ﺍﻟﻀﺮﻳﺒﺔ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="51" width="48" height="18" uuid="fc3aa53c-41e2-4a9c-a619-af4f40567e38"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="ArialFont"/>
+				</textElement>
+				<text><![CDATA[ ٣٩,١٠٠.٠٠]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="71" width="48" height="18" uuid="729313db-ce14-4559-9a5d-93e2d0290607"/>
+				<textElement>
+					<font fontName="ArialFont"/>
+				</textElement>
+				<text><![CDATA[٣٩,١٠٠.٠٠]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="91" width="48" height="18" uuid="bfbcc84e-03ff-486b-8046-12a2fe9db85d"/>
+				<textElement>
+					<font fontName="ArialFont"/>
+				</textElement>
+				<text><![CDATA[٥,١٠٠.٠٠]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="51" width="74" height="20" uuid="243346e8-e478-4bfb-b1d5-4c05095cb0fa"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="ArialFont"/>
+				</textElement>
+				<text><![CDATA[ ﺿﺮﻳﺒﺔ ﺍﻟﻘﻴﻤﺔ ﺍﻟﻤﻀﺎﻓﺔ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="91" width="48" height="18" uuid="00736485-2af4-4d92-b14e-666bc2eb0b37"/>
+				<textElement textAlignment="Right">
+					<font fontName="ArialFont"/>
+				</textElement>
+				<text><![CDATA[٣٤,٠٠٠.٠٠]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="110" width="48" height="18" uuid="9584af14-1861-4cc4-8ba9-f91470ece662"/>
+				<textElement textAlignment="Right">
+					<font fontName="ArialFont"/>
+				</textElement>
+				<text><![CDATA[٣٤,٠٠٠.٠٠]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="50" width="50" height="20" uuid="008b78b9-e124-4c25-976a-603dcb58c6e0"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="ArialFont"/>
+				</textElement>
+				<text><![CDATA[ %١٥  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="71" width="48" height="18" uuid="69a96c5d-9e74-4b80-aa54-d9361022b378"/>
+				<textElement textAlignment="Right">
+					<font fontName="ArialFont"/>
+				</textElement>
+				<text><![CDATA[٣٤,٠٠٠.٠٠]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="111" width="48" height="18" uuid="bb2794b4-7cd4-4801-9e6e-299b63704019"/>
+				<textElement>
+					<font fontName="ArialFont"/>
+				</textElement>
+				<text><![CDATA[٥,١٠٠.٠٠ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="111" width="48" height="18" uuid="4ce61570-17d8-412b-91a5-2fbda6980c2b"/>
+				<textElement>
+					<font fontName="ArialFont"/>
+				</textElement>
+				<text><![CDATA[٣٩,١٠٠.٠٠]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="51" width="48" height="20" uuid="58038a8b-d5cf-4cde-bd16-6b80a2df9403"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="ArialFont"/>
+				</textElement>
+				<text><![CDATA[٥,١٠٠.٠٠]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="24" width="50" height="14" uuid="9f4574f7-f3fe-486d-9fa9-364b7ddf40c2"/>
+				<textElement textAlignment="Right">
+					<font fontName="ArialFont" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ﺭﻳﺎﻝ ﺳﻌﻮﺩﻱ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="30" width="50" height="20" uuid="6659fa27-18d0-4bee-b37f-d6ac1c78b2c6"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="ArialFont"/>
+				</textElement>
+				<text><![CDATA[ﻧﺴﺒﺔ ﺍﻟﻀﺮﻳﺒﺔ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="278" y="30" width="76" height="20" uuid="8917e4d8-5068-4ec5-bde4-f1ce40ba21a1"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="ArialFont"/>
+				</textElement>
+				<text><![CDATA[  ﺿﺮﻳﺒﺔ ﺍﻟﻘﻴﻤﺔ ﺍﻟﻤﻀﺎﻓﺔ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="30" width="48" height="20" uuid="e63332ec-996c-417d-a0d4-31d2864a1b98"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="ArialFont"/>
+				</textElement>
+				<text><![CDATA[ﺍﻟﻤﺒﻠﻎ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="52" width="48" height="18" uuid="275f6d8f-5a51-4208-bc40-ecf2feb695fc"/>
+				<textElement textAlignment="Right">
+					<font fontName="ArialFont"/>
+				</textElement>
+				<text><![CDATA[٣٤,٠٠٠.٠٠]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="90" width="80" height="20" uuid="68f44dfd-6bb4-46a5-9b30-be49727624d8"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="ArialFont" size="8"/>
+				</textElement>
+				<text><![CDATA[ %15 ﺿﺮﻳﺒﺔ ﺍﻟﻘﻴﻤﺔ ﺍﻟﻤﻀﺎﻓﺔ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="510" y="50" width="50" height="20" uuid="cca3d2b9-e954-4e75-ad7e-bbc1497919c6"/>
+				<textElement textAlignment="Right">
+					<font fontName="ArialFont"/>
+				</textElement>
+				<text><![CDATA[ﺃﺗﻌﺎﺏ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="510" y="70" width="50" height="20" uuid="760dc059-99c0-40a2-b91f-8a6370f3e0e6"/>
+				<textElement textAlignment="Right">
+					<font fontName="ArialFont" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ﺧﺪﻣﺎﺕ ﻣﻬﻨﻴﺔ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="500" y="90" width="60" height="20" uuid="2d444fac-decc-4df7-90f7-64fd2b40f76c"/>
+				<textElement textAlignment="Right">
+					<font fontName="ArialFont" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ﻣﻠﺨﺺ ﺍﻟﻔﺎﺗﻮﺭﺓ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="510" y="110" width="50" height="20" uuid="8d6bca7f-d505-4404-8ae1-0894055d4f1c"/>
+				<textElement textAlignment="Right">
+					<font fontName="ArialFont" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ﺍﻟﻤﺠﻤﻮﻉ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="91" width="30" height="18" uuid="b090c2ab-e4eb-4660-b498-204afc9b0c4b"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="ArialFont" size="8"/>
+				</textElement>
+				<text><![CDATA[ﺿﺮﻳﺒﺔ: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="180" width="389" height="20" uuid="ff915d2e-1737-498d-b7b8-bb34e013292d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="ArialFont"/>
+				</textElement>
+				<text><![CDATA[ﺍﻟﺨﺪﻣﺎﺕ ﺍﻟﻤﻬﻨﻴﺔ ﺍﻟﻤﻘﺪﻣﺔ ﻓﻴﻤﺎ ﻳﺘﻌﻠﻖ ﺑﺘﻘﺪﻳﻢ ﺇﻗﺮﺍﺭﺍﺕ ﺿﺮﻳﺒﺔ ﺍﻟﻘﻴﻤﺔ ﺍﻟﻤﻀﺎﻓﺔ ﻟﺸﻬﺮ ﻣﺎﺭﺱ 2021]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="50">
+			<staticText>
+				<reportElement x="230" y="21" width="100" height="29" uuid="fc179dcc-1e17-43bb-b0ab-e21bb6014b60"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="ArialFont"/>
+				</textElement>
+				<text><![CDATA[ﺻﻔﺤﺔ 1 ﻣﻦ 1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="419" y="19" width="129" height="29" forecolor="#858585" uuid="7f5dd538-d6a2-47c3-a8ee-203bfb48df19"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="ArialFont"/>
+				</textElement>
+				<text><![CDATA[ﺭﻗﻢ ﺗﺴﺠﻴﻞ ﺷﺮﻛﺔ ﻣﻬﻨﻴﺔ ٣٢٣/١١/٤٥ ]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="61" splitType="Stretch"/>
+	</summary>
+</jasperReport>

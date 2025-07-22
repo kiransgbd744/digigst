@@ -1,0 +1,40 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form">
+	<Dialog id="signId" title="Sign &amp; File DRC01B" type="Message" class="sapUiSizeCompact cl_saveHeader" showHeader="true"
+		contentWidth="50%">
+		<buttons>
+			<Button text="Proceed" class="buttoncolorSec" press="onSaveSign"/>
+			<Button text="Cancel" class="buttoncolorSec" press="onSaveClose"/>
+		</buttons>
+		<!--<VBox class="sapUiSmallMargin">-->
+		<Table items="{SignandFile>/panDetails/}" id="idTableSignFile" mode="SingleSelectLeft">
+			<headerToolbar>
+				<Toolbar>
+					<ToolbarSpacer/>
+					<Label design="Bold" text="{SignandFile>/header}"/>
+					<ToolbarSpacer/>
+				</Toolbar>
+			</headerToolbar>
+			<columns>
+				<Column hAlign="Center">
+					<Text text="Name of Auth Signatory" class="cl_text1"/>
+				</Column>
+				<Column hAlign="Center">
+					<Text text="PAN of Auth Signatory" class="cl_text1"/>
+				</Column>
+				<Column hAlign="Center">
+					<Text text="Designation/Status of Auth Signatory" class="cl_text1"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem vAlign="Middle">
+					<cells>
+						<Text text="{SignandFile>name}" wrapping="false"/>
+						<Text text="{SignandFile>pan}" wrapping="false"/>
+						<Text text="{SignandFile>designation}" wrapping="false"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,190 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:ui="sap.ui.table"
+	xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage id="idDynmcPagReconResult" visible="true">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Title text="Recon Result" class="sapUiTinyMarginTop sapUiTinyMarginEnd"/>
+						<Button icon="sap-icon://hint" type="Transparent" tooltip="Reconciled records will be displayed on screen along with Lock/Unlock features."/>
+						<HBox class="sapUiSmallMarginBegin">
+							<Text text="One-One Lock/Unlock" class="sapUiTinyMarginTop"/>
+							<Switch customTextOn=" " customTextOff=" " state="{Display>/swRecon}" change="onChangeSegmentBtn" class="clSwitch">
+								<layoutData>
+									<FlexItemData growFactor="1"/>
+								</layoutData>
+							</Switch>
+							<Text text="Multi Unlock" class="sapUiTinyMarginTop"/>
+						</HBox>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.reconResult.PageHeader" type="XML"/>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel>
+				<commons:ChartContainer id="idConsoleMatch" visible="true" showFullScreen="false" showZoom="true" showPersonalization="false"
+					autoAdjustHeight="false">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<Panel class="sapUiNoContentPadding">
+									<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.reconResult.HeaderBanner" type="XML"/>
+									<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.reconResult.Unlock" type="XML"/>
+									<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.reconResult.MultiUnlock" type="XML"/>
+								</Panel>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar>
+							<core:Icon src="sap-icon://circle-task-2" color="#0187f7" size="0.8rem"/>
+							<Text text="PR Data"/>
+							<core:Icon src="sap-icon://circle-task-2" color="#333333" size="0.8rem"/>
+							<Text text="GSTR-{Display>/LabelRR} Data"/>
+							<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+							<Text text="Difference exists"/>
+							<ToolbarSpacer/>
+							<MenuButton text="Response" class="buttoncolorSec">
+								<Menu itemSelected="onResponse">
+									<MenuItem key="ForcedMatch" text="Force Match (Without 3B Lock)" visible="{=!${Display>/swRecon}}"/>
+									<MenuItem key="3BResponse" text="Force Match (With 3B Lock)" visible="{=!${Display>/swRecon}}" id="With3BLock"/>
+									<MenuItem key="UNLOCK" text="Unlock"/>
+									<MenuItem key="IMSResponse" text="IMS Response" visible="{=!${Display>/swRecon}&amp;&amp;${Display>/imsResponse}}"/>
+								</Menu>
+							</MenuButton>
+							<MenuButton text="Bulk Response" class="buttoncolorSec">
+								<Menu itemSelected="onPressBulkResponse">
+									<MenuItem key="ForcedMatch" text="Force Match (Without 3B Lock)" visible="{=!${Display>/swRecon}}"/>
+									<MenuItem key="3BResponse" text="Force Match (With 3B Lock)" visible="{=!${Display>/swRecon}}"/>
+									<MenuItem key="UNLOCK" text="Unlock"/>
+									<MenuItem key="IMSResponse" text="IMS Response" visible="{=!${Display>/swRecon}&amp;&amp;${Display>/imsResponse}}"/>
+								</Menu>
+							</MenuButton>
+							<Button text="Response Status" class="buttoncolorSec" press="onRequestStatus"/>
+							<MenuButton text="Download Reports" class="buttoncolorSec">
+								<Menu itemSelected="onDownloadReconResult">
+									<MenuItem text="Consolidated {Display>/LabelRR}vsPR Report (Recon Result)" key="Consolidated {Display>/LabelRR}vsPR Report(Recon Result)"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Transparent" id="openbutRR" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="true"
+								press="onRRDetFullScreen('open')"/>
+							<Button type="Transparent" id="closebutRR" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="false"
+								press="onRRDetFullScreen('close')"/>
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+				<VBox>
+					<Label design="Bold" text="Note:"/>
+					<Label design="Bold" text="Maximum 3000 records will appear on this screen based on the filters"/>
+				</VBox>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="idRequestStatus2A" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button icon="sap-icon://nav-back" type="Transparent" press="onPressRRrequest"/>
+						<Title text="Request Status" class="sapUiSmallMarginBegin clTitleMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" visible="false"></f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer id="RRRS" showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false">
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table rows="{path:'ReqWiseData2A1>/resp', sorter: {path: 'reqId',descending:true}}" class="sapUiTinyMarginBegin" selectionMode="None"
+								selectionBehavior="Row" visibleRowCount="13" fixedColumnCount="0" enableSelectAll="false" id="RRRSTabId">
+								<ui:columns>
+									<ui:Column>
+										<Label design="Bold" text="Request ID"/>
+										<ui:template>
+											<Text text="{ReqWiseData2A1>reqId}"/>
+											<!-- NewReturns-->
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="Recon Type"/>
+										<ui:template>
+											<HBox alignItems="Center" justifyContent="Center">
+												<Text text="{ReqWiseData2A1>reconType}"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="Recon Response Action"/>
+										<ui:template>
+											<HBox alignItems="Center" justifyContent="Center">
+												<Text text="{ReqWiseData2A1>reconResponseAction}"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="Date"/>
+										<ui:template>
+											<HBox alignItems="Center" justifyContent="Center">
+												<Text text="{ReqWiseData2A1>date}"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="Request Status"/>
+										<ui:template>
+											<HBox alignItems="Center" justifyContent="Center">
+												<Text text="{ReqWiseData2A1>reqStatus}"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="Total Records Participated"/>
+										<ui:template>
+											<HBox alignItems="Center" justifyContent="Center">
+												<Text text="{ReqWiseData2A1>totalRecords}"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="Processed Records"/>
+										<ui:template>
+											<HBox alignItems="Center" justifyContent="Center">
+												<Text text="{ReqWiseData2A1>processed}"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="8rem">
+										<Label design="Bold" text="Error Records"/>
+										<ui:template>
+											<HBox renderType="Bare" justifyContent="SpaceBetween">
+												<Text text="{ReqWiseData2A1>error}" textAlign="End" class="btnDownload"/>
+												<core:Icon src="sap-icon://download" press="onConfigExtractPress2A12" visible="{ReqWiseData2A1>isErrorDownld}"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+				<commons:toolbar>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+						<Button class="buttoncolorSec" text="Refresh" press="onRequestStatus"/>
+						<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+					</OverflowToolbar>
+				</commons:toolbar>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

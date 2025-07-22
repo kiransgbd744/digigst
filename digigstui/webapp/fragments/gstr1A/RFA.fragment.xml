@@ -1,0 +1,60 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" xmlns:l="sap.ui.layout" xmlns:commons="sap.suite.ui.commons">
+	<Dialog id="dSaveStatus" title="Request for Approval" type="Message" contentWidth="75%" class="sapUiSizeCompact" draggable="true">
+		<buttons>
+			<Button text="Submit" class="buttoncolorSec" press="onsubmitRFA"/>
+			<Button text="Cancel" class="buttoncolorSec" press="onCloseRFA"/>
+		</buttons>
+		<ui:Table rows="{RequestAprvoldata>/}" enableColumnReordering="false" class="sapUiTinyMarginTop" visibleRowCount="8" id="gstrTabIdApp">
+			<ui:columns>
+				<!--<ui:Column hAlign="Center" width="5%">-->
+				<!--	<Label text="Sr.No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+				<!--	<ui:template>-->
+				<!--		<Text text="{GSTR3B>srno}"/>-->
+				<!--	</ui:template>-->
+				<!--</ui:Column>-->
+				<ui:Column hAlign="Center">
+					<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{RequestAprvoldata>gstin}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="Request to Checker ID" textAlign="Center" width="100%" wrapping="true" design="Bold" required="true"/>
+					<!--<ui:template>-->
+					<!--maxWidth="650px" items="{ path: '/ProductCollection', sorter: { path: 'Name' } }">-->
+					<!--<core:Item key="{ProductId}" text="{Name}"/>-->
+					<!--	<MultiComboBox width="100%" items="{path: 'RequestAprvoldata>checkerMailIds'}" selectedKeys="{RequestAprvoldata>requestChecker}">-->
+					<!--		<core:Item key="{RequestAprvoldata>userEmailStr}" text="{RequestAprvoldata>userEmailStr}"/>-->
+					<!--<core:Item key="GSTR3B" text="P00001(Vinay@in.ey.com)"/>-->
+					<!--<core:Item key="GSTR6" text="P00001(Manish@in.ey.com)"/>-->
+					<!--	</MultiComboBox>-->
+					<!--</ui:template>-->
+					<ui:template>
+						<HBox alignItems="Center" justifyContent="Center">
+							<Link text="{RequestAprvoldata>noOfCheckers}" press="onPressRequestCheckers"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="Request for" textAlign="Center" width="100%" wrapping="true" design="Bold" required="true"/>
+					<ui:template>
+						<MultiComboBox width="100%" selectedKeys="{RequestAprvoldata>requestedFor}">
+							<!--//	<core:Item key="all" text="All"/>-->
+							<core:Item key="Save To GSTN" text="Save to GSTN"/>
+							<core:Item key="Sign &amp; File" text="Sign &amp; File"/>
+						</MultiComboBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="Comments" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="Center">
+							<TextArea value="{RequestAprvoldata>Comments}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+	</Dialog>
+</core:FragmentDefinition>

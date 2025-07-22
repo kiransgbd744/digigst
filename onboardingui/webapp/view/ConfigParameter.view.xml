@@ -1,0 +1,29 @@
+<mvc:View controllerName="com.ey.onboarding.controller.ConfigParameter" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+	xmlns:f="sap.f" busyIndicatorDelay="0">
+	<f:DynamicPage id="dynamicPageId1" class="clConfig">
+		<f:content>
+			<IconTabBar expanded="true" select="handleIconTabBarSelect" class="sapUiNoContentPadding sapUiSmallMarginBottom"
+				backgroundDesign="Transparent" stretchContentHeight="true" selectedKey="General" expandable="false">
+				<items>
+					<IconTabFilter showAll="true" count="Configurable Parameter" key="All" enabled="false"/>
+					<IconTabSeparator/>
+					<IconTabFilter text="General" tooltip="General" key="General">
+						<core:Fragment fragmentName="com.ey.onboarding.Fragments.config.General" type="XML"/>
+					</IconTabFilter>
+					<IconTabFilter text="Entity Level Config" tooltip="Entity Level Config" key="InwardOutward">
+						<core:Fragment fragmentName="com.ey.onboarding.Fragments.config.InwardOutward" type="XML"/>
+					</IconTabFilter>
+					<IconTabFilter text="Other Configurations" tooltip="Other Configurations" key="APILimt">
+						<core:Fragment fragmentName="com.ey.onboarding.Fragments.config.ApiLimit" type="XML"/>
+					</IconTabFilter>
+					<IconTabFilter text="Group Level Config" tooltip="Group Level Config" key="GroupLevel">
+						<core:Fragment fragmentName="com.ey.onboarding.Fragments.config.GroupLevel" type="XML"/>
+					</IconTabFilter>
+					<IconTabFilter text="DMS Configurations" tooltip="DMS Configurations" key="DMSConfig">
+						<core:Fragment fragmentName="com.ey.onboarding.Fragments.config.DMSConfig" type="XML"/>
+					</IconTabFilter>
+				</items>
+			</IconTabBar>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

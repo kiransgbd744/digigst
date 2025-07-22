@@ -1,0 +1,228 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="dynamicPageId1">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<!--<HBox>
+						<SegmentedButton id="sbStatus" selectedKey="API" selectionChange="onSelectionChange">
+							<items>
+								<SegmentedButtonItem text="API" key="API" width="4rem"/>
+								<SegmentedButtonItem text="Web Upload" key="Upload" width="6rem"/>
+								<SegmentedButtonItem text="SFTP" key="SFTP" width="4rem"/>
+							</items>
+						</SegmentedButton>
+						<SegmentedButton id="sbUpload" selectedKey="API" selectionChange="onSelectionChange" class="sapUiLargeMarginBegin" visible="false">
+							<items>
+								<SegmentedButtonItem text="Upload" key="Upload" width="4rem"/>
+								<SegmentedButtonItem text="File Status" key="Status" width="6rem"/>
+							</items>
+						</SegmentedButton>
+					</HBox>-->
+					<HBox>
+						<Label text="Entity :" class="sapUiTinyMarginTop" design="Bold"/>
+						<Select items="{entity>/resp}" change="onSelectionChangeEntity" width="12rem" id="idEntityELReg" class="sapUiTinyMarginBegin">
+							<core:Item key="{entity>entityId}" text="{entity>entityName}"/>
+						</Select>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<Button type="Emphasized" icon="sap-icon://save" text="Submit" id="idELRegSubmit" press="onSubmit" enabled="false"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<!--	<f:header>
+			<f:DynamicPageHeader>
+				<f:content>
+					<fb:FilterBar id="fbGSTNDetails" reset="onReset" search="onSearch" useToolbar="false" showGoOnFB="true" class="sapUiNoContentPadding">
+						<fb:filterGroupItems>
+				
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="GSTIN" visibleInFilterBar="true">
+								<fb:control>
+									<MultiComboBox id="mcbStatusGSTIN1" items="{GSTIN>/}" change="onSelectChange" width="100%">
+										<core:Item key="{GSTIN>key}" text="{GSTIN>text}"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>-->
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<ui:Table id="tabDataGSTNDet" rows="{GstinDetail>/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10"
+					fixedRowCount="0" fixedColumnCount="0" enableSelectAll="true">
+					<ui:extension>
+						<Toolbar>
+							<!--<Button text="Download GSTIN Template" icon="sap-icon://excel-attachment" id="idETGSTIN" press="onExportTemplate"/>-->
+							<ToolbarSpacer/>
+							<!--<u:FileUploader id="fileUploader1" name="myFileUpload" uploadUrl="upload/" tooltip="Upload your file to the local server"-->
+							<!--	uploadComplete="handleUploadComplete"/>-->
+							<!--<Button text="Upload File" press="handleUploadPress"/>-->
+							<Button icon="sap-icon://download" id="idEDGSTIN" press="onExportExcel" enabled="false"/>
+							<Button type="Accept" icon="sap-icon://edit" tooltip="Edit rows" id="idELRegEditRows" press="onEditRows"/>
+							<!--<Button type="Reject" icon="sap-icon://delete" tooltip="Delete rows" id="idELRegDeleteRows" press="onDeleteRows"/>-->
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="4rem" headerSpan="1" class="columnLine">
+							<ui:multiLabels>
+								<Label text="S.No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{GstinDetail>sno}"/>
+							</ui:template>
+						</ui:Column>
+						<!--<ui:Column width="11rem" headerSpan="1" class="columnLine" sortProperty="supplierGstin" filterProperty="supplierGstin">-->
+						<ui:Column width="11rem" headerSpan="1" class="columnLine">
+							<ui:multiLabels>
+								<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{GstinDetail>supplierGstin}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem" headerSpan="1" class="columnLine">
+							<ui:multiLabels>
+								<Label text="System ID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{GstinDetail>systemID}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="Registration Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{GstinDetail>regType}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem">
+							<ui:multiLabels>
+								<Label text="Registered Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{GstinDetail>registeredName}" editable="{GstinDetail>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="GSTN Username" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{GstinDetail>gstnUsername}" editable="{GstinDetail>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem">
+							<ui:multiLabels>
+								<Label text="Effective Date of Registration" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<DatePicker value="{GstinDetail>effectiveDate}" valueFormat="yyyy-MM-dd" displayFormat="yyyy-MM-dd" editable="{GstinDetail>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem">
+							<ui:multiLabels>
+								<Label text="eMail Registered with GSTN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{GstinDetail>regEmail}" change="emailValidation" editable="{GstinDetail>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem">
+							<ui:multiLabels>
+								<Label text="Mobile Number Registered with GSTN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{GstinDetail>regMobile}" type="Number" change="phoneValidation" editable="{GstinDetail>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem">
+							<ui:multiLabels>
+								<Label text="Primary Authorized Signatory eMail" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{GstinDetail>primaryAuthEmail}" change="emailValidation" editable="{GstinDetail>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem">
+							<ui:multiLabels>
+								<Label text="Secondary Authorized Signatory eMail" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{GstinDetail>secondaryAuthEmail}" change="emailValidation" editable="{GstinDetail>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem">
+							<ui:multiLabels>
+								<Label text="Primary Contact eMail" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{GstinDetail>primaryContactEmail}" change="emailValidation" editable="{GstinDetail>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem">
+							<ui:multiLabels>
+								<Label text="Secondary Contact eMail" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{GstinDetail>secondaryContactEmail}" change="emailValidation" editable="{GstinDetail>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="Bank A/C No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{GstinDetail>bankAccNo}" editable="{GstinDetail>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="Turnover" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{GstinDetail>turnover}" editable="{GstinDetail>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem">
+							<ui:multiLabels>
+								<Label text="Address 1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{GstinDetail>address1}" editable="{GstinDetail>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem">
+							<ui:multiLabels>
+								<Label text="Address 2" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{GstinDetail>address2}" editable="{GstinDetail>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem">
+							<ui:multiLabels>
+								<Label text="Address 3" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{GstinDetail>address3}" editable="{GstinDetail>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<!--<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="Turnover FY18Q1 " textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{GstinDetail>turnoverFYQuarter}"/>
+							</ui:template>
+						</ui:Column>-->
+					</ui:columns>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

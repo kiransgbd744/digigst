@@ -1,0 +1,28 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:f="sap.f" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+	controllerName="com.ey.digigst.controller.APModule" busyIndicatorDelay="0">
+	<IconTabBar expanded="true" id="iditbReports" select="handleIconTabBarSelect" class="sapUiNoContentPadding" backgroundDesign="Transparent"
+		stretchContentHeight="true" selectedKey="{view>/selectedTabKey}" expandable="false">
+		<items>
+			<IconTabFilter id="APMid" icon="sap-icon://activity-individual" text="Auto Recon" tooltip="Auto Recon" key="AutoRecon"
+				enabled="{= ${userPermission>/appPermission/P22}}"></IconTabFilter>
+			<IconTabFilter id="idQRCode" icon="sap-icon://bar-code" text="QR Code Validator" tooltip="QR Code Validator" key="QRCode"
+				enabled="{= ${userPermission>/appPermission/P23}}">
+				<!--<mvc:XMLView viewName="com.ey.digigst.view.QRCode" type="XML"/>-->
+			</IconTabFilter>
+			<!--<IconTabFilter text="E-Invoice Check" icon="sap-icon://my-sales-order" tooltip="E-Invoice Check" key="E-Invoice Check"
+				enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P9})}">
+					<core:Fragment fragmentName="com.ey.digigst.fragments.APModule.CustomisedReport" type="XML"/>
+			</IconTabFilter>-->
+			<IconTabFilter id="idVendorTrend" text="Compliance History" icon="sap-icon://add-favorite" tooltip="Compliance History" key="VendorTrend"
+				enabled="{=${userPermission>/appPermission/P24}}">
+				<!--<mvc:XMLView viewName="com.ey.digigst.view.VendorTrend" type="XML"/>-->
+			</IconTabFilter>
+			<IconTabFilter text="GSTIN &amp; E-Invoice Applicable Validator" icon="sap-icon://add-favorite"
+				tooltip="GSTIN &amp; E-Invoice Applicable Validator" key="EInvoiceAV" enabled="{= ${userPermission>/appPermission/P25}}">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.APModule.E-INVOICE" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter id="idPDFReader" text="PDF Reader" icon="sap-icon://pdf-reader" tooltip="PDF Reader" key="PDFReader"
+				enabled="{=${userPermission>/appPermission/P42}}"></IconTabFilter>
+		</items>
+	</IconTabBar>
+</mvc:View>

@@ -1,0 +1,214 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table" xmlns:l="sap.ui.layout">
+	<Dialog type="Message" class="sapUiSizeCompact" showHeader="false">
+		<beginButton>
+			<Button text="Close" press="onCloseDialog"/>
+		</beginButton>
+		<Bar>
+			<contentMiddle>
+				<Title text="GET ITC04 Last Call Status" visible="true" id="idtitle1"/>
+				<Title text="GET ITC04 Last Success Status" visible="false" id="idtittle2"/>
+			</contentMiddle>
+		</Bar>
+		<l:Grid defaultSpan="L2 M2 S12" vSpacing="0" class="sapUiTinyMarginTop">
+			<l:content>
+				<VBox>
+					<Label text="Financial year"/>
+					<Input id="id_TaxProcessGstr6A1" editable="false"/>
+				</VBox>
+				<VBox>
+					<Label text="Tax Period"/>
+					<Input id="id_TaxProcessGstr6A2" editable="false"/>
+				</VBox>
+				<VBox>
+					<Label text="Tax Period" visible="false"/>
+					<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" id="id_TaxProcessGstr6A" editable="false" visible="false"/>
+				</VBox>
+			</l:content>
+		</l:Grid>
+		<l:VerticalLayout width="63rem">
+			<Toolbar>
+				<!--<CheckBox text="Select All" selected="{showing>/check}" select="onSelectAllCheck"/>-->
+				<ToolbarSpacer/>
+				<Button text="Download Reports" type="Emphasized" press="onPressDownloadReportPopup"/>
+				<Button text="GET ITC04" type="Emphasized" press="onPressITC04GetDetails123"/>
+				<Button text="Refresh" type="Emphasized" press="getGstr6ASucessStatusDataFinal"/>
+				<SegmentedButton id="sbUpdatStatusGstr6" selectedKey="LCS" selectionChange="onChangeSegmentStatus" class="sapUiSmallMarginEnd">
+					<items>
+						<SegmentedButtonItem text="Last Call Status" key="LCS" width="10rem"/>
+						<SegmentedButtonItem text="Last Success Status" key="LSS" width="10rem"/>
+					</items>
+				</SegmentedButton>
+			</Toolbar>
+			<ui:Table id="idgetVtablegstr6" rows="{path:'GstrITC04Sucess>/resp/lastCall'}" selectionMode="Multi" selectionBehavior="Row"
+				visibleRowCount="10" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop cl_popupCheck" fixedColumnCount="1"
+				rowSelectionChange="onRowSelectionChange6A">
+				<ui:extension></ui:extension>
+				<ui:columns>
+					<ui:Column hAlign="Left" width="11rem">
+						<HBox>
+							<Label text="GSTN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<Text text="{GstrITC04Sucess>gstin}"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<HBox>
+							<Label text="Table 4 - M2JW" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<!--<CheckBox text="" selected="{GstrITC04Sucess>b2bFlag}"/>-->
+								<VBox>
+									<HBox>
+										<ObjectStatus text="{GstrITC04Sucess>table4Status}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+											state="{= ${GstrITC04Sucess>table4Status} ==='Success' ?'Success':'Error'}"/>
+									</HBox>
+									<Text text="{GstrITC04Sucess>table4TimeStamp}"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<HBox>
+							<Label text="Table 5A - JW2M" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<!--<CheckBox text="" selected="{GstrITC04Sucess>b2baFlag}"/>-->
+								<VBox>
+									<HBox>
+										<ObjectStatus text="{GstrITC04Sucess>table5AStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+											state="{= ${GstrITC04Sucess>table5AStatus} ==='Success' ?'Success':'Error'}"/>
+									</HBox>
+									<Text text="{GstrITC04Sucess>table5ATimeStamp}"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<HBox>
+							<Label text="Table 5B - Other JW2M" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<!--<CheckBox text="" selected="{GstrITC04Sucess>cdnFlag}"/>-->
+								<VBox>
+									<HBox>
+										<ObjectStatus text="{GstrITC04Sucess>table5BStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+											state="{= ${GstrITC04Sucess>table5BStatus} ==='Success' ?'Success':'Error'}"/>
+									</HBox>
+									<Text text="{GstrITC04Sucess>table5BTimeStamp}"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<HBox>
+							<Label text="Table 5C - Sold from JW" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<!--<CheckBox text="" selected="{GstrITC04Sucess>cdnaFlag}"/>-->
+								<VBox>
+									<HBox>
+										<ObjectStatus text="{GstrITC04Sucess>table5CStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+											state="{= ${GstrITC04Sucess>table5CStatus} ==='Success' ?'Success':'Error'}"/>
+									</HBox>
+									<Text text="{GstrITC04Sucess>table5CTimeStamp}"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+			<ui:Table id="idgetStablegstr6" rows="{path:'GstrITC04Sucess>/resp/lastSuccess'}" selectionMode="Multi" selectionBehavior="Row"
+				visibleRowCount="10" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop cl_popupCheck" fixedColumnCount="1"
+				rowSelectionChange="onRowSelectionChange6A" visible="false">
+				<ui:extension></ui:extension>
+				<ui:columns>
+					<ui:Column hAlign="Left" width="11rem">
+						<HBox>
+							<Label text="GSTN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<Text text="{GstrITC04Sucess>gstin}"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<HBox>
+							<Label text="Table 4 - M2JW" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<!--<CheckBox text="" selected="{GstrITC04Sucess>b2bFlag}"/>-->
+								<VBox>
+									<HBox>
+										<ObjectStatus text="{GstrITC04Sucess>table4Status}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+											state="{= ${GstrITC04Sucess>table4Status} ==='Success' ?'Success':'Error'}"/>
+									</HBox>
+									<Text text="{GstrITC04Sucess>table4TimeStamp}"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<HBox>
+							<Label text="Table 5A - JW2M" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<!--<CheckBox text="" selected="{GstrITC04Sucess>b2baFlag}"/>-->
+								<VBox>
+									<HBox>
+										<ObjectStatus text="{GstrITC04Sucess>table5AStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+											state="{= ${GstrITC04Sucess>table5AStatus} ==='Success' ?'Success':'Error'}"/>
+									</HBox>
+									<Text text="{GstrITC04Sucess>table5ATimeStamp}"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<HBox>
+							<Label text="Table 5B - Other JW2M" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<!--<CheckBox text="" selected="{GstrITC04Sucess>cdnFlag}"/>-->
+								<VBox>
+									<HBox>
+										<ObjectStatus text="{GstrITC04Sucess>table5BStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+											state="{= ${GstrITC04Sucess>table5BStatus} ==='Success' ?'Success':'Error'}"/>
+									</HBox>
+									<Text text="{GstrITC04Sucess>table5BTimeStamp}"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<HBox>
+							<Label text="Table 5C - Sold from JW" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<!--<CheckBox text="" selected="{GstrITC04Sucess>cdnaFlag}"/>-->
+								<VBox>
+									<HBox>
+										<ObjectStatus text="{GstrITC04Sucess>table5CStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+											state="{= ${GstrITC04Sucess>table5CStatus} ==='Success' ?'Success':'Error'}"/>
+									</HBox>
+									<Text text="{GstrITC04Sucess>table5CTimeStamp}"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+		</l:VerticalLayout>
+	</Dialog>
+</core:FragmentDefinition>

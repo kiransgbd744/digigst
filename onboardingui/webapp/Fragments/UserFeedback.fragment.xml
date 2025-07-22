@@ -1,0 +1,70 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<ui:Table id="tabUserFeedback" rows="{FeedbackModel>/}" visibleRowCountMode="Auto">
+		<ui:extension>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button type="Ghost" text="Download Report" press="onDownloadReport"/>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="8rem">
+				<Label text="Group Code" design="Bold" textAlign="Center" width="100%"/>
+				<ui:template>
+					<Text text="{FeedbackModel>groupCode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="10rem">
+				<Label text="User ID" design="Bold" textAlign="Center" width="100%"/>
+				<ui:template>
+					<Text text="{FeedbackModel>userName}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem">
+				<Label text="Response Submitted Date" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<Text text="{FeedbackModel>submittedOn}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="280">
+				<Label text="Response to Q1" design="Bold" textAlign="Center" width="100%"/>
+				<ui:template>
+					<Text text="{FeedbackModel>answerQ1}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="280">
+				<Label text="Response to Q2" design="Bold" textAlign="Center" width="100%"/>
+				<ui:template>
+					<HBox renderType="Bare" justifyContent="SpaceBetween">
+						<Text text="{FeedbackModel>answerQ2}"/>
+						<core:Icon src="sap-icon://attachment" press="onDownloadFeedback(${FeedbackModel>quesIdQ2})" size="1rem"
+							visible="{FeedbackModel>isFileReqQ2}"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="280">
+				<Label text="Response to Q3" design="Bold" textAlign="Center" width="100%"/>
+				<ui:template>
+					<Text text="{FeedbackModel>answerQ3}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="300">
+				<Label text="Response to Q4" design="Bold" textAlign="Center" width="100%"/>
+				<ui:template>
+					<Text text="{FeedbackModel>answerQ4}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="280">
+				<Label text="Response to Q5" design="Bold" textAlign="Center" width="100%"/>
+				<ui:template>
+					<Text text="{FeedbackModel>answerQ5}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="280" visible="false">
+				<Label text="Response to Q6" design="Bold" textAlign="Center" width="100%"/>
+				<ui:template>
+					<Text text="{FeedbackModel>answerQ6}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+	</ui:Table>
+</core:FragmentDefinition>

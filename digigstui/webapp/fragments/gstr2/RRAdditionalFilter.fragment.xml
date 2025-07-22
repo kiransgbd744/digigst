@@ -1,0 +1,51 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:fb="sap.ui.comp.filterbar">
+	<Dialog title="Additional Filter" type="Message" class="sapUiSizeCompact">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="Additional Filter" design="Bold"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<buttons>
+			<Button text="Save" class="buttoncolorSec" press="onPressFilterCloseRR"/>
+			<Button text="{i18n>cancel}" class="buttoncolorSec" press="onPressFilterCloseRR"/>
+		</buttons>
+		<fb:FilterBar id="fbRespPR" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" hSpacing="0" vSpacing="0">
+			<fb:filterGroupItems>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Doc Type" visibleInFilterBar="true">
+					<fb:control>
+						<MultiComboBox id="DocTypeIDRR" selectionChange="selectAll">
+							<core:Item key="All" text="All"/>
+							<core:Item key="INV" text="Invoice"/>
+							<core:Item key="CR" text="Credit Note"/>
+							<core:Item key="DR" text="Debit Note"/>
+							<core:Item key="RNV" text="Invoice - Amendment"/>
+							<core:Item key="RCR" text="Credit Note - Amendment"/>
+							<core:Item key="RDR" text="Debit Note - Amendment"/>
+							<core:Item key="IMPG" text="IMPG"/>
+							<core:Item key="SEZG" text="IMPGSEZ"/>
+						</MultiComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="From Doc Date" visibleInFilterBar="true">
+					<fb:control>
+						<DatePicker id="idFromDD" displayFormat="dd MMM yyyy" valueFormat="yyyy-MM-dd" change="handleChangeDD"/>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="To Doc Date" visibleInFilterBar="true">
+					<fb:control>
+						<DatePicker id="idToDD" displayFormat="dd MMM yyyy" valueFormat="yyyy-MM-dd"/>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="POS" visibleInFilterBar="true">
+					<fb:control>
+						<MultiComboBox id="pos" items="{gstr2GetPos>/}" selectionChange="selectAll">
+							<core:Item key="{gstr2GetPos>pos}" text="{gstr2GetPos>pos}"/>
+						</MultiComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+			</fb:filterGroupItems>
+		</fb:FilterBar>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,334 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.Masters"
+	xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table" xmlns:u="sap.ui.unified" xmlns:l="sap.ui.layout"
+	xmlns:commons="sap.suite.ui.commons" busyIndicatorDelay="0">
+	<f:DynamicPage id="dpDataStatus" fitContent="true">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Masters"/>
+				</f:heading>
+				<f:actions>
+					<SegmentedButton id="sbUpload" selectedKey="upload" selectionChange="onChangeSegment" class="sapUiSmallMarginEnd">
+						<items>
+							<SegmentedButtonItem key="upload" text="Upload" width="6rem"/>
+							<SegmentedButtonItem key="status" text="{i18n>fileStatus}" width="6rem"/>
+							<SegmentedButtonItem key="master" text="Master" width="6rem"/>
+						</items>
+					</SegmentedButton>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<f:content>
+					<fb:FilterBar id="fbStatus" width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onSearch"
+						clear="onClearFilter" useToolbar="false" visible="{oVisiModel>/FileStatus}">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Category" visibleInFilterBar="true" visible="{oVisiModel>/FileStatus}">
+								<fb:control>
+									<Select id="idCategory" change="onSelectCategory">
+										<core:Item key="GSTReturns" text="GST Returns"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Data Type" visibleInFilterBar="true"
+								visible="{oVisiModel>/FileStatus}">
+								<fb:control>
+									<Select id="idDataType" selectedKey="Inward" change="onSelectDataType">
+										<core:Item key="inward" text="Inward"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="File Type" visibleInFilterBar="true"
+								visible="{oVisiModel>/FileStatus}">
+								<fb:control>
+									<Select id="idFileType" selectedKey="Racipient_Master" change="onSelectDataType">
+										<core:Item key="RECIPIENT_MASTER" text="Recipient Master"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Date From" visibleInFilterBar="true"
+								visible="{oVisiModel>/FileStatus}">
+								<fb:control>
+									<DatePicker id="iFromPeriod" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" change="onChangeDateValue"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Date To" visibleInFilterBar="true" visible="{oVisiModel>/FileStatus}">
+								<fb:control>
+									<DatePicker id="iToPeriod" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+					<HBox justifyContent="End" class="clMain" width="10%" visible="{oVisiModel>/FileStatus}">
+						<Button type="Default" text="{i18n>clear}" press="onPressClear" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+						<Button class="buttoncolor" text="Filter" press="onSearch"/>
+					</HBox>
+					<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+						useToolbar="false" visible="{oVisiModel>/master}">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Recipient PAN" visibleInFilterBar="true"
+								visible="{oVisiModel>/master}">
+								<fb:control>
+									<MultiComboBox id="idVURecptPAN" width="100%" items="{recipientPanData>/}" selectionChange="selectAll">
+										<core:Item key="{recipientPanData>gstin}" text="{recipientPanData>gstin}"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Recipient GSTIN" visibleInFilterBar="true"
+								visible="{oVisiModel>/master}">
+								<fb:control>
+									<MultiComboBox id="idVUVendrGstn" width="100%" items="{venGstinData>/}" selectionChange="selectAll">
+										<core:Item key="{venGstinData>recipientGstin}" text="{venGstinData>recipientGstin}"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+					<HBox id="fbVenMstrHbox" justifyContent="End" class="clMain" visible="{oVisiModel>/master}">
+						<Button id="bVenMstr" text="Filter" class="buttoncolor" press="onPrsSearchVenMstr"/>
+					</HBox>
+					<Toolbar id="rbReturnType" class="cl_toolbar1" visible="{oVisiModel>/WebUpload}">
+						<Label text="Category" labelFor="rgReturnType" design="Bold"/>
+						<RadioButtonGroup id="rgCategory" columns="1" select="onSelectReturnGroup" class="sapUiMediumMarginEnd">
+							<RadioButton text="GST Returns" enabled="true" id=""/>
+						</RadioButtonGroup>
+						<Label text="{i18n>dataType}" labelFor="rgDataType" design="Bold" class="sapUiTinyMarginEnd"/>
+						<RadioButtonGroup id="rgDataTyGS" columns="1" select="onSelectRadioGroup">
+							<RadioButton text="Inward" enabled="true"/>
+						</RadioButtonGroup>
+						<ToolbarSpacer/>
+						<Button id="bDownload" text="{i18n>downTemp}" class="buttoncolorSec" press="onPressDownload"
+							enabled="{= (${userPermission>/appPermission/P1} || ${userPermission>/appPermission/P32})}"/>
+					</Toolbar>
+					<Toolbar class="cl_toolbar1" visible="{oVisiModel>/WebUpload}">
+						<Label text="File Type" labelFor="rbgOutward" design="Bold" class="sapUiTinyMarginTop"/>
+						<RadioButtonGroup id="rgFileTypeIn" columns="1" select="onSelectRadioGroup" class="sapUiTinyMarginTop">
+							<RadioButton text="Recipient Master" enabled="true"/>
+						</RadioButtonGroup>
+					</Toolbar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel height="100%" class="sapUiNoContentPadding">
+				<HBox>
+					<u:FileUploader visible="{oVisiModel>/WebUpload}" id="fileUploader" fileType="xlsx,csv,xls,xlsm" sameFilenameAllowed="false"
+						multiple="false" sendXHR="true" name="file" useMultipart="true" style="Emphasized" width="50rem" uploadComplete="onUploadComplete"
+						enabled="{= (${userPermission>/appPermission/P1} || ${userPermission>/appPermission/P32})}" class="buttoncolorSec"/>
+					<Button visible="{oVisiModel>/WebUpload}" text="{i18n>upload}" press="onPressUpload" class="sapUiTinyMarginBegin buttoncolor"
+						enabled="{= (${userPermission>/appPermission/P1} || ${userPermission>/appPermission/P32})}"/>
+				</HBox>
+				<ui:Table rows="{oFileStatus>/resp/RecipientMasterStatus}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10"
+					enableSelectAll="false" class="sapUiSmallMarginBeginEnd" visible="{oVisiModel>/FileStatus}">
+					<ui:columns>
+						<ui:Column>
+							<Label text="{i18n>uploadBy}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{oFileStatus>updatedBy}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column >
+							<Label text="{i18n>uploadDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Link text="{path:'oFileStatus>updatedOn', formatter:'.formatter.dateFormat'}" emphasized="true" press="onPressFileDetail"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column >
+							<Label text="{i18n>fileType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{path:'oFileStatus>fileType', formatter:'.formatter.fileType'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column >
+							<Label text="{i18n>fileName}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{oFileStatus>fileName}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column>
+							<Label text="{i18n>fileStatus}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{oFileStatus>fileStatus}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="{i18n>totalAsp}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Text text="{oFileStatus>total}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Processed Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Link text="{oFileStatus>processed}" press="onPressStatsLink($event,'file','P',${FileStatus>processed})" enabled="false"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<HBox justifyContent="Center" width="100%">
+								<Label text="Error Records" design="Bold"/>
+								<core:Icon src="sap-icon://download" size="0.75rem" tooltip="{i18n>downError}" press=".onPressCatalog($event,'err','file')"
+									class="sapUiTinyMarginBegin"/>
+							</HBox>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Link text="{oFileStatus>error}" press="onPressStatsLink($event,'file','E',${FileStatus>error})" enabled="false"/>
+									<core:Icon src="sap-icon://download"
+										visible="{= (${oFileStatus>error} !== 0 &amp;&amp; ${userPermission>/appPermission/P32} || ${userPermission>/appPermission/P1} &amp;&amp; ${oFileStatus>error} !== undefined)}"
+										tooltip="Download" size="0.75rem" class="sapUiTinyMarginBegin" press="onVerticalDownload($event,'error',${oFileStatus>error})"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="15rem">
+							<HBox justifyContent="Center" width="100%">
+								<Label text="Informational Records" design="Bold" tooltip="{i18n>infoTooltip}"/>
+								<core:Icon src="sap-icon://download" size="0.75rem" tooltip="{i18n>downInfo}" press=".onPressCatalog($event,'info','file')"
+									class="sapUiTinyMarginBegin"/>
+							</HBox>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Text text="{oFileStatus>information}"/>
+									<core:Icon src="sap-icon://download"
+										visible="{= (${oFileStatus>information} !== 0 &amp;&amp; ${userPermission>/appPermission/P32} || ${userPermission>/appPermission/P1} &amp;&amp; ${oFileStatus>information} !== undefined)}"
+										tooltip="Download" size="0.75rem" class="sapUiTinyMarginBegin" press="onVerticalDownload($event,'processedinfo',${oFileStatus>information})"></core:Icon>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:Table>
+				<ui:Table rows="{oReciMstrTabData>/}" id="idMasterRecipt" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="12"
+					fixedRowCount="0" fixedColumnCount="1" enableSelectAll="true" visible="{oVisiModel>/master}">
+					<ui:columns>
+						<ui:Column hAlign="Center" width="8rem">
+							<Label text="Recipient PAN" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{oReciMstrTabData>recipientPAN}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="10rem">
+							<Label text="Recipient GSTIN" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{oReciMstrTabData>recipientGstin}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="13rem">
+							<Label text="Recipient Primary E-MailID" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{oReciMstrTabData>recipientPrimEmailId}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="13rem">
+							<Label text="Recipient E-Mail ID(2)" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{oReciMstrTabData>recipientEmailId2}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="13rem">
+							<Label text="Recipient E-Mail ID(3)" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{oReciMstrTabData>recipientEmailId3}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="13rem">
+							<Label text="Recipient E-Mail ID(4)" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{oReciMstrTabData>recipientEmailId4}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="13rem">
+							<Label text="Recipient E-Mail ID(5)" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{oReciMstrTabData>recipientEmailId5}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="13rem">
+							<Label text="CCE-Mail-ID1" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{oReciMstrTabData>cceEmailId1}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="13rem">
+							<Label text="CCE-Mail-ID2" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{oReciMstrTabData>cceEmailId2}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="13rem">
+							<Label text="CCE-Mail-ID3" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{oReciMstrTabData>cceEmailId3}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="13rem">
+							<Label text="CCE-Mail-ID4" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{oReciMstrTabData>cceEmailId4}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="13rem">
+							<Label text="CCE-Mail-ID5" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{oReciMstrTabData>cceEmailId5}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem">
+							<Label text="GetGSTR2A-Email" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{oReciMstrTabData>isGetGstr2AEmail}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem">
+							<Label text="GetGSTR2B-Email" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{oReciMstrTabData>isGetGstr2BEmail}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="14rem">
+							<Label text="ReturnComplianceStatus-Email" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{oReciMstrTabData>isRetCompStatusEmail}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem">
+							<Label text="DRC01B-Email" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{oReciMstrTabData>isDrc01b}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem">
+							<Label text="DRC01C-Email" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{oReciMstrTabData>isDrc01c}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem">
+							<Label text="Action" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text=""/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+					<ui:footer>
+						<HBox width="100%" justifyContent="Center">
+							<Button type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" enabled="{Property>/bFirst}" class="sapUiTinyMarginBeginEnd"
+								press="onPressPagination('F')"/>
+							<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="{Property>/bPrev}"
+								press="onPressPagination('P')"/>
+							<Input type="Number" textAlign="End" value="{Property>/pageNo}" enabled="{Property>/ePageNo}" width="4rem" class="sapUiTinyMarginBegin"
+								submit="onSubmitPagination"/>
+							<Text text="/ {Property>/pgTotal}" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+							<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="{Property>/bNext}"
+								press="onPressPagination('N')"/>
+							<Button type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" enabled="{Property>/bLast}" class="sapUiTinyMarginBeginEnd"
+								press="onPressPagination('L')"/>
+						</HBox>
+					</ui:footer>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

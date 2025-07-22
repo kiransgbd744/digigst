@@ -1,0 +1,69 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table">
+	<f:DynamicPage id="dpRecipientSumm">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<SegmentedButton id="sbRecipSummary" selectedKey="srSumm" selectionChange="onSelectionChange">
+						<items>
+							<SegmentedButtonItem text="SR Summary" key="srSumm" width="9rem"/>
+							<SegmentedButtonItem text="Response Summary" key="respSumm" width="9rem"/>
+							<SegmentedButtonItem text="Response Details" key="respDet" width="9rem"/>
+						</items>
+					</SegmentedButton>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+	<!--	<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding">
+				<fb:FilterBar id="fbRecptSummary" showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onSearch"
+					clear="onClearFilter" useToolbar="false" class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="recpSummEntity" items="{EntityModel>/}" change="onEntityChange" width="100%">
+									<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="recpSummGstin" width="100%" items="{GstinModel>/}">
+									<core:Item key="{GstinModel>value}" text="{GstinModel>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Recipient PAN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="recpSummPAN" width="100%">
+									<core:Item key="" text=""/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Recipient GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="recpSummRGstin" width="100%" items="{ path: 'SuppGstinModel>/resp/' }">
+									<core:Item key="{SuppGstinModel>gstin}" text="{SuppGstinModel>gstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Date of Upload to GSTN" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="slRecptUploadDate" forceSelection="true" items="{DropDown>/uploadGstn}" change="onSelectChange">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+			</f:DynamicPageHeader>
+		</f:header>-->
+		<f:content>
+			<Panel>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.anx1.SrSummary" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.anx1.RespSummary" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.anx1.RespDetails" type="XML"/>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

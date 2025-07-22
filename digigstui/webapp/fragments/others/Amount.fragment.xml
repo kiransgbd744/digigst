@@ -1,0 +1,44 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.f" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table"
+	xmlns:u="sap.ui.unified" xmlns:fb="sap.ui.comp.filterbar" xmlns:html="http://www.w3.org/1999/xhtml">
+	<f:DynamicPage >
+		<f:title>
+			<f:DynamicPageTitle>
+				<!--<f:heading>
+					<HBox>
+						<Label text="Entity :" class="sapUiTinyMarginTop" design="Bold" visible="true"/>
+						<Select items="{entity>/resp}" change="onSelectionChange" id="idEntityGeneral" showSecondaryValues="true" width="15rem" visible="true"
+							class="sapUiTinyMarginBegin">
+							<core:ListItem key="{entity>entityId}" text="{entity>entityName}"/>
+						</Select>
+					</HBox>
+				</f:heading>-->
+				<f:actions >
+					<Label text="Last Updated At :" design="Bold"/>
+					<Label id="labId1" design="Bold" class="sapUiSmallMarginEnd sapUiTiniMarginTop"/>
+					<Button class="buttoncolor" text="Save Changes" press="onSubmit1" id="saveID" enabled="false"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<VBox>
+				<Label text="1. B2C DQR String – Amount should be editable or not?" design="Bold" class="sapUiTinyMarginBegin"/>
+				<RadioButtonGroup select="on1Radio" selectedIndex="1" columns="2" width="100%" class="sapUiTinyMarginBottom sapUiTinyMarginBegin" id="RB31">
+					<buttons>
+						<RadioButton text="Yes"/>
+						<RadioButton text="No"/>
+					</buttons>
+				</RadioButtonGroup>
+				<Label text="2.If Yes Selected, Then value to be passed in ‘mam’" design="Bold" class="sapUiTinyMarginBegin"/>
+				<RadioButtonGroup select="on2Radio" selectedIndex="-1" editable="false" columns="2" width="100%"
+					class="sapUiTinyMarginBottom sapUiTinyMarginBegin" id="RB32">
+					<buttons>
+						<RadioButton text="Absolute Value"/>
+						<RadioButton text="Percentage Value"/>
+					</buttons>
+				</RadioButtonGroup>
+				<Input width="20%" id="payId" visible="false"/>
+				<Input width="20%" id="payId1" description="%" visible="false"/>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

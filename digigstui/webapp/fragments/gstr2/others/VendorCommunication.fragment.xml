@@ -1,0 +1,139 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.gst.controller.gstrTwo" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt">
+	<f:DynamicPage id="IdDVendorCommunication">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<SegmentedButton id="idvendor" selectedKey="API" selectionChange="onSelectionVendorChange">
+						<items>
+							<SegmentedButtonItem text="vendor communication" key="vendor" width="10rem"/>
+							<SegmentedButtonItem text="vendor Master" key="master" width="9rem"/>
+						</items>
+					</SegmentedButton>
+				</f:heading>
+				<f:actions>
+					<Button text="vendor file status" visible="false" id="idv1"></Button>
+					<Button text="Downlode Format" visible="false" id="idv2"></Button>
+					<Button text="Downlode vendor list" visible="false" id="idv3"></Button>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader>
+				<f:content>
+					<fb:FilterBar  showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false" class="sapUiNoContentPadding" visible="true"
+						id="idfvndr">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="true">
+								<fb:control>
+									<Select forceSelection="true" change="onSelectChange" items="{ path: 'DropDown>/Entity' }">
+										<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G2" groupTitle="Basic" name="A1" label="Entity GSTINs " visibleInFilterBar="true">
+								<fb:control>
+									<Select forceSelection="true" change="onSelectChange" items="{ path: 'DropDown>/Entity GSTINs ' }">
+										<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G3" groupTitle="Basic" name="A2" label="Vendor" visibleInFilterBar="true">
+								<fb:control>
+									<Select forceSelection="true" change="onSelectChange" items="{ path: 'DropDown>/Vendor' }">
+										<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G4" groupTitle="Basic" name="A3" label="Report Type" visibleInFilterBar="true">
+								<fb:control>
+									<Select forceSelection="true" change="onSelectChange" items="{ path: 'DropDown>/Report Type' }">
+										<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G5" groupTitle="Basic" name="A4" label="From Tax Period " visibleInFilterBar="true">
+								<fb:control>
+									<Select forceSelection="true" change="onSelectChange" items="{ path: 'DropDown>/From Tax Period ' }">
+										<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G6" groupTitle="Basic" name="A5" label="To Tax Period" visibleInFilterBar="true">
+								<fb:control>
+									<Select forceSelection="true" change="onSelectChange" items="{ path: 'DropDown>/To Tax Period ' }">
+										<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<ui:Table id="idvendcomm" rows="{vendormodeltwoa>/resp}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10"
+					fixedRowCount="1" fixedColumnCount="2" visible="true" enableSelectAll="false">
+					<ui:Column width="7rem">
+						<ui:multiLabels>
+							<Label text="Request ID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{vendormodeltwoa>requestId}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<ui:multiLabels>
+							<Label text="Category" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{vendormodeltwoa>category}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<ui:multiLabels>
+							<Label text="Date/Time" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{vendormodeltwoa>date}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<ui:multiLabels>
+							<Label text="Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{vendormodeltwoa>status}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column >
+						<ui:multiLabels>
+							<Label text="Download/Cancel" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<HBox>
+								<core:Icon src="sap-icon://download" size="1rem" tooltip="Download Report" class="sapUiTinyMarginBegin sapUiTinyMarginTop"/>
+								<core:Icon src="sap-icon://email" size="1rem" tooltip="Download Report" class="sapUiTinyMarginBegin sapUiTinyMarginTop"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+				</ui:Table>
+				<VBox class="sapUiTinyMargin" id="venderid" renderType="Bare" visible="false">
+					<Toolbar>
+						<ToolbarSpacer/>
+						<core:Icon src="sap-icon://download" size="1.25rem" tooltip="Download Report" class="sapUiTinyMarginBegin sapUiTinyMarginTop"/>
+						<core:Icon src="sap-icon://add" size="1.25rem" tooltip="Download Report" class="sapUiTinyMarginBegin sapUiTinyMarginTop"/>
+						<core:Icon src="sap-icon://upload" size="1.25rem" tooltip="Download Report" class="sapUiTinyMarginBegin sapUiTinyMarginTop"/>
+					</Toolbar>
+					<UploadCollection id="UploadCollection" maximumFilenameLength="55" maximumFileSize="10" multiple="true" sameFilenameAllowed="true"
+						instantUpload="false" noDataDescription="Drop files or use the &quot;+&quot; button for pending upload" change="onChange"
+						fileDeleted="onFileDeleted" filenameLengthExceed="onFilenameLengthExceed" fileSizeExceed="onFileSizeExceed" typeMissmatch="onTypeMissmatch"
+						uploadComplete="onUploadComplete" beforeUploadStarts="onBeforeUploadStarts"/>
+				</VBox>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

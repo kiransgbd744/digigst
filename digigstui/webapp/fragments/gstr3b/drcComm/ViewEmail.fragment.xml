@@ -1,0 +1,26 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:ui="sap.ui.table">
+	<HBox justifyContent="Center" width="100%">
+		<ui:Table rows="{ViewEmail>/}" selectionMode="None" visibleRowCount="2" width="40rem" class="sapUiMediumMarginBeginEnd sapUiLargeMarginTop">
+			<ui:columns>
+				<ui:Column width="12rem">
+					<Label text="Communication Type" design="Bold" textAlign="Center" width="100%"/>
+					<ui:template>
+						<Text text="{ViewEmail>communicationType}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="Intimation E-Mail" design="Bold" textAlign="Center" width="100%"/>
+					<ui:template>
+						<core:Icon src="sap-icon://email" size="1.1rem" press="onIntimationEmail(${ViewEmail>communicationType})"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="Reminder E-Mail" design="Bold" textAlign="Center" width="100%"/>
+					<ui:template>
+						<core:Icon src="sap-icon://email" size="1.1rem" press="onReminderEmail(${ViewEmail>communicationType})"/>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+	</HBox>
+</core:FragmentDefinition>

@@ -1,0 +1,494 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons" xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:l="sap.ui.layout">
+	<commons:ChartContainer showFullScreen="false" showZoom="true" showPersonalization="false" autoAdjustHeight="false" id="id_chartds3"
+		visible="false">
+		<commons:content>
+			<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+				<commons:content>
+					<ui:Table id="tabDataAPI" rows="{DataStatusAPI>/resp}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="12"
+						fixedRowCount="1" enableSelectAll="true">
+						<ui:columns>
+							<ui:Column width="10rem">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Received Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignContent="Start" justifyContent="SpaceBetween" width="100%" displayInline="true">
+										<HBox>
+											<Link text="{DataStatusAPI>date}" emphasized="true" press="onPressDetail($event,${DataStatusAPI>date},${DataStatusAPI>processeActive})"
+												visible="{DataStatusAPI>link}" enabled="true"/>
+										</HBox>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem" visible="{=${visiSummDataStatus2>/dms} &amp;&amp; !!${GroupPermission>/GR10}}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Transformation" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{DataStatusAPI>transformationStatus}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" minWidth="160">
+								<ui:multiLabels>
+									<Label text=""/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Total Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox justifyContent="End" width="100%">
+										<Text text="{DataStatusAPI>aspTotal}"/>
+										<core:Icon src="sap-icon://download" tooltip="{i18n>download}" size="0.75rem" class="sapUiTinyMarginBegin"
+											visible="{=(${DataStatusAPI>aspTotal} !== 0 &amp;&amp; ${userPermission>/appPermission/P99} || ${userPermission>/appPermission/P27})&amp;&amp;${ViewProperty>/show}}"
+											press="onPressReportDownload($event,${DataStatusAPI>aspTotal},'totalrecords')">
+											<core:dependents>
+												<Text text="Total"/>
+											</core:dependents>
+										</core:Icon>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="2" hAlign="End" minWidth="160">
+								<ui:multiLabels>
+									<Label text="Processed" textAlign="Center" width="100%" design="Bold"/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Active" textAlign="Center" width="100%" design="Bold"/>
+										<Label text="*" textAlign="Center" width="100%" design="Bold" class="cl_star"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>processeActive}" press="onPressStatsLink($event,'api','P',${DataStatusAPI>processeActive})" enabled="false"/>
+										<core:Icon src="sap-icon://download" tooltip="{i18n>download}" size="0.75rem" class="sapUiTinyMarginBegin"
+											visible="{=(${DataStatusAPI>processeActive} !== 0 &amp;&amp; ${userPermission>/appPermission/P99} || ${userPermission>/appPermission/P27})&amp;&amp;${ViewProperty>/show}}"
+											press="onPressReportDownload($event,${DataStatusAPI>processeActive},'processed','active')">
+											<core:dependents>
+												<Text text="ProcessActive"/>
+											</core:dependents>
+										</core:Icon>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" minWidth="160">
+								<ui:multiLabels>
+									<Label text="Processed" textAlign="Center" width="100%" design="Bold"/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Inactive" textAlign="Center" width="100%" design="Bold"/>
+										<Label text="*" textAlign="Center" width="100%" design="Bold" class="cl_star"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>processeInactive}"/>
+										<core:Icon src="sap-icon://download" tooltip="{i18n>download}" size="0.75rem" class="sapUiTinyMarginBegin"
+											visible="{=(${DataStatusAPI>processeInactive} !== 0 &amp;&amp; ${userPermission>/appPermission/P99} || ${userPermission>/appPermission/P27})&amp;&amp;${ViewProperty>/show}}"
+											press="onPressReportDownload($event,${DataStatusAPI>processeInactive},'processed','inactive')">
+											<core:dependents>
+												<Text text="ProcessInactive"/>
+											</core:dependents>
+										</core:Icon>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="2" hAlign="End" minWidth="160">
+								<ui:multiLabels>
+									<HBox justifyContent="Center" width="100%">
+										<Label text="Error" textAlign="Center" width="100%" design="Bold"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Active" textAlign="Center" width="100%" design="Bold"/>
+										<Label text=" **" textAlign="Center" width="100%" design="Bold" class="cl_star"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>errorActive}" press="onPressStatsLink($event,'api','E',${DataStatusAPI>errorActive})" enabled="false"/>
+										<core:Icon src="sap-icon://download" tooltip="{i18n>download}" size="0.75rem" class="sapUiTinyMarginBegin"
+											visible="{=(${DataStatusAPI>errorActive} !== 0 &amp;&amp; ${userPermission>/appPermission/P99} || ${userPermission>/appPermission/P27})&amp;&amp;${ViewProperty>/show}}"
+											press="onPressReportDownload($event,${DataStatusAPI>errorActive},'error','active')">
+											<core:dependents>
+												<Text text="ErrorActive"/>
+											</core:dependents>
+										</core:Icon>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" minWidth="160">
+								<ui:multiLabels>
+									<Label text="Error" textAlign="Center" width="100%" design="Bold"/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Inactive" textAlign="Center" width="100%" design="Bold"/>
+										<Label text=" **" textAlign="Center" width="100%" design="Bold" class="cl_star"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>errorInactive}"/>
+										<core:Icon src="sap-icon://download" tooltip="{i18n>download}" size="0.75rem" class="sapUiTinyMarginBegin"
+											visible="{=(${DataStatusAPI>errorInactive} !== 0 &amp;&amp; ${userPermission>/appPermission/P99} || ${userPermission>/appPermission/P27})&amp;&amp;${ViewProperty>/show}}"
+											press="onPressReportDownload($event,${DataStatusAPI>errorInactive},'error','inactive')">
+											<core:dependents>
+												<Text text="ErrorInactive"/>
+											</core:dependents>
+										</core:Icon>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="9" hAlign="End" width="9rem" visible="{visiSummDataStatus2>/apieinv}">
+								<ui:multiLabels>
+									<Label text="E-Invoice" textAlign="Center" width="100%" design="Bold"/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Not Applicable" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>EinvNA}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="10rem" visible="{visiSummDataStatus2>/apieinv}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Error (DigiGST)" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>EinvErrorDigiGST}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="12rem" visible="{visiSummDataStatus2>/apieinv}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="DigiGST Processed" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>EinvProcessed}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="12rem" visible="{visiSummDataStatus2>/apieinv}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="INR Initiated" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>EinvINRInitiated}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="9rem" visible="{visiSummDataStatus2>/apieinv}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="IRN Generated" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>EinvGenerated}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="9rem" visible="{visiSummDataStatus2>/apieinv}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Errors (IRP)" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>EinvError}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="9rem" visible="{visiSummDataStatus2>/apieinv}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Einv Cancelled" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>EinvCancelled}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="9rem" visible="{visiSummDataStatus2>/apieinv}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Einv Info Error" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>EinvInfoError}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="9rem" visible="{visiSummDataStatus2>/apieinv}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Einv Not Opted" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>EinvNotOpted}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="9" hAlign="End" width="9rem" visible="{visiSummDataStatus2>/apiewb}">
+								<ui:multiLabels>
+									<Label text="EWB" textAlign="Center" width="100%" design="Bold"/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Not Applicable" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>EWBNA}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="10rem" visible="{visiSummDataStatus2>/apiewb}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Errors (DigiGST)" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>EWBErrorDigiGST}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="12rem" visible="{visiSummDataStatus2>/apiewb}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="DigiGST Processed" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>EWBProcessd}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="12rem" visible="{visiSummDataStatus2>/apiewb}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="EWB Initiated" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>EWBInitiated}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="9rem" visible="{visiSummDataStatus2>/apiewb}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="EWB Generated" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>EWBGenerated}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="9rem" visible="{visiSummDataStatus2>/apiewb}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Errors (NIC)" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>EWBError}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="9rem" visible="{visiSummDataStatus2>/apiewb}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="EWB Cancelled" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>EWBCancelled}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="12rem" visible="{visiSummDataStatus2>/apiewb}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="EWB Generated On ERP" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>EWBGeneratedOnErp}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="13rem" visible="{visiSummDataStatus2>/apiewb}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="EWB Not Generated On ERP" tooltip="EWB Not Generated On Erp" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>EWBNotGeneratedOnErp}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="6" hAlign="End" width="9rem" visible="{visiSummDataStatus2>/apigst}">
+								<ui:multiLabels>
+									<Label text="GST Returns" textAlign="Center" width="100%" design="Bold"/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Not Applicable" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>AspNA}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="10rem" visible="{visiSummDataStatus2>/apigst}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Errors (DigiGST)" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>AspError}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="11rem" visible="{visiSummDataStatus2>/apigst}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="DigiGST Processed" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>AspProcess}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="11rem" visible="{visiSummDataStatus2>/apigst}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Save Initiated" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>AspSaveInitiated}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="9rem" visible="{visiSummDataStatus2>/apigst}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Saved to GSTN" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>AspSavedGstin}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="9rem" visible="{visiSummDataStatus2>/apigst}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Errors (GSTN)" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Text text="{DataStatusAPI>AspErrorsGstin}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+						<ui:footer>
+							<Toolbar class="cl_toolbar">
+								<VBox>
+									<HBox>
+										<Text text="*" class="cl_star1"/>
+										<Text text="Records processed in all the applicable modules"/>
+									</HBox>
+									<HBox>
+										<Text text="**" class="cl_star1 sapUiTinyMarginTop"/>
+										<Text text="Records errored in any of the applicable modules" class="sapUiTinyMarginTop"/>
+									</HBox>
+								</VBox>
+								<ToolbarSpacer/>
+								<VBox>
+									<Text text="Click on Date to view Date wise Summary" class="cl_auth sapUiTinyMarginTop"/>
+								</VBox>
+							</Toolbar>
+						</ui:footer>
+					</ui:Table>
+				</commons:content>
+			</commons:ChartContainerContent>
+		</commons:content>
+		<commons:toolbar>
+			<OverflowToolbar>
+				<Label text="Showing:" design="Bold"/>
+				<CheckBox selected="{visiSummDataStatus2>/apieinv}" text="E-Invoice" enabled="false"/>
+				<CheckBox selected="{visiSummDataStatus2>/apiewb}" text="E-Way Bill" enabled="false"/>
+				<CheckBox selected="{visiSummDataStatus2>/apigst}" text="GST Returns" enabled="false"/>
+				<ToolbarSpacer/>
+				<Button id="bStatsSumm3" text="View Compliance Summary" press="onPressSummary" enabled="true" class="buttoncolorSec"/>
+				<Button text="Download" press="onButtonPress" visible="false" enabled="false" class="buttoncolorSec"/>
+				<Button type="Transparent" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" press="onPressFullScreen('open')"
+					visible="{=!${visiSummDataStatus2>/apiFullScreen}}"/>
+				<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" press="onPressFullScreen('close')"
+					visible="{visiSummDataStatus2>/apiFullScreen}"/>
+				<commons:ChartContainerToolbarPlaceholder/>
+			</OverflowToolbar>
+		</commons:toolbar>
+	</commons:ChartContainer>
+</core:FragmentDefinition>

@@ -1,0 +1,70 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	controllerName="com.ey.digigst.controller.AuthToken" busyIndicatorDelay="0">
+	<f:DynamicPage id="pageAuthToken" class="sapUiResponsiveContentPadding">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Auth Token Status"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding">
+				<fb:FilterBar id="fbAuthToken" showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onSearch"
+					clear="onClearFilter" useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slEntity" items="{EntityModel>/resp/}" width="100%" selectionChange="onChangeEntity">
+									<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Gstin" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slGstin" items="{SuppGstinModel>/resp/}" width="100%">
+									<core:Item key="{SuppGstinModel>gstin}" text="{SuppGstinModel>gstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ScrollContainer vertical="true">
+				<Table id="tabManageToken" items="{AuthToken>/resp/}" sticky="ColumnHeaders">
+					<columns>
+						<Column hAlign="End" width="3rem">
+							<Label text="S.No" design="Bold" width="100%"/>
+						</Column>
+						<Column>
+							<Label text="Entity" design="Bold" width="100%"/>
+						</Column>
+						<Column>
+							<Label text="GSTIN" design="Bold" width="100%"/>
+						</Column>
+						<Column>
+							<Label text="Auth Token Status" design="Bold" width="100%"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{parts: [{path:'AuthToken>entityId'},{path:'AuthToken>gstin'}],formatter:'.getIndex'}"/>
+								<Text text="{AuthToken>entityName}"/>
+								<Text text="{AuthToken>gstin}"/>
+								<HBox>
+									<core:Icon src="sap-icon://circle-task-2" color="{=${AuthToken>authToken}==='Active'?'#00ff00':'#ff0000'}" size="0.9rem"
+										tooltip="{=${AuthToken>authToken}==='Active'?'Auth Token is active':'Auth Token is inactive, click to generate Auth Token'}"
+										press="onPressGenerate"/>
+									<Text text="{AuthToken>authToken}" class="sapUiTinyMarginBegin"/>
+								</HBox>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</ScrollContainer>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

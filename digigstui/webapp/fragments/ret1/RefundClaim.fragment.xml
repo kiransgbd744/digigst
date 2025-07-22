@@ -1,0 +1,145 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<Dialog id="dRefundClaim" title="{i18n>refundClaim}" type="Message" draggable="true" contentWidth="80%" class="sapUiSizeCompact">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="{i18n>refundClaim}" design="Bold"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<beginButton>
+			<Button text="{i18n>ok}" press="onCloseRefundClaim"/>
+		</beginButton>
+		<ui:Table id="tabRefundClaim" rows="{RefundClaim>/}" selectionMode="MultiToggle" fixedColumnCount="1" enableColumnReordering="false"
+			rowSelectionChange="onDialogRowSelection">
+			<ui:extension>
+				<Toolbar>
+					<HBox>
+						<Label text="{i18n>entity}:" labelFor="txtRefundEntity" design="Bold"/>
+						<Text id="txtRefundEntity" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+						<Label text="{i18n>gstin}:" labelFor="txtRefundGstin" design="Bold"/>
+						<Text id="txtRefundGstin" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+						<Label text="{i18n>taxPeriod}:" labelFor="txtRefundPeriod" design="Bold"/>
+						<Text id="txtRefundPeriod" class="sapUiTinyMarginBegin"/>
+					</HBox>
+					<ToolbarSpacer/>
+					<Button type="Accept" icon="sap-icon://save" text="{i18n>save}" enabled="{Property>/enabled}" press="onSaveRefundClaim"/>
+					<Button type="Reject" icon="sap-icon://delete" tooltip="{i18n>delete}" enabled="{Property>/enabled}" press="onDeleteRefundClaim"/>
+					<Button type="Emphasized" icon="sap-icon://edit" tooltip="{i18n>edit}" enabled="{Property>/edit}" press="onEditRefundClaim"/>
+					<Button type="Emphasized" icon="sap-icon://add" tooltip="{i18n>add}" press="onAddRefundClaim"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column width="10rem">
+					<Label text="{i18n>description}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{path:'RefundClaim>desc', formatter:'.taxDescription'}" visible="{=!${RefundClaim>visi}}"/>
+							<Select items="{path:'Returns>/gst', templateShareable:false}" selectedKey="{RefundClaim>desc}" visible="{RefundClaim>visi}">
+								<core:Item key="{Returns>key}" text="{Returns>text}"/>
+							</Select>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem" class="sapUiNoContentPadding">
+					<Label text="{i18n>tax}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'RefundClaim>tax', formatter:'.formatter.amountValue'}" visible="{=!${RefundClaim>edit}}"/>
+							<Input value="{RefundClaim>tax}" textAlign="End" liveChange="positiveDecimal" visible="{RefundClaim>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>interest}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'RefundClaim>interest', formatter:'.formatter.amountValue'}" visible="{=!${RefundClaim>edit}}"/>
+							<Input value="{RefundClaim>interest}" textAlign="End" liveChange="positiveDecimal" visible="{RefundClaim>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>penalty}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'RefundClaim>penalty', formatter:'.formatter.amountValue'}" visible="{=!${RefundClaim>edit}}"/>
+							<Input value="{RefundClaim>penalty}" textAlign="End" liveChange="positiveDecimal" visible="{RefundClaim>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>fee}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'RefundClaim>fee', formatter:'.formatter.amountValue'}" visible="{=!${RefundClaim>edit}}"/>
+							<Input value="{RefundClaim>fee}" textAlign="End" liveChange="positiveDecimal" visible="{RefundClaim>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>other}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'RefundClaim>other', formatter:'.formatter.amountValue'}" visible="{=!${RefundClaim>edit}}"/>
+							<Input value="{RefundClaim>other}" textAlign="End" liveChange="positiveDecimal" visible="{RefundClaim>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>Total}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'RefundClaim>total', formatter:'.formatter.amountValue'}" visible="{=!${RefundClaim>edit}}"/>
+							<Input value="{RefundClaim>total}" textAlign="End" liveChange="positiveDecimal" visible="{RefundClaim>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>userDefinedField1}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{RefundClaim>userDefined1}" visible="{=!${RefundClaim>edit}}"/>
+							<Input value="{RefundClaim>userDefined1}" visible="{RefundClaim>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>userDefinedField2}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{RefundClaim>userDefined2}" visible="{=!${RefundClaim>edit}}"/>
+							<Input value="{RefundClaim>userDefined2}" visible="{RefundClaim>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>userDefinedField3}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{RefundClaim>userDefined3}" visible="{=!${RefundClaim>edit}}"/>
+							<Input value="{RefundClaim>userDefined3}" visible="{RefundClaim>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+			<!--<ui:footer>-->
+			<!--	<HBox width="100%" justifyContent="Center">-->
+			<!--		<Button id="bRefundPrev" type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="false"-->
+			<!--			press="onPressPagination"/>-->
+			<!--		<Input id="inRefundPageNo" type="Number" textAlign="End" width="4rem" submit="onSubmitPagination" enabled="false"-->
+			<!--			class="sapUiTinyMarginBegin" value="0"/>-->
+			<!--		<Text id="txRefundPageNo" text="/ 0" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>-->
+			<!--		<Button id="bRefundNext" type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="false"-->
+			<!--			press="onPressPagination"/>-->
+			<!--		<ComboBox textAlign="End" selectedKey="50" selectionChange="onRefundRecordPerPage" width="5rem" class="sapUiTinyMarginBegin">-->
+			<!--			<core:Item key="50" text="50"/>-->
+			<!--			<core:Item key="100" text="100"/>-->
+			<!--			<core:Item key="200" text="200"/>-->
+			<!--			<core:Item key="500" text="500"/>-->
+			<!--		</ComboBox>-->
+			<!--	</HBox>-->
+			<!--</ui:footer>-->
+		</ui:Table>
+	</Dialog>
+</core:FragmentDefinition>

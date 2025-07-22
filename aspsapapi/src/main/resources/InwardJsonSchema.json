@@ -1,0 +1,483 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"properties": {
+		"req": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"srcFileName": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"division": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"purchaseOrganization": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"returnPeriod": {
+						"type": "string",
+						"maxLength": 6
+					},
+					"custGstin": {
+						"type": "string",
+						"maxLength": 15,
+						"pattern": "([0-9]{2}[0-9|A-Z]{13})"
+					},
+					"docType": {
+						"type": "string",
+						"maxLength": 5
+					},
+					"docNo": {
+						"type": "string",
+						"maxLength": 16
+					},
+					"docDate": {
+						"type": "string"
+					},
+					"crDrPreGst": {
+						"type": "string",
+						"maxLength": 1
+					},
+					"suppGstin": {
+						"type": "string",
+						"maxLength": 15
+					},
+					"custOrSupType": {
+						"type": "string",
+						"maxLength": 1
+					},
+					"diffPercent": {
+						"type": "string",
+						"maxLength": 3
+					},
+					"originalSupplierGstin": {
+						"type": "string",
+						"maxLength": 15,
+						"pattern": "([0-9]{2}[0-9|A-Z]{13})"
+					},
+					"custOrSupName": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"custOrSupCode": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"custOrSupAddr1": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"custOrSupAddr2": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"custOrSupAddr3": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"custOrSupAddr4": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"pos": {
+						"type": "string",
+						"maxLength": 2
+					},
+					"stateApplyingCess": {
+						"type": "string",
+						"maxLength": 2
+					},
+					"portCode": {
+						"type": "string",
+						"maxLength": 6
+					},
+					"billOfEntryNo": {
+						"type": "string",
+						"minLength": 1,
+						"maxLength": 16
+					},
+					"billOfEntryDate": {
+						"type": "string"
+					},
+					"sec7OfIgstFlag": {
+						"type": "string",
+						"maxLength": 1
+					},
+					"claimRefundFlag": {
+						"type": "string",
+						"maxLength": 1
+					},
+					"autoPopToRefundFlag": {
+						"type": "string",
+						"maxLength": 1
+					},
+					"reverseCharge": {
+						"type": "string",
+						"maxLength": 1
+					},
+					"itcEntitlement": {
+						"type": "string",
+						"maxLength": 1
+					},
+					"postingDate": {
+						"type": "string"
+					},
+					"ewbNo": {
+						"type": "string",
+						"maxLength": 12
+					},
+					"ewbDate": {
+						"type": "string"
+					},
+					"dataOriginTypeCode": {
+						"type": "string"
+					},
+					"udf1": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"udf2": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"udf3": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"udf4": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"lineItems": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"itemNo": {
+									"type": "integer",
+									"maxLength": 20
+								},
+								"glCodeTaxableVal": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"glCodeIgst": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"glCodeCgst": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"glCodeSgst": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"glCodeAdvCess": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"glCodeSpCess": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"glCodeStateCess": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"supplyType": {
+									"type": "string",
+									"maxLength": 5
+								},
+								"originalDocNo": {
+									"type": "string",
+									"maxLength": 16
+								},
+								"originalDocDate": {
+									"type": "string"
+								},
+								"cifValue": {
+									"type": "number"
+								},
+								"customDuty": {
+									"type": "number"
+								},
+								"hsnsacCode": {
+									"type": "string",
+									"maxLength": 8
+								},
+								"productCode": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"itemDesc": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"itemType": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"itemUqc": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"itemQty": {
+									"type": "number"
+								},
+								"taxableVal": {
+									"type": "number"
+								},
+								"igstRt": {
+									"type": "number"
+								},
+								"igstAmt": {
+									"type": "number"
+								},
+								"cgstRt": {
+									"type": "number"
+								},
+								"cgstAmt": {
+									"type": "number"
+								},
+								"sgstRt": {
+									"type": "number"
+								},
+								"sgstAmt": {
+									"type": "number"
+								},
+								"cessRtAdvalorem": {
+									"type": "number"
+								},
+								"cessAmtAdvalorem": {
+									"type": "number"
+								},
+								"cessRtSpecific": {
+									"type": "number"
+								},
+								"cessAmtSpecfic": {
+									"type": "number"
+								},
+								"stateCessRt": {
+									"type": "number"
+								},
+								"stateCessAmt": {
+									"type": "number"
+								},
+								"otherValues": {
+									"type": "number"
+								},
+								"lineItemAmt": {
+									"type": "number"
+								},
+								"adjustmentRefNo": {
+									"type": "string",
+									"maxLength": 16
+								},
+								"adjustmentRefDate": {
+									"type": "string"
+								},
+								"adjustedTaxableValue": {
+									"type": "number"
+								},
+								"adjustedIgstAmt": {
+									"type": "number"
+								},
+								"adjustedCgstAmt": {
+									"type": "number"
+								},
+								"adjustedSgstAmt": {
+									"type": "number"
+								},
+								"adjustedCessAmtAdvalorem": {
+									"type": "number"
+								},
+								"adjustedCessAmtSpecific": {
+									"type": "number"
+								},
+								"adjustedStateCessAmt": {
+									"type": "number"
+								},
+								"eligibilityIndicator": {
+									"type": "string",
+									"maxLength": 2
+								},
+								"commonSupplyIndicator": {
+									"type": "string",
+									"maxLength": 1
+								},
+								"availableIgst": {
+									"type": "number"
+								},
+								"availableCgst": {
+									"type": "number"
+								},
+								"availableSgst": {
+									"type": "number"
+								},
+								"availableCess": {
+									"type": "number"
+								},
+								"itcReversalIdentifier": {
+									"type": "string",
+									"maxLength": 2
+								},
+								"crDrReason": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"purchaseVoucherNum": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"purchaseVoucherDate": {
+									"type": "string"
+								},
+								"paymentVoucherNumber": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"paymentDate": {
+									"type": "string"
+								},
+								"contractNumber": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"contractDate": {
+									"type": "string"
+								},
+								"contractValue": {
+									"type": "number"
+								},
+								"udf1": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"udf2": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"udf3": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"udf4": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"udf5": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"udf6": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"udf7": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"udf8": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"udf9": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"udf10": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"udf11": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"udf12": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"udf13": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"udf14": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"udf15": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"location": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"profitCentre": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"plantCode": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"profitCentre3": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"profitCentre4": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"profitCentre5": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"profitCentre6": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"profitCentre7": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"profitCentre8": {
+									"type": "string",
+									"maxLength": 100
+								}
+							},
+							"required": [
+								"supplyType"
+							]
+						}
+					}
+				},
+				"required": [
+					"returnPeriod",
+					"custGstin",
+					"docType",
+					"docNo",
+					"docDate",
+					"pos",
+					"lineItems"
+				]
+			}
+		}
+	},
+	"required": [
+		"req"
+	]
+}

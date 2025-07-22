@@ -1,0 +1,357 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<Dialog id="dAspVertical" title="{i18n>aspValues}" type="Message" class="sapUiSizeCompact" draggable="true" contentWidth="80%">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label id="tAspVertical" design="Bold">
+						<dependents>
+							<Text id="tVerticalTab"/>
+						</dependents>
+					</Label>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<beginButton>
+			<Button text="{i18n>ok}" press="onCloseAspVertical"/>
+		</beginButton>
+		<SegmentedButton id="sbAspValue" selectedKey="{Property>/segment}" selectionChange="onAspSegmentChange">
+			<items>
+				<SegmentedButtonItem key="summary" text="{i18n>summary}" width="6rem"/>
+				<SegmentedButtonItem key="data" text="{i18n>verticalData}" width="6rem"/>
+			</items>
+		</SegmentedButton>
+		<Toolbar>
+			<HBox>
+				<Label text="{i18n>entity}:" labelFor="tVerticalEntity" design="Bold"/>
+				<Text id="tVerticalEntity" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+				<Label text="{i18n>gstin}:" labelFor="tVerticalGstin" design="Bold"/>
+				<Text id="tVerticalGstin" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+				<Label text="{i18n>taxPeriod}:" labelFor="tVerticalPeriod" design="Bold"/>
+				<Text id="tVerticalPeriod" class="sapUiTinyMarginBegin"/>
+			</HBox>
+			<ToolbarSpacer/>
+			<Button type="Accept" icon="sap-icon://save" text="{i18n>save}" press="onSaveAspVertical" enabled="{Property>/enabled}"
+				visible="{=!${Property>/summary}}"/>
+			<Button type="Reject" icon="sap-icon://delete" tooltip="{i18n>delete}" press="onDeleteAspVertical" enabled="{Property>/enabled}"
+				visible="{=!${Property>/summary}}"/>
+			<Button type="Emphasized" icon="sap-icon://edit" tooltip="{i18n>edit}" press="onEditAspVertical" enabled="{Property>/edit}"
+				visible="{=!${Property>/summary}}"/>
+			<Button type="Emphasized" icon="sap-icon://add" tooltip="{i18n>add}" press="onAddAspVertical" visible="{=!${Property>/summary}}"/>
+			<Button type="Emphasized" text="{i18n>edit}" visible="{Property>/summary}" press="onPressEdit"/>
+		</Toolbar>
+		<ui:Table id="tabVertical" rows="{AspVertical>/summary}" selectionMode="None" fixedColumnCount="1" enableColumnReordering="false"
+			visibleRowCount="3" visible="{Property>/summary}">
+			<ui:columns>
+				<ui:Column>
+					<Label text="{i18n>type}" textAlign="Center" design="Bold" width="100%"/>
+					<ui:template>
+						<HBox>
+							<Label text="{path:'AspVertical>type'}" design="Bold" visible="{=${AspVertical>type}==='TOTAL'?true:false}"/>
+							<Link text="{path:'AspVertical>type'}" emphasized="true" visible="{=${AspVertical>type}!=='TOTAL'?true:false}" press="onPressSummaryLink"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>count}" textAlign="Center" design="Bold" width="100%"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>count', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>taxableVal}" textAlign="Center" design="Bold" width="100%"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>taxableValue', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>igst}" textAlign="Center" design="Bold" width="100%"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>igst', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>cgst}" textAlign="Center" design="Bold" width="100%"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>cgst', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>sgst}" textAlign="Center" design="Bold" width="100%"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>sgst', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>cess}" textAlign="Center" design="Bold" width="100%"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>cess', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+		<ui:Table id="tabGstnView" rows="{AspVertical>/gstnView}" selectionMode="None" fixedColumnCount="1" enableColumnReordering="false"
+			visibleRowCount="7" visible="{Property>/summary}" class="sapUiSmallMarginTop">
+			<ui:extension>
+				<Toolbar>
+					<Title text="{i18n>gstnView}"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>taxableVal}" textAlign="Center" design="Bold" width="100%"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>taxableValue', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>igst}" textAlign="Center" design="Bold" width="100%"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>igst', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>cgst}" textAlign="Center" design="Bold" width="100%"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>cgst', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>sgst}" textAlign="Center" design="Bold" width="100%"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>sgst', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>cess}" textAlign="Center" design="Bold" width="100%"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>cess', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+		<ui:Table id="tabDataVertical" rows="{path:'AspVertical>/verticalData', sorter:{path:'id'}}" selectionMode="MultiToggle"
+			fixedColumnCount="1" enableColumnReordering="false" rowSelectionChange="onAspRowSelection" visibleRowCount="12"
+			visible="{=!${Property>/summary}}">
+			<ui:columns>
+				<ui:Column width="10rem">
+					<Label text="{i18n>returnTable}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>returnTable'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>value}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{path:'AspVertical>value', formatter:'.formatter.amountValue'}" visible="{=!${AspVertical>edit}}"/>
+							<Input value="{AspVertical>value}" textAlign="End" visible="{AspVertical>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>igstAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{path:'AspVertical>igstAmt', formatter:'.formatter.amountValue'}" visible="{=!${AspVertical>edit}}"/>
+							<Input value="{AspVertical>igstAmt}" textAlign="End" visible="{AspVertical>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>cgstAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{path:'AspVertical>cgstAmt', formatter:'.formatter.amountValue'}" visible="{=!${AspVertical>edit}}"/>
+							<Input value="{AspVertical>cgstAmt}" textAlign="End" visible="{AspVertical>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>sgstAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{path:'AspVertical>sgstAmt', formatter:'.formatter.amountValue'}" visible="{=!${AspVertical>edit}}"/>
+							<Input value="{AspVertical>sgstAmt}" textAlign="End" visible="{AspVertical>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>cessAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{path:'AspVertical>cessAmt', formatter:'.formatter.amountValue'}" visible="{=!${AspVertical>edit}}"/>
+							<Input value="{AspVertical>cessAmt}" textAlign="End" visible="{AspVertical>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>profitCtr}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{AspVertical>profitCenter}" visible="{=!${AspVertical>edit}}"/>
+							<ComboBox items="{path:'DataSecurity>/profitCenter', templateShareable:false}" selectedKey="{AspVertical>profitCenter}"
+								visible="{AspVertical>edit}">
+								<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>plant}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{AspVertical>plant}" visible="{=!${AspVertical>edit}}"/>
+							<ComboBox items="{path:'DataSecurity>/plant', templateShareable:false}" selectedKey="{AspVertical>plant}" visible="{AspVertical>edit}">
+								<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>division}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{AspVertical>division}" visible="{=!${AspVertical>edit}}"/>
+							<ComboBox items="{path:'DataSecurity>/division', templateShareable:false}" selectedKey="{AspVertical>division}" visible="{AspVertical>edit}">
+								<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>location}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{AspVertical>location}" visible="{=!${AspVertical>edit}}"/>
+							<ComboBox items="{path:'DataSecurity>/location', templateShareable:false}" selectedKey="{AspVertical>location}" visible="{AspVertical>edit}">
+								<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>salesOrg}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{AspVertical>salesOrg}" visible="{=!${AspVertical>edit}}"/>
+							<ComboBox items="{path:'DataSecurity>/salesOrg', templateShareable:false}" selectedKey="{AspVertical>salesOrg}" visible="{AspVertical>edit}">
+								<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>distrChannel}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{AspVertical>distrChannel}" visible="{=!${AspVertical>edit}}"/>
+							<ComboBox items="{path:'DataSecurity>/distChannel', templateShareable:false}" selectedKey="{AspVertical>distrChannel}"
+								visible="{AspVertical>edit}">
+								<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>userAccess1}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{AspVertical>userAccess1}" visible="{=!${AspVertical>edit}}"/>
+							<ComboBox items="{path:'DataSecurity>/userAccess1', templateShareable:false}" selectedKey="{AspVertical>userAccess1}"
+								visible="{AspVertical>edit}">
+								<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>userAccess2}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{AspVertical>userAccess2}" visible="{=!${AspVertical>edit}}"/>
+							<ComboBox items="{path:'DataSecurity>/userAccess2', templateShareable:false}" selectedKey="{AspVertical>userAccess2}"
+								visible="{AspVertical>edit}">
+								<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>userAccess3}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{AspVertical>userAccess3}" visible="{=!${AspVertical>edit}}"/>
+							<ComboBox items="{path:'DataSecurity>/userAccess3', templateShareable:false}" selectedKey="{AspVertical>userAccess3}"
+								visible="{AspVertical>edit}">
+								<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>userAccess4}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{AspVertical>userAccess4}" visible="{=!${AspVertical>edit}}"/>
+							<ComboBox items="{path:'DataSecurity>/userAccess4', templateShareable:false}" selectedKey="{AspVertical>userAccess4}"
+								visible="{AspVertical>edit}">
+								<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>userAccess5}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{AspVertical>userAccess5}" visible="{=!${AspVertical>edit}}"/>
+							<ComboBox items="{path:'DataSecurity>/userAccess5', templateShareable:false}" selectedKey="{AspVertical>userAccess5}"
+								visible="{AspVertical>edit}">
+								<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>userAccess6}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{AspVertical>userAccess6}" visible="{=!${AspVertical>edit}}"/>
+							<ComboBox items="{path:'DataSecurity>/userAccess6', templateShareable:false}" selectedKey="{AspVertical>userAccess6}"
+								visible="{AspVertical>edit}">
+								<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>userDefinedField1}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{AspVertical>userDefined1}" visible="{=!${AspVertical>edit}}"/>
+							<Input value="{AspVertical>userDefined1}" visible="{AspVertical>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>userDefinedField2}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{AspVertical>userDefined2}" visible="{=!${AspVertical>edit}}"/>
+							<Input value="{AspVertical>userDefined2}" visible="{AspVertical>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>userDefinedField3}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{AspVertical>userDefined3}" visible="{=!${AspVertical>edit}}"/>
+							<Input value="{AspVertical>userDefined3}" visible="{AspVertical>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+	</Dialog>
+</core:FragmentDefinition>

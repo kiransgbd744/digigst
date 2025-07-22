@@ -1,0 +1,65 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m">
+	<Dialog id="dDifference" title="{i18n>diffHeader}" type="Message" draggable="true" contentWidth="65%" class="sapUiSizeCompact">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="{i18n>diffHeader}" design="Bold"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<beginButton>
+			<Button text="{i18n>close}" press="onCloseDifferenceDialog"/>
+		</beginButton>
+		<Toolbar>
+			<ToolbarSpacer/>
+			<ObjectStatus id="tDiffUpdateStats" state="Warning"/>
+			<Button id="bDiffUpdate" type="Ghost" text="{i18n>updataGstnData}" press="onUpdateGstnData"/>
+		</Toolbar>
+		<Table items="{path:'Difference>/', sorter:{path:'section'}}">
+			<columns>
+				<Column width="16rem">
+					<Label text="{i18n>section}" design="Bold" textAlign="Center" width="100%"/>
+				</Column>
+				<Column width="5rem" hAlign="End">
+					<Label text="{i18n>count}" design="Bold" textAlign="Center" width="100%"/>
+				</Column>
+				<Column width="7rem" hAlign="End">
+					<Label text="{i18n>taxableVal}" design="Bold" textAlign="Center" width="100%"/>
+				</Column>
+				<Column width="7rem" hAlign="End">
+					<Label text="{i18n>taxPayable}" design="Bold" textAlign="Center" width="100%"/>
+				</Column>
+				<Column width="7rem" hAlign="End">
+					<Label text="{i18n>invoiceValue}" design="Bold" textAlign="Center" width="100%"/>
+				</Column>
+				<Column width="7rem" hAlign="End">
+					<Label text="{i18n>igst}" design="Bold" textAlign="Center" width="100%"/>
+				</Column>
+				<Column width="7rem" hAlign="End">
+					<Label text="{i18n>cgst}" design="Bold" textAlign="Center" width="100%"/>
+				</Column>
+				<Column width="7rem" hAlign="End">
+					<Label text="{i18n>sgst}" design="Bold" textAlign="Center" width="100%"/>
+				</Column>
+				<Column width="7rem" hAlign="End">
+					<Label text="{i18n>cess}" design="Bold" textAlign="Center" width="100%"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<Text text="{path:'Difference>section', formatter:'.sectionFormat'}"/>
+						<Text text="{path:'Difference>count'}"/>
+						<Text text="{path:'Difference>taxableValue', formatter:'.formatter.amountValue'}"/>
+						<Text text="{path:'Difference>taxPayble', formatter:'.formatter.amountValue'}"/>
+						<Text text="{path:'Difference>invoiceValue', formatter:'.formatter.amountValue'}"/>
+						<Text text="{path:'Difference>igst', formatter:'.formatter.amountValue'}"/>
+						<Text text="{path:'Difference>cgst', formatter:'.formatter.amountValue'}"/>
+						<Text text="{path:'Difference>sgst', formatter:'.formatter.amountValue'}"/>
+						<Text text="{path:'Difference>cess', formatter:'.formatter.amountValue'}"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</Dialog>
+</core:FragmentDefinition>

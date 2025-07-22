@@ -1,0 +1,20 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog title="IMS Amendment Original Track Report" type="Standard" draggable="true" class="sapUiSizeCompact">
+		<buttons>
+			<Button text="Generate" press="onAmendmentTrackRep('G')" class="buttoncolorSec"/>
+			<Button text="Cancel" press="onAmendmentTrackRep('C')" class="buttoncolorSec"/>
+		</buttons>
+		<HBox class="sapUiSmallMargin">
+			<VBox class="sapUiSmallMarginEnd">
+				<Label text="GSTR-1 Filing Period From" design="Bold"/>
+				<DatePicker id="frAmendRep" displayFormat="MMM yyyy" dateValue="{TrackAmendment>/fromPeriod}" maxDate="{TrackAmendment>/maxDate}"
+					change="onChangeTrackAmendmentDate"/>
+			</VBox>
+			<VBox>
+				<Label text="GSTR-1 Filing Period To" design="Bold"/>
+				<DatePicker id="toAmendRep" displayFormat="MMM yyyy" dateValue="{TrackAmendment>/toPeriod}" maxDate="{TrackAmendment>/maxDate}"
+					minDate="{TrackAmendment>/fromPeriod}"/>
+			</VBox>
+		</HBox>
+	</Dialog>
+</core:FragmentDefinition>

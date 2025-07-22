@@ -1,0 +1,26 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.GSTR3B"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<IconTabBar id="iditbgstrThreeB" select="handleIconTabBarSelect" expanded="true" class="sapUiNoContentPadding sapUiSmallMarginBottom"
+		backgroundDesign="Transparent" stretchContentHeight="true" selectedKey="GSRT3BSummary" expandable="false">
+		<items>
+			<IconTabFilter showAll="true" count="GSTR-3B" key="Allgstr2" enabled="false"/>
+			<IconTabSeparator/>
+			<IconTabFilter icon="sap-icon://activity-2" text="{i18n>Summary3b}" tooltip="{i18n>Summary3b}" key="GSRT3BSummary">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr3b.Summary3B" type="XML"/>
+				<!--<mvc:XMLView viewName="com.ey.digigst.view.Summary3B"/>-->
+			</IconTabFilter>
+			<IconTabSeparator icon="sap-icon://open-command-field"/>
+			<IconTabFilter icon="sap-icon://save" text="{i18n>OffLiability}" tooltip="{i18n>OffLiability}" key="OffSetLiability">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr3b.Liability" type="XML"/>
+			</IconTabFilter>
+			<IconTabSeparator icon="sap-icon://open-command-field"/>
+			<IconTabFilter icon="sap-icon://filter" text="{i18n>OutwardSupply}" tooltip="{i18n>OutwardSupply}" key="OutwardSupply">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr3b.OutwardSupply" type="XML"/>
+			</IconTabFilter>
+			<IconTabSeparator icon="sap-icon://open-command-field"/>
+			<IconTabFilter icon="sap-icon://upload-to-cloud" text="{i18n>InwardSupply}" tooltip="{i18n>InwardSupply}" key="InwardSupply">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr3b.InwardSupply" type="XML"/>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</mvc:View>

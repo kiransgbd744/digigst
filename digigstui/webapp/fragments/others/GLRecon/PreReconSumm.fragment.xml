@@ -1,0 +1,139 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:table="sap.ui.table">
+	<Dialog title="Pre Recon Summary" draggable="true" class="sapUiContentPadding">
+		<beginButton>
+			<Button text="{i18n>close}" press="onCloseReconSummary"/>
+		</beginButton>
+		<content>
+			<table:Table selectionMode="None" rows="{PreReconSummary>/}" visibleRowCount="1">
+				<table:columns>
+					<table:Column headerSpan="7" hAlign="End">
+						<table:multiLabels>
+							<Label design="Bold" textAlign="Center" width="100%" text="Sales Register (GSTR-1)"/>
+							<Label design="Bold" textAlign="Center" width="100%" text="Invoice Count"/>
+						</table:multiLabels>
+						<table:template>
+							<Text text="{PreReconSummary>invoiceCountSR}"/>
+						</table:template>
+					</table:Column>
+					<table:Column hAlign="End">
+						<table:multiLabels>
+							<Label design="Bold" textAlign="Center" width="100%"/>
+							<Label design="Bold" textAlign="Center" width="100%" text="Taxable Value"/>
+						</table:multiLabels>
+						<table:template>
+							<Text text="{PreReconSummary>taxValueSR}"/>
+						</table:template>
+					</table:Column>
+					<table:Column hAlign="End">
+						<table:multiLabels>
+							<Label design="Bold" textAlign="Center" width="100%"/>
+							<Label design="Bold" textAlign="Center" width="100%" text="IGST"/>
+						</table:multiLabels>
+						<table:template>
+							<Text text="{PreReconSummary>igstSR}"/>
+						</table:template>
+					</table:Column>
+					<table:Column hAlign="End">
+						<table:multiLabels>
+							<Label design="Bold" textAlign="Center" width="100%"/>
+							<Label design="Bold" textAlign="Center" width="100%" text="CGST"/>
+						</table:multiLabels>
+						<table:template>
+							<Text text="{PreReconSummary>cgstSR}"/>
+						</table:template>
+					</table:Column>
+					<table:Column hAlign="End">
+						<table:multiLabels>
+							<Label design="Bold" textAlign="Center" width="100%"/>
+							<Label design="Bold" textAlign="Center" width="100%" text="SGST"/>
+						</table:multiLabels>
+						<table:template>
+							<Text text="{PreReconSummary>sgstSR}"/>
+						</table:template>
+					</table:Column>
+					<table:Column hAlign="End">
+						<table:multiLabels>
+							<Label design="Bold" textAlign="Center" width="100%"/>
+							<Label design="Bold" textAlign="Center" width="100%" text="CESS"/>
+						</table:multiLabels>
+						<table:template>
+							<Text text="{PreReconSummary>cessSR}"/>
+						</table:template>
+					</table:Column>
+					<table:Column hAlign="End" width="9rem">
+						<table:multiLabels>
+							<Label design="Bold" textAlign="Center" width="100%"/>
+							<Label design="Bold" textAlign="Center" width="100%" text="Total Tax Amount"/>
+						</table:multiLabels>
+						<table:template>
+							<Text text="{PreReconSummary>totalTaxSR}"/>
+						</table:template>
+					</table:Column>
+					<table:Column hAlign="End" headerSpan="7">
+						<table:multiLabels>
+							<Label design="Bold" textAlign="Center" width="100%" text="GL Dump"/>
+							<Label design="Bold" textAlign="Center" width="100%" text="Invoice Count"/>
+						</table:multiLabels>
+						<table:template>
+							<Text text="{PreReconSummary>invoiceCountGL}"/>
+						</table:template>
+					</table:Column>
+					<table:Column hAlign="End">
+						<table:multiLabels>
+							<Label design="Bold" textAlign="Center" width="100%"/>
+							<Label design="Bold" textAlign="Center" width="100%" text="Taxable Value"/>
+						</table:multiLabels>
+						<table:template>
+							<Text text="{PreReconSummary>taxValueGL}"/>
+						</table:template>
+					</table:Column>
+					<table:Column hAlign="End">
+						<table:multiLabels>
+							<Label design="Bold" textAlign="Center" width="100%"/>
+							<Label design="Bold" textAlign="Center" width="100%" text="IGST"/>
+						</table:multiLabels>
+						<table:template>
+							<Text text="{PreReconSummary>igstGL}"/>
+						</table:template>
+					</table:Column>
+					<table:Column hAlign="End">
+						<table:multiLabels>
+							<Label design="Bold" textAlign="Center" width="100%"/>
+							<Label design="Bold" textAlign="Center" width="100%" text="CGST"/>
+						</table:multiLabels>
+						<table:template>
+							<Text text="{PreReconSummary>cgstGL}"/>
+						</table:template>
+					</table:Column>
+					<table:Column hAlign="End">
+						<table:multiLabels>
+							<Label design="Bold" textAlign="Center" width="100%"/>
+							<Label design="Bold" textAlign="Center" width="100%" text="SGST"/>
+						</table:multiLabels>
+						<table:template>
+							<Text text="{PreReconSummary>sgstGL}"/>
+						</table:template>
+					</table:Column>
+					<table:Column hAlign="End">
+						<table:multiLabels>
+							<Label design="Bold" textAlign="Center" width="100%"/>
+							<Label design="Bold" textAlign="Center" width="100%" text="CESS"/>
+						</table:multiLabels>
+						<table:template>
+							<Text text="{PreReconSummary>cessGL}"/>
+						</table:template>
+					</table:Column>
+					<table:Column hAlign="End" width="9rem">
+						<table:multiLabels>
+							<Label design="Bold" textAlign="Center" width="100%"/>
+							<Label design="Bold" textAlign="Center" width="100%" text="Total Tax Amount"/>
+						</table:multiLabels>
+						<table:template>
+							<Text text="{PreReconSummary>totalTaxGL}"/>
+						</table:template>
+					</table:Column>
+				</table:columns>
+			</table:Table>
+		</content>
+	</Dialog>
+</core:FragmentDefinition>

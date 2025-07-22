@@ -1,0 +1,49 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:ui="sap.ui.table">
+	<HBox justifyContent="Center" width="100%">
+		<ui:Table id="tabScheduleFreq" rows="{ScheduleFrequency>/}" selectionMode="None" visibleRowCount="2" width="48rem"
+			class="sapUiMediumMarginBeginEnd sapUiLargeMarginTop">
+			<ui:extension>
+				<Toolbar>
+					<ToolbarSpacer/>
+					<Button text="Save" press="onSaveResetFrequency('save')" class="buttoncolorSec"/>
+					<Button text="Reset" press="onSaveResetFrequency('reset')" class="buttoncolorSec"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column width="12rem">
+					<Label text="Communication Type" design="Bold" textAlign="Center" width="100%"/>
+					<ui:template>
+						<Text text="{ScheduleFrequency>communicationType}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column>
+					<Label text="Reminder 1 Frequency" design="Bold" textAlign="Center" width="100%"/>
+					<ui:template>
+						<ComboBox items="{path:'DropDown>/DrcScheduleFreq',templateShareable:false}" change="onChangeScheduleFrequency($event,'Rem2')"
+							selectedKey="{ScheduleFrequency>reminder1}" width="100%">
+							<core:Item key="{DropDown>text}" text="{DropDown>text}"/>
+						</ComboBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column>
+					<Label text="Reminder 2 Frequency" design="Bold" textAlign="Center" width="100%"/>
+					<ui:template>
+						<ComboBox items="{path:'DropDown>/DrcScheduleFreq',templateShareable:false}" change="onChangeScheduleFrequency($event,'Rem3')"
+							selectedKey="{ScheduleFrequency>reminder2}" enabled="{ScheduleFrequency>enableRem2}" width="100%">
+							<core:Item key="{DropDown>text}" text="{DropDown>text}"/>
+						</ComboBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column>
+					<Label text="Reminder 3 Frequency" design="Bold" textAlign="Center" width="100%"/>
+					<ui:template>
+						<ComboBox items="{path:'DropDown>/DrcScheduleFreq',templateShareable:false}" enabled="{ScheduleFrequency>enableRem3}"
+							selectedKey="{ScheduleFrequency>reminder3}" width="100%">
+							<core:Item key="{DropDown>text}" text="{DropDown>text}"/>
+						</ComboBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+	</HBox>
+</core:FragmentDefinition>

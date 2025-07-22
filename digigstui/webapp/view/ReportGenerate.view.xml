@@ -1,0 +1,20 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.ReportGenerate"
+	busyIndicatorDelay="0">
+	<SplitApp id="iReportContainer" initialMaster="master" initialDetail="outwardAnx1">
+		<detailPages>
+			<core:Fragment fragmentName="com.ey.digigst.fragments.reports.ReportGenerate" type="XML"/>
+		</detailPages>
+		<masterPages>
+			<Page id="master" title="Reports">
+				<Tree id="tabReport" items="{path:'ReportMaster>/resp/list', parameters:{numberOfExpandedLevels:2}}" mode="SingleSelectMaster"
+					selectionChange="onSelectTreeItem" updateFinished="onUpdateFinished">
+					<StandardTreeItem title="{ReportMaster>reportsName}" type="Active" selected="true">
+						<dependents>
+							<Text text="{ReportMaster>reportsKey}"/>
+						</dependents>
+					</StandardTreeItem>
+				</Tree>
+			</Page>
+		</masterPages>
+	</SplitApp>
+</mvc:View>

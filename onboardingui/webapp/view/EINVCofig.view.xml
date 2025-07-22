@@ -1,0 +1,20 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.onboarding.controller.EINVCofig"
+	busyIndicatorDelay="0">
+	<IconTabBar expanded="true" id="idIconEINVTabBar" select="handleIconTabBarSelect" class="sapUiNoContentPadding"
+		backgroundDesign="Transparent" stretchContentHeight="true" selectedKey="TemplateSelection" expandable="false">
+		<items>
+			<IconTabFilter text="Template Selection" tooltip="Template Selection" key="TemplateSelection">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.EINVConfig.TemplateSelection" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Logo" tooltip="Logo" key="Logo">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.EINVConfig.Logo" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Bank Details" tooltip="Bank Details" key="BankDetails">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.EINVConfig.BankDetails" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Terms &amp; Conditions" tooltip="Terms &amp; Conditions" key="TermsCondition">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.EINVConfig.TermsCondition" type="XML"/>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</mvc:View>

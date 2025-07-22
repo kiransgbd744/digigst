@@ -1,0 +1,148 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<Dialog title="{i18n>docIssued}" class="sapUiSizeCompact" type="Message" contentWidth="85%">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="{i18n>docIssued}" design="Bold"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<beginButton>
+			<Button text="{i18n>close}" class="buttoncolorSec" press="onCloseDialog('docIssued')"/>
+		</beginButton>
+		<Toolbar>
+			<Label text="{i18n>gstin}:" design="Bold"/>
+			<Text text="{Payload>/dataSecAttrs/GSTIN/0}"/>
+			<Label text="{i18n>taxPeriod}:" design="Bold" class="sapUiSmallMarginBegin"/>
+			<Text text="{path:'Payload>/taxPeriod',formatter:'.formatter.periodFormat'}"/>
+			<ToolbarSpacer/>
+			<Label text="Last Updated on:"/>
+			<Text text="{DocSeriesAutoCompStatus>/completedOn}"/>
+			<SegmentedButton selectedKey="{Property>/segment}" selectionChange="onChangeDocSegment" id="id_ChangeDocSegment">
+				<items>
+					<SegmentedButtonItem key="summary" text="{i18n>summary}" width="6rem"/>
+					<SegmentedButtonItem key="vertical" text="{i18n>verticalData}" width="6rem"/>
+				</items>
+			</SegmentedButton>
+		</Toolbar>
+		<ui:Table id="tabSummaryDoc" rows="{path:'DocIssuedSummary>/',sorter:{path:'docNatureId'}}" selectionMode="None" visibleRowCount="12"
+			enableColumnReordering="false" visible="{=${Property>/segment}==='summary'?true:false}" class="sapUiSmallMarginTop">
+			<ui:extension>
+				<Toolbar/>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column hAlign="End" width="5rem">
+					<Label text="{i18n>sNo}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{DocIssuedSummary>docNatureId}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column>
+					<Label text="{i18n>docName}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Link text="{DocIssuedSummary>docNature}" subtle="true" wrapping="true" press="onPressDocNature(${DocIssuedSummary>docNatureId})"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="12rem">
+					<Label text="{i18n>totalNumber}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{DocIssuedSummary>total}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="12rem">
+					<Label text="{i18n>cancelled}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{DocIssuedSummary>cancelled}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="12rem">
+					<Label text="{i18n>netIssued}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{DocIssuedSummary>netIssued}"/>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+		<ui:Table id="tabVerticalDoc" rows="{DocIssuedData>/}" selectionBehavior="Row" selectionMode="MultiToggle" visibleRowCount="12"
+			enableColumnReordering="false" visible="{=${Property>/segment}==='summary'?false:true}" class="sapUiSmallMarginTop">
+			<ui:extension>
+				<Toolbar>
+					<Label text="{path:'Property>/docNatureId',formatter:'.docIssuedHeader'}"/>
+					<ToolbarSpacer/>
+					<Label text="{i18n>seriesFor}:" labelFor="slSeriesFor" design="Bold"/>
+					<Select id="slSeriesFor" items="{path:'DocIssuedSummary>/',sorter:{path:'docNatureId'}}" selectedKey="{Property>/docNatureId}"
+						change="onChangeDocNature(${$source>/selectedKey})" width="20rem">
+						<core:Item key="{DocIssuedSummary>docNatureId}" text="{DocIssuedSummary>docNatureId}. {DocIssuedSummary>docNature}"/>
+					</Select>
+					<Button class="buttoncolorSec" text="{i18n>save}" press="onSaveDocIssued" enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" text="{i18n>cancel}" enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" icon="sap-icon://delete" tooltip="{i18n>delete}" press="onDeleteDocIssued"
+						enabled="{buttonVis>/dataEditable}"/>
+					<!--enabled="{Property>/btnEnable}"-->
+					<Button class="buttoncolorSec" icon="sap-icon://edit" tooltip="{i18n>edit}" press="onEditDocIssued" enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" icon="sap-icon://add" tooltip="{i18n>add}" press="onAddDocIssued" enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" icon="sap-icon://excel-attachment" tooltip="{i18n>downExcel}" enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" icon="sap-icon://pdf-attachment" tooltip="{i18n>downPdf}" enabled="{buttonVis>/dataEditable}"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column hAlign="End" width="5rem" visible="false">
+					<Label text="{i18n>sNo}" textAlign="Center" design="Bold" width="100%"/>
+					<ui:template>
+						<Text text="{DocIssuedData>sNo}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>seriesFrom}" design="Bold" textAlign="Center" textDirection="RTL" required="true" width="100%"/>
+					<ui:template>
+						<VBox width="100%">
+							<Text text="{DocIssuedData>seriesFrom}" visible="{=!${DocIssuedData>visi}}"/>
+							<Input value="{DocIssuedData>seriesFrom}" width="100%" valueState="{DocIssuedData>seriesFromState}"
+								valueStateText="{DocIssuedData>seriesFromStateText}" visible="{DocIssuedData>visi}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>seriesTo}" design="Bold" textAlign="Center" textDirection="RTL" required="true" width="100%"/>
+					<ui:template>
+						<VBox width="100%">
+							<Text text="{DocIssuedData>seriesTo}" visible="{=!${DocIssuedData>visi}}"/>
+							<Input value="{DocIssuedData>seriesTo}" width="100%" valueState="{DocIssuedData>seriesToState}"
+								valueStateText="{DocIssuedData>seriesToStateText}" visible="{DocIssuedData>visi}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column>
+					<Label text="{i18n>totalNumber}" design="Bold" textAlign="Center" textDirection="RTL" required="true" width="100%"/>
+					<ui:template>
+						<VBox width="100%">
+							<Label text="{DocIssuedData>total}" textAlign="End" width="100%" visible="{=!${DocIssuedData>visi}}"/>
+							<Input type="Number" value="{DocIssuedData>total}" textAlign="End" change="onChangeDocIssue" width="100%"
+								valueState="{DocIssuedData>totalState}" valueStateText="{DocIssuedData>totalStateText}" visible="{DocIssuedData>visi}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column>
+					<Label text="{i18n>cancelled}" design="Bold" textAlign="Center" textDirection="RTL" required="true" width="100%"/>
+					<ui:template>
+						<VBox width="100%">
+							<Label text="{DocIssuedData>cancelled}" textAlign="End" width="100%" visible="{=!${DocIssuedData>visi}}"/>
+							<Input type="Number" value="{DocIssuedData>cancelled}" textAlign="End" change="onChangeDocIssue" width="100%"
+								valueState="{DocIssuedData>cancelledState}" valueStateText="{DocIssuedData>cancelledStateText}" visible="{DocIssuedData>visi}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column>
+					<Label text="{i18n>netIssued}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<VBox width="100%">
+							<Label text="{DocIssuedData>netIssued}" textAlign="End" width="100%"/>
+							<!--<Input value="{DocIssuedData>netIssued}" textAlign="End" width="100%" valueState="{DocIssuedData>netIssuedState}"-->
+							<!--	valueStateText="{DocIssuedData>netIssuedStateText}" visible="{DocIssuedData>visi}"/>-->
+						</VBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,228 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table" xmlns:l="sap.ui.layout">
+	<l:BlockLayout background="Dashboard" class="cl_shadow" visible="{=${ViewProperty>/imsSummary}==='gstn'}">
+		<l:BlockLayoutRow class="sapUiNoContentPadding">
+			<l:BlockLayoutCell>
+				<HBox justifyContent="SpaceAround" class="sapUiTinyMarginTop">
+					<VBox justifyContent="Center">
+						<Label text="IMS" design="Bold"/>
+					</VBox>
+					<VBox>
+						<Label text="Total Count" design="Bold" textAlign="Center" width="100%"/>
+						<Label text="{GstnSummaryCount>/gstnTotal}" design="Bold" textAlign="Center" width="100%"/>
+					</VBox>
+					<VBox>
+						<Label text="No Action" design="Bold" textAlign="Center" width="100%"/>
+						<Label text="{GstnSummaryCount>/gstnNoAction}" design="Bold" textAlign="Center" width="100%"/>
+					</VBox>
+					<VBox>
+						<Label text="Accepted" design="Bold" textAlign="Center" width="100%"/>
+						<Label text="{GstnSummaryCount>/gstnAccepted}" design="Bold" textAlign="Center" width="100%"/>
+					</VBox>
+					<VBox>
+						<Label text="Rejected" design="Bold" textAlign="Center" width="100%"/>
+						<Label text="{GstnSummaryCount>/gstnRejected}" design="Bold" textAlign="Center" width="100%"/>
+					</VBox>
+					<VBox>
+						<Label text="Pending" design="Bold" textAlign="Center" width="100%"/>
+						<Label text="{GstnSummaryCount>/gstnPendingTotal}" design="Bold" textAlign="Center" width="100%"/>
+					</VBox>
+				</HBox>
+			</l:BlockLayoutCell>
+		</l:BlockLayoutRow>
+	</l:BlockLayout>
+	<ui:TreeTable id="tabImsGstn" rows="{GstnSummary>/}" selectionMode="None" visible="{=${ViewProperty>/imsSummary}==='gstn'}">
+		<ui:extension>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button text="Check Status" press="onImsSummaryCheckStatus" class="buttoncolorSec"/>
+				<Button text="Save to GSTN" press="onGstnLevelSaveToGstn" class="buttoncolorSec"/>
+				<MenuButton text="Download Report" class="buttoncolorSec">
+					<Menu itemSelected="">
+						<MenuItem text="IMS Records Active+Inactive Report" press="onDownloadImsRecordReport('G','ALL')"/>
+						<MenuItem text="IMS Records Active Report" press="onDownloadImsRecordReport('G','ACTIVE')"/>
+						<MenuItem text="IMS Amendment Original Track Report" press="onDownloadImsRecordReport('G','Amendment')"/>
+					</Menu>
+				</MenuButton>
+				<Button icon="sap-icon://expand-all" press="onExpandCollapseImsSumamry('E')" class="buttoncolorSec"/>
+				<Button icon="sap-icon://collapse-all" press="onExpandCollapseImsSumamry('C')" class="buttoncolorSec"/>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="14rem">
+				<Label text="Table" design="Bold" textAlign="Center" width="100%"/>
+				<ui:template>
+					<Text text="{GstnSummary>table}">
+						<customData>
+							<core:CustomData key="rowStyle" value="{=${GstnSummary>rowStyle}||''}" writeToDom="true"/>
+						</customData>
+					</Text>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="5" hAlign="Center">
+				<ui:multiLabels>
+					<VBox>
+						<Label text="Record Count as per GSTN" design="Bold" textAlign="Center" width="100%"/>
+						<Label text="{GstnSummaryCount>/countAPIDateTime}" class="cl_colorBlue" textAlign="Center" width="100%"/>
+					</VBox>
+					<Label text="Total" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{GstnSummary>gstnTotal}">
+						<customData>
+							<core:CustomData key="rowStyle" value="{=${GstnSummary>rowStyle}||''}" writeToDom="true"/>
+						</customData>
+					</Text>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="No Action" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{GstnSummary>gstnNoAction}">
+						<customData>
+							<core:CustomData key="rowStyle" value="{=${GstnSummary>rowStyle}||''}" writeToDom="true"/>
+						</customData>
+					</Text>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Accepted" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{GstnSummary>gstnAccepted}">
+						<customData>
+							<core:CustomData key="rowStyle" value="{=${GstnSummary>rowStyle}||''}" writeToDom="true"/>
+						</customData>
+					</Text>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Rejected" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{GstnSummary>gstnRejected}">
+						<customData>
+							<core:CustomData key="rowStyle" value="{=${GstnSummary>rowStyle}||''}" writeToDom="true"/>
+						</customData>
+					</Text>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Pending" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{GstnSummary>gstnPendingTotal}">
+						<customData>
+							<core:CustomData key="rowStyle" value="{=${GstnSummary>rowStyle}||''}" writeToDom="true"/>
+						</customData>
+					</Text>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="5" hAlign="End">
+				<ui:multiLabels>
+					<Label text="Record Count as per DigiGST (Not Saved to GSTN)" design="Bold" textAlign="Center" width="100%"/>
+					<Label text="Total" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{GstnSummary>aspTotal}">
+						<customData>
+							<core:CustomData key="rowStyle" value="{=${GstnSummary>rowStyle}||''}" writeToDom="true"/>
+						</customData>
+					</Text>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="No Action" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{GstnSummary>aspNoAction}">
+						<customData>
+							<core:CustomData key="rowStyle" value="{=${GstnSummary>rowStyle}||''}" writeToDom="true"/>
+						</customData>
+					</Text>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Accepted" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{GstnSummary>aspAccepted}">
+						<customData>
+							<core:CustomData key="rowStyle" value="{=${GstnSummary>rowStyle}||''}" writeToDom="true"/>
+						</customData>
+					</Text>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Rejected" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{GstnSummary>aspRejected}">
+						<customData>
+							<core:CustomData key="rowStyle" value="{=${GstnSummary>rowStyle}||''}" writeToDom="true"/>
+						</customData>
+					</Text>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Pending" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{GstnSummary>aspPendingTotal}">
+						<customData>
+							<core:CustomData key="rowStyle" value="{=${GstnSummary>rowStyle}||''}" writeToDom="true"/>
+						</customData>
+					</Text>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="9rem">
+				<Label text="Record Count as per DigiGST (All)" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<Text text="{GstnSummary>recordCountsAll}" visible="{GstnSummary>viewDiff}">
+						<customData>
+							<core:CustomData key="rowStyle" value="{=${GstnSummary>rowStyle}||''}" writeToDom="true"/>
+						</customData>
+					</Text>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="9rem">
+				<ui:multiLabels>
+					<Label text="Difference with GSTN" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox renderType="Bare" justifyContent="Center" alignItems="Center">
+						<core:Icon src="sap-icon://complete" color="#00ff00" visible="{=${GstnSummary>viewDiff}&amp;&amp;!${GstnSummary>diffTotal}}"
+							tooltip="No Difference"/>
+						<core:Icon src="sap-icon://message-warning" color="red" visible="{=${GstnSummary>viewDiff}&amp;&amp;!!${GstnSummary>diffTotal}}"
+							tooltip="View Difference" press="onGstnViewDifference"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+		<ui:footer>
+			<VBox>
+				<Label design="Bold" text="Note:"/>
+				<Label design="Bold" class="sapUiSmallMarginBegin"
+					text="1. IMS status count as per GSTN is computed based on Invoice Count Get Call and it will not update automatically based on action taken in DigiGST."/>
+				<Label design="Bold" class="sapUiSmallMarginBegin"
+					text="2. Please initiate the fresh 'IMS Invoices' get call after 'Save to GSTN' to update the values."/>
+			</VBox>
+		</ui:footer>
+	</ui:TreeTable>
+</core:FragmentDefinition>

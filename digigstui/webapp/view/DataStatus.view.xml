@@ -1,0 +1,296 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" controllerName="com.ey.digigst.controller.DataStatus" displayBlock="true">
+	<f:DynamicPage id="dpDataStatus">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="{i18n>dataStatus}"/>
+				</f:heading>
+				<f:actions>
+					<SegmentedButton id="sbUpload" selectedKey="Upload" selectionChange="onChangeSegment" class="sapUiSmallMarginEnd" visible="false">
+						<items>
+							<SegmentedButtonItem key="upload" text="{i18n>upload}" width="6rem"/>
+							<SegmentedButtonItem key="status" text="{i18n>fileStatus}" width="6rem"/>
+						</items>
+					</SegmentedButton>
+					<SegmentedButton id="sbStatus" selectedKey="API" selectionChange="onChangeSegment">
+						<items>
+							<SegmentedButtonItem key="api" text="{i18n>api}" width="6rem"/>
+							<SegmentedButtonItem key="upload" text="{i18n>webUpload}" width="6rem"/>
+							<SegmentedButtonItem key="sftp" text="{i18n>sftp}" width="6rem"/>
+						</items>
+					</SegmentedButton>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader>
+				<f:content>
+					<fb:FilterBar id="fbStatus" width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onSearch"
+						clear="onClearFilter" useToolbar="false">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>dataType}" visibleInFilterBar="true"
+								visible="{DataStatus>/apiFilter}">
+								<fb:control>
+									<Select id="slStatsDataType" selectedKey="outward" change="onSelectChange">
+										<core:Item key="outward" text="Outward"/>
+										<core:Item key="INWARD" text="Inward"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>criteria}" visibleInFilterBar="true"
+								visible="{DataStatus>/apiFilter}">
+								<fb:control>
+									<Select id="slStatsCriteria" forceSelection="true" change="onChangeCriteria" items="{ path: 'DropDown>/criteria' }">
+										<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>fromDate}" visibleInFilterBar="true"
+								visible="{=${DataStatus>/apiFilter}&amp;&amp;!${DataStatus>/returnPeriod}}">
+								<fb:control>
+									<DatePicker id="iFromDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" change="onChangeDateValue"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="{i18n>toDate}" visibleInFilterBar="true"
+								visible="{=${DataStatus>/apiFilter}&amp;&amp;!${DataStatus>/returnPeriod}}">
+								<fb:control>
+									<DatePicker id="iToDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="{i18n>fromPeriod}" visibleInFilterBar="true"
+								visible="{=${DataStatus>/apiFilter}&amp;&amp;${DataStatus>/returnPeriod}}">
+								<fb:control>
+									<DatePicker id="iFromPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="onChangeDateValue"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="{i18n>toPeriod}" visibleInFilterBar="true"
+								visible="{=${DataStatus>/apiFilter}&amp;&amp;${DataStatus>/returnPeriod}}">
+								<fb:control>
+									<DatePicker id="iToPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="{i18n>returnType}" visibleInFilterBar="true"
+								visible="{=!${DataStatus>/apiFilter}}">
+								<fb:control>
+									<Select id="slStatsReturnType" forceSelection="true" change="onChangeReturnType">
+										<core:Item key="gstr13b" text="GSTR-1 / 3B"/>
+										<core:Item key="newReturn" text="New Return"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="H" label="{i18n>dataType}" visibleInFilterBar="true"
+								visible="{=!${DataStatus>/apiFilter}}">
+								<fb:control>
+									<Select id="slFileDataType" items="{DataType>/}" change="onSelectChange">
+										<core:Item key="{DataType>key}" text="{DataType>text}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="I" label="{i18n>fileType}" visibleInFilterBar="true"
+								visible="{=!${DataStatus>/apiFilter}}">
+								<fb:control>
+									<Select id="slStatsFileType" forceSelection="true" items="{FileType>/}">
+										<core:Item key="{FileType>key}" text="{FileType>text}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="J" label="{i18n>uploadRange}" visibleInFilterBar="true"
+								visible="{=!${DataStatus>/apiFilter}}">
+								<fb:control>
+									<DateRangeSelection id="drsUpload" displayFormat="MMM dd, yyyy" valueFormat="YYYY-MM-dd"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="K" label="{i18n>entity}" visibleInFilterBar="true"-->
+							<!--	visible="{DataStatus>/apiFilter}">-->
+							<!--	<fb:control>-->
+							<!--		<Select id="slStatsEntity" items="{EntityModel>/}" change="onEntityChange">-->
+							<!--			<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>-->
+							<!--		</Select>-->
+							<!--	</fb:control>-->
+							<!--</fb:FilterGroupItem>-->
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="L" label="{i18n>gstin}" visibleInFilterBar="true"
+								visible="{DataStatus>/apiFilter}">
+								<fb:control>
+									<MultiComboBox id="slStatsGSTIN" items="{userPermission>/respData/dataSecurity/gstin}">
+										<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+					<HBox justifyContent="End" class="clMain" id="fbStatusHbox" width="10%">
+						<Button type="Default" id="bAdaptFilter" icon="sap-icon://filter" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilter"/>
+						<Button type="Default" text="{i18n>clear}" press="onPressClear" class="sapUiTinyMarginBeginEnd"/>
+						<Button type="Emphasized" text="{i18n>go}" press="onSearch"/>
+					</HBox>
+					<Toolbar id="rbReturnType" visible="false">
+						<Label text="{i18n>returnType}" labelFor="rgReturnType" design="Bold" width="6rem"/>
+						<RadioButtonGroup id="rgReturnType" columns="2" select="onSelectReturnGroup" class="sapUiMediumMarginEnd">
+							<RadioButton id="bGstr13b" text="{i18n>gstr13b}" width="5rem"/>
+							<RadioButton id="bNewReturn" text="{i18n>newReturn}" width="5rem"/>
+						</RadioButtonGroup>
+						<Label text="{i18n>dataType}" labelFor="rgDataType" design="Bold" class="sapUiTinyMarginEnd"/>
+						<RadioButtonGroup id="rgDataType" columns="3" select="onSelectRadioGroup">
+							<buttons>
+								<RadioButton id="bGstr1" text="{i18n>gstr1}" width="3.5rem"/>
+								<RadioButton id="bGstr3b" text="{i18n>gstr3b}" width="4rem"/>
+							</buttons>
+						</RadioButtonGroup>
+						<RadioButtonGroup id="rgNewReturnDataType" columns="3" select="onSelectRadioGroup" visible="false">
+							<buttons>
+								<RadioButton id="bOutward" text="{i18n>outward}" width="3.5rem"/>
+								<RadioButton id="bInward" text="{i18n>inward}" width="3.5rem"/>
+								<RadioButton id="bOthers" text="{i18n>others}" width="3.5rem"/>
+							</buttons>
+						</RadioButtonGroup>
+						<ToolbarSpacer/>
+						<Button id="bDownload" text="{i18n>downTemp}" tooltip="{i18n>downTemp}" press="onPressDownload" class="sapUiTinyMarginEnd" enabled="false"/>
+						<Button id="bDownloadAll" text="{i18n>downAll}" tooltip="{i18n>downAllTip}" press="onPressDownload" enabled="false"/>
+					</Toolbar>
+					<HBox id="iRbgStatus" visible="false">
+						<Label text="Select File Type" labelFor="rbgOutward" design="Bold" class="sapUiTinyMarginTop" width="6.7rem"/>
+						<RadioButtonGroup id="rbgOutward" columns="5" visible="false">
+							<RadioButton text="{i18n>rawFile}" width="3.5rem">
+								<dependents>
+									<Text text="raw239"/>
+								</dependents>
+							</RadioButton>
+							<RadioButton text="{i18n>raw109}">
+								<dependents>
+									<Text text="raw109"/>
+								</dependents>
+							</RadioButton>
+							<RadioButton text="{i18n>b2c}" width="3.5rem">
+								<dependents>
+									<Text text="b2c"/>
+								</dependents>
+							</RadioButton>
+							<RadioButton text="{i18n>shipBillDetails}" width="8rem">
+								<dependents>
+									<Text text="shipBill"/>
+								</dependents>
+							</RadioButton>
+							<RadioButton text="{i18n>eCommerce}">
+								<dependents>
+									<Text text="eComm"/>
+								</dependents>
+							</RadioButton>
+						</RadioButtonGroup>
+						<RadioButtonGroup id="rbgInward" columns="4" visible="false">
+							<RadioButton text="{i18n>rawFile}" width="3.5rem">
+								<dependents>
+									<Text text="rawFile"/>
+								</dependents>
+							</RadioButton>
+							<RadioButton text="{i18n>revImps}">
+								<dependents>
+									<Text text="revImps"/>
+								</dependents>
+							</RadioButton>
+							<RadioButton text="{i18n>missingDoc}">
+								<dependents>
+									<Text text="missingDoc"/>
+								</dependents>
+							</RadioButton>
+							<RadioButton text="{i18n>reconResponse}">
+								<dependents>
+									<Text text="reconResponse"/>
+								</dependents>
+							</RadioButton>
+						</RadioButtonGroup>
+						<RadioButtonGroup id="rbgOthers" columns="5" visible="false">
+							<RadioButton text="{i18n>ret1UsrInputs}">
+								<dependents>
+									<Text text="rawFile"/>
+								</dependents>
+							</RadioButton>
+							<RadioButton text="{i18n>interestLateFee}">
+								<dependents>
+									<Text text="lateFee"/>
+								</dependents>
+							</RadioButton>
+							<RadioButton text="{i18n>setOffUtilization}">
+								<dependents>
+									<Text text="utilization"/>
+								</dependents>
+							</RadioButton>
+							<RadioButton text="{i18n>paymentStatus}">
+								<dependents>
+									<Text text="payStatus"/>
+								</dependents>
+							</RadioButton>
+							<RadioButton text="{i18n>refundCashLedger}">
+								<dependents>
+									<Text text="refund"/>
+								</dependents>
+							</RadioButton>
+						</RadioButtonGroup>
+						<RadioButtonGroup id="rbgGstr1" columns="7" visible="true">
+							<RadioButton text="{i18n>rawFile}" width="3.5rem">
+								<dependents>
+									<Text text="raw239"/>
+								</dependents>
+							</RadioButton>
+							<RadioButton text="{i18n>raw109}" width="6rem">
+								<dependents>
+									<Text text="raw109"/>
+								</dependents>
+							</RadioButton>
+							<RadioButton text="B2CS" width="3.5rem">
+								<dependents>
+									<Text text="b2cs"/>
+								</dependents>
+							</RadioButton>
+							<RadioButton text="{i18n>advReciev}">
+								<dependents>
+									<Text text="advReciev"/>
+								</dependents>
+							</RadioButton>
+							<RadioButton text="{i18n>advAdjust}">
+								<dependents>
+									<Text text="advAdjust"/>
+								</dependents>
+							</RadioButton>
+							<RadioButton text="{i18n>invSeries}">
+								<dependents>
+									<Text text="invSeries"/>
+								</dependents>
+							</RadioButton>
+							<!--<RadioButton text="HSN Summary"/>-->
+							<!--<RadioButton text="Nil / Non / Exempt"/>-->
+						</RadioButtonGroup>
+						<RadioButtonGroup id="rbgOld3B" columns="7" visible="false">
+							<buttons>
+								<RadioButton text="GSTR-3B"/>
+							</buttons>
+						</RadioButtonGroup>
+					</HBox>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.dataStatus.DataStatusApi" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.dataStatus.WebUpload" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.dataStatus.FileStatus" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.dataStatus.Sftp" type="XML"/>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpSummayAPI" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<FlexBox>
+						<Button type="Transparent" id="bStatusBack" icon="sap-icon://nav-back" tooltip="Back" press="onPressBack"/>
+						<Title id="txtApiSumm" titleStyle="H4" class="custTitle"/>
+					</FlexBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<core:Fragment fragmentName="com.ey.digigst.fragments.dataStatus.Summary" type="XML"/>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

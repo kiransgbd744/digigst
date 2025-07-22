@@ -1,0 +1,104 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" controllerName="com.ey.digigst.controller.GAuthToken" busyIndicatorDelay="0"
+	core:require="{util:'com/ey/digigst/util/Formatter'}">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading >
+					<Title text="Manage Auth Token"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader>
+				<f:content>
+					<fb:FilterBar reset="onReset" search="onSearchAuthToken" showFilterConfiguration="false" useToolbar="false" showGoOnFB="false"
+						class="sapUiNoContentPadding" width="90%">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity Name" visibleInFilterBar="true">
+								<fb:control>
+									<MultiComboBox items="{entityAll>/}" selectedKeys="{FilterModel>/entityIds}" selectionChange="onChangeEntity">
+										<core:Item key="{entityAll>entityId}" text="{entityAll>entityName}"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="GSTIN" visibleInFilterBar="true">
+								<fb:control>
+									<MultiComboBox items="{GstinModel>/}" selectedKeys="{FilterModel>/gstins}" selectionChange="selectAll" showSecondaryValues="true">
+										<core:ListItem key="{GstinModel>gstin}" text="{GstinModel>gstin}"
+											additionalText="{=${GstinModel>regType}!=='REGULAR'?${GstinModel>regType}:''}"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Auth Token Status" visibleInFilterBar="true">
+								<fb:control>
+									<Select selectedKey="{FilterModel>/status}">
+										<core:Item key="" text="All"/>
+										<core:Item key="A" text="Active"/>
+										<core:Item key="I" text="Inactive"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+					<HBox justifyContent="End" class="clMain" width="10%">
+						<Button text="Clear" press="onClearAuthToken" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+						<Button text="Filter" press="onSearchAuthToken" class="buttoncolor"/>
+					</HBox>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table id="tabAuthToken" rows="{path:'GroupAuthToken>/',sorter:[{path:'entityName',descending:false},{path:'gstin',descending:true}]}"
+				selectionMode="None" visibleRowCount="15">
+				<ui:extension>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+						<Button text="Download Report" press="onDownloadReport" class="buttoncolorSec"/>
+					</OverflowToolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column filterProperty="entityName" sortProperty="entityName" width="">
+						<Label text="Entity Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{GroupAuthToken>entityName}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" filterProperty="gstin" sortProperty="gstin" width="">
+						<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{GroupAuthToken>gstin}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="">
+						<Label text="Mobile Number" textAlign="Center" width="100%" design="Bold"/>
+						<ui:template>
+							<Text text="{GroupAuthToken>mobileNo}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<Label text="Email Address" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{GroupAuthToken>email}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="">
+						<Label text="Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox alignItems="Center" justifyContent="Center" width="100%">
+								<ObjectStatus text="{path:'GroupAuthToken>status',formatter:'util.AciveValue'}" state="{=${GroupAuthToken>status}==='A' ?'Success':'Error'}"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="">
+						<Label text="Action" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Button icon="sap-icon://refresh" type="Transparent" text="Generate" press="onGenerateAuthToken" class="buttoncolorSec" width="10rem"
+								enabled="{=${GroupAuthToken>status}==='I'&amp;&amp;(${userPermission>/appPermission/P99} || ${userPermission>/appPermission/P30})}"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

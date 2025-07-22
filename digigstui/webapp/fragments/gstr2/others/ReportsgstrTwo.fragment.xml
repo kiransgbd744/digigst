@@ -1,0 +1,116 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt">
+	<f:DynamicPage id="IdDPReportsgstrTwo">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+				
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="true">
+				<f:content>
+					<fb:FilterBar  showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false" class="sapUiNoContentPadding">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Criteria" visibleInFilterBar="true">
+								<fb:control>
+									<Select forceSelection="true" change="onSelectChange" items="{ path: 'DropDown>/criteria' }">
+										<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<ui:Table id="idreport" rows="{reportmodel>/resp}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10" fixedRowCount="1"
+					fixedColumnCount="2" enableSelectAll="false">
+							<ui:Column width="4rem">
+							<ui:multiLabels>
+								<Label text="Sl.No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{reportmodel>sno}" />
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="Request ID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<ObjectIdentifier title="{reportmodel>requestId}" titleActive="true" titlePress="onPressDetail"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="No. Of GSTINS" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{reportmodel>noOfGstins}" />
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="From Tax Period" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{reportmodel>fromTaxPeriod}" />
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="To Tax Period" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{reportmodel>toTaxPeriod}" />
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="Initiation" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{reportmodel>initiation}"/>
+							</ui:template>
+						</ui:Column>
+						
+							<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="Initiated By" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{reportmodel>initiatedBy}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="Completion" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{reportmodel>completion}" />
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="Download Reports" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+									<HBox>
+							<core:Icon src="sap-icon://download" size="1rem" tooltip="Download Report" class="sapUiTinyMarginBegin sapUiTinyMarginTop"/>
+		
+							</HBox>
+							</ui:template>
+						</ui:Column>
+						</ui:Table>
+						</Panel>
+		</f:content>
+		
+		
+	</f:DynamicPage>
+</core:FragmentDefinition>

@@ -1,0 +1,288 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:commons="sap.suite.ui.commons" xmlns:ui="sap.ui.table">
+	<commons:ChartContainer id="idChartGstr2A" visible="false" showFullScreen="true" showZoom="true" showPersonalization="false"
+		autoAdjustHeight="false">
+		<commons:content>
+			<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+				<commons:content>
+					<ui:Table id="idTableGstr2A" rows="{GSTR2ATable>/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="11"
+						rowSelectionChange="onSelectionGstn">
+						<ui:columns>
+							<ui:Column width="15rem" headerSpan="1">
+								<ui:multiLabels>
+									<Label text="GSTIN" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignContent="Center" justifyContent="SpaceBetween">
+										<Label text="{GSTR2ATable>gstin}" design="Bold" textAlign="Center" width="100%"/>
+										<Text text="{=${GSTR2ATable>registrationType}==='REGULAR'?'':${GSTR2ATable>registrationType}}" class="stateColor fontSmall"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<ui:multiLabels>
+									<CheckBox text="April" selected="{Gstr1Property>/April}" select="AprilSelect"/>
+								</ui:multiLabels>
+								<ui:template>
+									<VBox>
+										<HBox justifyContent="Center">
+											<CheckBox selected="{GSTR2ATable>AprilCheck}" select="AprilSelect1"/>
+											<ObjectStatus text="{GSTR2ATable>statusAprl}" state="{path:'GSTR2ATable>statusAprl', formatter:'.GstrStatus'}"
+												class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+											<!--<core:Icon src="sap-icon://download" size="1rem" press="onDownloadApril" tooltip="Download" class="sapUiTinyMarginTop sapUiTinyMarginBegin"-->
+											<!--	visible="{= ${GSTR2ATable>reptStatusAprl} === 'Generated' }"/>-->
+										</HBox>
+										<Text text="{GSTR2ATable>initiatedOnApril}"/>
+										<Text text="{GSTR2ATable>failedSectionsAprl}" class="sapUiTinyMarginBegin redclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>inPrgrsAprl}" class="sapUiTinyMarginBegin OrangeClr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>successSectionsAprl}" class="sapUiTinyMarginBegin greenclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>sucWithOutDtaSecAprl}" class="sapUiTinyMarginTop sapUiTinyMarginBegin purpleClr" visible="{switchvisible>/value}"/>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<ui:multiLabels>
+									<CheckBox text="May" selected="{Gstr1Property>/May}" select="MaySelect"/>
+								</ui:multiLabels>
+								<ui:template>
+									<VBox>
+										<HBox justifyContent="Center">
+											<CheckBox selected="{GSTR2ATable>MayCheck}" select="MaySelect1"/>
+											<ObjectStatus text="{GSTR2ATable>statusMay}" state="{path:'GSTR2ATable>statusMay', formatter:'.GstrStatus'}"
+												class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+											<!--<core:Icon src="sap-icon://download" size="1rem" press="onDownloadMay" tooltip="Download" class="sapUiTinyMarginTop sapUiTinyMarginBegin"-->
+											<!--	visible="{= ${GSTR2ATable>reptStatusMay} === 'Generated' }"/>-->
+										</HBox>
+										<Text text="{GSTR2ATable>initiatedOnMay}"/>
+										<Text text="{GSTR2ATable>failedSectionsMay}" class="sapUiTinyMarginBegin redclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>inPrgrsMay}" class="sapUiTinyMarginBegin OrangeClr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>successSectionsMay}" class="sapUiTinyMarginBegin greenclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>sucWithOutDtaSecMay}" class="sapUiTinyMarginTop sapUiTinyMarginBegin purpleClr" visible="{switchvisible>/value}"/>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<ui:multiLabels>
+									<CheckBox text="June" selected="{Gstr1Property>/June}" select="JuneSelect"/>
+								</ui:multiLabels>
+								<ui:template>
+									<VBox>
+										<HBox justifyContent="Center">
+											<CheckBox selected="{GSTR2ATable>JuneCheck}" select="JuneSelect1"/>
+											<ObjectStatus text="{GSTR2ATable>statusJune}" state="{path:'GSTR2ATable>statusJune', formatter:'.GstrStatus'}"
+												class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+											<!--<core:Icon src="sap-icon://download" size="1rem" press="onDownloadJune" tooltip="Download" class="sapUiTinyMarginTop sapUiTinyMarginBegin"-->
+											<!--	visible="{= ${GSTR2ATable>reptStatusJune} === 'Generated' }"/>-->
+										</HBox>
+										<Text text="{GSTR2ATable>initiatedOnJune}"/>
+										<Text text="{GSTR2ATable>failedSectionsJune}" class="sapUiTinyMarginBegin redclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>inPrgrsJune}" class="sapUiTinyMarginBegin OrangeClr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>successSectionsJune}" class="sapUiTinyMarginBegin greenclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>sucWithOutDtaSecJune}" class="sapUiTinyMarginTop sapUiTinyMarginBegin purpleClr" visible="{switchvisible>/value}"/>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<ui:multiLabels>
+									<CheckBox text="July" selected="{Gstr1Property>/July}" select="JulySelect"/>
+								</ui:multiLabels>
+								<ui:template>
+									<VBox>
+										<HBox justifyContent="Center">
+											<CheckBox selected="{GSTR2ATable>JulyCheck}" select="JulySelect1"/>
+											<ObjectStatus text="{GSTR2ATable>statusJuly}" state="{path:'GSTR2ATable>statusJuly', formatter:'.GstrStatus'}"
+												class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+											<!--<core:Icon src="sap-icon://download" size="1rem" press="onDownloadJuly" tooltip="Download" class="sapUiTinyMarginTop sapUiTinyMarginBegin"-->
+											<!--	visible="{= ${GSTR2ATable>reptStatusJuly} === 'Generated' }"/>-->
+										</HBox>
+										<Text text="{GSTR2ATable>initiatedOnJuly}"/>
+										<Text text="{GSTR2ATable>failedSectionsJuly}" class="sapUiTinyMarginBegin redclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>inPrgrsJuly}" class="sapUiTinyMarginBegin OrangeClr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>successSectionsJuly}" class="sapUiTinyMarginBegin greenclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>sucWithOutDtaSecJuly}" class="sapUiTinyMarginTop sapUiTinyMarginBegin purpleClr" visible="{switchvisible>/value}"/>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<ui:multiLabels>
+									<CheckBox text="August" selected="{Gstr1Property>/Aug}" select="AugSelect"/>
+								</ui:multiLabels>
+								<ui:template>
+									<VBox>
+										<HBox justifyContent="Center">
+											<CheckBox selected="{GSTR2ATable>AugCheck}" select="AugSelect1"/>
+											<ObjectStatus text="{GSTR2ATable>statusAug}" state="{path:'GSTR2ATable>statusAug', formatter:'.GstrStatus'}"
+												class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+											<!--<core:Icon src="sap-icon://download" size="1rem" press="onDownloadAug" tooltip="Download" class="sapUiTinyMarginTop sapUiTinyMarginBegin"-->
+											<!--	visible="{= ${GSTR2ATable>reptStatusAug} === 'Generated' }"/>-->
+										</HBox>
+										<Text text="{GSTR2ATable>initiatedOnAug}"/>
+										<Text text="{GSTR2ATable>failedSectionsAug}" class="sapUiTinyMarginBegin redclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>inPrgrsAug}" class="sapUiTinyMarginBegin OrangeClr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>successSectionsAug}" class="sapUiTinyMarginBegin greenclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>sucWithOutDtaSecAug}" class="sapUiTinyMarginTop sapUiTinyMarginBegin purpleClr" visible="{switchvisible>/value}"/>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<ui:multiLabels>
+									<CheckBox text="September" selected="{Gstr1Property>/Sep}" select="SepSelect"/>
+								</ui:multiLabels>
+								<ui:template>
+									<VBox>
+										<HBox justifyContent="Center">
+											<CheckBox selected="{GSTR2ATable>SepCheck}" select="SepSelect1"/>
+											<ObjectStatus text="{GSTR2ATable>statusSept}" state="{path:'GSTR2ATable>statusSept', formatter:'.GstrStatus'}"
+												class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+											<!--<core:Icon src="sap-icon://download" size="1rem" press="onDownloadSept" tooltip="Download" class="sapUiTinyMarginTop sapUiTinyMarginBegin"-->
+											<!--	visible="{= ${GSTR2ATable>reptStatusSept} === 'Generated' }"/>-->
+										</HBox>
+										<Text text="{GSTR2ATable>initiatedOnSept}"/>
+										<Text text="{GSTR2ATable>failedSectionsSept}" class="sapUiTinyMarginBegin redclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>inPrgrsSept}" class="sapUiTinyMarginBegin OrangeClr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>successSectionsSept}" class="sapUiTinyMarginBegin greenclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>sucWithOutDtaSecSept}" class="sapUiTinyMarginTop sapUiTinyMarginBegin purpleClr" visible="{switchvisible>/value}"/>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<ui:multiLabels>
+									<CheckBox text="October" selected="{Gstr1Property>/Oct}" select="OctSelect"/>
+								</ui:multiLabels>
+								<ui:template>
+									<VBox>
+										<HBox justifyContent="Center">
+											<CheckBox selected="{GSTR2ATable>OctCheck}" select="OctSelect1"/>
+											<ObjectStatus text="{GSTR2ATable>statusOct}" state="{path:'GSTR2ATable>statusOct', formatter:'.GstrStatus'}"
+												class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+											<!--<core:Icon src="sap-icon://download" size="1rem" press="onDownloadOct" tooltip="Download" class="sapUiTinyMarginTop sapUiTinyMarginBegin"-->
+											<!--	visible="{= ${GSTR2ATable>reptStatusOct} === 'Generated' }"/>-->
+										</HBox>
+										<Text text="{GSTR2ATable>initiatedOnOct}"/>
+										<Text text="{GSTR2ATable>failedSectionsOct}" class="sapUiTinyMarginBegin redclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>inPrgrsOct}" class="sapUiTinyMarginBegin OrangeClr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>successSectionsOct}" class="sapUiTinyMarginBegin greenclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>sucWithOutDtaSecOct}" class="sapUiTinyMarginTop sapUiTinyMarginBegin purpleClr" visible="{switchvisible>/value}"/>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<ui:multiLabels>
+									<CheckBox text="November" selected="{Gstr1Property>/Nov}" select="NovSelect"/>
+								</ui:multiLabels>
+								<ui:template>
+									<VBox>
+										<HBox justifyContent="Center">
+											<CheckBox selected="{GSTR2ATable>NovCheck}" select="NovSelect1"/>
+											<ObjectStatus text="{GSTR2ATable>statusNov}" state="{path:'GSTR2ATable>statusNov', formatter:'.GstrStatus'}"
+												class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+											<!--<core:Icon src="sap-icon://download" size="1rem" press="onDownloadNov" tooltip="Download" class="sapUiTinyMarginTop sapUiTinyMarginBegin"-->
+											<!--	visible="{= ${GSTR2ATable>reptStatusNov} === 'Generated' }"/>-->
+										</HBox>
+										<Text text="{GSTR2ATable>initiatedOnNov}"/>
+										<Text text="{GSTR2ATable>failedSectionsNov}" class="sapUiTinyMarginBegin redclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>inPrgrsNov}" class="sapUiTinyMarginBegin OrangeClr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>successSectionsNov}" class="sapUiTinyMarginBegin greenclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>sucWithOutDtaSecNov}" class="sapUiTinyMarginTop sapUiTinyMarginBegin purpleClr" visible="{switchvisible>/value}"/>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<ui:multiLabels>
+									<CheckBox text="December" selected="{Gstr1Property>/Dec}" select="DecSelect"/>
+								</ui:multiLabels>
+								<ui:template>
+									<VBox>
+										<HBox justifyContent="Center">
+											<CheckBox selected="{GSTR2ATable>DecCheck}" select="DecSelect1"/>
+											<ObjectStatus text="{GSTR2ATable>statusDec}" state="{path:'GSTR2ATable>statusDec', formatter:'.GstrStatus'}"
+												class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+											<!--<core:Icon src="sap-icon://download" size="1rem" press="onDownloadDec" tooltip="Download" class="sapUiTinyMarginTop sapUiTinyMarginBegin"-->
+											<!--	visible="{= ${GSTR2ATable>reptStatusDec} === 'Generated' }"/>-->
+										</HBox>
+										<Text text="{GSTR2ATable>initiatedOnDec}"/>
+										<Text text="{GSTR2ATable>failedSectionsDec}" class="sapUiTinyMarginBegin redclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>inPrgrsDec}" class="sapUiTinyMarginBegin OrangeClr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>successSectionsDec}" class="sapUiTinyMarginBegin greenclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>sucWithOutDtaSecDec}" class="sapUiTinyMarginTop sapUiTinyMarginBegin purpleClr" visible="{switchvisible>/value}"/>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<ui:multiLabels>
+									<CheckBox text="January" selected="{Gstr1Property>/Jan}" select="JanSelect"/>
+								</ui:multiLabels>
+								<ui:template>
+									<VBox>
+										<HBox justifyContent="Center">
+											<CheckBox selected="{GSTR2ATable>JanCheck}" select="JanSelect1"/>
+											<ObjectStatus text="{GSTR2ATable>statusJan}" state="{path:'GSTR2ATable>statusJan', formatter:'.GstrStatus'}"
+												class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+											<!--<core:Icon src="sap-icon://download" size="1rem" press="onDownloadJan" tooltip="Download" class="sapUiTinyMarginTop sapUiTinyMarginBegin"-->
+											<!--	visible="{= ${GSTR2ATable>reptStatusJan} === 'Generated' }"/>-->
+										</HBox>
+										<Text text="{GSTR2ATable>initiatedOnJan}"/>
+										<Text text="{GSTR2ATable>failedSectionsJan}" class="sapUiTinyMarginBegin redclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>inPrgrsJan}" class="sapUiTinyMarginBegin OrangeClr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>successSectionsJan}" class="sapUiTinyMarginBegin greenclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>sucWithOutDtaSecJan}" class="sapUiTinyMarginTop sapUiTinyMarginBegin purpleClr" visible="{switchvisible>/value}"/>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<ui:multiLabels>
+									<CheckBox text="February" selected="{Gstr1Property>/Feb}" select="FebSelect"/>
+								</ui:multiLabels>
+								<ui:template>
+									<VBox>
+										<HBox justifyContent="Center">
+											<CheckBox selected="{GSTR2ATable>FebCheck}" select="FebSelect1"/>
+											<ObjectStatus text="{GSTR2ATable>statusFeb}" state="{path:'GSTR2ATable>statusFeb', formatter:'.GstrStatus'}"
+												class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+											<!--<core:Icon src="sap-icon://download" size="1rem" press="onDownloadFeb" tooltip="Download" class="sapUiTinyMarginTop sapUiTinyMarginBegin"-->
+											<!--	visible="{= ${GSTR2ATable>reptStatusFeb} === 'Generated' }"/>-->
+										</HBox>
+										<Text text="{GSTR2ATable>initiatedOnFeb}"/>
+										<Text text="{GSTR2ATable>failedSectionsFeb}" class="sapUiTinyMarginBegin redclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>inPrgrsFeb}" class="sapUiTinyMarginBegin OrangeClr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>successSectionsFeb}" class="sapUiTinyMarginBegin greenclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>sucWithOutDtaSecFeb}" class="sapUiTinyMarginTop sapUiTinyMarginBegin purpleClr" visible="{switchvisible>/value}"/>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="16rem">
+								<ui:multiLabels>
+									<CheckBox text="March" selected="{Gstr1Property>/Mar}" select="MarSelect"/>
+								</ui:multiLabels>
+								<ui:template>
+									<VBox>
+										<HBox justifyContent="Center">
+											<CheckBox selected="{GSTR1Table>MarCheck}" select="MarSelect1"/>
+											<ObjectStatus text="{GSTR2ATable>statusMar}" state="{path:'GSTR2ATable>statusMar', formatter:'.GstrStatus'}"
+												class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+											<!--<core:Icon src="sap-icon://download" size="1rem" press="onDownloadMar" tooltip="Download" class="sapUiTinyMarginTop sapUiTinyMarginBegin"-->
+											<!--	visible="{= ${GSTR2ATable>reptStatusMar} === 'Generated' }"/>-->
+										</HBox>
+										<Text text="{GSTR2ATable>initiatedOnMar}"/>
+										<Text text="{GSTR2ATable>failedSectionsMar}" class="sapUiTinyMarginBegin redclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>inPrgrsMar}" class="sapUiTinyMarginBegin OrangeClr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>successSectionsMar}" class="sapUiTinyMarginBegin greenclr" visible="{switchvisible>/value}"/>
+										<Text text="{GSTR2ATable>sucWithOutDtaSecMar}" class="sapUiTinyMarginTop sapUiTinyMarginBegin purpleClr" visible="{switchvisible>/value}"/>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+					</ui:Table>
+				</commons:content>
+			</commons:ChartContainerContent >
+		</commons:content>
+		<commons:toolbar>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button class="buttoncolorSec" tooltip="Get Status" text="Initiate Get Call" ariaLabelledBy="actionButtonLabel" press="onGetStatus"
+					enabled="{= ${userPermission>/appPermission/P99}}"/>
+				<Button press="Gstr2AAPIDownld" class="buttoncolorSec" text="Download Report" enabled="{= ${userPermission>/appPermission/P99}}"/>
+				<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+			</OverflowToolbar>
+		</commons:toolbar>
+	</commons:ChartContainer>
+</core:FragmentDefinition>

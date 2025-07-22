@@ -1,0 +1,26 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form">
+	<Dialog id="bulkSaveIDU" title="Update GSTR-3B Status" type="Message" class="sapUiSizeCompact cl_saveHeader" showHeader="true">
+		<beginButton>
+			<Button text="OKAY" class="buttoncolorSec" press="onCloseDialogBulkSaveU"/>
+		</beginButton>
+		<Table items="{BulkGstinSaveModelU>/}" id="idTableBulkSaveU" noDataText="No Products">
+			<columns>
+				<Column hAlign="Center">
+					<Text text="GSTIN"/>
+				</Column>
+				<Column hAlign="Center">
+					<Text text="Message Status"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem vAlign="Middle">
+					<cells>
+						<Text text="{BulkGstinSaveModelU>gstin}" wrapping="false"/>
+						<Text text="{BulkGstinSaveModelU>msg}" wrapping="true"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</Dialog>
+</core:FragmentDefinition>

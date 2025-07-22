@@ -1,0 +1,63 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:ui="sap.ui.table">
+	<Dialog title="{Property>/title}" busyIndicatorDelay="0" class="sapUiSizeCompact sapUiContentPadding">
+		<content>
+			<ui:Table rows="{SaveOpeningBal>/}" selectionMode="None" visibleRowCount="18" enableSelectAll="false" enableColumnReordering="false">
+				<ui:columns>
+					<ui:Column>
+						<Label text="GSTIN" design="Bold"/>
+						<ui:template>
+							<Text text="{SaveOpeningBal>gstin}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="11rem">
+						<Label text="Save Status" design="Bold"/>
+						<ui:template>
+							<HBox direction="Column" justifyContent="Center">
+								<ObjectStatus text="{SaveOpeningBal>saveStatus}" tooltip="{SaveOpeningBal>errMsg}"/>
+								<Text text="{SaveOpeningBal>updatedOn}" class="timeStmpClr"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="IGST" design="Bold"/>
+						<ui:template>
+							<Input type="Number" value="{SaveOpeningBal>igst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="CGST" design="Bold"/>
+						<ui:template>
+							<Input type="Number" value="{SaveOpeningBal>cgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="SGST" design="Bold"/>
+						<ui:template>
+							<Input type="Number" value="{SaveOpeningBal>sgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="Cess" design="Bold"/>
+						<ui:template>
+							<Input type="Number" value="{SaveOpeningBal>cess}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="is Amended(Yes/No)" design="Bold"/>
+						<ui:template>
+							<Select selectedKey="{SaveOpeningBal>isAmended}" width="100%">
+								<core:Item key="S" text="No"/>
+								<core:Item key="A" text="Yes"/>
+							</Select>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+		</content>
+		<buttons>
+			<Button text="Refresh" press="onLedgerSaveRefresh" class="buttoncolor text-shadow"/>
+			<Button text="Save to GSTN" press="onLedgerSaveToGstn" class="buttoncolor sapUiTinyMarginBeginEnd text-shadow"/>
+			<Button text="Close" press="onCloseLedgerSave" class="buttoncolorSec text-shadow"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,182 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:commons="sap.suite.ui.commons"
+	xmlns:u="sap.ui.unified" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:ui="sap.ui.table" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar">
+	<f:DynamicPage >
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onPressBackGlSummary"/>
+						<Title text="GL Data" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onGoGLData" clear="onClearGLDataFilter"
+					useToolbar="false" class="sapUiNoContentPadding" width="90%">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<!--<Input  id="idGlDataGstn" width="100%" ></Input>-->
+								<Select id="idGlDataGstn" width="100%" items="{oGSTIN>/resp/gstinDetails}">
+									<core:Item key="{oGSTIN>gstin}" text="{oGSTIN>gstin}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>taxPeriod}" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="idGlDataTaxPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Data Type" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="id_GLDataDataTy" width="100%" change="onDataTypeChange">
+									<core:Item key="O" text="Outward"/>
+									<core:Item key="I" text="Inward"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onClearGLDataFilter"/>
+					<Button text="Filter" press="onGoGLData" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer showFullScreen="false" autoAdjustHeight="false" class="sapUiTinyMarginBeginEnd cl_ChartConHeight" id="idCcGLdata">
+				<commons:toolbar>
+					<OverflowToolbar class="colorToolbar toolbarHeight">
+						<Label text="Last Updated at : " class="sapUiTinyMarginBegin"></Label>
+						<Text id="id_GLDataupdateText" text="{path : 'oGLDataModel>/resp/0/lastUpdatedOn', formatter : '.formatter.TimeStamp'}"
+							class="sapUiTinyMarginBegin"></Text>
+						<ToolbarSpacer/>
+						<Button class="buttoncolorSec" text="Edit" enabled="false" press="onPressGlDataEdit"/>
+						<Button class="buttoncolorSec" text="Save Changes" enabled="false" press="onPressGlDataSave"/>
+						<Button class="buttoncolorSec" text="Delete Data" enabled="false" press="onPressGLDataDelete"/>
+						<Button class="buttoncolorSec" text="Compute GL Data - DigiGST" press="onPressGLDataCompute" visible="false"/>
+						<Button class="buttoncolorSec" text="Compute Differential" press="onPressGLDataInitRecon" visible="false"/>
+						<MenuButton text="Download Report" class="sapUiTinyMarginBeginEnd buttoncolorSec" enabled="{= ${userPermission>/appPermission/P99}}">
+							<Menu id="bGldataDownloadRpt" itemSelected="onPressDownloadReport($event,${$parameters>/item},'G')">
+								<MenuItem key="GlUploaded" text="GL Summary - Uploaded"/>
+								<MenuItem key="GlcomputedDigiGSTl" text="GL Summary - computed by DigiGST"/>
+								<MenuItem key="GlReconReport" text="GL Recon Report (Summary)"/>
+								<MenuItem key="GlOutward" text="Outward DigiGST Processed Records" visible="false"/>
+								<MenuItem key="GlInward" text="Inward DigiGST Processed Records " visible="false"/>
+							</Menu>
+						</MenuButton>
+						<Button type="Transparent" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="{=!${PrProperty>/GLdataFullScreen}}"
+							press="onGstr2FullScreen('openGLdata')"/>
+						<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="{PrProperty>/GLdataFullScreen}"
+							press="onGstr2FullScreen('closeGLdata')"/>
+						<commons:ChartContainerToolbarPlaceholder/>
+					</OverflowToolbar>
+				</commons:toolbar>
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table id="id_GldataTab" rows="{oGLDataModel>/resp/}" enableColumnReordering="false" class="sapUiTinyMarginTop" selectionMode="None"
+								visibleRowCount="14">
+								<!--<ui:extension>-->
+								<!--	<Toolbar>-->
+								<!--		<Label text="Last Updated at : " class="sapUiTinyMarginBegin"></Label>-->
+								<!--		<Text  id="id_GLDataupdateText"  text="{path : 'oGLDataModel>/resp/0/lastUpdatedOn', formatter : '.formatter.TimeStamp'}" class="sapUiTinyMarginBegin"></Text>-->
+								<!--		<ToolbarSpacer/>-->
+								<!--		<Button type="Emphasized" text="Edit" enabled="false" press="onPressGlDataEdit"/>-->
+								<!--		<Button type="Accept" text="Save Changes" enabled="false" press="onPressGlDataSave"/>-->
+								<!--		<Button type="Reject" text="Delete Data" enabled="false" press="onPressGLDataDelete"/>-->
+								<!--		<Button type="Emphasized" text="Compute GL Data - DigiGST" press="onPressGLDataCompute" visible="false"/>-->
+								<!--		<Button type="Emphasized" text="Compute Differential" press="onPressGLDataInitRecon" visible="false"/>-->
+								<!--		<MenuButton type="Emphasized" text="Download Report" class="sapUiTinyMarginBeginEnd">-->
+								<!--			<Menu id="bGldataDownloadRpt" itemSelected="onPressDownloadReport($event,${$parameters>/item},'G')">-->
+								<!--				<MenuItem key="GlUploaded" text="GL Summary - Uploaded"/>-->
+								<!--				<MenuItem key="GlcomputedDigiGSTl" text="GL Summary - computed by DigiGST"/>-->
+								<!--				<MenuItem key="GlReconReport" text="GL Recon Report (Summary)"/>-->
+								<!--				<MenuItem key="GlOutward" text="Outward DigiGST Processed Records" visible="false"/>-->
+								<!--				<MenuItem key="GlInward" text="Inward DigiGST Processed Records " visible="false"/>-->
+								<!--			</Menu>-->
+								<!--		</MenuButton>-->
+								<!--		<Button type="Transparent" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" -->
+								<!--		visible="{=!${PrProperty>/GLdataFullScreen}}" press="onGstr2FullScreen('openGLdata')"/>-->
+								<!--		<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" -->
+								<!--		visible="{PrProperty>/GLdataFullScreen}"	press="onGstr2FullScreen('closeGLdata')"/>-->
+								<!--	</Toolbar>-->
+								<!--</ui:extension>-->
+								<ui:columns>
+									<ui:Column hAlign="Left">
+										<Label text="GL code" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{oGLDataModel>gLCode}" class="stateColor"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Left">
+										<Label text="GL Account Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{oGLDataModel>gLAccountName}"></Text>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Left">
+										<Label text="Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{oGLDataModel>type}"></Text>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Left">
+										<Label text="Sub type 1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{oGLDataModel>subType1}"></Text>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Left">
+										<Label text="Sub type 2" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{oGLDataModel>subType2}"></Text>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Left">
+										<Label text="Category" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{oGLDataModel>category}"></Text>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Left">
+										<Label text="Sub Category" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{oGLDataModel>subCategory}"></Text>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Left">
+										<Label text="Short Description" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{oGLDataModel>shortDescription}"></Text>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Left">
+										<Label text="Long Description" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{oGLDataModel>longDescription}"></Text>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Left">
+										<Label text="Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{oGLDataModel>status}"></Text>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Right">
+										<Label text="Total Amount GL" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{path : 'oGLDataModel>totalAmountGL', formatter : '.formatter.amountValue2'}"></Text>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent>
+				</commons:content>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

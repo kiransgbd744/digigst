@@ -1,0 +1,17 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.f">
+	<Dialog title="Remark" type="Message" class="sapUiSizeCompact cl_saveHeader">
+		<VBox>
+			<HBox alignItems="Center" class="sapUiTinyMarginBottom">
+				<Label text="Please select the Rejection reason:" design="Bold" class="sapUiTinyMarginEnd"/>
+				<Select items="{RemarkList>/}" selectedKey="{RejectRemark>/remark}" change="onChangeRejectRemark" width="6rem">
+					<core:Item key="{RemarkList>key}" text="{RemarkList>key}"/>
+				</Select>
+			</HBox>
+			<TextArea value="{RejectRemark>/comment}" editable="{RejectRemark>/edit}" liveChange="alphaNumberSpecial" cols="45" maxLength="100"/>
+		</VBox>
+		<buttons>
+			<Button text="Proceed" press="onProceedRejectAction"/>
+			<Button text="Cancel" press="onCancelRejectAction"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

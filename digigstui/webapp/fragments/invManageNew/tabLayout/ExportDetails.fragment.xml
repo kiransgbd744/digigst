@@ -1,0 +1,76 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table" xmlns:form="sap.ui.layout.form">
+	<l:Grid defaultSpan="L2" hSpacing="2" vSpacing="2" class="sapUiTinyMarginTop">
+		<VBox>
+			<Label text="{i18n>CurrencyCode}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/foreignCurrency}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="foreignCurrency" value="{InvoiceItemModel>/foreignCurrency}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/foreignCurrencyState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/foreignCurrencyText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>countryCode}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/countryCode}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="countryCode" value="{InvoiceItemModel>/countryCode}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/countryCodeState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/countryCodeText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>exchangeRate}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/exchangeRt}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="exchangeRt" value="{InvoiceItemModel>/exchangeRt}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/exchangeRtState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/exchangeRtText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>invoiceValueFc}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/invValueFc}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="invValueFc" value="{InvoiceItemModel>/invValueFc}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/invValueFcState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/invValueFcText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>portCode}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/portCode}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="portCode" value="{InvoiceItemModel>/portCode}" maxLength="6" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/portCodeState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/portCodeText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>shippingBillNo}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/shippingBillNo}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="shippingBillNo" value="{InvoiceItemModel>/shippingBillNo}" maxLength="7" liveChange="positiveInteger"
+				visible="{InvoiceItemModel>/edit}" valueState="{path:'InvoiceItemModel>/shippingBillNoState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/shippingBillNoText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>shippingBillDate}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/shippingBillDate}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<DatePicker name="shippingBillDate" value="{InvoiceItemModel>/shippingBillDate}" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd"
+				visible="{InvoiceItemModel>/edit}" placeholder="dd-mm-yyyy"
+				valueState="{path:'InvoiceItemModel>/shippingBillDateState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/shippingBillDateText}"/>
+		</VBox>
+		<!--<VBox>-->
+		<!--	<Label text="{i18n>fob}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>-->
+		<!--</VBox>-->
+		<!--<VBox>-->
+		<!--	<Label text="{i18n>exportDuty}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>-->
+		<!--</VBox>-->
+		<!--<ui:Column hAlign="Center" width="14rem">-->
+		<!--	<Label text="{i18n>fob}" textAlign="Center" width="100%" design="Bold"/>-->
+		<!--	<ui:template>-->
+		<!--		<Input name="fob" value="{InvoiceItemModel>fob}" textAlign="End" maxLength="19" liveChange="anyDecimalValue"-->
+		<!--			enabled="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>fobState', formatter:'.formatter.formatState'}"-->
+		<!--			valueStateText="{InvoiceItemModel>fobText}"/>-->
+		<!--	</ui:template>-->
+		<!--</ui:Column>-->
+		<!--<ui:Column hAlign="Center" width="14rem">-->
+		<!--	<Label text="{i18n>exportDuty}" textAlign="Center" width="100%" design="Bold"/>-->
+		<!--	<ui:template>-->
+		<!--		<Input name="exportDuty" value="{InvoiceItemModel>exportDuty}" textAlign="End" maxLength="19" liveChange="anyDecimalValue"-->
+		<!--			enabled="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>exportDutyState', formatter:'.formatter.formatState'}"-->
+		<!--			valueStateText="{InvoiceItemModel>exportDutyText}"/>-->
+		<!--	</ui:template>-->
+		<!--</ui:Column>-->
+	</l:Grid>
+</core:FragmentDefinition>

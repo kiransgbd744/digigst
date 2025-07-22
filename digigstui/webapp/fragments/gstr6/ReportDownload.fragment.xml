@@ -1,0 +1,29 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form" xmlns:ui="sap.ui.table">
+	<Dialog title="Report Download" type="Message" class="sapUiSizeCompact cl_saveHeader" showHeader="true" contentWidth="40%">
+		<beginButton>
+			<Button text="OK" class="buttoncolorSec" press="onCloseDialogDow"/>
+		</beginButton>
+		<Table items="{DownloadDocument>/}" id="idTableBulkSave">
+			<columns>
+				<Column>
+					<Label text="Report Name" design="Bold"/>
+				</Column>
+				<Column hAlign="Center" width="8rem">
+					<Label text="Download" design="Bold"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<Text text="{DownloadDocument>reportName}" wrapping="false"/>
+						<HBox alignItems="Center" justifyContent="Center">
+							<Text text="{=${DownloadDocument>flag}=== false ? 'No Records' : ''}" wrapping="false"/>
+							<core:Icon src="sap-icon://download" tooltip="Download" visible="{=${DownloadDocument>flag}}" press="onFragDownload"/>
+						</HBox>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</Dialog>
+</core:FragmentDefinition>

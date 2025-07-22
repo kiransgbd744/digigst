@@ -1,0 +1,415 @@
+package com.ey.advisory.app.data.entities.simplified.client;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+/**
+ * 
+ * @author Anand3.M
+ *
+ */
+
+@Entity
+@Table(name = "GETANX1_DEA_HEADER")
+public class GetAnx1DeaInvoicesHeaderEntity {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID")
+	private Long id;
+
+	@Column(name = "BATCH_ID")
+	private Long deaBatchId;
+
+	@Column(name = "CTIN")
+	private String ctin;
+
+	@Column(name = "GSTIN")
+	private String sGstin;
+
+	@Column(name = "TAX_PERIOD")
+	private String taxPeriod;
+
+	@Column(name = "SGSTIN_PAN")
+	private String sgstinPan;
+
+	@Column(name = "CGSTIN_PAN")
+	private String cgstinPan;
+
+	@Column(name = "DERIVED_RET_PERIOD")
+	private int derTaxPeriod;
+
+	@Column(name = "DIFF_PERCENT")
+	private BigDecimal diffPercentage;
+
+	@Column(name = "CHKSUM")
+	private String chkSum;
+
+	@Column(name = "SEC7ACT")
+	private String sec7Act;
+
+	@Column(name = "RFNDELG")
+	private String rfndElg;
+
+	@Column(name = "ACTION")
+	private String action;
+
+	@Column(name = "POS")
+	private String pos;
+
+	@Column(name = "CLMRFND")
+	private String clmRfnd;
+
+	@Column(name = "DOC_NUMBER")
+	private String docNumber;
+
+	@Column(name = "DOC_DATE")
+	private LocalDate docDate;
+
+	@Column(name = "DOC_AMT")
+	private BigDecimal docAmt;
+
+	@Column(name = "OCTIN")
+	private String octin;
+
+	@Column(name = "ORG_DOC_TYPE")
+	private String orgDocType;
+
+	@Column(name = "AMD_PERIOD")
+	private String amdPeriod;
+
+	@Column(name = "AMD_TYPE")
+	private String amdType;
+
+	@Column(name = "ORG_DOC_NUMBER")
+	private String orgDocNum;
+
+	@Column(name = "ORG_DOC_DATE")
+	private LocalDate orgDocDate;
+
+	@Column(name = "TAXABLE_VALUE")
+	private BigDecimal taxable;
+
+	@Column(name = "IGST_AMT")
+	private BigDecimal igstAmt;
+
+	@Column(name = "SGST_AMT")
+	private BigDecimal sgstAmt;
+
+	@Column(name = "CGST_AMT")
+	private BigDecimal cgstAmt;
+
+	@Column(name = "CESS_AMT")
+	private BigDecimal cessAmt;
+
+	@Column(name = "IS_DELETE")
+	private boolean isDelete;
+
+	@Column(name = "INVALID")
+	private boolean invalid;
+
+	@Column(name = "AMENDED")
+	private boolean amended;
+
+	@Column(name = "DOC_TYPE")
+	private String docType;
+
+	@Column(name = "DOCKEY")
+	private String docKey;
+
+	@OneToMany(mappedBy = "header", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	protected List<GetAnx1DeaInvoicesItemEntity> lineItems = new ArrayList<>();
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getDeaBatchId() {
+		return deaBatchId;
+	}
+
+	public void setDeaBatchId(Long deaBatchId) {
+		this.deaBatchId = deaBatchId;
+	}
+
+	public String getCtin() {
+		return ctin;
+	}
+
+	public void setCtin(String ctin) {
+		this.ctin = ctin;
+	}
+
+	public String getsGstin() {
+		return sGstin;
+	}
+
+	public void setsGstin(String sGstin) {
+		this.sGstin = sGstin;
+	}
+
+	public String getTaxPeriod() {
+		return taxPeriod;
+	}
+
+	public void setTaxPeriod(String taxPeriod) {
+		this.taxPeriod = taxPeriod;
+	}
+
+	public String getSgstinPan() {
+		return sgstinPan;
+	}
+
+	public void setSgstinPan(String sgstinPan) {
+		this.sgstinPan = sgstinPan;
+	}
+
+	public String getCgstinPan() {
+		return cgstinPan;
+	}
+
+	public void setCgstinPan(String cgstinPan) {
+		this.cgstinPan = cgstinPan;
+	}
+
+	public int getDerTaxPeriod() {
+		return derTaxPeriod;
+	}
+
+	public void setDerTaxPeriod(int derTaxPeriod) {
+		this.derTaxPeriod = derTaxPeriod;
+	}
+
+	public BigDecimal getDiffPercentage() {
+		return diffPercentage;
+	}
+
+	public void setDiffPercentage(BigDecimal diffPercentage) {
+		this.diffPercentage = diffPercentage;
+	}
+
+	public String getChkSum() {
+		return chkSum;
+	}
+
+	public void setChkSum(String chkSum) {
+		this.chkSum = chkSum;
+	}
+
+	public String getSec7Act() {
+		return sec7Act;
+	}
+
+	public void setSec7Act(String sec7Act) {
+		this.sec7Act = sec7Act;
+	}
+
+	public String getRfndElg() {
+		return rfndElg;
+	}
+
+	public void setRfndElg(String rfndElg) {
+		this.rfndElg = rfndElg;
+	}
+
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+	public String getPos() {
+		return pos;
+	}
+
+	public void setPos(String pos) {
+		this.pos = pos;
+	}
+
+	public String getClmRfnd() {
+		return clmRfnd;
+	}
+
+	public void setClmRfnd(String clmRfnd) {
+		this.clmRfnd = clmRfnd;
+	}
+
+	public String getDocNumber() {
+		return docNumber;
+	}
+
+	public void setDocNumber(String docNumber) {
+		this.docNumber = docNumber;
+	}
+
+	public LocalDate getDocDate() {
+		return docDate;
+	}
+
+	public void setDocDate(LocalDate docDate) {
+		this.docDate = docDate;
+	}
+
+	public BigDecimal getDocAmt() {
+		return docAmt;
+	}
+
+	public void setDocAmt(BigDecimal docAmt) {
+		this.docAmt = docAmt;
+	}
+
+	public String getOctin() {
+		return octin;
+	}
+
+	public void setOctin(String octin) {
+		this.octin = octin;
+	}
+
+	public String getOrgDocType() {
+		return orgDocType;
+	}
+
+	public void setOrgDocType(String orgDocType) {
+		this.orgDocType = orgDocType;
+	}
+
+	public String getAmdPeriod() {
+		return amdPeriod;
+	}
+
+	public void setAmdPeriod(String amdPeriod) {
+		this.amdPeriod = amdPeriod;
+	}
+
+	public String getAmdType() {
+		return amdType;
+	}
+
+	public void setAmdType(String amdType) {
+		this.amdType = amdType;
+	}
+
+	public String getOrgDocNum() {
+		return orgDocNum;
+	}
+
+	public void setOrgDocNum(String orgDocNum) {
+		this.orgDocNum = orgDocNum;
+	}
+
+	public LocalDate getOrgDocDate() {
+		return orgDocDate;
+	}
+
+	public void setOrgDocDate(LocalDate orgDocDate) {
+		this.orgDocDate = orgDocDate;
+	}
+
+	public BigDecimal getTaxable() {
+		return taxable;
+	}
+
+	public void setTaxable(BigDecimal taxable) {
+		this.taxable = taxable;
+	}
+
+	public BigDecimal getIgstAmt() {
+		return igstAmt;
+	}
+
+	public void setIgstAmt(BigDecimal igstAmt) {
+		this.igstAmt = igstAmt;
+	}
+
+	public BigDecimal getSgstAmt() {
+		return sgstAmt;
+	}
+
+	public void setSgstAmt(BigDecimal sgstAmt) {
+		this.sgstAmt = sgstAmt;
+	}
+
+	public BigDecimal getCgstAmt() {
+		return cgstAmt;
+	}
+
+	public void setCgstAmt(BigDecimal cgstAmt) {
+		this.cgstAmt = cgstAmt;
+	}
+
+	public BigDecimal getCessAmt() {
+		return cessAmt;
+	}
+
+	public void setCessAmt(BigDecimal cessAmt) {
+		this.cessAmt = cessAmt;
+	}
+
+	public boolean isDelete() {
+		return isDelete;
+	}
+
+	public void setDelete(boolean isDelete) {
+		this.isDelete = isDelete;
+	}
+
+	public boolean isInvalid() {
+		return invalid;
+	}
+
+	public void setInvalid(boolean invalid) {
+		this.invalid = invalid;
+	}
+
+	public boolean isAmended() {
+		return amended;
+	}
+
+	public void setAmended(boolean amended) {
+		this.amended = amended;
+	}
+
+	public String getDocType() {
+		return docType;
+	}
+
+	public void setDocType(String docType) {
+		this.docType = docType;
+	}
+
+	public List<GetAnx1DeaInvoicesItemEntity> getLineItems() {
+		return lineItems;
+	}
+
+	public void setLineItems(List<GetAnx1DeaInvoicesItemEntity> lineItems) {
+		this.lineItems = lineItems;
+	}
+
+	public String getDocKey() {
+		return docKey;
+	}
+
+	public void setDocKey(String docKey) {
+		this.docKey = docKey;
+	}
+
+}

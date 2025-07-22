@@ -1,0 +1,493 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<ui:Table id="tabFileStatus" rows="{FileStatus>/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10" visible="false"
+		enableSelectAll="false" class="sapUiSmallMarginBeginEnd">
+		<ui:extension>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button type="Emphasized" text="{i18n>summary}" enabled="{Properties>/rawSummary}" press="onPressFileSummary('raw')"/>
+				<Button type="Emphasized" text="{i18n>requestApproval}" press="onPressRequestApproval" enabled="false"/>
+				<Button type="Accept" text="{i18n>saveGstn}" press="onPressSave" enabled="false"/>
+				<Button type="Reject" text="{i18n>deleteData}" press="onPressDeleteFile" enabled="false"/>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="7.5rem">
+				<Label text="{i18n>uploadDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Link text="{path:'FileStatus>uploadedOn', formatter:'.formatter.dateFormat'}" emphasized="true" press="onPressFileDetail"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="7.5rem">
+				<Label text="{i18n>uploadBy}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{FileStatus>uploadedBy}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="6.5rem">
+				<Label text="{i18n>dataType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{FileStatus>dataType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem">
+				<Label text="{i18n>fileType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{path:'FileStatus>fileType', formatter:'.formatter.fileType'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="15rem">
+				<Label text="{i18n>fileName}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{FileStatus>fileName}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="6.5rem">
+				<Label text="{i18n>fileStatus}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{FileStatus>fileStatus}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" minWidth="120">
+				<Label text="{i18n>totalAsp}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{FileStatus>total}"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" alt="Download"
+							press="onPressFileStatusDownload($event,${FileStatus>total},'totalrecords',null)">
+							<core:dependents>
+								<Text text="Total"/>
+							</core:dependents>
+						</core:Icon>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="2" hAlign="End" minWidth="100">
+				<ui:multiLabels>
+					<Label text="{i18n>processed}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<Label text="{i18n>active}" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Link text="{FileStatus>processedActive}" press="onPressStatsLink($event,'file','P',${FileStatus>processedActive})"/>
+						<!--	<dependents>-->
+						<!--		<Text text="Processed"/>-->
+						<!--	</dependents>-->
+						<!--</Link>-->
+						<core:Icon src="sap-icon://download" tooltip="Download" size="0.75rem" class="sapUiTinyMarginBegin"
+							press="onPressFileStatusDownload($event,${FileStatus>processedActive},'processed','processedActive')"/>
+						<!--	<core:dependents>-->
+						<!--		<Text text="ProcessActive"/>-->
+						<!--	</core:dependents>-->
+						<!--</core:Icon>-->
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" minWidth="100">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="{i18n>inactive}" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{FileStatus>processedInactive}"/>
+						<core:Icon src="sap-icon://download" tooltip="Download" size="0.75rem" class="sapUiTinyMarginBegin"
+							press="onPressFileStatusDownload($event,${FileStatus>processedInactive},'processed','processedInactive')"/>
+						<!--	<core:dependents>-->
+						<!--		<Text text="ProcessInactive"/>-->
+						<!--	</core:dependents>-->
+						<!--</core:Icon>-->
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="4 " hAlign="End" minWidth="100">
+				<ui:multiLabels>
+					<HBox justifyContent="Center" width="100%">
+						<Label text="{i18n>error}" design="Bold"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" tooltip="{i18n>downError}" press=".onPressCatalog($event,'err','file')"
+							class="sapUiTinyMarginBegin"/>
+					</HBox>
+					<Label text="{i18n>structure}" tooltip="{i18n>structure}" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Link text="{FileStatus>strucError}" press="onPressStatsLink($event,'file','E',${FileStatus>strucError},'SV')"/>
+						<!--	<dependents>-->
+						<!--		<Text text="StructuredError"/>-->
+						<!--	</dependents>-->
+						<!--</Link>-->
+						<core:Icon src="sap-icon://download" tooltip="Download" size="0.75rem" class="sapUiTinyMarginBegin"
+							press="onPressFileStatusDownload($event,${FileStatus>strucError},'error','errorSv')"/>
+						<!--	<core:dependents>-->
+						<!--		<Text text="StructuredError"/>-->
+						<!--	</core:dependents>-->
+						<!--</core:Icon>-->
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" minWidth="100">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="{i18n>active} ({i18n>business})" tooltip="{i18n>active} ({i18n>business})" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Link text="{FileStatus>errorsActive}" press="onPressStatsLink($event,'file','E',${FileStatus>errorsActive},'BV')"/>
+						<!--	<dependents>-->
+						<!--		<Text text="Errors"/>-->
+						<!--	</dependents>-->
+						<!--</Link>-->
+						<core:Icon src="sap-icon://download" tooltip="Download" size="0.75rem" class="sapUiTinyMarginBegin"
+							press="onPressFileStatusDownload($event,${FileStatus>errorsActive},'error','errorActive')"/>
+						<!--	<core:dependents>-->
+						<!--		<Text text="ErrorActive"/>-->
+						<!--	</core:dependents>-->
+						<!--</core:Icon>-->
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" minWidth="100">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="{i18n>inactive} ({i18n>business})" tooltip="{i18n>inactive} ({i18n>business})" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{FileStatus>errorsInactive}"/>
+						<core:Icon src="sap-icon://download" tooltip="Download" size="0.75rem" class="sapUiTinyMarginBegin"
+							press="onPressFileStatusDownload($event,${FileStatus>errorsInactive},'error','errorInactive')"/>
+						<!--	<core:dependents>-->
+						<!--		<Text text="ErrorInactive"/>-->
+						<!--	</core:dependents>-->
+						<!--</core:Icon>-->
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" minWidth="100">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="{i18n>Total}" tooltip="{i18n>Total}" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{FileStatus>totalStrucBusinessError}"/>
+						<core:Icon src="sap-icon://download" tooltip="Download" size="0.75rem" class="sapUiTinyMarginBegin"
+							press="onPressFileStatusDownload($event,${FileStatus>totalStrucBusinessError},'error','errorTotal')"/>
+						<!--	<core:dependents>-->
+						<!--		<Text text="ErrorTotal"/>-->
+						<!--	</core:dependents>-->
+						<!--</core:Icon>-->
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="2" hAlign="End" minWidth="100">
+				<ui:multiLabels>
+					<HBox justifyContent="Center" width="100%">
+						<Label text="{i18n>info}" design="Bold" tooltip="{i18n>infoTooltip}"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" tooltip="{i18n>downInfo}" press=".onPressCatalog($event,'info','file')"
+							class="sapUiTinyMarginBegin"/>
+					</HBox>
+					<Label text="{i18n>active}" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<!--<Text text="{FileStatus>infoActive}"/>-->
+						<Link text="{FileStatus>infoActive}" press="onPressStatsLink($event,'file','I',${FileStatus>infoActive})"/>
+						<!--	<dependents>-->
+						<!--		<Text text="Info"/>-->
+						<!--	</dependents>-->
+						<!--</Link>-->
+						<core:Icon src="sap-icon://download" tooltip="Download" size="0.75rem" class="sapUiTinyMarginBegin"
+							press="onPressFileStatusDownload($event,${FileStatus>infoActive},'processedinfo','processedInfoActive')"/>
+						<!--	<core:dependents>-->
+						<!--		<Text text="InfoActive"/>-->
+						<!--	</core:dependents>-->
+						<!--</core:Icon>-->
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" minWidth="100">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="{i18n>inactive}" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{FileStatus>infoInactive}"/>
+						<core:Icon src="sap-icon://download" tooltip="Download" size="0.75rem" class="sapUiTinyMarginBegin"
+							press="onPressFileStatusDownload($event,${FileStatus>infoInactive},'processedinfo','processedInfoInactive')"/>
+						<!--	<core:dependents>-->
+						<!--		<Text text="InfoInactive"/>-->
+						<!--	</core:dependents>-->
+						<!--</core:Icon>-->
+					</HBox>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+		<ui:footer>
+			<ObjectStatus text="{i18n>noteFileStatus}" state="Error"/>
+		</ui:footer>
+	</ui:Table>
+	<ui:Table id="tabVerFileStatus" rows="{FileStatus>/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10"
+		visible="false" enableSelectAll="false" class="sapUiSmallMarginBeginEnd">
+		<ui:extension>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button type="Emphasized" text="{i18n>summary}" enabled="{Properties>/verSummary}" press="onPressFileSummary('vertical')"/>
+				<Button type="Emphasized" text="{i18n>requestApproval}" press="onPressRequestApproval" enabled="false"/>
+				<Button type="Accept" text="{i18n>saveGstn}" press="onPressSave" enabled="false"/>
+				<Button type="Reject" text="{i18n>deleteData}" press="onPressDeleteFile" enabled="false"/>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="7.5rem">
+				<Label text="{i18n>uploadDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Link text="{path:'FileStatus>updatedOn', formatter:'.formatter.dateFormat'}" emphasized="true" press="onPressFileDetail"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="{i18n>uploadBy}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{FileStatus>updatedBy}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="{i18n>dataType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{FileStatus>dataType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="15rem">
+				<Label text="{i18n>fileType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{path:'FileStatus>fileType', formatter:'.formatter.fileType'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="15rem">
+				<Label text="{i18n>fileName}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{FileStatus>fileName}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="{i18n>fileStatus}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{FileStatus>fileStatus}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<Label text="{i18n>totalAsp}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{FileStatus>total}"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" tooltip="{i18n>download}"
+							press="onVerticalDownload($event,'totalrecords',${FileStatus>total})">
+							<!--<core:dependents>-->
+							<!--	<Text text="Total"/>-->
+							<!--</core:dependents>-->
+						</core:Icon>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<Label text="{i18n>processed}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Link text="{FileStatus>processed}" press="onPressStatsLink($event,'file','P',${FileStatus>processed})" enabled="false"/>
+						<core:Icon src="sap-icon://download" tooltip="Download" size="0.75rem" class="sapUiTinyMarginBegin"
+							press="onVerticalDownload($event,'processed',${FileStatus>processed})"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<HBox justifyContent="Center" width="100%">
+					<Label text="{i18n>error}" design="Bold"/>
+					<core:Icon src="sap-icon://download" size="0.75rem" tooltip="{i18n>downError}" press=".onPressCatalog($event,'err','file')"
+						class="sapUiTinyMarginBegin"/>
+				</HBox>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Link text="{FileStatus>error}" press="onPressStatsLink($event,'file','E',${FileStatus>error})" enabled="false"/>
+						<core:Icon src="sap-icon://download" tooltip="Download" size="0.75rem" class="sapUiTinyMarginBegin"
+							press="onVerticalDownload($event,'error',${FileStatus>error})"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<HBox justifyContent="Center" width="100%">
+					<Label text="{i18n>info}" design="Bold" tooltip="{i18n>infoTooltip}"/>
+					<core:Icon src="sap-icon://download" size="0.75rem" tooltip="{i18n>downInfo}" press=".onPressCatalog($event,'info','file')"
+						class="sapUiTinyMarginBegin"/>
+				</HBox>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{FileStatus>information}"/>
+						<core:Icon src="sap-icon://download" tooltip="Download" size="0.75rem" class="sapUiTinyMarginBegin"
+							press="onVerticalDownload($event,'processedinfo',${FileStatus>information})">
+							<!--<core:dependents>-->
+							<!--	<Text text="Information"/>-->
+							<!--</core:dependents>-->
+						</core:Icon>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+		<ui:footer>
+			<ObjectStatus text="{i18n>noteFileStatus}" state="Error"/>
+		</ui:footer>
+	</ui:Table>
+	<ui:Table id="tabRecFileStatus" rows="{ReconFileStatus>/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10"
+		visible="false" enableSelectAll="false" class="sapUiSmallMarginBeginEnd">
+		<ui:extension>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button type="Emphasized" text="{i18n>summary}" enabled="false" press="onPressFileSummary('recon')"/>
+				<Button type="Emphasized" text="{i18n>requestApproval}" press="onPressRequestApproval" enabled="false"/>
+				<Button type="Accept" text="{i18n>saveGstn}" press="onPressSave" enabled="false"/>
+				<Button type="Reject" text="{i18n>deleteData}" press="onPressDeleteFile" enabled="false"/>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="7.5rem">
+				<Label text="{i18n>uploadDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{path:'ReconFileStatus>dateOfUpload', formatter:'.formatter.dateFormat'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="{i18n>uploadBy}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{ReconFileStatus>uploadeBy}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="{i18n>dataType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{ReconFileStatus>dataType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="15rem">
+				<Label text="{i18n>fileType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{path:'ReconFileStatus>fileType', formatter:'.formatter.fileType'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="15rem">
+				<Label text="{i18n>fileName}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{ReconFileStatus>FileName}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="{i18n>fileStatus}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{ReconFileStatus>fileStatus}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<Label text="{i18n>totalAsp}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<!--<Text text="{ReconFileStatus>totalRecords}"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" alt="Download" press="onVerticalDownload">
+							<core:dependents>
+								<Text text="Total"/>
+							</core:dependents>
+						</core:Icon>-->
+						<!--Added by Rakesh on 27.01.2020-->
+						<Text text="{ReconFileStatus>totalRecordsCount}"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" alt="Download" press="onTotRecErrDownload"
+							visible="{=${ReconFileStatus>totalRecordsCount} === 0 || ${ReconFileStatus>errorCount} === undefined ?false:true}">
+							<core:dependents>
+								<Text text="Total"/>
+							</core:dependents>
+						</core:Icon>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<Label text="{i18n>processed}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<!--<Link text="{ReconFileStatus>processed}" press="onPressStatsLink($event,'file')" enabled="false">
+							<dependents>
+								<Text text="Processed"/>
+							</dependents>
+						</Link>
+						<core:Icon src="sap-icon://download" tooltip="Download" size="0.75rem" class="sapUiTinyMarginBegin" press="onVerticalDownload">
+							<core:dependents>
+								<Text text="Processed"/>
+							</core:dependents>
+						</core:Icon>-->
+						<!--Added by Rakesh on 27.01.2020-->
+						<Link text="{ReconFileStatus>processedCount}">
+							<dependents>
+								<Text text="Processed"/>
+							</dependents>
+						</Link>
+						<core:Icon src="sap-icon://download" tooltip="Download" size="0.75rem" class="sapUiTinyMarginBegin" press="onVerticalDownload"
+							visible="false">
+							<core:dependents>
+								<Text text="Processed"/>
+							</core:dependents>
+						</core:Icon>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<HBox justifyContent="Center" width="100%">
+					<Label text="{i18n>error}" design="Bold"/>
+					<core:Icon src="sap-icon://download" size="0.75rem" tooltip="{i18n>downError}" press=".onPressCatalog($event,'err','file')"
+						class="sapUiTinyMarginBegin"/>
+				</HBox>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<!--<Link text="{ReconFileStatus>error}" press="onPressStatsLink($event,'file')" enabled="false">
+							<dependents>
+								<Text text="Errors"/>
+							</dependents>
+						</Link>
+						<core:Icon src="sap-icon://download" tooltip="Download" size="0.75rem" class="sapUiTinyMarginBegin" press="onVerticalDownload"
+							visible="{=${ReconFileStatus>error} === 0?false:true}">
+							<core:dependents>
+								<Text text="Errors"/>
+							</core:dependents>
+						</core:Icon>-->
+						<!--Added by Rakesh on 27.01.2020-->
+						<Link text="{ReconFileStatus>errorCount}">
+							<dependents>
+								<Text text="Errors"/>
+							</dependents>
+						</Link>
+						<core:Icon src="sap-icon://download" tooltip="Download" size="0.75rem" class="sapUiTinyMarginBegin" press="onErrDownload"
+							visible="{=${ReconFileStatus>errorCount} === 0 || ${ReconFileStatus>errorCount} === undefined ?false:true}">
+							<core:dependents>
+								<Text text="Errors"/>
+							</core:dependents>
+						</core:Icon>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<!--<ui:Column hAlign="End">
+				<HBox justifyContent="Center" width="100%">
+					<Label text="{i18n>info}" design="Bold" tooltip="{i18n>infoTooltip}"/>
+					<core:Icon src="sap-icon://download" size="0.75rem" tooltip="{i18n>downError}" press=".onPressCatalog($event,'err','file')"
+						class="sapUiTinyMarginBegin"/>
+				</HBox>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{FileStatus>information}"/>
+						<core:Icon src="sap-icon://download" tooltip="Download" size="0.75rem" class="sapUiTinyMarginBegin" press="onVerticalDownload">
+							<core:dependents>
+								<Text text="Information"/>
+							</core:dependents>
+						</core:Icon>
+					</HBox>
+				</ui:template>
+			</ui:Column>-->
+		</ui:columns>
+		<ui:footer>
+			<ObjectStatus text="{i18n>noteFileStatus}" state="Error"/>
+		</ui:footer>
+	</ui:Table>
+</core:FragmentDefinition>

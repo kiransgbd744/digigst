@@ -1,0 +1,258 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage id="dpGstr2PrProcessed" visible="{PrProperty>/process}">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="{i18n>processData}"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>criteria}" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="slPrProcessCriteria" change=".changeGstr2Criteria('processDate', ${$source>/selectedKey}==='docDate')"
+									items="{DropDown>/gstr2Criteria}">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>fromDate}" visibleInFilterBar="true"
+							visible="{PrProperty>/processDate}">
+							<fb:control>
+								<DatePicker id="dtPrProcessFrom" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" change="onChangePrDate($event,'dtPrProcessTo')"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>toDate}" visibleInFilterBar="true"
+							visible="{PrProperty>/processDate}">
+							<fb:control>
+								<DatePicker id="dtPrProcessTo" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="{i18n>fromPeriod}" visibleInFilterBar="true"
+							visible="{=!${PrProperty>/processDate}}">
+							<fb:control>
+								<DatePicker id="dpPrProcessFrom" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="onChangePrDate($event,'dpPrProcessTo')"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="{i18n>toPeriod}" visibleInFilterBar="true"
+							visible="{=!${PrProperty>/processDate}}">
+							<fb:control>
+								<DatePicker id="dpPrProcessTo" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slPrProcessGstin" items="{allisdregGstin>/}" selectionChange="selectAll">
+									<core:Item key="{allisdregGstin>value}" text="{allisdregGstin>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="{i18n>tableType}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slPrProcessTableType" items="{DropDown>/gstr2PrTableType}" selectionChange="selectAll">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="H" label="{i18n>docType}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slPrProcessDocType" items="{DropDown>/gstr2PrDocType}" selectionChange="selectAll">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="I" label="{i18n>dataCategory}" visibleInFilterBar="false">
+							<fb:control>
+								<MultiComboBox id="slPrProcessDataCateg" items="{DropDown>/gstr2PrDataCateg}" selectionChange="selectAll">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button icon="sap-icon://filter" class="buttoncolorSec" type="Default" tooltip="{i18n>adaptFilter}" press="onPrSummAdaptFilters('P')"/>
+					<Button text="{i18n>clear}" press="onPressClearPR('Process')" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+					<Button text="Filter" class="buttoncolor" press="onSearch('PrProcess')"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer id="idCcPrProcess" showFullScreen="false" autoAdjustHeight="false">
+				<commons:toolbar>
+					<OverflowToolbar>
+						<Label text="{i18n>showing}:" design="Bold"/>
+						<CheckBox text="Tax Amount" selected="{PrProperty>/processTaxPayable}"/>
+						<CheckBox text="{i18n>creditEligible}" selected="{PrProperty>/processCrEligible}"/>
+						<ToolbarSpacer/>
+						<Button text="{i18n>errorCorrect}" class="buttoncolorSec" enabled="{= ${userPermission>/appPermission/P8}}" press="onErrorCorrection('P')"/>
+						<MenuButton class="buttoncolorSec" text="{i18n>downReport}" enabled="{= ${userPermission>/appPermission/P8}}">
+							<Menu itemSelected="onDownloadPrSummaryReport($event,${$parameters>/item},'P')">
+								<MenuItem key="gstr2Process" text="{i18n>processedRecords}"/>
+								<MenuItem key="gstr2PREntityLevel" text="{i18n>entityLevel}"/>
+								<MenuItem key="gstr2AspError" text="{i18n>aspError}"/>
+								<MenuItem key="itcRep" text="ITC summary report" enabled="{= ${userPermission>/appPermission/P36}}"/>
+								<MenuItem key="gstr2Tagging" text="Processed Records (Recon Tagging)"/>
+							</Menu>
+						</MenuButton>
+						<!--<Button class="buttoncolorSec" text="{i18n>deleteData}" enabled="false"/>-->
+						<!--<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="{i18n>downExcel}" enabled="false"/>-->
+						<!--<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="{i18n>downPdf}" enabled="false"/>-->
+						<Button type="Transparent" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="{=!${PrProperty>/processFullScreen}}"
+							press="onGstr2FullScreen('openProcess')"/>
+						<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="{PrProperty>/processFullScreen}"
+							press="onGstr2FullScreen('closeProcess')"/>
+						<commons:ChartContainerToolbarPlaceholder/>
+					</OverflowToolbar>
+				</commons:toolbar>
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table id="tabPrProcess" rows="{PrProcessed>/}" selectionMode="MultiToggle" visibleRowCount="8" fixedColumnCount="2"
+								enableColumnReordering="false">
+								<ui:columns>
+									<ui:Column width="14rem">
+										<Label text="{i18n>gstin}" design="Bold" textAlign="Center" width="100%"/>
+										<ui:template>
+											<VBox width="100%">
+												<HBox>
+													<Text text="{PrProcessed>state}" width="8rem"/>
+													<Text text="{=${PrProcessed>regType}==='REGULAR'?'':${PrProcessed>regType}}"/>
+												</HBox>
+												<HBox alignContent="Start" justifyContent="SpaceBetween">
+													<Link text="{PrProcessed>gstin}" emphasized="true" press="onPressGstr2PrSummary(${$source>/text})"/>
+													<core:Icon src="sap-icon://circle-task-2" color="{=${PrProcessed>authToken}==='Active'?'#00ff00':'#ff0000'}"
+														tooltip="{PrProcessed>authToken}" size="0.8rem" press="onPressGenerateOtp"/>
+												</HBox>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column width="9rem">
+										<Label text="{i18n>lastUpdated}" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+										<ui:template>
+											<Text text="{PrProcessed>lastUpdate}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="8rem">
+										<Label text="{i18n>count}" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+										<ui:template>
+											<Text text="{PrProcessed>count}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160">
+										<Label design="Bold" text="{i18n>invoiceValue}" textAlign="Center" width="100%" wrapping="true"/>
+										<ui:template>
+											<Text text="{path:'PrProcessed>invoiceValue', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160">
+										<Label design="Bold" text="{i18n>taxableVal}" textAlign="Center" width="100%" wrapping="true"/>
+										<ui:template>
+											<Text text="{path:'PrProcessed>taxableValue', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160">
+										<Label design="Bold" text="{i18n>totalTax}" textAlign="Center" width="100%" wrapping="true"/>
+										<ui:template>
+											<Text text="{path:'PrProcessed>taxPayable', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" headerSpan="4" minWidth="160" visible="{PrProperty>/processTaxPayable}">
+										<ui:multiLabels>
+											<Label text="Tax Amount" textAlign="Center" width="100%" design="Bold"/>
+											<Label text="{i18n>igst}" textAlign="Center" width="100%" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'PrProcessed>taxPayableIgst', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160" visible="{PrProperty>/processTaxPayable}">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="{i18n>cgst}" textAlign="Center" width="100%" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'PrProcessed>taxPayableCgst', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160" visible="{PrProperty>/processTaxPayable}">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="{i18n>sgst}" textAlign="Center" width="100%" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'PrProcessed>taxPayableSgst', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160" visible="{PrProperty>/processTaxPayable}">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="{i18n>cess}" textAlign="Center" width="100%" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'PrProcessed>taxPayableCess', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160">
+										<Label text="{i18n>totalEligibleCr}" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+										<ui:template>
+											<Text text="{path:'PrProcessed>crEligibleTotal', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" headerSpan="4" minWidth="160" visible="{PrProperty>/processCrEligible}">
+										<ui:multiLabels>
+											<Label text="{i18n>creditEligible}" textAlign="Center" width="100%" design="Bold"/>
+											<Label text="{i18n>igst}" textAlign="Center" width="100%" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'PrProcessed>crEligibleIgst', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160" visible="{PrProperty>/processCrEligible}">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="{i18n>cgst}" textAlign="Center" width="100%" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'PrProcessed>crEligibleCgst', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160" visible="{PrProperty>/processCrEligible}">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="{i18n>sgst}" textAlign="Center" width="100%" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'PrProcessed>crEligibleSgst', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160" visible="{PrProperty>/processCrEligible}">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="{i18n>cess}" textAlign="Center" width="100%" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'PrProcessed>crEligibleCess', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+								<ui:footer>
+									<HBox>
+										<core:Icon src="sap-icon://circle-task-2" color="#00ff00" ariaLabelledBy="Text" size="0.8rem"/>
+										<Text text="{i18n>authActive}" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+										<core:Icon src="sap-icon://circle-task-2" color="red" ariaLabelledBy="Text" size="0.8rem"/>
+										<Text text="{i18n>authInactive}" class="sapUiTinyMarginBegin"/>
+									</HBox>
+								</ui:footer>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

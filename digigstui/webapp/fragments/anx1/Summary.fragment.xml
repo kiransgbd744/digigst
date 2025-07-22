@@ -1,0 +1,92 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table">
+	<f:DynamicPage id="dpAnx1Summary" visible="false" class="cl_dpScroll">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" tooltip="{i18n>back}" press="onPressBack"/>
+						<Title text="ANX-1" titleStyle="H3" class="tinyMarginTop sapUiTinyMarginBegin"/>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<SegmentedButton id="sbSummary" selectedKey="summary" selectionChange="onSelectionChange">
+						<items>
+							<SegmentedButtonItem key="summary" text="{i18n>summary}" width="11rem"/>
+							<SegmentedButtonItem key="respCP" text="{i18n>cpResponse}" width="11rem"/>
+						</items>
+					</SegmentedButton>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class=" sapUiNoContentPadding">
+				<fb:FilterBar id="fbSummary" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onSearch"
+					clear="onClearFilter" useToolbar="false" class="sapUiNoContentPadding" width="90%">
+					<fb:filterGroupItems>
+						<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>entity}" visibleInFilterBar="true"-->
+						<!--	visible="{VisiSummary>/summary}">-->
+						<!--	<fb:control>-->
+						<!--		<Select id="slSummEntity" items="{EntityModel>/}" width="100%" change="onEntityChange">-->
+						<!--			<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>-->
+						<!--		</Select>-->
+						<!--	</fb:control>-->
+						<!--</fb:FilterGroupItem>-->
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true"
+							visible="{VisiSummary>/summary}">
+							<fb:control>
+								<MultiComboBox id="slSummGstin" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>taxPeriod}" visibleInFilterBar="true"
+							visible="{VisiSummary>/summary}">
+							<fb:control>
+								<DatePicker id="dtSummary" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G2" groupTitle="Basic" name="D" label="{i18n>entity}" visibleInFilterBar="false">
+							<!--visible="{=!${VisiSummary>/summary}}"-->
+							<fb:control>
+								<Select id="slSummEntity1" items="{EntityList>/resp/entities}" width="100%" change="onEntitySummChange">
+									<core:Item key="{EntityList>id}" text="{EntityList>entityName}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G2" groupTitle="Basic" name="E" label="{i18n>gstin}" visibleInFilterBar="true"
+							visible="{=!${VisiSummary>/summary}}">
+							<fb:control>
+								<ComboBox id="slSummGstin1" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G2" groupTitle="Basic" name="F" label="{i18n>taxPeriod}" visibleInFilterBar="true"
+							visible="{=!${VisiSummary>/summary}}">
+							<fb:control>
+								<DatePicker id="dtSummary1" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox id="fbStatusHbox" justifyContent="End" class="clMain" width="10%" visible="{VisiSummary>/summary}">
+					<Button id="bSummaryFilter" icon="sap-icon://filter" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilter"/>
+					<Button id="bSummaryClear" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd" press="onSummClear"/>
+					<Button id="bSummaryGo" text="{i18n>go}" type="Emphasized" press="onSearch"/>
+				</HBox>
+				<HBox id="fbStatusHbox1" justifyContent="End" class="clMain" width="10%" visible="{=!${VisiSummary>/summary}}">
+					<Button id="bSummaryFilter1" icon="sap-icon://filter" tooltip="Adapt Filters" press="onPressAdaptFilter"/>
+					<Button id="bSummaryClear1" text="Clear" class="sapUiTinyMarginBeginEnd" press="onSummClear"/>
+					<Button id="bSummaryGo1" text="Go" type="Emphasized" press="onCpSummaryGo"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.anx1.ProcessSummary" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.anx1.CpSummary" type="XML"/>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

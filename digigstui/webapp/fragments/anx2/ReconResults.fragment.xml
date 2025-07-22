@@ -1,0 +1,2185 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:commons="sap.suite.ui.commons">
+	<SplitApp initialDetail="detail" initialMaster="master" orientationChange="onOrientationChange" class="clSplitAppGETANX22A111">
+		<detailPages>
+			<Page showHeader="false">
+				<content>
+					<f:DynamicPage>
+						<f:title>
+							<f:DynamicPageTitle>
+								<f:heading>
+									<SegmentedButton selectedKey="AbsoluteMatched" id="idSBMainReconResult" selectionChange="onSelectionChangeReconResults" width="60rem">
+										<items>
+											<SegmentedButtonItem text="Absolute Match" key="AbsoluteMatched"/>
+											<SegmentedButtonItem text="Mismatch" key="Mismatch"/>
+											<SegmentedButtonItem text="Potential Match" key="PotentailMatch"/>
+											<SegmentedButtonItem text="Additional ANX-2" key="Additional2A"/>
+											<SegmentedButtonItem text="Additional PR" key="AdditionalPR"/>
+											<SegmentedButtonItem text="Consolidated Report" key="ReconReport"/>
+										</items>
+									</SegmentedButton>
+								</f:heading>
+								<f:actions>
+									<Link text="Recon Reports" press="onPressAdditionalReconReportsLink"/>
+								</f:actions>
+							</f:DynamicPageTitle>
+						</f:title>
+						<f:header>
+							<f:DynamicPageHeader class="sapUiNoContentPadding">
+								<fb:FilterBar showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+									useToolbar="false" class="sapUiNoContentPadding" filterContainerWidth="12rem">
+									<fb:filterGroupItems>
+										<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Base" visibleInFilterBar="true">
+											<fb:control>
+												<ComboBox width="100%">
+													<core:Item key="ANX-2" text="ANX-2"/>
+													<core:Item key="PR" text="PR"/>
+												</ComboBox>
+											</fb:control>
+										</fb:FilterGroupItem>
+										<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Doc. Number" visibleInFilterBar="true">
+											<fb:control>
+												<MultiComboBox width="100%">
+													<core:Item key="{NewReturns>GSTIN}" text="{NewReturns>GSTIN}"/>
+												</MultiComboBox>
+											</fb:control>
+										</fb:FilterGroupItem>
+										<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Vendor PAN" visibleInFilterBar="true">
+											<fb:control>
+												<ComboBox width="100%">
+													<core:Item key="{NewReturns>GSTIN}" text="{NewReturns>GSTIN}"/>
+												</ComboBox>
+											</fb:control>
+										</fb:FilterGroupItem>
+										<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="Vendor GSTIN" visibleInFilterBar="true">
+											<fb:control>
+												<MultiComboBox width="100%" items="{path:'NewReturns>/catalog1111'}">
+													<core:Item key="{NewReturns>GSTIN}" text="{NewReturns>GSTIN}"/>
+												</MultiComboBox>
+											</fb:control>
+										</fb:FilterGroupItem>
+										<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="X" label="Eligibility Indicator" visibleInFilterBar="true">
+											<fb:control>
+												<MultiComboBox width="100%">
+													<core:Item key="IS" text="IS"/>
+													<core:Item key="NO" text="NO"/>
+													<core:Item key="IG" text="IG"/>
+													<core:Item key="CG" text="CG"/>
+												</MultiComboBox>
+											</fb:control>
+										</fb:FilterGroupItem>
+										<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="% of Availment" visibleInFilterBar="true">
+											<fb:control>
+												<MultiComboBox width="100%" items="{path:'NewReturns>/catalog1111'}">
+													<core:Item key="{NewReturns>GSTIN}" text="{NewReturns>GSTIN}"/>
+												</MultiComboBox>
+											</fb:control>
+										</fb:FilterGroupItem>
+										<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="H" label="Common Supply Indicator" visibleInFilterBar="true">
+											<fb:control>
+												<MultiComboBox width="100%" items="{path:'NewReturns>/catalog1111'}">
+													<core:Item key="{NewReturns>GSTIN}" text="{NewReturns>GSTIN}"/>
+												</MultiComboBox>
+											</fb:control>
+										</fb:FilterGroupItem>
+										<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="I" label="Response" visibleInFilterBar="true">
+											<fb:control>
+												<MultiComboBox width="100%">
+													<core:Item key="Accept" text="Accept"/>
+													<core:Item key="Reject" text="Reject"/>
+													<core:Item key="Pendding" text="Pendding"/>
+													<core:Item key="Blank" text="Blank"/>
+												</MultiComboBox>
+											</fb:control>
+										</fb:FilterGroupItem>
+									</fb:filterGroupItems>
+								</fb:FilterBar>
+							</f:DynamicPageHeader>
+						</f:header>
+						<f:content>
+							<Panel>
+								<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false"
+									id="idReconResultTableCC1" visible="false">
+									<commons:content>
+										<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+											<commons:content>
+												<VBox>
+													<ui:TreeTable rows="{path:'Anx2>/ReconSummary', parameters:{ arrayNames:['items'], numberOfExpandedLevels:1 }}" class=""
+														selectionMode="None" selectionBehavior="Row" visibleRowCount="8" fixedColumnCount="1" enableSelectAll="false" id="idRRSummary">
+														<ui:Column width="18rem">
+															<ui:multiLabels>
+																<Label text=""/>
+																<Label text="Particulars" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<Text text="{Anx2>Particulars}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column headerSpan="4" hAlign="End" width="7rem">
+															<ui:multiLabels>
+																<Label text="Parchase Register" textAlign="Center" width="100%" design="Bold"/>
+																<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{Anx2>Count}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column hAlign="End" width="4rem">
+															<ui:multiLabels>
+																<Label text="Parchase Register" design="Bold"/>
+																<Label text=" % " textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{Anx2>Count}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column hAlign="End" width="7rem">
+															<ui:multiLabels>
+																<Label text="Parchase Register" width="100%" design="Bold"/>
+																<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{Anx2>Count}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column hAlign="End" width="9rem">
+															<ui:multiLabels>
+																<Label text="Parchase Register" textAlign="Center" width="100%" design="Bold"/>
+																<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{Anx2>Count}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column headerSpan="4" hAlign="End" width="7rem">
+															<ui:multiLabels>
+																<Label text="ANX - 2" textAlign="Center" width="100%" design="Bold"/>
+																<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{Anx2>Count}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column hAlign="End" width="4rem">
+															<ui:multiLabels>
+																<Label text="" design="Bold"/>
+																<Label text="%" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{Anx2>Count}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column hAlign="End" width="7rem">
+															<ui:multiLabels>
+																<Label text="" width="100%" design="Bold"/>
+																<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{Anx2>Count}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column hAlign="End" width="9rem">
+															<ui:multiLabels>
+																<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{Anx2>Count}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column hAlign="End" headerSpan="5" width="9rem">
+															<ui:multiLabels>
+																<Label text="RET - 1" textAlign="Center" width="100%" design="Bold"/>
+																<Label text="Net Eligible Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{Anx2>Count}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column hAlign="End" width="9rem">
+															<ui:multiLabels>
+																<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																<Label text="ANX - 2 (Accept)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{Anx2>Count}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column hAlign="End" width="9rem">
+															<ui:multiLabels>
+																<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																<Label text="Prov. Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{Anx2>Count}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column hAlign="End" width="10rem">
+															<ui:multiLabels>
+																<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																<Label text="Ineligible Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{Anx2>Count}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+														<ui:Column hAlign="End" width="12rem">
+															<ui:multiLabels>
+																<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																<Label text="Prov. Credit Reversal" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</ui:multiLabels>
+															<ui:template>
+																<HBox alignItems="Start" justifyContent="End">
+																	<Text text="{Anx2>Count}"/>
+																</HBox>
+															</ui:template>
+														</ui:Column>
+													</ui:TreeTable>
+													<ui:Table rows="{NewReturns>/RequestID1}" class="" selectionMode="None" selectionBehavior="Row" visibleRowCount="8" fixedColumnCount="1"
+														enableSelectAll="false" id="idRRDetail" visible="false">
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Recon Period"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Return Period (PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Return Period (2A)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Recipient GSTIN(PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Recipient GSTIN(2A)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Supplier GSTIN(PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Supplier GSTIN(2A)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Supplier Name (PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Supplier Name (2A)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Supplier Filing status (P1)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Supplier Filing status (P2)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="DOC-TYPE(PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="DOC-TYPE(2A)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Document Number (PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Document Number (2A)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Document Date(PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Document Date(2A)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Original Document Number(PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Original Document Number(2A)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Original Document Date(PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Original Document Date(2A)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="POS(PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="POS(2A)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Differential Percentage (PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Differential Percentage (2A)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Sec 7 Flag - IGST (PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Sec 7 Flag - IGST (2A)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="TaxRate (PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="TaxRate (2A)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="HSN (PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="HSN (2A)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Taxable (PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Taxable (2A)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="IGST(PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="IGST(2A)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="CGST(PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="CGST(2A)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="SGST(PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="CESS(PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="CESS(2A)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Invoice Value(PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Invoice Value(2A)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="EligibilityIndicator (PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Available IGST (PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Available CGST (PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Available SGST (PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Available Cess (PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Total Available Tax (PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Total Tax Payable (PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Total Tax Payable (2A)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Report Type (Recon 2)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Response (GSTN)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Response (New)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Suggested Response"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Mismatch Reason"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Credit already availed in GSTR 3B"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Doc Date Before New Return"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Change in Report"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Review Response"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Report Type (Recon 1)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Response (Old)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="ITC Entitlement"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Supplier claiming refund"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="15rem">
+															<Label design="Bold" text="Flag indicating if document accepted in earlier return period is rejected"
+																tooltip="Flag indicating if document accepted in earlier return period is rejected"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="upload Date"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="15rem">
+															<Label design="Bold" text="Flag denoting if ITC can be availed or not" tooltip="Flag denoting if ITC can be availed or not"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Reverse Charge Flag(PR)"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="SourceIdentifier"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="SourceFileName"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="GLAccountCode"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Division"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="SubDivision"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="ProfitCentre1"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="ProfitCentre2"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="PlantCode"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="SupplyType"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="CRDRPreGST"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="SupplierCode"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="CommonSupplyIndicator"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="ITCReversalIdentifier"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="ReasonForCreditDebitNote"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="PurchaseVoucherNumber"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="PurchaseVoucherDate"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="PaymentVoucherNumber"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="DateofPayment"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="ContractNumber"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Contractdate"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="ContractValue"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="OriginalSGSTIN"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Userdefinedfield1"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Userdefinedfield2"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Userdefinedfield3"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="LineNumber"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="PortCode"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="BillOfEntry"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="BillOfEntryDate"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="CIFValue"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="CustomDuty"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="ItemCode"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="ItemDescription"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="ItemCategory"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="UnitofMeasurement"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Quantity"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="id2a"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="idpr"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+														<ui:Column width="10rem">
+															<Label design="Bold" text="Date of ANX 2 Request"/>
+															<ui:template>
+																<Text text="{NewReturns>requestID}"/>
+															</ui:template>
+														</ui:Column>
+													</ui:Table>
+												</VBox>
+											</commons:content>
+										</commons:ChartContainerContent >
+									</commons:content>
+									<commons:toolbar>
+										<OverflowToolbar>
+											<SegmentedButton selectedKey="Summary" id="idSBSDRRTabReconResult" selectionChange="onSelectionChangeReconResults" width="20rem">
+												<items>
+													<SegmentedButtonItem text="Summary" key="Summary"/>
+													<SegmentedButtonItem text="Detail" key="Detail"/>
+												</items>
+											</SegmentedButton>
+											<ToolbarSpacer/>
+											<CheckBox text="Show Only Inter-Company Transactions" class="clCheckBoxText" id="idRRActionBut1"/>
+											<Button type="Emphasized" text="Generate Summary" id="idRRActionBut2"/>
+											<Button type="Transparent" icon="sap-icon://download" tooltip="Download Summary" press="onConfigExtractPress" id="idRRActionBut3"/>
+											<Button text="Edit" tooltip="Edit" icon="sap-icon://edit" type="Emphasized" id="idRRActionBut4" visible="false"/>
+											<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+										</OverflowToolbar>
+									</commons:toolbar>
+								</commons:ChartContainer>
+								<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false"
+									id="idReconResultTableCC2" visible="true">
+									<commons:content>
+										<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+											<commons:content>
+												<VBox>
+													<ui:Table rowSelectionChange="onSelection" rows="{path:'ReconResultsSummary>/resp'}" selectionMode="None" class="" visibleRowCount="8"
+														enableSelectAll="true" fixedBottomRowCount="0" fixedColumnCount="0" id="idABSummary" visible="false">
+														<ui:columns>
+															<ui:Column width="10rem" hAlign="Center">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Action" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{ReconResultsSummary>Action}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="10rem" hAlign="Center">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Tax Period" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{ReconResultsSummary>taxPeriod}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="10rem" hAlign="Center">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="My GSTIN" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="My GSTIN"/>
+																<ui:template>
+																	<Text text="{ReconResultsSummary>myGSTIN}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="10rem" hAlign="Center">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Vendor GSTIN" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="Vendor GSTIN"/>
+																<ui:template>
+																	<Text text="{ReconResultsSummary>vendorGSTIN}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="10rem" hAlign="Center">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Vendor Trade Name" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="Vendor Trade Name" tooltip="Vendor Trad Name"/>
+																<ui:template>
+																	<Text text="{ReconResultsSummary>cgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="Taxable Value"/>
+																<ui:template>
+																	<Text text="{ReconResultsSummary>count}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" headerSpan="5" hAlign="End" id="idABTableCol1">
+																<ui:multiLabels>
+																	<Label text="Eligible" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="Taxable Value"/>
+																<ui:template>
+																	<Text text="{path : 'ReconResultsSummary>elTaxableValue', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End" id="idABTableCol2">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="IGST"/>
+																<ui:template>
+																	<Text text="{path : 'ReconResultsSummary>elIGST', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End" id="idABTableCol3">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="CGST"/>
+																<ui:template>
+																	<Text text="{path : 'ReconResultsSummary>elCGST', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End" id="idABTableCol4">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="SGST"/>
+																<ui:template>
+																	<Text text="{path : 'ReconResultsSummary>elSGST', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End" id="idABTableCol5">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Ad Cess" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'ReconResultsSummary>elCess', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" headerSpan="5" hAlign="End" id="idABTableCol6">
+																<ui:multiLabels>
+																	<Label text="Available" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="Taxable Value"/>
+																<ui:template>
+																	<Text text="{path : 'ReconResultsSummary>avTaxableValue', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End" id="idABTableCol7">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="IGST"/>
+																<ui:template>
+																	<Text text="{path : 'ReconResultsSummary>avIGST', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End" id="idABTableCol8">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="CGST"/>
+																<ui:template>
+																	<Text text="{path : 'ReconResultsSummary>avCGST', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End" id="idABTableCol9">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="SGST"/>
+																<ui:template>
+																	<Text text="{path : 'ReconResultsSummary>avSGST', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End" id="idABTableCol10">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Ad Cess" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'ReconResultsSummary>avCess', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+														</ui:columns>
+													</ui:Table>
+													<ui:Table rowSelectionChange="onSelection" rows="{path:'ReconResult>/resp'}" selectionMode="MultiToggle" class="" visibleRowCount="8"
+														enableSelectAll="true" fixedBottomRowCount="0" fixedColumnCount="0" id="idABDetail" visible="true">
+														<ui:columns>
+															<ui:Column width="9rem" hAlign="Center">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Tax Period" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{ReconResult>taxPeriod}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="11rem" hAlign="Left">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="My GSTIN" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{ReconResult>myGSTIN}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="11rem" hAlign="Left">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Vendor GSTIN" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{ReconResult>vendorGSTIN}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" headerSpan="5" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="ANX - 2" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Taxabable Value" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'ReconResult>anx2taxableValue', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'ReconResult>anx2igst', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'ReconResult>anx2cgst', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'ReconResult>anx2sgst', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Ad Cess" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'ReconResult>anx2cess', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" headerSpan="5" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="PR" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Taxabable Value" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'ReconResult>prtaxableValue', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'ReconResult>prigst', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'ReconResult>prcgst', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'ReconResult>prsgst', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Ad Cess" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'ReconResult>prcess', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+														</ui:columns>
+													</ui:Table>
+												</VBox>
+											</commons:content>
+										</commons:ChartContainerContent >
+									</commons:content>
+									<commons:toolbar>
+										<OverflowToolbar>
+											<SegmentedButton selectedKey="Detail" id="idSBSDTabReconResult" selectionChange="onSelectionChangeReconResults" width="20rem">
+												<items>
+													<SegmentedButtonItem text="ITC Action" key="Detail"/>
+													<SegmentedButtonItem text="Action Summary" key="Summary"/>
+												</items>
+											</SegmentedButton>
+											<ToolbarSpacer/>
+											<CheckBox text="Eligible" id="idActionButCheckBox1" select="onSelectCheckBoxCol1" selected="true" class="clCheckBoxText" visible="false"/>
+											<CheckBox text="Available" id="idActionButCheckBox2" select="onSelectCheckBoxCol2" selected="true" class="clCheckBoxText" visible="false"/>
+											<CheckBox text="Exact Match" class="clCheckBoxText" id="idActionBut7" visible="true"/>
+											<CheckBox text="Match with Tolerance" class="clCheckBoxText" id="idActionBut8" visible="true"/>
+											<CheckBox text="Forced Match" class="clCheckBoxText" id="idActionBut9" visible="true"/>
+											<Button text="Claim ITC as per A2 (Accept A2)" type="Emphasized" press="onPressRRAction" id="idActionBut1" visible="true"/>
+											<Button text="Claim ITC as per PR (Accept A2)" type="Emphasized" press="onPressRRAction" id="idActionBut2" visible="true"/>
+											<Button text="Defer ITC (Pending A2)" type="Emphasized" press="onPressRRAction" id="idActionBut3" visible="true"/>
+											<Button text="Reject A2 &amp; PR" type="Emphasized" press="onPressRRAction" id="idActionBut4" visible="true"/>
+											<Button text="Reject A2 only" type="Emphasized" press="onPressRRAction" id="idActionBut6" visible="true"/>
+											<Button text="Edit" tooltip="Edit" icon="sap-icon://edit" type="Emphasized" id="idActionBut5" visible="true"/>
+											<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+										</OverflowToolbar>
+									</commons:toolbar>
+								</commons:ChartContainer>
+								<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false"
+									id="idReconResultTableCC3" visible="false">
+									<commons:content>
+										<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+											<commons:content>
+												<VBox>
+													<ui:Table rowSelectionChange="onSelection" rows="{path:'MisMatchSummary>/resp'}" selectionMode="None" class="" visibleRowCount="8"
+														enableSelectAll="true" fixedBottomRowCount="0" fixedColumnCount="0" id="idGDMSummary" visible="false">
+														<ui:columns>
+															<ui:Column width="10rem" hAlign="Center">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Action" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{MisMatchSummary>Action}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="10rem" hAlign="Center">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Tax Period" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{MisMatchSummary>taxPeriod}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="10rem" hAlign="Center">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="My GSTIN" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="My GSTIN"/>
+																<ui:template>
+																	<Text text="{MisMatchSummary>myGSTIN}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="10rem" hAlign="Center">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Vendor GSTIN" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="Vendor GSTIN"/>
+																<ui:template>
+																	<Text text="{MisMatchSummary>vendorGSTIN}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="10rem" hAlign="Center">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Vendor Trade Name" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="Vendor Trade Name" tooltip="Vendor Trad Name"/>
+																<ui:template>
+																	<Text text="{MisMatchSummary>cgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="Taxable Value"/>
+																<ui:template>
+																	<Text text="{MisMatchSummary>count}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" headerSpan="5" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="Eligible" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="Taxable Value"/>
+																<ui:template>
+																	<Text text="{path : 'MisMatchSummary>elTaxableValue', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="IGST"/>
+																<ui:template>
+																	<Text text="{path : 'MisMatchSummary>elIGST', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="CGST"/>
+																<ui:template>
+																	<Text text="{path : 'MisMatchSummary>elCGST', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="SGST"/>
+																<ui:template>
+																	<Text text="{path : 'MisMatchSummary>elSGST', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Ad Cess" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'MisMatchSummary>elCess', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" headerSpan="5" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="Available" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="Taxable Value"/>
+																<ui:template>
+																	<Text text="{path : 'MisMatchSummary>avTaxableValue', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="IGST"/>
+																<ui:template>
+																	<Text text="{path : 'MisMatchSummary>avIGST', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="CGST"/>
+																<ui:template>
+																	<Text text="{path : 'MisMatchSummary>avCGST', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="SGST"/>
+																<ui:template>
+																	<Text text="{path : 'MisMatchSummary>avSGST', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Ad Cess" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'MisMatchSummary>avCess', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+														</ui:columns>
+													</ui:Table>
+													<ui:Table rowSelectionChange="onSelection" rows="{path:'MismatchDetails>/resp'}" selectionMode="MultiToggle" class="" visibleRowCount="8"
+														enableSelectAll="true" fixedBottomRowCount="0" fixedColumnCount="0" id="idGDMDetail" visible="true">
+														<ui:columns>
+															<ui:Column width="9rem" hAlign="Center">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Tax Period" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{MismatchDetails>taxPeriod}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="11rem" hAlign="Left">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="My GSTIN" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{MismatchDetails>myGSTIN}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="11rem" hAlign="Left">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Vendor GSTIN" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{MismatchDetails>vendorGSTIN}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" headerSpan="5" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="ANX - 2" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Taxabable Value" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'MismatchDetails>anx2taxableValue', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'MismatchDetails>anx2igst', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'MismatchDetails>anx2cgst', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'MismatchDetails>anx2sgst', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Ad Cess" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'MismatchDetails>anx2cess', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" headerSpan="5" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="PR" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Taxabable Value" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'MismatchDetails>prtaxableValue', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'MismatchDetails>prigst', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'MismatchDetails>prcgst', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'MismatchDetails>prsgst', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Ad Cess" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'MismatchDetails>prcess', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+														</ui:columns>
+													</ui:Table>
+												</VBox>
+											</commons:content>
+										</commons:ChartContainerContent >
+									</commons:content>
+									<commons:toolbar>
+										<OverflowToolbar>
+											<SegmentedButton selectedKey="Detail" id="idSBSDGDMTabReconResult" selectionChange="onSelectionChangeReconResults" width="20rem">
+												<items>
+													<SegmentedButtonItem text="ITC Action" key="Detail"/>
+													<SegmentedButtonItem text="Action Summary" key="Summary"/>
+												</items>
+											</SegmentedButton>
+											<ToolbarSpacer/>
+											<Button text="Claim ITC as per A2 (Accept A2)" type="Emphasized" press="onPressRRAction" id="idGDMActionBut1" visible="true"/>
+											<Button text="Claim ITC as per PR (Accept A2)" type="Emphasized" press="onPressRRAction" id="idGDMActionBut2" visible="true"/>
+											<Button text="Defer ITC (Pending A2)" type="Emphasized" press="onPressRRAction" id="idGDMActionBut3" visible="true"/>
+											<Button text="Reject A2 &amp; PR" type="Emphasized" press="onPressRRAction" id="idGDMActionBut4" visible="true"/>
+											<Button text="Reject A2 only" type="Emphasized" press="onPressRRAction" id="idGDMActionBut6" visible="true"/>
+											<Button text="Edit" tooltip="Edit" icon="sap-icon://edit" type="Emphasized" id="idGDMActionBut5" visible="true"/>
+											<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+										</OverflowToolbar>
+									</commons:toolbar>
+								</commons:ChartContainer>
+								<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false"
+									id="idReconResultTableCC4" visible="false">
+									<commons:content>
+										<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+											<commons:content>
+												<VBox>
+													<ui:Table rowSelectionChange="onSelection" rows="{path:'PotentialMatchSummary>/resp'}" selectionMode="None" class="" visibleRowCount="8"
+														enableSelectAll="true" fixedBottomRowCount="0" fixedColumnCount="0" id="idPMSummary">
+														<ui:columns>
+															<ui:Column width="10rem" hAlign="Center">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Action" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{PotentialMatchSummary>Action}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="10rem" hAlign="Center">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Tax Period" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{PotentialMatchSummary>taxPeriod}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="10rem" hAlign="Center">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="My GSTIN" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="My GSTIN"/>
+																<ui:template>
+																	<Text text="{PotentialMatchSummary>myGSTIN}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="10rem" hAlign="Center">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Vendor GSTIN" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="Vendor GSTIN"/>
+																<ui:template>
+																	<Text text="{PotentialMatchSummary>vendorGSTIN}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="10rem" hAlign="Center">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Vendor Trade Name" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="Vendor Trade Name" tooltip="Vendor Trad Name"/>
+																<ui:template>
+																	<Text text="{PotentialMatchSummary>cgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="Taxable Value"/>
+																<ui:template>
+																	<Text text="{PotentialMatchSummary>count}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" headerSpan="5" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="Eligible" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="Taxable Value"/>
+																<ui:template>
+																	<Text text="{path : 'PotentialMatchSummary>elTaxableValue', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="IGST"/>
+																<ui:template>
+																	<Text text="{path : 'PotentialMatchSummary>elIGST', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="CGST"/>
+																<ui:template>
+																	<Text text="{path : 'PotentialMatchSummary>elCGST', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="SGST"/>
+																<ui:template>
+																	<Text text="{path : 'PotentialMatchSummary>elSGST', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Ad Cess" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'PotentialMatchSummary>elCess', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" headerSpan="5" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="Available" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="Taxable Value"/>
+																<ui:template>
+																	<Text text="{path : 'PotentialMatchSummary>avTaxableValue', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="IGST"/>
+																<ui:template>
+																	<Text text="{path : 'PotentialMatchSummary>avIGST', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="CGST"/>
+																<ui:template>
+																	<Text text="{path : 'PotentialMatchSummary>avCGST', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<Label design="Bold" text="SGST"/>
+																<ui:template>
+																	<Text text="{path : 'PotentialMatchSummary>avSGST', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="8rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Ad Cess" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'PotentialMatchSummary>avCess', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+														</ui:columns>
+													</ui:Table>
+													<ui:Table rowSelectionChange="onSelection" rows="{path:'PotentialMatchDetails>/resp'}" selectionMode="MultiToggle" class=""
+														visibleRowCount="8" enableSelectAll="true" fixedBottomRowCount="0" fixedColumnCount="0" id="idPMDetail" visible="false">
+														<ui:columns>
+															<ui:Column width="9rem" hAlign="Center">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Tax Period" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{PotentialMatchDetails>taxPeriod}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="11rem" hAlign="Left">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="My GSTIN" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{PotentialMatchDetails>myGSTIN}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="11rem" hAlign="Left">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Vendor GSTIN" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{PotentialMatchDetails>vendorGSTIN}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" headerSpan="5" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="ANX - 2" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Taxabable Value" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'PotentialMatchDetails>anx2taxableValue', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'PotentialMatchDetails>anx2igst', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'PotentialMatchDetails>anx2cgst', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'PotentialMatchDetails>anx2sgst', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Ad Cess" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'PotentialMatchDetails>anx2cess', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" headerSpan="5" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="PR" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Taxabable Value" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'PotentialMatchDetails>prtaxableValue', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'PotentialMatchDetails>prigst', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'PotentialMatchDetails>prcgst', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'PotentialMatchDetails>prsgst', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Ad Cess" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'PotentialMatchDetails>prcess', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+														</ui:columns>
+													</ui:Table>
+												</VBox>
+											</commons:content>
+										</commons:ChartContainerContent >
+									</commons:content>
+									<commons:toolbar>
+										<OverflowToolbar>
+											<SegmentedButton selectedKey="Summary" id="idSBSDPMTabReconResult" selectionChange="onSelectionChangeReconResults" width="20rem">
+												<items>
+													<SegmentedButtonItem text="Summary" key="Summary"/>
+													<SegmentedButtonItem text="Detail" key="Detail"/>
+												</items>
+											</SegmentedButton>
+											<ToolbarSpacer/>
+											<Button text="Accept to claim ITC and lock PR" type="Emphasized" press="onPressRRAction" id="idPMActionBut1" visible="false"/>
+											<Button text="Correct PR and per 2A and claim ITC" type="Emphasized" press="onPressRRAction" id="idPMActionBut2" visible="false"/>
+											<Button text="Reject PR and keep 2A open" type="Emphasized" press="onPressRRAction" id="idPMActionBut3" visible="false"/>
+											<Button text="Retain PR and reject 2A " type="Emphasized" press="onPressRRAction" id="idPMActionBut4" visible="false"/>
+											<Button text="Edit" tooltip="Edit" icon="sap-icon://edit" type="Emphasized" id="idPMActionBut5" visible="false"/>
+											<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+										</OverflowToolbar>
+									</commons:toolbar>
+								</commons:ChartContainer>
+								<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false"
+									id="idReconResultTableCC5" visible="false">
+									<commons:content>
+										<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+											<commons:content>
+												<VBox>
+													<ui:Table rowSelectionChange="onSelection" rows="{path:'Anx2>/catalog111'}" selectionMode="None" class="" visibleRowCount="8"
+														enableSelectAll="true" fixedBottomRowCount="0" fixedColumnCount="0" id="idA2ASummary">
+														<ui:columns>
+															<ui:Column width="12rem" hAlign="Left">
+																<Label design="Bold" text="Summary Table"/>
+																<ui:template>
+																	<Text text="{Anx2>taxablevalue}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="Tax Period"/>
+																<ui:template>
+																	<Text text="{Anx2>totaltaxValue}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="My GSTIN"/>
+																<ui:template>
+																	<Text text="{Anx2>igst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="Vendor GSTIN"/>
+																<ui:template>
+																	<Text text="{Anx2>cgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="Taxabable Value"/>
+																<ui:template>
+																	<Text text="{Anx2>sgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="IGST"/>
+																<ui:template>
+																	<Text text="{Anx2>sgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="CGST"/>
+																<ui:template>
+																	<Text text="{Anx2>sgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="SGST"/>
+																<ui:template>
+																	<Text text="{Anx2>sgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="Ad Cess"/>
+																<ui:template>
+																	<Text text="{Anx2>sgst}"/>
+																</ui:template>
+															</ui:Column>
+														</ui:columns>
+													</ui:Table>
+													<ui:Table rowSelectionChange="onSelection" rows="{path:'Anx2>/catalog111'}" selectionMode="MultiToggle" class="" visibleRowCount="8"
+														enableSelectAll="true" fixedBottomRowCount="0" fixedColumnCount="0" id="idA2ADetail" visible="false">
+														<ui:columns>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="Tax Period"/>
+																<ui:template>
+																	<Text text="{Anx2>totaltaxValue}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="My GSTIN"/>
+																<ui:template>
+																	<Text text="{Anx2>igst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="Vendor GSTIN"/>
+																<ui:template>
+																	<Text text="{Anx2>cgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="Taxabable Value"/>
+																<ui:template>
+																	<Text text="{Anx2>sgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="IGST"/>
+																<ui:template>
+																	<Text text="{Anx2>sgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="CGST"/>
+																<ui:template>
+																	<Text text="{Anx2>sgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="SGST"/>
+																<ui:template>
+																	<Text text="{Anx2>sgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="Ad Cess"/>
+																<ui:template>
+																	<Text text="{Anx2>sgst}"/>
+																</ui:template>
+															</ui:Column>
+														</ui:columns>
+													</ui:Table>
+												</VBox>
+											</commons:content>
+										</commons:ChartContainerContent >
+									</commons:content>
+									<commons:toolbar>
+										<OverflowToolbar>
+											<SegmentedButton selectedKey="Summary" id="idSBSDA2ATabReconResult" selectionChange="onSelectionChangeReconResults" width="20rem">
+												<items>
+													<SegmentedButtonItem text="Summary" key="Summary"/>
+													<SegmentedButtonItem text="Detail" key="Detail"/>
+												</items>
+											</SegmentedButton>
+											<ToolbarSpacer/>
+											<Button text="Claim ITC as per A2 (Accept A2)" type="Emphasized" press="onPressRRAction" id="idA2AActionBut1" visible="false"/>
+											<Button text="Defer ITC (Pending A2)" type="Emphasized" press="onPressRRAction" id="idA2AActionBut2" visible="false"/>
+											<Button text="Reject 2A " type="Emphasized" press="onPressRRAction" id="idA2AActionBut3" visible="false"/>
+											<Button text="Edit" tooltip="Edit" icon="sap-icon://edit" type="Emphasized" id="idA2AActionBut4" visible="false"/>
+											<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+										</OverflowToolbar>
+									</commons:toolbar>
+								</commons:ChartContainer>
+								<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false"
+									id="idReconResultTableCC6" visible="false">
+									<commons:content>
+										<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+											<commons:content>
+												<VBox>
+													<ui:Table rowSelectionChange="onSelection" rows="{path:'Anx2>/catalog111'}" selectionMode="None" class="" visibleRowCount="8"
+														enableSelectAll="true" fixedBottomRowCount="0" fixedColumnCount="0" id="idAPRSummary">
+														<ui:columns>
+															<ui:Column width="12rem" hAlign="Left">
+																<Label design="Bold" text="Summary Table"/>
+																<ui:template>
+																	<Text text="{Anx2>taxablevalue}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="Tax Period"/>
+																<ui:template>
+																	<Text text="{Anx2>totaltaxValue}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="My GSTIN"/>
+																<ui:template>
+																	<Text text="{Anx2>igst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="Vendor GSTIN"/>
+																<ui:template>
+																	<Text text="{Anx2>cgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="Taxabable Value"/>
+																<ui:template>
+																	<Text text="{Anx2>sgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="IGST"/>
+																<ui:template>
+																	<Text text="{Anx2>sgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="CGST"/>
+																<ui:template>
+																	<Text text="{Anx2>sgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="SGST"/>
+																<ui:template>
+																	<Text text="{Anx2>sgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="Ad Cess"/>
+																<ui:template>
+																	<Text text="{Anx2>sgst}"/>
+																</ui:template>
+															</ui:Column>
+														</ui:columns>
+													</ui:Table>
+													<ui:Table rowSelectionChange="onSelection" rows="{path:'Anx2>/catalog111'}" selectionMode="MultiToggle" class="" visibleRowCount="8"
+														enableSelectAll="true" fixedBottomRowCount="0" fixedColumnCount="0" id="idAPRDetail" visible="false">
+														<ui:columns>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="Tax Period"/>
+																<ui:template>
+																	<Text text="{Anx2>totaltaxValue}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="My GSTIN"/>
+																<ui:template>
+																	<Text text="{Anx2>igst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="Vendor GSTIN"/>
+																<ui:template>
+																	<Text text="{Anx2>cgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="Taxabable Value"/>
+																<ui:template>
+																	<Text text="{Anx2>sgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="IGST"/>
+																<ui:template>
+																	<Text text="{Anx2>sgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="CGST"/>
+																<ui:template>
+																	<Text text="{Anx2>sgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="SGST"/>
+																<ui:template>
+																	<Text text="{Anx2>sgst}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="" hAlign="Left">
+																<Label design="Bold" text="Ad Cess"/>
+																<ui:template>
+																	<Text text="{Anx2>sgst}"/>
+																</ui:template>
+															</ui:Column>
+														</ui:columns>
+													</ui:Table>
+												</VBox>
+											</commons:content>
+										</commons:ChartContainerContent >
+									</commons:content>
+									<commons:toolbar>
+										<OverflowToolbar>
+											<SegmentedButton selectedKey="Summary" id="idSBSDAPRTabReconResult" selectionChange="onSelectionChangeReconResults" width="20rem">
+												<items>
+													<SegmentedButtonItem text="Summary" key="Summary"/>
+													<SegmentedButtonItem text="Detail" key="Detail"/>
+												</items>
+											</SegmentedButton>
+											<ToolbarSpacer/>
+											<Button text="Claim Porvisional ITC as per PR" type="Emphasized" press="onPressRRAction" id="idAPRActionBut1" visible="false"/>
+											<Button text="Defer ITC (Pending PR)" type="Emphasized" press="onPressRRAction" id="idAPRActionBut2" visible="false"/>
+											<Button text="Reject PR" type="Emphasized" press="onPressRRAction" id="idAPRActionBut4" visible="false"/>
+											<Button text="Edit" tooltip="Edit" icon="sap-icon://edit" type="Emphasized" id="idAPRActionBut3" visible="false"/>
+											<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+										</OverflowToolbar>
+									</commons:toolbar>
+								</commons:ChartContainer>
+							</Panel>
+						</f:content>
+					</f:DynamicPage>
+				</content>
+			</Page>
+		</detailPages>
+		<masterPages >
+			<Page showHeader="false">
+				<content>
+					<Toolbar height="8rem" class="clVerticalLayoutColor">
+						<VBox class="sapUiSmallMarginBegin">
+							<Label text="Entity" class="sapUiTinyMarginBegin"/>
+							<Select items="{path:'entity>/resp'}" id="idRREntity" class="sapUiTinyMarginBegin" width="14rem">
+								<core:Item key="{entity>entityId}" text="{entity>entityName}"/>
+							</Select>
+							<Label text="Period :" class="sapUiTinyMarginBegin sapUiTinyMarginTop"/>
+							<HBox>
+								<DatePicker displayFormat="MMM yyyy" id="idRRPeriod" valueFormat="MMyyyy" width="14rem" class="input sapUiTinyMarginBegin"/>
+								<Button text="GO" type="Emphasized" press="onPressGoForGSTINRR" class="input sapUiTinyMarginBegin"/>
+							</HBox>
+						</VBox>
+					</Toolbar>
+					<List mode="MultiSelect" id="idReconResultList" headerText="List of GSTIN" items="{GSTINRR>/resp}" class="listMargin"
+						selectionChange="onSelectionChange">
+						<CustomListItem>
+							<HBox justifyContent="SpaceBetween">
+								<VBox class="sapUiTinyMarginBegin sapUiTinyMarginTopBottom">
+									<Label text="{GSTINRR>state}" tooltip="Latest Date" class="clTextSize8"/>
+									<Link text="{GSTINRR>cgstin}" press="handlePress" class="clTextSize1"/>
+								</VBox>
+								<VBox class="sapUiTinyMarginBegin sapUiTinyMarginTopBottom">
+									<Label text="{GSTINRR>status}" tooltip="ANX-2 Status"/>
+									<Label text="{GSTINRR>updatedDate}" tooltip="Latest Date" class="clTextSize50"/>
+								</VBox>
+							</HBox>
+						</CustomListItem>
+					</List>
+				</content>
+			</Page>
+		</masterPages>
+	</SplitApp>
+	<!--</f:content>
+	</f:DynamicPage>-->
+</core:FragmentDefinition>

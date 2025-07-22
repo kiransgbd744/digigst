@@ -1,0 +1,28 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar">
+	<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false"
+		visible="{=${Property>/sbStatus}==='sftp'}">
+		<fb:filterGroupItems>
+			<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>fileType}" visibleInFilterBar="true">
+				<fb:control>
+					<Select>
+						<core:Item key="glDump" text="GL Dump"/>
+					</Select>
+				</fb:control>
+			</fb:FilterGroupItem>
+			<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Upload From" visibleInFilterBar="true">
+				<fb:control>
+					<DatePicker displayFormat="MMM dd, yyyy" value="{filter>/sftp/fromDate}"  id="idSFTPFromDate" valueFormat="yyyy-MM-dd" change="onChangeDateValue"/>
+				</fb:control>
+			</fb:FilterGroupItem>
+			<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Upload To" visibleInFilterBar="true">
+				<fb:control>
+					<DatePicker displayFormat="MMM dd, yyyy" value="{filter>/sftp/toDate}" id="idSFTPToDate" valueFormat="yyyy-MM-dd"/>
+				</fb:control>
+			</fb:FilterGroupItem>
+		</fb:filterGroupItems>
+	</fb:FilterBar>
+	<HBox justifyContent="End" visible="{=${Property>/sbStatus}==='sftp'}" class="clMain" width="10%">
+		<Button text="{i18n>clear}" press="onPressClear" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+		<Button text="Filter" class="buttoncolor" press="onSearch('SFTP')"/>
+	</HBox>
+</core:FragmentDefinition>

@@ -1,0 +1,26 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form">
+	<Dialog id="bulkSaveID" title="Initiate Get Call Status" type="Message" contentWidth="70rem" class="sapUiSizeCompact cl_saveHeader">
+		<beginButton>
+			<Button text="OKAY" press="onCloseDialogImsGetCall"/>
+		</beginButton>
+		<Table items="{BulkGstinSaveModel>/}" id="idTableBulkSave" noDataText="No Products">
+			<columns>
+				<Column hAlign="Center" width="10rem">
+					<Text text="GSTIN"/>
+				</Column>
+				<Column hAlign="Center">
+					<Text text="Message Status"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem vAlign="Middle">
+					<cells>
+						<Text text="{BulkGstinSaveModel>gstin}" wrapping="false"/>
+						<Text text="{BulkGstinSaveModel>msg}" wrapping="false"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</Dialog>
+</core:FragmentDefinition>

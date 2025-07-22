@@ -1,0 +1,601 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" xmlns:l="sap.ui.layout" xmlns:commons="sap.suite.ui.commons">
+	<Panel class="sapUiSizeCompact" width="auto" height="500px">
+		<ui:Table id="idHSNDetailTab" rows="{oGSTR9Model>/HSNDetails/}"
+			selectionMode="None" enableSelectAll="false" fixedColumnCount="2" enableColumnReordering="false" visibleRowCount="2" class="sapUiSizeCompact">
+			<ui:extension>
+				<Toolbar>
+					<HBox justifyContent="Start">
+						<Label text="Showing:" design="Bold" class="sapUiTinyMarginTop"/>
+						<CheckBox select="showingCheck" selected="true" text="DigiGST (Processed Data)" id="HSNDigiProID" class="sapUiTinyMarginEnd"/>
+						<CheckBox select="showingCheck" selected="true" text="DigiGST (GSTR1 and 3B)" id="HSNDigi3BID" class="sapUiTinyMarginEnd"/>
+						<CheckBox select="showingCheck" selected="true" text="GST Portal(Calculated)" id="HSNGSTID" class="sapUiTinyMarginEnd"/>
+						<CheckBox select="showingCheck" selected="true" text="User Edit" id="HSNUserID" class="sapUiTinyMarginEnd"/>
+						<CheckBox select="showingCheck" selected="true" text="GSTN(Available)" id="HSNGSTNAvaiID" class="sapUiTinyMarginEnd"/>
+						<CheckBox select="showingCheck" selected="true" text="Difference" id="HSNDiffID" class="sapUiTinyMarginEnd"/>
+					</HBox>
+					<ToolbarSpacer/>
+					<!--<Button type="Emphasized" text="Edit User Input Data" press="onEdit" class="sapUiTinyMarginEnd" enabled="{= ${userPermission>/appPermission/P4}}"/>-->
+					<!--<Button type="Accept" text="Save Changes" press="onPressSaveChanges" class="sapUiTinyMarginEnd"-->
+					<!--		enabled="{= ${userPermission>/appPermission/P4}}"/>-->
+					<!--<Button type="Emphasized" text="Clear User Input Data" class="sapUiTinyMarginEnd" press="onClearUserData"-->
+					<!--		enabled="{= ${userPermission>/appPermission/P4}}"/>-->
+					<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" press="onExportExcel" />
+					<Button type="Transparent" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="{=!${PrProperty>/summaryFullScreen}}"
+							press="onGstr2FullScreen('openSummary')"/>
+					<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="{PrProperty>/summaryFullScreen}"
+							press="onGstr2FullScreen('closeSummary')"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column width="5rem">
+					<Label text="Section" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{oGSTR9Model>Section}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="18rem">
+					<Label text="Nature of Supplies" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Link text="{oGSTR9Model>Supply}" press="onPressHSNSupply"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column headerSpan="7" hAlign="End" width="8rem" visible="{visiGSTR3B>/eyC}">
+					<ui:multiLabels>
+						<Label text="As per DigiGST Processed Data" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computedTaxableVal'}], formatter : '.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>
+						<!--<Text text="{parts:[{path : 'LinkTabGSTN1>computedTaxableVal'},{path : 'LinkTabGSTN1>supplyType'}], formatter : '.formatter.amountValue1'}"/>-->
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/eyC}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Total Quantity" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computedIgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/eyC}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computedIgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/eyC}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computedIgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/eyC}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computedCgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/eyC}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computedSgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiSgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/eyC}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computdCess'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCess}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column headerSpan="7" hAlign="End" width="8rem" visible="{visiGSTR3B>/copy}">
+					<ui:multiLabels>
+						<Label text="As per Get GSTR1 and 3B calls" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computedTaxableVal'}], formatter : '.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>
+						<!--<Text text="{parts:[{path : 'LinkTabGSTN1>computedTaxableVal'},{path : 'LinkTabGSTN1>supplyType'}], formatter : '.formatter.amountValue1'}"/>-->
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/eyC}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Total Quantity" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computedIgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/eyC}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computedIgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/copy}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>autoCalIgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/copy}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>autoCalCgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/copy}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>autoCalSgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiSgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/copy}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>autoCalCess'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCess}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column headerSpan="7" hAlign="End" width="8rem" visible="{visiGSTR3B>/copy}">
+					<ui:multiLabels>
+						<Label text="As per GSTN Computed" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computedTaxableVal'}], formatter : '.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>
+						<!--<Text text="{parts:[{path : 'LinkTabGSTN1>computedTaxableVal'},{path : 'LinkTabGSTN1>supplyType'}], formatter : '.formatter.amountValue1'}"/>-->
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/eyC}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Total Quantity" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computedIgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/eyC}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computedIgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/copy}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>autoCalIgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/copy}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>autoCalCgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/copy}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>autoCalSgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiSgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/copy}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>autoCalCess'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCess}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column headerSpan="7" hAlign="End" width="8rem" visible="{visiGSTR3B>/eyU}">
+					<ui:multiLabels>
+						<Label text="As per DigiGST User Edited" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computedTaxableVal'}], formatter : '.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>
+						<!--<Text text="{parts:[{path : 'LinkTabGSTN1>computedTaxableVal'},{path : 'LinkTabGSTN1>supplyType'}], formatter : '.formatter.amountValue1'}"/>-->
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/eyC}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Total Quantity" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computedIgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/eyC}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computedIgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/eyU}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Input value="{LinkTabGSTN1>userInputIgst}" textAlign="End" enabled="false"
+								change="IGSTChange" maxLength="19"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/eyU}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Input value="{LinkTabGSTN1>userInputIgst}" textAlign="End" enabled="false"
+								change="IGSTChange" maxLength="19"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/eyU}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Input value="{LinkTabGSTN1>userInputIgst}" textAlign="End" enabled="false"
+								change="IGSTChange" maxLength="19"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/eyU}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Input value="{LinkTabGSTN1>userInputIgst}" textAlign="End" enabled="false"
+								change="IGSTChange" maxLength="19"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column headerSpan="7" hAlign="End" width="8rem" visible="{visiGSTR3B>/gstn}">
+					<ui:multiLabels>
+						<Label text="As available at GSTN Portal" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computedTaxableVal'}], formatter : '.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>
+						<!--<Text text="{parts:[{path : 'LinkTabGSTN1>computedTaxableVal'},{path : 'LinkTabGSTN1>supplyType'}], formatter : '.formatter.amountValue1'}"/>-->
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/eyC}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Total Quantity" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computedIgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/eyC}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computedIgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="15em" visible="{visiGSTR3B>/gstn}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>gstinIgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/gstn}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>gstinCgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/gstn}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>gstinSgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiSgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/gstn}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>gstinCess'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCess}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column headerSpan="7" hAlign="End" width="8rem" visible="{visiGSTR3B>/diff}">
+					<ui:multiLabels>
+						<Label text="Difference (User Edited - GSTN Portal)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computedTaxableVal'}], formatter : '.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>
+						<!--<Text text="{parts:[{path : 'LinkTabGSTN1>computedTaxableVal'},{path : 'LinkTabGSTN1>supplyType'}], formatter : '.formatter.amountValue1'}"/>-->
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/eyC}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Total Quantity" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computedIgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/eyC}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>computedIgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/diff}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>diffenceIGSTVal'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/diff}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>diffenceCGSTVal'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/diff}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>diffenceSGSTVal'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiSgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="{visiGSTR3B>/diff}">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'LinkTabGSTN1>diffenceCESSVal'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCess}"/>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+		<ui:Table id="idHSNOutwardTab" rows="{oGSTR9Model>/Gstr9Summary/}" enableColumnReordering="false" class="sapUiSizeCompact" visible="false">
+			<ui:extension >
+				<Toolbar>
+					<Button id="idBackOutward" type="Transparent" icon="sap-icon://nav-back" press="onPressBackHSN" />
+					<Label text="HSN Outward" design="Bold"></Label>
+					<ToolbarSpacer/>
+					<Button text="Add" type="Transparent"/>
+					<Button text="Edit" type="Transparent"/>
+					<Button text="Delete" type="Reject"/>
+					<Button text="Save Changes" type="Accept"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column>
+					<Label text="HSN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<ComboBox  width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" selectionChange="selectAll">
+							<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+						</ComboBox>
+						
+					</ui:template>
+				</ui:Column>
+				<ui:Column >
+					<Label text="Description" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{oGSTR9Model>lastUpdatedOn}" class="timeStmpClr"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column >
+					<Label text="Rate of Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{oGSTR9Model>Supply}" class="stateColor"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column >
+					<Label text="UQC" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{oGSTR9Model>Supply}" class="stateColor"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column >
+					<Label text="Total Quantity" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Input />
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Input />
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="Concessional Rate Flag" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>processedall'}], formatter : '.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Input />
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Input />
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Input />
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Input />
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+		<ui:Table id="idHSNInwardTab" rows="{oGSTR9Model>/Gstr9Summary/}" enableColumnReordering="false" class="sapUiSizeCompact"  visible="false">
+			<ui:extension >
+				<Toolbar>
+					<Button id="idBackInward" type="Transparent" icon="sap-icon://nav-back" press="onPressBackHSN" />
+					<Label text="HSN Inward" design="Bold"></Label>
+					<ToolbarSpacer/>
+					<Button text="Add" type="Transparent"/>
+					<Button text="Edit" type="Transparent"/>
+					<Button text="Delete" type="Reject"/>
+					<Button text="Save Changes" type="Accept"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column>
+					<Label text="HSN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<ComboBox  width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" selectionChange="selectAll">
+							<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+						</ComboBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column >
+					<Label text="Description" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{oGSTR9Model>lastUpdatedOn}" class="timeStmpClr"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column >
+					<Label text="Rate of Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{oGSTR9Model>Supply}" class="stateColor"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column >
+					<Label text="UQC" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{oGSTR9Model>Supply}" class="stateColor"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column >
+					<Label text="Total Quantity" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Input />
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Input />
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="Concessional Rate Flag" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>processedall'}], formatter : '.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Input />
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Input />
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Input />
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Input />
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+	</Panel>
+</core:FragmentDefinition>

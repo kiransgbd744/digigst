@@ -1,0 +1,17 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog title="Vendor GSTIN" type="Standard" contentWidth="20%" contentHeight="50%" draggable="true">
+		<beginButton>
+			<Button text="{i18n>ok}" press="onCloseGSTINE"/>
+		</beginButton>
+		<VBox>
+			<SearchField id="NonsearchIdGSTINE" liveChange="onSearchGstins1E" width="100%"/>
+			<HBox visible="{=${oVendorGSTNModel>/}.length>0}">
+				<CheckBox id="NonVGCheckIdE" select="onSelectGSTINE"/>
+				<Title text="All" level="H1" class="sapUiSmallMarginTop"/>
+			</HBox>
+			<List mode="MultiSelect" id="NonselectDialogGSTINE" items="{oVendorGSTNModel>/}" updateFinished="updatefinished">
+				<StandardListItem title="{oVendorGSTNModel>gstin}"/>
+			</List>
+		</VBox>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,74 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage >
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:actions>
+					<Button type="Accept" icon="sap-icon://edit" tooltip="Edit rows" press="onEditDMS"/>
+					<Button text="Fetch Rules" press="onFetchRules"/>
+					<Button type="Emphasized" id="idSubmitDMS" enabled="false" icon="sap-icon://save" text="Submit" press="onSubmitDMS"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<VBox>
+				<List items="{dmsconfig>/resp}">
+					<CustomListItem>
+						<VBox visible="{=${dmsconfig>keyType}!== 'T'}">
+							<Label text="{dmsconfig>sno}. {dmsconfig>ques}" design="Bold" class="sapUiTinyMarginTop"/>
+							<RadioButtonGroup columns="4" enabled="{dmsconfig>edit}" selectedIndex="{dmsconfig>selected}" buttons="{dmsconfig>items/}" width="100%"
+								class="sapUiTinyMarginBottom" select="onSelectDMS(${dmsconfig>ques},${dmsconfig>selected},${dmsconfig>id})"
+								visible="{=(${dmsconfig>keyType}=== 'R' || ${dmsconfig>keyType}=== 'RT')}">
+								<buttons>
+									<RadioButton text="{dmsconfig>answerDesc}"/>
+								</buttons>
+							</RadioButtonGroup>
+						</VBox>
+						<VBox visible="{=${dmsconfig>keyType}=== 'T'}" class="sapUiLargeMarginBegin">
+							<VBox visible="{dmsconfig>oSRVisible}">
+								<Label text="{dmsconfig>sno}. {dmsconfig>ques}" design="Bold" class="sapUiTinyMarginTop blue"/>
+								<HBox>
+									<Table items="{dmsconfig>items/}" width="70%" class="sapUiTinyMarginTop">
+										<columns>
+											<Column width="" hAlign="Center">
+												<Text text="Group Name"/>
+											</Column>
+											<Column minScreenWidth="Tablet" hAlign="Center" demandPopin="true" width="">
+												<Text text="Group Code"/>
+											</Column>
+											<Column minScreenWidth="Desktop" hAlign="Center" demandPopin="true" width="">
+												<Text text="User Name"/>
+											</Column>
+											<Column minScreenWidth="Desktop" hAlign="Center" demandPopin="true" width="">
+												<Text text="User Password"/>
+											</Column>
+											<Column minScreenWidth="Desktop" hAlign="Center" demandPopin="true" width="">
+												<Text text="View Rules "/>
+											</Column>
+										</columns>
+										<items>
+											<ColumnListItem>
+												<cells>
+													<Text text="{dmsconfig>groupName}"/>
+													<Text text="{dmsconfig>groupCode}"/>
+													<Input value="{dmsconfig>Username}" enabled="{dmsconfig>edit}"></Input>
+													<Input value="{dmsconfig>userPassword}" enabled="{dmsconfig>edit}"></Input>
+													<core:Icon src="sap-icon://show" size="2rem" press="onShowRules" tooltip="Show Content"/>
+													<!--<ComboBox items="{dmsconfig>items/}" change="onChangesInwardI14(${dmsconfig>id})" enabled="{dmsconfig>edit}" selectedKey="{dmsconfig>answerDesc}"-->
+													<!--	width="100%">-->
+													<!--	<core:ListItem key="{dmsconfig>answerCode}" text="{dmsconfig>answerDesc}"/>-->
+													<!--</ComboBox>-->
+												</cells>
+											</ColumnListItem>
+										</items>
+									</Table>
+								</HBox>
+							</VBox>
+						</VBox>
+					</CustomListItem>
+				</List>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

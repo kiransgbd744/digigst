@@ -1,0 +1,414 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.GEInvoiceDashboard"
+	height="100%" xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table"
+	xmlns:form="sap.ui.layout.form" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data"
+	xmlns:viz="sap.viz.ui5.controls" busyIndicatorDelay="0">
+	<Page >
+		<customHeader>
+			<Bar class="header colorToolbar">
+				<contentMiddle>
+					<Title class="title sapUiSmallMarginEnd" text="E-Invoice"/>
+				</contentMiddle>
+				<contentRight>
+					<Label text="Last Updated On :" class="sapUiTinyMarginEnd" design="Bold"></Label>
+					<Text text="{oEnvHdrdetails1>/irnData/lastUpdatedOn}"></Text>
+				</contentRight>
+			</Bar>
+		</customHeader>
+		<content>
+			<l:VerticalLayout width="100%">
+				<l:BlockLayout background="Dashboard" class="cl_Contentpading">
+					<l:BlockLayoutRow accentCells="Accent1">
+						<l:BlockLayoutCell class="cl_Blockout cl_blockBg">
+							<Panel class="cl_toolbarstate">
+								<VBox>
+									<Label text="FINANCIAL YEAR" class="cl_lebsta" design="Bold"/>
+									<Select id="idFinance" items="{oFyModel>/finYears}" width="100%" change="onFyChange" class="sapUiSmallMarginTop">
+										<items>
+											<core:Item key="{oFyModel>fy}" text="{oFyModel>fy}"/>
+										</items>
+									</Select>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="cl_Blockout cl_blockBg">
+							<Panel class="cl_toolbarstate">
+								<VBox>
+									<Label text="ENTITY NAME" class="cl_lebsta" design="Bold"/>
+									<MultiComboBox id="idEntityEInvoice" items="{entityAll>/}" selectionChange="selectEntity" class="sapUiSmallMarginTop">
+										<core:Item key="{entityAll>entityId}" text="{entityAll>entityName}"/>
+									</MultiComboBox>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="cl_Blockout cl_blockBg">
+							<Panel>
+								<VBox>
+									<Label text="SUPPLIER GSTIN" design="Bold"/>
+									<MultiComboBox id="idSupplier" items="{oGstinModel>/gstins}" width="100%" class="sapUiSmallMarginTop" showSecondaryValues="true"
+										selectionChange="selectAll">
+										<core:Item key="{oGstinModel>gstin}" text="{oGstinModel>gstin} {=!${oGstinModel>stateName}?'':'-'} {oGstinModel>stateName}"/>
+									</MultiComboBox>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="cl_Blockout cl_blockBg">
+							<Panel>
+								<VBox>
+									<Label text="SUMMARY DATE FROM" design="Bold"/>
+									<DatePicker id="idDatefrom" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" change="handleChangeFromDate" class="sapUiTinyMarginTop"
+										width="18rem"/>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="cl_Blockout cl_blockBg">
+							<Panel>
+								<VBox>
+									<Label text="SUMMARY DATE TO" design="Bold"/>
+									<DatePicker id="idDateTo" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" change="handleChangeToDate" class="sapUiTinyMarginTop"
+										width="18rem"/>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+				<Toolbar class="cl_borderBOTTOM" height="3rem">
+					<MessageStrip text="Note - The below summaries are updated basis E-Invoice calls from SAP ERP (Business Critical APIs)" type="Information"
+						showIcon="true" class=""></MessageStrip>
+					<ToolbarSpacer></ToolbarSpacer>
+					<Button text="Filter" class="sapUiSmallMarginEnd buttoncolor" press="onGoSelect"></Button>
+				</Toolbar>
+				<!--<Panel>-->
+				<!--	<Toolbar class="cl_borderBOTTOM" height="3.5rem">-->
+				<!--		<VBox class="sapUiTinyMarginEnd">-->
+				<!--			<Label text="FINANCE YEAR" class="cl_lebsta" design="Bold"/>-->
+				<!--			<Select id="idFinance" items="{oFyModel>/finYears}"  width="18rem"  change="onFyChange" class="sapUiTinyMarginTop">-->
+				<!--				<items>-->
+				<!--					<core:Item key="{oFyModel>fy}" text="{oFyModel>fy}"/>-->
+				<!--				</items>-->
+				<!--			</Select>-->
+				<!--		</VBox>-->
+				<!--		<VBox class="sapUiTinyMarginBegin sapUiTinyMarginEnd">-->
+				<!--			<Label text="SUPPLIER GSTIN" design="Bold"/>-->
+				<!--			<MultiComboBox id="idSupplier" items="{oGstinModel>/gstins}"  width="18rem" -->
+				<!--						   class="sapUiTinyMarginTop" selectionChange="selectAll" >-->
+				<!--				<items>-->
+				<!--					<core:Item key="{oGstinModel>gstin}" text="{oGstinModel>gstin}"/>-->
+				<!--				</items>-->
+				<!--			</MultiComboBox>-->
+				<!--		</VBox>-->
+				<!--		<VBox class="sapUiTinyMarginBegin sapUiTinyMarginEnd">-->
+				<!--			<Label text="SUMMARY DATE FROM" design="Bold"/>-->
+				<!--			<DatePicker-->
+				<!--					id="idDatefrom"-->
+				<!--					displayFormat="yyyy-MM-dd"-->
+				<!--					change="handleChange"-->
+				<!--					class="sapUiTinyMarginTop"-->
+				<!--					width="18rem"/>-->
+				<!--		</VBox>-->
+				<!--		<VBox class="sapUiTinyMarginBegin sapUiTinyMarginEnd">-->
+				<!--			<Label text="SUMMARY DATE TO" design="Bold"/>-->
+				<!--			<DatePicker-->
+				<!--					id="idDateTo"-->
+				<!--					displayFormat="yyyy-MM-dd"-->
+				<!--					change="handleChange"-->
+				<!--					class="sapUiTinyMarginTop"-->
+				<!--					width="18rem"/>-->
+				<!--		</VBox>-->
+				<!--		<ToolbarSpacer></ToolbarSpacer>-->
+				<!--		<Button text="Go" class="sapUiSmallMarginEnd sapUiSmallMarginTop" type="Emphasized" press="onGoSelect"></Button>-->
+				<!--	</Toolbar>-->
+				<!--</Panel>-->
+				<l:BlockLayout background="Dashboard" class="cl_Contentpading">
+					<l:BlockLayoutRow accentCells="Accent1">
+						<!--<l:BlockLayoutCell width="3" class="cl_Blockout2">-->
+						<!--	<Panel class="sapUiNoContentPadding">-->
+						<!--		<Toolbar class="cl_borderBOTTOM" >-->
+						<!--			<ToolbarSpacer></ToolbarSpacer>-->
+						<!--			<Label text="E-invoice Summary" design="Bold" class="titleFont"/>-->
+						<!--			<ToolbarSpacer></ToolbarSpacer>-->
+						<!--			<core:Icon-->
+						<!--				src="sap-icon://download"-->
+						<!--				press="onDownloadColumn">-->
+						<!--			</core:Icon>-->
+						<!--		</Toolbar>-->
+						<!--		<viz:Popover id="idPopOver"></viz:Popover>-->
+						<!--           <viz:VizFrame id="idVizFrameColumn" uiConfig="{applicationSet:'fiori'}"-->
+						<!--                        vizType='stacked_column' class="cl_vizHeig2">-->
+						<!--               <viz:dataset>-->
+						<!--                   <viz.data:FlattenedDataset data="{oEinvSumModel>/}">-->
+						<!--                       <viz.data:dimensions>-->
+						<!--                           <viz.data:DimensionDefinition name="Entity"-->
+						<!--                               value="{oEinvSumModel>entityName}" />-->
+						<!--                       </viz.data:dimensions>-->
+						<!--                       <viz.data:measures>-->
+						<!--                           <viz.data:MeasureDefinition name="Total"-->
+						<!--                               value="{oEinvSumModel>Total}" />-->
+						<!--                           <viz.data:MeasureDefinition name="Generated"-->
+						<!--                               value="{oEinvSumModel>generated}" />-->
+						<!--                           <viz.data:MeasureDefinition name="Duplicate"-->
+						<!--                               value="{oEinvSumModel>duplicate}" />-->
+						<!--                           <viz.data:MeasureDefinition name="Error"-->
+						<!--                               value="{EinvoiceError>error}" />-->
+						<!--                           <viz.data:MeasureDefinition name="Cancelled"-->
+						<!--                               value="{oEinvSumModel>cancelled}" />-->
+						<!--                       </viz.data:measures>-->
+						<!--                   </viz.data:FlattenedDataset>-->
+						<!--               </viz:dataset>-->
+						<!--               <viz:feeds>-->
+						<!--                   <viz.feeds:FeedItem uid="valueAxis" type="Measure"-->
+						<!--                       values="Total,Generated,Duplicate,Error,Cancelled" />-->
+						<!--                   <viz.feeds:FeedItem uid="categoryAxis" type="Dimension"-->
+						<!--                       values="Entity" />-->
+						<!--               </viz:feeds>-->
+						<!--           </viz:VizFrame>-->
+						<!--	</Panel>-->
+						<!--</l:BlockLayoutCell>-->
+						<l:BlockLayoutCell width="6" class="cl_Blockout2">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="E-Invoice Distribution" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+									<core:Icon src="sap-icon://download" press="onDownloadPie"></core:Icon>
+								</Toolbar>
+								<viz:Popover id="idPopOver1"></viz:Popover>
+								<viz:VizFrame id="id_EinvoiceDist" xmlns="sap.viz" vizType="pie" class="cl_vizHeig2" uiConfig="{applicationSet:'fiori'}" visible="true">
+									<viz:dataset>
+										<viz.data:FlattenedDataset data="{oEinvDistModel>/}">
+											<viz.data:dimensions>
+												<viz.data:DimensionDefinition name="Type" value="{oEinvDistModel>status}"/>
+											</viz.data:dimensions>
+											<viz.data:measures>
+												<viz.data:MeasureDefinition name="Count" value="{oEinvDistModel>count}"/>
+											</viz.data:measures>
+										</viz.data:FlattenedDataset>
+									</viz:dataset>
+									<viz:feeds>
+										<viz.feeds:FeedItem uid="size" type="Measure" values="Count"/>
+										<viz.feeds:FeedItem uid="color" type="Dimension" values="Type"/>
+									</viz:feeds>
+								</viz:VizFrame>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell width="8" class="cl_Blockout2">
+							<Panel class="cl_toolbarstate">
+								<content>
+									<Toolbar class="cl_borderBOTTOM sapUiSmallMarginTop" height="10rem">
+										<VBox class="sapUiLargeMarginBegin cl_VboxBorder" justifyContent="Center" alignItems="Center" width="15rem">
+											<Label text="E-INVOICE GENERATED" design="Bold"></Label>
+											<Label text="{oEnvHdrdetails>/generated}" design="Bold" class="sapUiTinyMarginTop title"></Label>
+										</VBox>
+										<ToolbarSpacer></ToolbarSpacer>
+										<VBox class="sapUiSmallMarginBegin cl_VboxBorder" justifyContent="Center" alignItems="Center" width="15rem">
+											<Label text="E-INVOICE DUPLICATE" design="Bold"></Label>
+											<Label text="{oEnvHdrdetails>/duplicate}" design="Bold" class=" sapUiTinyMarginTop title"></Label>
+										</VBox>
+										<ToolbarSpacer></ToolbarSpacer>
+										<VBox class="sapUiSmallMarginEnd cl_VboxBorder" justifyContent="Center" alignItems="Center" width="15rem">
+											<Label text="E-INVOICE ERROR" design="Bold"></Label>
+											<Label text="{oEnvHdrdetails>/error}" design="Bold" class="sapUiTinyMarginTop title"></Label>
+										</VBox>
+									</Toolbar>
+									<Toolbar class="cl_borderBOTTOM " height="12rem">
+										<VBox class="sapUiLargeMarginBegin sapUiTinyMarginTop cl_VboxBorder" justifyContent="Center" alignItems="Center" width="15rem">
+											<Label text="TOTAL E-INVOICE CALLS" design="Bold"></Label>
+											<Label text="{oEnvHdrdetails>/totalIrns}" design="Bold" class="sapUiTinyMarginTop title"></Label>
+										</VBox>
+										<ToolbarSpacer></ToolbarSpacer>
+										<VBox class="sapUiSmallMarginBegin sapUiTinyMarginTop cl_VboxBorder" justifyContent="Center" alignItems="Center" width="15rem">
+											<Label text="E-INVOICE CANCELLED" design="Bold"></Label>
+											<Label text="{oEnvHdrdetails>/cancelled}" design="Bold" class="sapUiTinyMarginTop title"></Label>
+										</VBox>
+										<ToolbarSpacer></ToolbarSpacer>
+										<VBox class="sapUiSmallMarginEnd sapUiTinyMarginTop cl_VboxBorder" justifyContent="Center" alignItems="Center" width="15rem">
+											<Label text="AVG IRN GENERATION/DAY" design="Bold"></Label>
+											<Label text="{oEnvHdrdetails1>/irnData/irn}" design="Bold" class="sapUiTinyMarginTop title"></Label>
+										</VBox>
+									</Toolbar>
+								</content>
+							</Panel>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+				<l:BlockLayout background="Dashboard" class="cl_Contentpading">
+					<l:BlockLayoutRow accentCells="Accent1">
+						<l:BlockLayoutCell >
+							<Panel class="sapUiNoContentPadding">
+								<VBox >
+									<Toolbar class="cl_borderBOTTOM">
+										<ToolbarSpacer></ToolbarSpacer>
+										<Label text="Total Calls and IRN Generated" design="Bold" class="titleFont sapUiTinyMarginTop"/>
+										<ToolbarSpacer></ToolbarSpacer>
+										<core:Icon src="sap-icon://download" press="onDownloadLine1"></core:Icon>
+									</Toolbar>
+									<viz:Popover id="idPopOver2"></viz:Popover>
+									<viz:VizFrame id="idVizFrameLine1" uiConfig="{applicationSet:'fiori'}" vizType='timeseries_line' class="cl_vizHeigDonut">
+										<viz:dataset>
+											<viz.data:FlattenedDataset data="{oEinvTrTotalModel>/}">
+												<viz.data:dimensions>
+													<viz.data:DimensionDefinition name="Date" value="{oEinvTrTotalModel>summaryDate}" dataType="date"/>
+												</viz.data:dimensions>
+												<viz.data:measures>
+													<viz.data:MeasureDefinition name="Generated" value="{oEinvTrTotalModel>generated}"/>
+												</viz.data:measures>
+												<viz.data:measures>
+													<viz.data:MeasureDefinition name="Total" value="{oEinvTrTotalModel>total}"/>
+												</viz.data:measures>
+											</viz.data:FlattenedDataset>
+										</viz:dataset>
+										<viz:feeds>
+											<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Generated"/>
+											<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Total"/>
+											<viz.feeds:FeedItem uid="timeAxis" type="Dimension" values="Date"/>
+										</viz:feeds>
+									</viz:VizFrame>
+									<viz:VizSlider id="idVizSliderLine1" uiConfig="{applicationSet:'fiori'}" visible="false" vizType='timeseries_line' height='10px' width="90%"
+										class="sapUiLargeMarginBegin">
+										<viz:dataset>
+											<viz.data:FlattenedDataset data="{oEinvTrTotalModel>/}">
+												<viz.data:dimensions>
+													<viz.data:DimensionDefinition name="Date" value="{oEinvTrTotalModel>summaryDate}" dataType="date"/>
+												</viz.data:dimensions>
+												<viz.data:measures>
+													<viz.data:MeasureDefinition name="Generated" value="{oEinvTrTotalModel>generated}"/>
+												</viz.data:measures>
+												<viz.data:measures>
+													<viz.data:MeasureDefinition name="Total" value="{oEinvTrTotalModel>total}"/>
+												</viz.data:measures>
+											</viz.data:FlattenedDataset>
+										</viz:dataset>
+										<viz:feeds>
+											<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Generated"/>
+											<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Total"/>
+											<viz.feeds:FeedItem uid="timeAxis" type="Dimension" values="Date"/>
+										</viz:feeds>
+									</viz:VizSlider>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell >
+						<l:BlockLayoutCell >
+							<Panel class="sapUiNoContentPadding">
+								<VBox >
+									<Toolbar class="cl_borderBOTTOM">
+										<ToolbarSpacer></ToolbarSpacer>
+										<Label text="Duplicate, Error and Cancelled" design="Bold" class="titleFont sapUiTinyMarginTop"/>
+										<ToolbarSpacer></ToolbarSpacer>
+										<core:Icon src="sap-icon://download" press="onDownloadLine2"></core:Icon>
+									</Toolbar>
+									<viz:Popover id="idPopOver3"></viz:Popover>
+									<viz:VizFrame id="idVizFrameLine2" uiConfig="{applicationSet:'fiori'}" vizType='timeseries_line' class="cl_vizHeigDonut">
+										<viz:dataset>
+											<viz.data:FlattenedDataset data="{oEinvTrErrorModel>/}">
+												<viz.data:dimensions>
+													<viz.data:DimensionDefinition name="Date" value="{oEinvTrErrorModel>summaryDate}" dataType="date"/>
+												</viz.data:dimensions>
+												<viz.data:measures>
+													<viz.data:MeasureDefinition name="Duplicate" value="{oEinvTrErrorModel>duplicate}"/>
+												</viz.data:measures>
+												<viz.data:measures>
+													<viz.data:MeasureDefinition name="Error" value="{oEinvTrErrorModel>error}"/>
+												</viz.data:measures>
+												<viz.data:measures>
+													<viz.data:MeasureDefinition name="Cancelled" value="{oEinvTrErrorModel>cancelled}"/>
+												</viz.data:measures>
+											</viz.data:FlattenedDataset>
+										</viz:dataset>
+										<viz:feeds>
+											<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Duplicate"/>
+											<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Error"/>
+											<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Cancelled"/>
+											<viz.feeds:FeedItem uid="timeAxis" type="Dimension" values="Date"/>
+										</viz:feeds>
+									</viz:VizFrame>
+									<viz:VizSlider id="idVizSliderLine2" uiConfig="{applicationSet:'fiori'}" visible="false" vizType='timeseries_line' height='8px' width="90%"
+										class="sapUiLargeMarginBegin">
+										<viz:dataset>
+											<viz.data:FlattenedDataset data="{oEinvTrErrorModel>/}">
+												<viz.data:dimensions>
+													<viz.data:DimensionDefinition name="Date" value="{oEinvTrErrorModel>summaryDate}" dataType="date"/>
+												</viz.data:dimensions>
+												<viz.data:measures>
+													<viz.data:MeasureDefinition name="Duplicate" value="{oEinvTrErrorModel>duplicate}"/>
+												</viz.data:measures>
+												<viz.data:measures>
+													<viz.data:MeasureDefinition name="Error" value="{oEinvTrErrorModel>error}"/>
+												</viz.data:measures>
+												<viz.data:measures>
+													<viz.data:MeasureDefinition name="Cancelled" value="{oEinvTrErrorModel>cancelled}"/>
+												</viz.data:measures>
+											</viz.data:FlattenedDataset>
+										</viz:dataset>
+										<viz:feeds>
+											<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Duplicate"/>
+											<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Error"/>
+											<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Cancelled"/>
+											<viz.feeds:FeedItem uid="timeAxis" type="Dimension" values="Date"/>
+										</viz:feeds>
+									</viz:VizSlider>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell >
+					</l:BlockLayoutRow>
+					<l:BlockLayoutRow accentCells="Accent1">
+						<l:BlockLayoutCell width="12">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="E-invoice Status" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+								</Toolbar>
+								<ui:Table rows="{EinvoiceStatusModel>/einvoiceStatus}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+									class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+									<ui:columns>
+										<ui:Column hAlign="Center">
+											<Label text="DATE" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<Text text="{EinvoiceStatusModel>summaryDate}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="GENERATED" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<Text text="{EinvoiceStatusModel>generated}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="ERROR" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<Text text="{EinvoiceStatusModel>error}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="DUPLICATE" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<Text text="{EinvoiceStatusModel>duplicate}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="CANCELLED" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<Text text="{EinvoiceStatusModel>cancelled}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="TOTAL" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<Text text="{EinvoiceStatusModel>total}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+								<!--<VBox class="sapUiSmallMarginTop sapUiSmallMarginBegin sapUiSmallMarginBottom">-->
+								<!--	<Text text="Kindly Note:" class="sapUiSmallMarginBottom"></Text>-->
+								<!--	<Text text="1. Others includes transactions which are NIL,NON and Exempt supplies" class="sapUiLargeMarginBegin"></Text>-->
+								<!--	<Text text="2. All figures are appearing in Thousands (000)" class="sapUiLargeMarginBegin"></Text>-->
+								<!--	<Text text="2. For amendment transactions - diffrential value is not considered" class="sapUiLargeMarginBegin"></Text>-->
+								<!--</VBox>-->
+							</Panel>
+						</l:BlockLayoutCell >
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+			</l:VerticalLayout>
+		</content>
+	</Page>
+</mvc:View>

@@ -1,0 +1,263 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.ComplianceHistory"
+	xmlns:l="sap.ui.layout" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons"
+	busyIndicatorDelay="0">
+	<f:DynamicPage id="idDPComplianceHistory" class="ReconResponce">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<FlexBox>
+						<Title text="Compliance History" class="TitleColor"/>
+						<DatePicker id="idDATE" visible="false"/>
+					</FlexBox>
+				</f:heading>
+				<f:actions>
+					<SegmentedButton id="sbComplianceHistory" selectedKey="GSTR1" selectionChange="onChangeSegment" class="sapUiTinyMarginBegin" enabled="true">
+						<items>
+							<SegmentedButtonItem text="GSTR-1" key="GSTR1" enabled="true"/>
+							<SegmentedButtonItem text="GSTR-1A" key="GSTR1A" enabled="true"/>
+							<SegmentedButtonItem text="GSTR-3B" key="GSTR3B" enabled="true"/>
+							<SegmentedButtonItem text="GSTR-6" key="GSTR6" enabled="true"/>
+							<SegmentedButtonItem text="GSTR-7" key="GSTR7" enabled="true"/>
+							<SegmentedButtonItem text="ITC-04" key="ITC04" enabled="true"/>
+							<SegmentedButtonItem text="GSTR-9" key="GSTR9" enabled="true"/>
+						</items>
+					</SegmentedButton>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header >
+			<f:DynamicPageHeader class="sapUiNoContentPadding" id="dpNewHeader" pinnable="false">
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false">
+					<fb:filterGroupItems>
+						<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>taxPeriod}" visibleInFilterBar="true">-->
+						<!--	<fb:control>-->
+						<!--		<DatePicker id="dtGet2aProcessNew" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>-->
+						<!--	</fb:control>-->
+						<!--</fb:FilterGroupItem>-->
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slGet2aProcessGstinNew" items="{path:'GSTIN>/'}" selectionChange="selectAll">
+									<core:Item key="{GSTIN>value}" text="{GSTIN>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Financial Year" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<Select width="100%" id="dtFinYearGstrNew" items="{oFyModel>/finYears}" forceSelection="true">
+									<core:Item key="{oFyModel>fy}" text="{oFyModel>fy}"/>
+								</Select>
+								<!--<Select width="100%" id="dtFinYearGstrNew" selectedKey="2021-22" forceSelection="true">
+									<core:Item key="2021-22" text="2021-22"/>
+									<core:Item key="2020-21" text="2020-21"/>
+									<core:Item key="2019-20" text="2019-20"/>
+									<core:Item key="2018-19" text="2018-19"/>
+									<core:Item key="2017-18" text="2017-18"/>
+								</Select>-->
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<!--<Button icon="sap-icon://filter" class="sapUiTinyMarginEnd" tooltip="Adapt Filters" press="onPressAdaptFilter"/>-->
+					<!--<Button type="Ghost" text="Clear" class="sapUiTinyMarginEnd" press="onPressClear" visible="true"/>-->
+					<Button class="buttoncolor" press="onPressGo" text="Filter"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiTinyMarginTop">
+				<!--<Toolbar height="4.5rem" class="cl_removeBoderTool">
+					<ToolbarSpacer></ToolbarSpacer>
+					<VBox width="20rem" class="clBlockLayoutTax" alignContent="Center" alignItems="Center">
+						<Label text="Daily API call limit" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+						<Label text="{ApiLimit>/limit}" class=" " design="Bold"/>
+					</VBox>
+					<VBox width="20rem" class="clBlockLayoutTax" alignContent="Center" alignItems="Center">
+						<Label text="API calls used" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+						<Label text="{ApiLimit>/usage}" class=" " design="Bold"/>
+					</VBox>
+					<VBox width="20rem" class="clBlockLayoutTax" alignContent="Center" alignItems="Center">
+						<Label text="API calls remaining" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+						<Label text="{ApiLimit>/remainingCnt}" class=" " design="Bold"/>
+					</VBox>
+					<VBox width="20rem" class="clBlockLayoutTax" alignContent="Center" alignItems="Center">
+						<Label text="Status as updated at" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+						<Label text="{ApiLimit>/statusOn}" class=" " design="Bold"/>
+					</VBox>
+					<ToolbarSpacer></ToolbarSpacer>
+				</Toolbar>-->
+				<l:BlockLayout background="Dashboard" class="sapUiTinyMarginBottom">
+					<l:BlockLayoutRow class="sapUiNoContentPadding">
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Daily API call limit" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ApiLimit>/limit}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="API calls used" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ApiLimit>/usage}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="API calls remaining" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ApiLimit>/remainingCnt}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<!--<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Status as updated at" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ApiLimit>/statusOn}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>-->
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.complianceHistory.gstr1" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.complianceHistory.itc04" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.complianceHistory.gstr9" type="XML"/>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="id_EmailPg" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button icon="sap-icon://nav-back" type="Transparent" press="onPressEmailBack"/>
+						<Title text="Compliance History" class="TitleColor"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader>
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slEmailGstinNew" items="{path:'GSTIN>/'}" selectionChange="selectAll">
+									<core:Item key="{GSTIN>value}" text="{GSTIN>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Return Type" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<MultiComboBox width="100%" id="idReturnType" selectedKey="GSTR1" forceSelection="true">
+									<core:Item key="GSTR1" text="GSTR1"/>
+									<core:Item key="GSTR3B" text="GSTR3B"/>
+									<core:Item key="GSTR6" text="GSTR6"/>
+									<core:Item key="GSTR7" text="GSTR7"/>
+									<core:Item key="ITC04" text="ITC04"/>
+									<core:Item key="GSTR9" text="GSTR9"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Financial Year" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<Select width="100%" id="dtFinYearEmail" selectedKey="2021-22" forceSelection="true">
+									<core:Item key="2017-18" text="2017-18"/>
+									<core:Item key="2018-19" text="2018-19"/>
+									<core:Item key="2019-20" text="2019-20"/>
+									<core:Item key="2020-21" text="2020-21"/>
+									<core:Item key="2021-22" text="2021-22"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button type="Emphasized" tooltip="Generate Report" text="Generate Report" press="onPressEmailGenReport"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table id="id_NonVendComTab" rowSelectionChange="onSelection" rows="{path:'oVendDetailModel>/resp/NonCompVendorData'}"
+				selectionMode="None" enableSelectAll="true" fixedBottomRowCount="0" fixedColumnCount="0">
+				<ui:extension>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button text="Refresh" class="sapUiTinyMarginBeginEnd" press="onRefreshNonCompVend" type="Emphasized"/>
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="" hAlign="Center">
+						<Label design="Bold" text="Request ID"/>
+						<ui:template>
+							<Text text="{oVendDetailModel>requestId}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="" hAlign="Center">
+						<Label design="Bold" text="No. of GSTINs"/>
+						<ui:template>
+							<Link text="{oVendDetailModel>noOfVendorGstins}" press="RecGstinPress"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="" hAlign="Center">
+						<Label design="Bold" text="Financial Year"/>
+						<ui:template>
+							<Text text="{oVendDetailModel>financialYear}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="" hAlign="Center">
+						<Label design="Bold" text="Date / Time"/>
+						<ui:template>
+							<Text text="{oVendDetailModel>createdOn}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="14rem" hAlign="Center">
+						<Label design="Bold" text="Report Status"/>
+						<ui:template>
+							<Text text="{oVendDetailModel>status}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="" hAlign="Center">
+						<Label design="Bold" text="Download Report"/>
+						<ui:template>
+							<core:Icon src="sap-icon://download" size="0.75rem" press="onPressNonCompDownload" tooltip="Download Report" class="sapUiTinyMarginBegin"
+								visible="{= ${oVendDetailModel>status} === 'REPORT_GENERATED'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="" hAlign="Center">
+						<Label design="Bold" text="Email"/>
+						<ui:template>
+							<core:Icon src="sap-icon://email" press="onEmailReqIdPress" size="0.75rem" tooltip="Email Download" class="sapUiTinyMarginBegin"
+								visible="{= ${oVendDetailModel>status} === 'REPORT_GENERATED'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="" hAlign="Center">
+						<Label design="Bold" text="Email Status"/>
+						<ui:template>
+							<Text text="{parts:[{path:'oVendDetailModel>sentEmails'},{path:'oVendDetailModel>totalEmails'}], formatter : '.formatter.emailStatus'}"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

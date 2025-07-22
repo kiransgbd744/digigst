@@ -1,0 +1,200 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table" xmlns:form="sap.ui.layout.form">
+	<ui:Table rows="{MVDetails>/resp/}" selectionMode="None" selectionBehavior="Row" visibleRowCount="8" id="idtabMVInformation">
+		<ui:extension>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button type="Emphasized" text="Refresh" enabled="true" press="onPressRefresh"/>
+				<Button type="Emphasized" text="Change to Multi Vehicle" enabled="true" press="onPressChangeMultiVehicle('B')"/>
+				<Button type="Emphasized" text="Update Vehicle Details" enabled="true" press="onPressUpdateMultiVehicle"/>
+				<!--<Button type="Reject" icon="sap-icon://delete" enabled="false" press="onPressDeleteProduct"/>-->
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="10rem">
+				<ui:multiLabels>
+					<Label text="Line Number" tooltip="Line Number" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{MVDetails>sno}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Document Number" tooltip="Document Number" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{MVDetails>docNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="EWB Number" tooltip="EWB Number" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{MVDetails>ewbNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="EWB Date" tooltip="EWB Date" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{MVDetails>ewbDate}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="EWB Status" tooltip="EWB Status" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{MVDetails>ewbStatus}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Supplier GSTIN" tooltip="Supplier GSTIN" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{MVDetails>suppGstin}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Status" tooltip="Error Message" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'MVDetails>isDelete', formatter:'.formatter.isDeleteStatus'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Group No." tooltip="Group No." textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Link text="{MVDetails>groupNo}" press="onPressChangeMultiVehicle('G',${MVDetails>groupNo})"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Transport Mode" tooltip="Transport Mode" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'MVDetails>transMode',formatter:'.formatter.TransMode'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="From State Code" tooltip="From State Code" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{MVDetails>fromStateCode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="From State" tooltip="From State" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{MVDetails>fromState}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="To Place Code" tooltip="To Place Code" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{MVDetails>toPlacecode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="To Place" tooltip="To Place" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{MVDetails>toPlace}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Group Quantity" tooltip="Total Quantity" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{MVDetails>totalQty}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Vehicle Quantity" tooltip="Vehicle Quantity" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{MVDetails>vehicleQty}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Unit" tooltip="Unit" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{MVDetails>unit}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Vehicle No." tooltip="Vehicle No." textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{MVDetails>vehicleNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="15rem">
+				<ui:multiLabels>
+					<Label text="Transport Document Number" tooltip="Transport Document Number" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{MVDetails>transDocNum}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="15rem">
+				<ui:multiLabels>
+					<Label text="Transport Document Date" tooltip="Transport Document Date" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{MVDetails>transDocDate}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Reason" tooltip="Reason" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{MVDetails>reason}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Remarks(oth)" tooltip="Remarks(oth)" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{MVDetails>remarks}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="15rem">
+				<ui:multiLabels>
+					<Label text="Error Code" tooltip="Error Code" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{MVDetails>errorCode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="25rem">
+				<ui:multiLabels>
+					<Label text="Error Message" tooltip="Error Message" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{MVDetails>errorMessage}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+	</ui:Table>
+</core:FragmentDefinition>

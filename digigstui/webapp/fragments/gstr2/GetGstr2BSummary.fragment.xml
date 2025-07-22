@@ -1,0 +1,592 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" xmlns:l="sap.ui.layout" xmlns:commons="sap.suite.ui.commons" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="dpGstr2bsum">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<Title text="GSTR-2B Summary" titleStyle="H3" class="tinyMarginTop"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="GSTINEntityID2bS" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" selectionChange="selectAll">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Return Period (From)" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="gstr2bDateFrom" displayFormat="MMM yyyy" valueFormat="yyyyMM" change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Return Period (To)" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="gstr2bDateTo" displayFormat="MMM yyyy" valueFormat="yyyyMM"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Table Type" visibleInFilterBar="false">
+							<fb:control>
+								<MultiComboBox id="TabTypeID">
+									<core:Item key="B2B" text="B2B"/>
+									<core:Item key="SEZWP" text="SEZEP"/>
+									<core:Item key="SEZWOP" text="SEZWOP"/>
+									<core:Item key="DXP" text="DXP"/>
+									<core:Item key="ALL" text="ALL"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onPressClear2B"/>
+					<Button text="Filter" class="buttoncolor" press="_getGstr2bSummary"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table id="gstrTabId" rows="{path:'GSTR2BSummTable>/', sorter: {path: 'gstin',descending:false}}" enableColumnReordering="false"
+				class="sapUiTinyMarginTop sapUiSizeCompact cl_popupCheck" visibleRowCount="8">
+				<ui:extension>
+					<Toolbar>
+						<RadioButtonGroup id="rgbFileType1" columns="2" enabled="{= ${userPermission>/appPermission/P8}}"
+							select="onSelectFileType1(${$parameters>/selectedIndex})" class="sapUiMediumMarginEnd">
+							<RadioButton text="Excel"/>
+							<RadioButton text="JSON" visible="false"/>
+						</RadioButtonGroup>
+						<u:FileUploader id="fuGetGstr2b" name="file" fileType="xlsx,xlsm,xls,csv" sameFilenameAllowed="false" sendXHR="true" class="buttoncolorSec"
+							width="30rem" uploadComplete="onGet2bUploadComplete" enabled="{= ${userPermission>/appPermission/P8}}"/>
+						<Button text="{i18n>upload}" press="onUploadGet2b" class="sapUiTinyMarginBegin buttoncolor"
+							enabled="{= ${userPermission>/appPermission/P8}}"/>
+					</Toolbar>
+					<Toolbar>
+						<Label text="Showing:" design="Bold"/>
+						<CheckBox text="Available ITC" selected="{Gstr2bSummProperty>/entityAvailableItc}" select="onSelect2bSummaryEntity"/>
+						<CheckBox text="Non Available ITC" selected="{Gstr2bSummProperty>/entityNonAvailableItc}" select="onSelect2bSummaryEntity"/>
+						<CheckBox text="Rejected ITC" selected="{Gstr2bSummProperty>/entityRejectedItc}" select="onSelect2bSummaryEntity"/>
+						<ToolbarSpacer/>
+						<Button text="Download Table Data" tooltip="Download Excel" press="tableDataGstr2bSummary" enabled="{=${userPermission>/appPermission/P8}}"
+							class="buttoncolorSec"/>
+						<MenuButton class="buttoncolorSec" text="Download Reports" enabled="{= ${userPermission>/appPermission/P8}}">
+							<Menu itemSelected="onMenuItemPressGSTR2BSumm">
+								<MenuItem text="Entity Level Table Summary" key="Entity level table summary"/>
+								<MenuItem text="Entity Level Table Wise Summary Report" key="Entity Level Table wise summary Report"/>
+							</Menu>
+						</MenuButton>
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="15rem">
+						<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<VBox>
+								<Text text="{GSTR2BSummTable>stateName}" class="stateColor"/>
+								<HBox alignContent="Start" justifyContent="SpaceBetween">
+									<Link text="{GSTR2BSummTable>gstin}" emphasized="true" press="onPressGstr2bGstin"/>
+									<core:Icon src="sap-icon://circle-task-2" visible="{=${GSTR2BSummTable>stateName}===''?false:true}" size="0.8rem"
+										color="{=${GSTR2BSummTable>authToken}==='A'?'#00ff00':'#ff0000'}"/>
+								</HBox>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="11rem">
+						<Label text="Get GSTR-2B Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<VBox width="100%">
+								<Text text="{GSTR2BSummTable>status}"/>
+								<Text text="{GSTR2BSummTable>getGstr2bStatus}"/>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="10rem">
+						<Label text="Vendor PAN/GSTIN Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{GSTR2BSummTable>vendorPanCount}/{GSTR2BSummTable>vendorGstinCount}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="10rem">
+						<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{GSTR2BSummTable>count}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column headerSpan="4" hAlign="End" width="10rem">
+						<ui:multiLabels>
+							<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'GSTR2BSummTable>totalTaxIgst'}],formatter:'.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="10rem">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'GSTR2BSummTable>totalTaxCgst'}],formatter:'.formatter.amountValue'}" visible="{GSTR2BSummTable>visiIgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="10rem">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'GSTR2BSummTable>totalTaxSgst'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="10rem">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CESS" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'GSTR2BSummTable>totalTaxCess'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column headerSpan="4" hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/entityAvailableItc}">
+						<ui:multiLabels>
+							<Label text="Available ITC" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'GSTR2BSummTable>availItcIgst'}],formatter:'.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/entityAvailableItc}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'GSTR2BSummTable>availItcCgst'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/entityAvailableItc}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'GSTR2BSummTable>availItcSgst'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/entityAvailableItc}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CESS" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'GSTR2BSummTable>availItcCess'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column headerSpan="4" hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/entityNonAvailableItc}">
+						<ui:multiLabels>
+							<Label text="Non Available ITC" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'GSTR2BSummTable>nonAvailItcIgst'}],formatter:'.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/entityNonAvailableItc}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'GSTR2BSummTable>nonAvailItcCgst'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/entityNonAvailableItc}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'GSTR2BSummTable>nonAvailItcSgst'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/entityNonAvailableItc}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CESS" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'GSTR2BSummTable>nonAvailItcCess'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column headerSpan="4" hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/entityRejectedItc}">
+						<ui:multiLabels>
+							<Label text="Rejected ITC" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'GSTR2BSummTable>rejectedItcIgst'}],formatter:'.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/entityRejectedItc}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'GSTR2BSummTable>rejectedItcCgst'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/entityRejectedItc}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'GSTR2BSummTable>rejectedItcSgst'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/entityRejectedItc}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CESS" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path:'GSTR2BSummTable>rejectedItcCess'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+				<ui:footer>
+					<HBox>
+						<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+						<Text text="Auth Token Active" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+						<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+						<Text text="Auth Token Inactive" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+					</HBox>
+				</ui:footer>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpGstr3bSummary" visible="false" fitContent="true">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onPressBackGstr2b"/>
+						<Title text="GSTR-2B Summary" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onPressGstr2bGo" clear="onClearFilter2B"
+					useToolbar="false" class="sapUiNoContentPadding" width="90%">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox id="gstr2BDetId" width="100%" items="{path:'DataPermission>/respData/dataSecurity/gstin/'}">
+									<core:Item key="{DataPermission>value}" text="{DataPermission>value}"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Summary For" visibleInFilterBar="false">
+							<fb:control>
+								<MultiComboBox>
+									<core:Item key="GSTIN1" text="GSTIN1"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Return Period From" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker displayFormat="MMM yyyy" valueFormat="yyyyMM" id="FromDateDet" change="handleChange2BD"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="z" label="Return Period To" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker displayFormat="MMM yyyy" valueFormat="yyyyMM" id="ToDateDet"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="k" label="Table Type" visibleInFilterBar="false">
+							<fb:control>
+								<MultiComboBox>
+									<core:Item key="B2B" text="B2B"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="l" label="Doc Type" visibleInFilterBar="false">
+							<fb:control>
+								<MultiComboBox>
+									<core:Item key="INV" text="INV"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onClearFilter2B"/>
+					<Button text="Filter" class="buttoncolor" press="onPressGstr2bGo"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer showFullScreen="false" id="on2BTab" autoAdjustHeight="false">
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:TreeTable id="tabGstr2bDet" rows="{path:'GSTR2BDetTable>/', parameters:{ arrayNames:['items'], numberOfExpandedLevels:2 }}"
+								selectionMode="None" enableSelectAll="false" fixedColumnCount="1" enableColumnReordering="false" visibleRowCount="7" visible="true">
+								<ui:extension>
+									<Toolbar height="8rem" class="sapUiSmallMarginTop">
+										<ToolbarSpacer/>
+										<HBox class="sapUiTinyMarginTop gstrBox">
+											<HBox>
+												<VBox alignContent="Center" justifyContent="Center" alignItems="Center"
+													class="sapUiLargeMarginBegin sapUiTinyMarginTopBottom sapUiSmallMarginEnd gstrBox1">
+													<core:Icon src="sap-icon://sales-order" class="size1"/>
+												</VBox>
+												<VBox justifyContent="Center" class="sapUiLargeMarginEnd">
+													<Text text="Total Tax"/>
+													<Label text="{path:'GSTR2BDetHeader>/TotalTax',formatter:'.formatter.amountValue'}" design="Bold" class="TotLabel"/>
+												</VBox>
+												<VBox justifyContent="Center" class="sapUiLargeMarginEnd">
+													<Text text="IGST: {path:'GSTR2BDetHeader>/totalTaxIgst',formatter:'.formatter.amountValue'}"/>
+													<Text text="CGST: {path:'GSTR2BDetHeader>/totalTaxCgst',formatter:'.formatter.amountValue'}"/>
+													<Text text="SGST: {path:'GSTR2BDetHeader>/totalTaxSgst',formatter:'.formatter.amountValue'}"/>
+													<Text text="CESS: {path:'GSTR2BDetHeader>/totalTaxCess',formatter:'.formatter.amountValue'}"/>
+												</VBox>
+											</HBox>
+											<HBox>
+												<VBox alignContent="Center" justifyContent="Center" alignItems="Center"
+													class="sapUiLargeMarginBegin sapUiTinyMarginTopBottom sapUiSmallMarginEnd gstrBox1">
+													<core:Icon src="sap-icon://sales-order" class="size1"/>
+												</VBox>
+												<VBox justifyContent="Center" class="sapUiLargeMarginEnd">
+													<Text text="Available ITC"/>
+													<Label text="{path:'GSTR2BDetHeader>/AvailItcTotalTax',formatter:'.formatter.amountValue'}" design="Bold" class="TotLabel"/>
+												</VBox>
+												<VBox justifyContent="Center" class="sapUiLargeMarginEnd">
+													<Text text="IGST: {path:'GSTR2BDetHeader>/availItcIgst',formatter:'.formatter.amountValue'}"/>
+													<Text text="CGST: {path:'GSTR2BDetHeader>/availItcCgst',formatter:'.formatter.amountValue'}"/>
+													<Text text="SGST: {path:'GSTR2BDetHeader>/availItcSgst',formatter:'.formatter.amountValue'}"/>
+													<Text text="CESS: {path:'GSTR2BDetHeader>/availItcCess',formatter:'.formatter.amountValue'}"/>
+												</VBox>
+											</HBox>
+											<HBox>
+												<VBox alignContent="Center" justifyContent="Center" alignItems="Center"
+													class="sapUiLargeMarginBegin sapUiTinyMarginTopBottom sapUiSmallMarginEnd gstrBox1">
+													<core:Icon src="sap-icon://sales-order" class="size1"/>
+												</VBox>
+												<VBox justifyContent="Center" class="sapUiLargeMarginEnd">
+													<Text text="Non Available ITC"/>
+													<Label text="{path:'GSTR2BDetHeader>/NonAvailItcTotalTax',formatter:'.formatter.amountValue'}" design="Bold" class="TotLabel"/>
+												</VBox>
+												<VBox justifyContent="Center" class="sapUiLargeMarginEnd">
+													<Text text="IGST: {path:'GSTR2BDetHeader>/nonAvailItcIgst',formatter:'.formatter.amountValue'}"/>
+													<Text text="CGST: {path:'GSTR2BDetHeader>/nonAvailItcCgst',formatter:'.formatter.amountValue'}"/>
+													<Text text="SGST: {path:'GSTR2BDetHeader>/nonAvailItcSgst',formatter:'.formatter.amountValue'}"/>
+													<Text text="CESS: {path:'GSTR2BDetHeader>/nonAvailItcCess',formatter:'.formatter.amountValue'}"/>
+												</VBox>
+											</HBox>
+											<HBox>
+												<VBox alignContent="Center" justifyContent="Center" alignItems="Center"
+													class="sapUiLargeMarginBegin sapUiTinyMarginTopBottom sapUiSmallMarginEnd gstrBox1">
+													<core:Icon src="sap-icon://sales-order" class="size1"/>
+												</VBox>
+												<VBox justifyContent="Center" class="sapUiLargeMarginEnd">
+													<Text text="Rejected ITC"/>
+													<Label text="{path:'GSTR2BDetHeader>/rejectedItcTotalTax',formatter:'.formatter.amountValue'}" design="Bold" class="TotLabel"/>
+												</VBox>
+												<VBox justifyContent="Center" class="sapUiLargeMarginEnd">
+													<Text text="IGST: {path:'GSTR2BDetHeader>/rejectedItcIgst',formatter:'.formatter.amountValue'}"/>
+													<Text text="CGST: {path:'GSTR2BDetHeader>/rejectedItcCgst',formatter:'.formatter.amountValue'}"/>
+													<Text text="SGST: {path:'GSTR2BDetHeader>/rejectedItcSgst',formatter:'.formatter.amountValue'}"/>
+													<Text text="CESS: {path:'GSTR2BDetHeader>/rejectedItcCess',formatter:'.formatter.amountValue'}"/>
+												</VBox>
+											</HBox>
+										</HBox>
+										<ToolbarSpacer/>
+									</Toolbar>
+									<Toolbar>
+										<Label text="Showing:" design="Bold"/>
+										<CheckBox text="Available ITC" selected="{Gstr2bSummProperty>/gstnAvailableItc}" select="onSelect2bSummaryGstin"/>
+										<CheckBox text="Non Available ITC" selected="{Gstr2bSummProperty>/gstnNonAvailableItc}" select="onSelect2bSummaryGstin"/>
+										<CheckBox text="Rejected ITC" selected="{Gstr2bSummProperty>/gstnRejectedItc}" select="onSelect2bSummaryGstin"/>
+										<ToolbarSpacer/>
+										<MenuButton class="buttoncolorSec" text="Download Reports" enabled="{= ${userPermission>/appPermission/P8}}">
+											<Menu itemSelected="onMenuItemPressGSTR2BDet">
+												<MenuItem text="Entity Level Table Wise Summary Report" key="Entity Level Table wise summary Report"/>
+											</Menu>
+										</MenuButton>
+										<Button class="buttoncolorSec" id="expand2B" icon="sap-icon://expand-all" press="onExpand2B"/>
+										<Button class="buttoncolorSec" icon="sap-icon://collapse-all" press="onExpand2B"/>
+										<Button type="Transparent" id="openbut2B1" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="true"
+											press="on2BDetFullScreen('open')"/>
+										<Button type="Transparent" id="closebut2B1" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="false"
+											press="on2BDetFullScreen('close')"/>
+									</Toolbar>
+								</ui:extension>
+								<ui:columns>
+									<ui:Column width="28rem">
+										<Label text="Table" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{GSTR2BDetTable>tableName}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column headerSpan="4" hAlign="End" width="10rem">
+										<ui:multiLabels>
+											<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path:'GSTR2BDetTable>totalTaxIgst'}],formatter:'.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="10rem">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path:'GSTR2BDetTable>totalTaxCgst'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="10rem">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path:'GSTR2BDetTable>totalTaxSgst'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="10rem">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="CESS" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path:'GSTR2BDetTable>totalTaxCess'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column headerSpan="4" hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/gstnAvailableItc}">
+										<ui:multiLabels>
+											<Label text="Available ITC" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path:'GSTR2BDetTable>availItcIgst'}],formatter:'.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/gstnAvailableItc}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path:'GSTR2BDetTable>availItcCgst'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/gstnAvailableItc}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path:'GSTR2BDetTable>availItcSgst'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/gstnAvailableItc}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="CESS" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path:'GSTR2BDetTable>availItcCess'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column headerSpan="4" hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/gstnNonAvailableItc}">
+										<ui:multiLabels>
+											<Label text="Non Available ITC" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path:'GSTR2BDetTable>nonAvailItcIgst'}],formatter:'.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/gstnNonAvailableItc}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path:'GSTR2BDetTable>nonAvailItcCgst'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/gstnNonAvailableItc}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path:'GSTR2BDetTable>nonAvailItcSgst'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/gstnNonAvailableItc}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="CESS" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path:'GSTR2BDetTable>nonAvailItcCess'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column headerSpan="4" hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/gstnRejectedItc}">
+										<ui:multiLabels>
+											<Label text="Rejected ITC" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path:'GSTR2BDetTable>rejectedItcIgst'}],formatter:'.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/gstnRejectedItc}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path:'GSTR2BDetTable>rejectedItcCgst'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/gstnRejectedItc}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path:'GSTR2BDetTable>rejectedItcSgst'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="10rem" visible="{Gstr2bSummProperty>/gstnRejectedItc}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="CESS" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path:'GSTR2BDetTable>rejectedItcCess'}],formatter:'.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:TreeTable>
+						</commons:content>
+					</commons:ChartContainerContent>
+				</commons:content>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

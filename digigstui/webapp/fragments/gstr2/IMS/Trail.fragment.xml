@@ -1,0 +1,63 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Popover title="Action (DigiGST) Audit Trail" placement="Auto" width="51rem" class="sapUiContentPadding">
+		<VBox width="50rem">
+			<Table items="{IMSTrail>/action}" width="51rem">
+				<columns>
+					<Column width="12rem" hAlign="Center">
+						<Text text="Document Number"/>
+					</Column>
+					<Column width="12rem" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+						<Text text="Document Date"/>
+					</Column>
+					<Column width="12rem" minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
+						<Text text="IMS UniqueID"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem vAlign="Middle">
+						<cells>
+							<Text text="{IMSTrail>docNumber}"/>
+							<Text text="{IMSTrail>docDate}"/>
+							<Text text="{IMSTrail>imsUniqueId}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+			<Table items="{IMSTrail>/resp}" sticky="ColumnHeaders" width="51rem" class="sapUiSmallMarginTop">
+				<columns>
+					<Column width="4rem" hAlign="Center">
+						<Text text="S.No."/>
+					</Column>
+					<Column width="12rem" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+						<Text text="Action (DigiGST)"/>
+					</Column>
+					<Column width="14rem" minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
+						<Text text="Action (DigiGST) Date Time"/>
+					</Column>
+					<Column width="7rem" minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
+						<Text text="Saved to GSTN"/>
+					</Column>
+					<Column width="12rem" minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
+						<Text text="Action Taken By"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem vAlign="Middle">
+						<cells>
+							<Text text="{IMSTrail>sno}"/>
+							<Text text="{path:'IMSTrail>actionDigiGST', formatter:'.formatter.IMSText'}"/>
+							<Text text="{IMSTrail>actionDigiGSTTimeStamp}"/>
+							<Text text="{IMSTrail>isSavedToGstn}"/>
+							<Text text="{IMSTrail>actionDigiGSTActionTakenBy}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</VBox>
+		<footer>
+			<HBox justifyContent="End" class="sapUiTinyMarginBottom">
+				<Button text="Close" press="onCloseDigiGSTPopover" class="buttoncolor sapUiSmallMarginEnd"/>
+			</HBox>
+		</footer>
+	</Popover>
+</core:FragmentDefinition>

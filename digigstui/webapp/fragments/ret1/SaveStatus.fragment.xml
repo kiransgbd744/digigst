@@ -1,0 +1,108 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.ui.layout.form">
+	<Dialog id="dSaveStatus" title="{i18n>saveStatus}" type="Message" draggable="true" contentWidth="70%" class="sapUiSizeCompact">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="{i18n>saveStatus}" design="Bold"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<beginButton>
+			<Button text="{i18n>ok}" press="onCloseSaveStatus"/>
+		</beginButton>
+		<f:Form editable="true" class="sapUiSizeCompact">
+			<f:layout>
+				<f:ResponsiveGridLayout columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="true"/>
+			</f:layout>
+			<f:formContainers>
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement>
+							<f:label>
+								<Label text="{i18n>gstin}" design="Bold"/>
+							</f:label>
+							<f:fields>
+								<Select id="slGstinStats" items="{userPermission>/respData/dataSecurity/gstin/}">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</Select>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement>
+							<f:label>
+								<Label text="{i18n>taxPeriod}" design="Bold"/>
+							</f:label>
+							<f:fields>
+								<DatePicker id="dtStats" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement >
+							<HBox>
+								<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiTinyMarginTop"/>
+								<Link text="{i18n>aspReport}" class="sapUiTinyMarginBegin"/>
+							</HBox>
+						</f:FormElement>
+						<f:FormElement>
+							<HBox>
+								<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiTinyMarginTop"/>
+								<Link text="{i18n>gstnReport}" class="sapUiTinyMarginBegin"/>
+								<Button type="Emphasized" text="Go" press="onPressStatusGo" class="sapUiMediumMarginBegin"/>
+							</HBox>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+		<ScrollContainer horizontal="false" vertical="true" height="25rem">
+			<Table id="tabSaveStatus" items="{GstinSaveModel>/}" noDataText="No Products" sticky="ColumnHeaders" class="sapUiNoContentPadding">
+				<columns >
+					<Column hAlign="End" width="3rem">
+						<HBox justifyContent="Center" width="100%">
+							<Label text="{i18n>sNo}" design="Bold"/>
+						</HBox>
+					</Column>
+					<Column hAlign="Center" width="8rem">
+						<Label text="{i18n>date}" design="Bold"/>
+					</Column>
+					<Column hAlign="Center" width="7rem">
+						<Label text="{i18n>time}" design="Bold"/>
+					</Column>
+					<Column width="8rem">
+						<Label text="{i18n>action}" design="Bold"/>
+					</Column>
+					<Column width="20rem">
+						<HBox justifyContent="Center" width="100%">
+							<Label text="{i18n>refId}" design="Bold"/>
+						</HBox>
+					</Column>
+					<Column hAlign="Center" width="7rem">
+						<Label text="{i18n>status}" design="Bold"/>
+					</Column>
+					<Column hAlign="End" width="6rem">
+						<Label text="{i18n>error} {i18n>count}" design="Bold"/>
+					</Column>
+					<Column hAlign="Center" width="12rem">
+						<Label text="{i18n>gstnPortalMsg}" design="Bold"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem vAlign="Middle">
+						<cells>
+							<Text text="{GstinSaveModel>sno}"/>
+							<Text text="{path:'GstinSaveModel>date', formatter:'.formatter.dateFormat'}" wrapping="false"/>
+							<Text text="{GstinSaveModel>time}" wrapping="false"/>
+							<Text text="{GstinSaveModel>action}"/>
+							<Text text="{GstinSaveModel>refId}"/>
+							<Text text="{GstinSaveModel>status}"/>
+							<Text text="{GstinSaveModel>errorCount}"/>
+							<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadGstnMsg"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</ScrollContainer>
+	</Dialog>
+</core:FragmentDefinition>

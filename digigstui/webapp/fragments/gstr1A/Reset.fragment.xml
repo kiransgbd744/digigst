@@ -1,0 +1,18 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:f="sap.ui.layout.form">
+	<Dialog title="GSTR-1A Reset Data" type="Message" class="sapUiSizeCompact cl_saveHeader" xmlns:fb="sap.ui.comp.filterbar">
+		<content>
+			<layout:VerticalLayout>
+				<HBox>
+					<RadioButtonGroup columns="2" id="idRadioBtnReset" selectedIndex="1">
+						<RadioButton text="Reset Full data for selected tables"/>
+						<RadioButton text="Reset only records where no response is provided"/>
+					</RadioButtonGroup>
+				</HBox>
+			</layout:VerticalLayout>
+		</content>
+		<buttons>
+			<Button text="Proceed" press="onResetProcedDialog('S')"/>
+			<Button text="Cancel" press="onSaveResetBtnDialogC"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

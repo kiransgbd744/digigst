@@ -1,0 +1,151 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<ui:Table rows="{SftpStatus>/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="12" enableSelectAll="false"
+		visible="{=${Property>/sbStatus}==='sftp'}">
+		<ui:columns>
+			<ui:Column width="10rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Date of Upload" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Link text="{SftpStatus>uploadedOn}" emphasized="true" press="onPressFileDetailsftp"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="10rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Uploaded by" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{SftpStatus>uploadedBy}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="10rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Data Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{SftpStatus>dataType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="File Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{SftpStatus>fileType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="30rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="File Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{SftpStatus>fileName}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="10rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="File Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{SftpStatus>fileStatus}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Transformation" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{SftpStatus>transformationStatus}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" minWidth="130">
+				<ui:multiLabels>
+					<Label text=""/>
+					<HBox justifyContent="End" width="100%">
+						<Label text="Total Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</HBox>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox justifyContent="End" width="100%">
+						<Text text="{SftpStatus>total}"/>
+						<core:Icon src="sap-icon://download" visible="{= ${SftpStatus>total} === 0 ? false:true}" size="0.75rem" tooltip="Download"
+							class="sapUiTinyMarginBegin" press="onPressFileStatusDownload($event,${SftpStatus>total},'totalrecords',null,'SftpStatus')"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="2" hAlign="End" minWidth="130">
+				<ui:multiLabels>
+					<Label text="Processed" textAlign="Center" width="100%" design="Bold"/>
+					<HBox justifyContent="End" width="100%">
+						<Label text="Active" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="*" textAlign="Center" width="100%" design="Bold" class="cl_star"/>
+					</HBox>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Link text="{SftpStatus>processedActive}" press="onPressStatsLink"/>
+						<core:Icon src="sap-icon://download" visible="{= ${SftpStatus>processedActive} === 0 ? false:true}" size="0.75rem" tooltip="Download"
+							class="sapUiTinyMarginBegin" press="onPressFileStatusDownload($event,${SftpStatus>processedActive},'processed','active','SftpStatus')"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" minWidth="130">
+				<ui:multiLabels>
+					<Label text="Processed" textAlign="Center" width="100%" design="Bold"/>
+					<HBox justifyContent="End" width="100%">
+						<Label text="Inactive" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="*" textAlign="Center" width="100%" design="Bold" class="cl_star"/>
+					</HBox>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Link text="{SftpStatus>processedInactive}" press="onPressStatsLink"/>
+						<core:Icon src="sap-icon://download" visible="{= ${SftpStatus>processedInactive} === 0 ? false:true}" size="0.75rem"
+							tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+							press="onPressFileStatusDownload($event,${SftpStatus>processedInactive},'processed','inactive','SftpStatus')"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="2" hAlign="End" minWidth="130">
+				<ui:multiLabels>
+					<HBox justifyContent="Center" width="100%">
+						<Label text="{i18n>error}" textAlign="Center" width="100%" design="Bold"/>
+						<core:Icon src="sap-icon://download" visible="{= ${SftpStatus>total} === 0 ? false:true}" size="0.75rem" tooltip="{i18n>downError}"
+							press=".onPressCatalog($event,'err','file')" class="sapUiTinyMarginBegin"/>
+					</HBox>
+					<Label text="{i18n>active}" tooltip="{i18n>active}" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Link text="{SftpStatus>errorsActive}" press="onPressStatsLink"/>
+						<core:Icon src="sap-icon://download" visible="{= ${SftpStatus>errorsActive} === 0 ? false:true}" size="0.75rem" tooltip="Download"
+							class="sapUiTinyMarginBegin" press="onPressFileStatusDownload($event,${SftpStatus>errorsActive},'error','active','SftpStatus')"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" minWidth="150">
+				<ui:multiLabels>
+					<Label text="Error" textAlign="Center" width="100%" design="Bold"/>
+					<Label text="{i18n>inactive}" tooltip="{i18n>inactive}" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Link text="{SftpStatus>errorsInactive}" press="onPressStatsLink"/>
+						<core:Icon src="sap-icon://download" visible="{= ${SftpStatus>errorsInactive} === 0 ? false:true}" size="0.75rem" tooltip="Download"
+							class="sapUiTinyMarginBegin" press="onPressFileStatusDownload($event,${SftpStatus>errorsInactive},'error','inactive','SftpStatus')"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+		<ui:footer>
+			<ObjectStatus text="{i18n>noteFileStatus}" state="Error"/>
+		</ui:footer>
+	</ui:Table>
+</core:FragmentDefinition>

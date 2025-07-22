@@ -1,0 +1,430 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.ITC04vsEWB"
+	xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table" xmlns:l="sap.ui.layout" xmlns:commons="sap.suite.ui.commons"
+	busyIndicatorDelay="0">
+	<f:DynamicPage id="idSplitDtl2A" visible="true">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Initiate Recon"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G9" groupTitle="Basic" name="B" label="Criteria for Recon" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idReconType" class="input" forceSelection="true" change="onRecontypeChange">
+									<core:Item key="GSTIN Submitted Data" text="GSTIN Submitted Data"/>
+									<core:Item key="DigiGST Processed Data" text="DigiGST Processed Data"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Financial year" visibleInFilterBar="true">
+							<fb:control>
+								<Select width="100%" id="slPFinancialyear" items="{oFyModelIVE>/finYears}" forceSelection="true" change="onFnYear('P')">
+									<core:Item key="{oFyModelIVE>key}" text="{oFyModelIVE>fullFy}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="From tax period" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="slPQTaxPeriod" forceSelection="true" width="100%" items="{path:'ITC04VEtaxPeriod>/'}">
+									<core:Item key="{ITC04VEtaxPeriod>key}" text="{ITC04VEtaxPeriod>taxPeriod}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="To tax period" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="slPQTaxPeriod1" forceSelection="true" width="100%" items="{path:'ITC04VEtaxPeriod>/'}">
+									<core:Item key="{ITC04VEtaxPeriod>key}" text="{ITC04VEtaxPeriod>taxPeriod}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onPressClear"/>
+					<Button text="Filter" press="onPressGoForGSTIN2A" class="input sapUiTinyMarginBegin buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Page showHeader="false" class="clMDIntiatRecon">
+				<content>
+					<SplitApp id="splitcheking2A" initialDetail="detail" initialMaster="master" orientationChange="onOrientationChange">
+						<detailPages>
+							<Page showHeader="false" class="">
+								<content>
+									<l:BlockLayout background="Dashboard" class="cl_shadow" visible="true">
+										<l:BlockLayoutRow class="sapUiNoContentPadding">
+											<l:BlockLayoutCell width="20">
+												<Toolbar height="3rem" class="supplToolbarInAnx2 supplToolbarColInAnx2">
+													<core:Icon id="iMoreIniat2A" src="sap-icon://navigation-down-arrow" tooltip="More" press="fnPressDownInit" color="black"/>
+													<core:Icon id="iLessIniat2A" src="sap-icon://slim-arrow-right" tooltip="Less" press="fnPressRightInit" visible="false" color="black"/>
+													<Label text="Report Selection" design="Bold" textAlign="Center" class="fontSize"/>
+													<ToolbarSpacer/>
+													<Button text="Initiate Recon" press="onPressInitiate" enabled="{= ${userPermission>/appPermission/P7}}" visible="true"
+														class="buttoncolorSec"/>
+													<Button class="buttoncolorSec" id="bApprovalRequest" text="Request ID wise" press="onRequestIdWise"/>
+													<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="{i18n>downExcel}" press="onExportExcel('P')" enabled="false"/>
+													<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="{i18n>downPdf}" press="onPressDownloadPdf('P')"
+														class="sapUiTinyMarginEnd" enabled="false"/>
+												</Toolbar>
+												<VBox>
+													<Label text="Primary Reports" design="Bold" class="sapUiSmallMarginBegin sapUiSmallMarginTop" id="idvbox12A"/>
+												</VBox>
+												<l:Grid defaultSpan="L3 M3 S12" vSpacing="0" id="idGrid12A">
+													<l:content>
+														<CheckBox text="Exact Match" selected="true" select="OnselctChekInit" editable="false"/>
+														<CheckBox text="Mismatch" selected="true" select="OnselctChekInit" editable="false"/>
+														<CheckBox text="Document Date Mismatch" selected="true" select="OnselctChekInit" editable="false"/>
+														<CheckBox text="Addition in ITC04" selected="true" select="OnselctChekInit" editable="false"/>
+														<CheckBox text="Addition in EWB" selected="true" select="OnselctChekInit" editable="false"/>
+														<CheckBox text="Consolidated Report" selected="true" select="OnselctChekInit" editable="false"/>
+														<CheckBox text="Drop Out Records" selected="true" select="OnselctChekInit" editable="false"/>
+														<CheckBox text="Exact Match with Tolerance" selected="true" select="OnselctChekInit" editable="false"/>
+													</l:content>
+												</l:Grid>
+											</l:BlockLayoutCell>
+										</l:BlockLayoutRow>
+									</l:BlockLayout>
+									<commons:ChartContainer showFullScreen="false" id="oninreconTab" autoAdjustHeight="false">
+										<commons:content>
+											<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+												<commons:content>
+													<ui:Table id="tabOutward" rows="{ewbVsItc04Summary>/}" selectionMode="None" fixedColumnCount="1" visibleRowCount="5">
+														<ui:columns>
+															<ui:Column width="15rem">
+																<Label text="Section" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																<ui:template>
+																	<HBox justifyContent="SpaceBetween" alignItems="End" width="100%" height="100%">
+																		<HBox>
+																			<Link text="{ewbVsItc04Summary>section}"/>
+																			<!--	<Link text="{path:'ewbVsItc04Summary>section',formatter:'.formatter.formatITC04TableType'}" emphasized="true"
+																				press="onPressITC04TableTypeLink(${ewbVsItc04Summary>section})"/>-->
+																		</HBox>
+																	</HBox>
+																</ui:template>
+															</ui:Column>
+															<ui:Column headerSpan="6" hAlign="End" width="12rem">
+																<ui:multiLabels>
+																	<Label text="ITC04 As per GSTN submitted Data" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="{i18n>count}" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{ewbVsItc04Summary>itcCount}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" width="12rem">
+																<ui:multiLabels>
+																	<Label text=""/>
+																	<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path:'ewbVsItc04Summary>itcTaxableValue',formatter:'.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" visible="{visiSummAnx1>/asp}" width="12rem">
+																<ui:multiLabels>
+																	<Label text=""/>
+																	<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path:'ewbVsItc04Summary>itcIgst',formatter:'.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" visible="{visiSummAnx1>/asp}" width="12rem">
+																<ui:multiLabels>
+																	<Label text=""/>
+																	<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path:'ewbVsItc04Summary>itcCgst',formatter:'.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" visible="{visiSummAnx1>/asp}" width="12rem">
+																<ui:multiLabels>
+																	<Label text=""/>
+																	<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path:'ewbVsItc04Summary>itcSgst',formatter:'.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" visible="{visiSummAnx1>/asp}" width="12rem">
+																<ui:multiLabels>
+																	<Label text=""/>
+																	<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path:'ewbVsItc04Summary>itcCess',formatter:'.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column headerSpan="6" hAlign="End" visible="{visiSummAnx1>/gstn}" width="12rem">
+																<ui:multiLabels>
+																	<Label text="EWB Data" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="{i18n>count}" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{ewbVsItc04Summary>ewbCount}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" visible="{visiSummAnx1>/gstn}" width="12rem">
+																<ui:multiLabels>
+																	<Label text=""/>
+																	<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path:'ewbVsItc04Summary>ewbTaxableValue',formatter:'.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" visible="{visiSummAnx1>/gstn}" width="12rem">
+																<ui:multiLabels>
+																	<Label text=""/>
+																	<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path:'ewbVsItc04Summary>ewbIgst',formatter:'.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" visible="{visiSummAnx1>/gstn}" width="12rem">
+																<ui:multiLabels>
+																	<Label text=""/>
+																	<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path:'ewbVsItc04Summary>ewbCgst',formatter:'.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" visible="{visiSummAnx1>/gstn}" width="12rem">
+																<ui:multiLabels>
+																	<Label text=""/>
+																	<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path:'ewbVsItc04Summary>ewbSgst',formatter:'.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" visible="{visiSummAnx1>/gstn}" width="12rem">
+																<ui:multiLabels>
+																	<Label text=""/>
+																	<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path:'ewbVsItc04Summary>ewbCess',formatter:'.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+														</ui:columns>
+													</ui:Table>
+												</commons:content>
+											</commons:ChartContainerContent >
+										</commons:content>
+										<commons:toolbar>
+											<OverflowToolbar class="supplToolbarInAnx2 supplToolbarColInAnx2">
+												<core:Icon id="iMoreIniatR2A" src="sap-icon://navigation-down-arrow" tooltip="More" press="fnPressDownInitR" color="black"/>
+												<core:Icon id="iLessIniatR2A" src="sap-icon://slim-arrow-right" tooltip="Less" press="fnPressRightInitR" visible="false" color="black"/>
+												<Label text="Pre Recon Summary" design="Bold" textAlign="Center"/>
+												<ToolbarSpacer/>
+												<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+											</OverflowToolbar>
+										</commons:toolbar>
+									</commons:ChartContainer>
+								</content>
+								<!--								<footer>
+									<Toolbar height="3rem">
+										<ToolbarSpacer/>
+										<Label text="© 2021 | All Rights Reserved. Content within this application is confidential and meant for EY staff and EY clients only."
+											class="logoText"/>
+										<ToolbarSpacer/>
+									</Toolbar>
+								</footer>-->
+							</Page>
+						</detailPages>
+						<masterPages>
+							<Page showHeader="false">
+								<content>
+									<VBox height="50%">
+										<SearchField id="searchId" liveChange="onSearchGstins" width="100%"/>
+										<List mode="MultiSelect" id="idInitiateReconList2A" headerText="List of GSTIN" items="{GSTIN2A>/}" selectionChange="onSelectionChange1"
+											updateFinished="updatefinished">
+											<headerToolbar>
+												<OverflowToolbar>
+													<content>
+														<CheckBox id="checkboxID" selected="true" select="onSelectallGSTIN"/>
+														<Title text="List of GSTIN" level="H2"/>
+														<ToolbarSpacer/>
+													</content>
+												</OverflowToolbar>
+											</headerToolbar>
+											<CustomListItem>
+												<HBox justifyContent="SpaceBetween">
+													<VBox class="sapUiTinyMarginBegin ">
+														<Label text="{GSTIN2A>state}"/>
+														<Link text="{GSTIN2A>gstin}" press="handlePress"/>
+														<Label text="{GSTIN2A>statusdate}"/>
+													</VBox>
+													<VBox class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+														<Label text="{=${GSTIN2A>gstinIdentifier}==='REGULAR'?'':${GSTIN2A>gstinIdentifier}}"/>
+														<Label text="{GSTIN2A>status}"/>
+													</VBox>
+												</HBox>
+											</CustomListItem>
+										</List>
+									</VBox>
+								</content>
+							</Page>
+						</masterPages>
+					</SplitApp>
+				</content>
+			</Page>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="idRequestIDwisePage2A" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button icon="sap-icon://nav-back" type="Transparent" press="onPressRequestIDwiseBack"/>
+						<Title text="Request ID wise" class="sapUiSmallMarginBegin clTitleMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="From Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="frReconTaxPriod" displayFormat="MMM yyyy" valueFormat="MMyyyy" value="{FilterModel>/frTaxPeriod}"
+									change="onChangeDtReconReqId"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="To Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="toReconTaxPriod" displayFormat="MMM yyyy" valueFormat="MMyyyy" value="{FilterModel>/toTaxPeriod}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Initiated By" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox items="{path:'UserNames>/',sorter:{path:'userName',descending:false}}" selectedKeys="{FilterModel>/initiatedBy}"
+									selectionChange="selectAll" width="100%">
+									<core:Item key="{UserNames>userName}" text="{UserNames>userName}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Status" visibleInFilterBar="true">
+							<fb:control>
+								<Select forceSelection="false" selectedKey="{FilterModel>/status}">
+									<core:Item key="REPORT_GENERATED" text="REPORT GENERATED"/>
+									<core:Item key="REPORT_GENERATION_FAILED" text="REPORT GENERATION FAILED"/>
+									<core:Item key="RECON_INITIATED" text="RECON INITIATED"/>
+									<core:Item key="RECON_FAILED" text="RECON FAILED"/>
+									<core:Item key="NO_DATA_FOUND" text="NO DATA FOUND"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="Filter" press="onSearchReqIdWise" class="sapUiTinyMarginBegin buttoncolor"/>
+					<Button text="Clear" press="onClearReqIdWise" class="sapUiTinyMarginBegin buttoncolorSec"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false">
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table rows="{path:'ReqWiseData2A>/resp/', sorter: {path: 'requestId',descending:true}}" selectionMode="None" selectionBehavior="Row"
+								visibleRowCount="22" fixedColumnCount="0" enableSelectAll="false">
+								<ui:Column width="10%">
+									<Label design="Bold" text="Request ID"/>
+									<ui:template>
+										<Text text="{ReqWiseData2A>requestId}"/>
+										<!-- NewReturns-->
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="No. Of GSTIN Selected"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Link text="{ReqWiseData2A>gstinCount}" press="onPressGSTIN"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="Financial Year" wrapping="true"/>
+									<ui:template>
+										<Text text="{ReqWiseData2A>financialYear}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="From Tax Period" wrapping="true"/>
+									<ui:template>
+										<Text text="{ReqWiseData2A>fromTaxPeriod}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="To Tax Period" wrapping="true"/>
+									<ui:template>
+										<Text text="{ReqWiseData2A>toTaxPeriod}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="Initiation"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{ReqWiseData2A>initiatedOn}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="15%">
+									<Label design="Bold" text="Initiated By"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{ReqWiseData2A>initiatedBy}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="Completion"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{ReqWiseData2A>completionOn}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="12%">
+									<Label design="Bold" text="Download"/>
+									<ui:template>
+										<Button text="Report Download" press="onConfigExtractPress2A1" class="sapUiSmallMarginEnd buttoncolorSec"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="14%">
+									<Label design="Bold" text="Status"/>
+									<ui:template>
+										<Text text="{parts:[{path : 'ReqWiseData2A>status'}], formatter : '.formatter.statusReplace'}"/>
+									</ui:template>
+								</ui:Column>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+				<commons:toolbar>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+						<!--<Button type="Emphasized" text="Refresh" press="onRefreshRequestIDwise2A"/>-->
+						<Button type="Transparent" icon="sap-icon://download" tooltip="Download Summary" press="onDownloadSummary" visible="false"/>
+						<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+					</OverflowToolbar>
+				</commons:toolbar>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

@@ -1,0 +1,13 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Popover showHeader="false" title="List of Tax Periods" class="sapUiContentPadding" placement="Bottom" id="actionSheet"
+		contentMinWidth="20%">
+		<List items="{path:'Template>/'}">
+			<CustomListItem>
+				<HBox>
+					<CheckBox selected="{Template>select}" editable="{Template>enabled}"/>
+					<Label text="{Template>text}"/>
+				</HBox>
+			</CustomListItem>
+		</List>
+	</Popover>
+</core:FragmentDefinition>

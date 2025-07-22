@@ -1,0 +1,14 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog title="IMS Response Action" type="Standard" contentWidth="30rem" class="sapUiSizeCompact" busyIndicatorDelay="0">
+		<VBox class="sapUiSmallMargin">
+			<Label text="IMS Response Remark (Max 500 Characters)" design="Bold"/>
+			<TextArea value="{ImsResponse>/imsResponseRemarks}" placeholder="Enter Remarks" maxLength="500" cols="40" rows="3"/>
+		</VBox>
+		<buttons>
+			<Button text="Accept" press="onImsResponse('A')" class="buttoncolorSec"/>
+			<Button text="Reject" press="onImsResponse('R')" class="buttoncolorSec"/>
+			<Button text="Pending" press="onImsResponse('P')" class="buttoncolorSec"/>
+			<Button text="Cancel" press="onCloseImsResp" class="buttoncolorSec"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

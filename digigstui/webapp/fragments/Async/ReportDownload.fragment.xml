@@ -1,0 +1,56 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form" xmlns:ui="sap.ui.table">
+	<Dialog title="Report Download" type="Message" class="sapUiSizeCompact cl_saveHeader" showHeader="true" contentWidth="40%">
+		<beginButton>
+			<Button text="OKAY" press="onCloseDialogDow" class="buttoncolorSec"/>
+		</beginButton>
+		<!--<ui:TreeTable id="tabGstr3bSumm" rows="{path:'ReportDownload>/IR', parameters:{ arrayNames:['categories'], numberOfExpandedLevels:2 }}"
+			selectionMode="None" enableSelectAll="false" fixedColumnCount="2" enableColumnReordering="false" visibleRowCount="8"
+			toggleOpenState="onToggleGstr3bSummary" visible="true" class="sapUiTinyMarginTop sapUiLargeMarginBottom">
+			<ui:columns>
+				<ui:Column width="20rem">
+					<Label text="Report Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{ReportDownload>reportName}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="20rem">
+					<Label text="Download" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<core:Icon src="sap-icon://download" tooltip="Download" visible="{=${ReportDownload>Dicon}}" press="onFragDownload"/>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:TreeTable>
+	-->
+		<Table items="{DownloadDocument>/}" id="idTableBulkSave">
+			<headerToolbar>
+				<OverflowToolbar>
+					<content>
+						<ToolbarSpacer/>
+						<Button class="buttoncolor" text="Download All" visible="{visFlagModel>/visFlag}" tooltip="Download" press="onFragDownloadAll"/>
+					</content>
+				</OverflowToolbar>
+			</headerToolbar>
+			<columns>
+				<Column hAlign="Left" width="30%">
+					<Label text="Report Type" design="Bold"/>
+				</Column>
+				<Column hAlign="Left" width="10%">
+					<Label text="Download" design="Bold"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<Text text="{DownloadDocument>reportType}" wrapping="false"/>
+						<HBox width="20%">
+							<Text text="{=${DownloadDocument>isDwnld}=== false ? 'No Records' : ''}" wrapping="false"/>
+							<core:Icon src="sap-icon://download" tooltip="Download" visible="{=${DownloadDocument>isDwnld}}" press="onDownloadPress"/>
+						</HBox>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</Dialog>
+</core:FragmentDefinition>

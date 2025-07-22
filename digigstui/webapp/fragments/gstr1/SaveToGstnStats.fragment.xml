@@ -1,0 +1,26 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog id="dSaveToGstnStats" title="Save Status" type="Message" contentWidth="40%" contentHeight="20rem" class="sapUiSizeCompact"
+		draggable="true">
+		<beginButton>
+			<Button text="{i18n>ok}" class="buttoncolorSec" press="onCloseSaveToGstnStats"/>
+		</beginButton>
+		<Table items="{MsgSaveToGstn>/resp}" sticky="ColumnHeaders">
+			<columns>
+				<Column width="14rem">
+					<Label text="{i18n>gstin}" design="Bold"/>
+				</Column>
+				<Column>
+					<Label text="{i18n>msgStatus}" design="Bold"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<Text text="{MsgSaveToGstn>gstin}"/>
+						<Text text="{MsgSaveToGstn>msg}"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</Dialog>
+</core:FragmentDefinition>

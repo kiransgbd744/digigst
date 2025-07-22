@@ -1,0 +1,148 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="dynamicSP">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox visible="{EventBackg>/visFlag}">
+						<Label text="Entity :" class="sapUiTinyMarginTop" design="Bold"/>
+						<Select items="{entityScenarioPermission>/resp}" change="onSelectionChangeEntity" id="idEntityScenario" width="12rem"
+							class="sapUiTinyMarginBegin">
+							<core:Item key="{entityScenarioPermission>entityId}" text="{entityScenarioPermission>entityName}"/>
+						</Select>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<Button type="Emphasized" icon="sap-icon://save" text="Submit" press="onSubmit" id="idScenarioSubmit" enabled="true"/>
+					<SegmentedButton id="idEvenBackground" selectedKey="Background" selectionChange="onChangeSegment" class="sapUiSmallMarginBegin"
+						enabled="true">
+						<items>
+							<SegmentedButtonItem text="Background Job" key="B" width="8rem" enabled="true"/>
+							<SegmentedButtonItem text="Event Based Job" key="E" width="8rem" enabled="true"/>
+							<SegmentedButtonItem text="SFTP Based Job" key="S" width="8rem" enabled="true"/>
+						</items>
+					</SegmentedButton>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<ui:Table id="idTableSP" rows="{Scenario>/items/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10"
+					fixedRowCount="0" fixedColumnCount="0" enableSelectAll="true">
+					<ui:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<!--<Button type="Accept" icon="sap-icon://edit" tooltip="Edit rows" id="idSPEditRows" press="onEditRows"/>-->
+							<Button type="Accept" icon="sap-icon://add" tooltip="Add row" id="idSPAddrow" press="onAddrow"/>
+							<Button type="Reject" icon="sap-icon://delete" tooltip="Delete rows" id="idSPDeleteRows" press="onDeleteRows"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="4rem" headerSpan="0">
+							<ui:multiLabels>
+								<Label text="S.No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Scenario>sno}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="250" headerSpan="1" class="columnLine">
+							<ui:multiLabels>
+								<Label text="Source ID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<ComboBox items="{Scenario>/erpDetails}" selectedKey="{Scenario>erpId}" width="100%" editable="{Scenario>edit}">
+									<core:ListItem key="{Scenario>erpId}" text="{Scenario>erpName}"/>
+								</ComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="250" headerSpan="1" class="columnLine" visible="{EventBackg>/visFlagCC}">
+							<ui:multiLabels>
+								<Label text="Company Code" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{Scenario>companyCode}" editable="{Scenario>edit}" maxLength="40"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="320" hAlign="Left">
+							<ui:multiLabels>
+								<Label text="Scenario Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<ComboBox items="{Scenario>/scenario}" selectedKey="{Scenario>scenarioId}" width="100%" editable="{Scenario>edit}">
+									<core:ListItem key="{Scenario>scenarioId}" text="{Scenario>scenarioName}"/>
+								</ComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="20rem" visible="{EventBackg>/visFlag}" class="columnLine">
+							<ui:multiLabels>
+								<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<MultiComboBox items="{Scenariog>/gstinDetail/}" selectionChange="selectAll" selectedKeys="{Scenario>gstnItemList}" width="100%"
+									editable="{Scenario>edit}">
+									<core:ListItem key="{Scenariog>gstinId}" text="{Scenariog>gstinName}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="350" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="API - URL" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{Scenario>endPointURI}" editable="{Scenario>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<!--<ui:Column width="12rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Job Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{Scenario>jobType}" editable="false"/>
+							</ui:template>
+						</ui:Column>-->
+						<ui:Column width="12rem" hAlign="Left" visible="{EventBackg>/visFlagJF}">
+							<ui:multiLabels>
+								<Label text="Job Frequency" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<ComboBox selectedKey="{Scenario>jobFrequency}" width="100%" editable="{Scenario>edit}">
+									<core:ListItem key="0 */2 * * * ?" text="2 Min"/>
+									<core:ListItem key="0 */5 * * * ?" text="5 Min"/>
+									<core:ListItem key="0 */10 * * * ?" text="10 Min"/>
+									<core:ListItem key="0 */30 * * * ?" text="30 Min"/>
+									<core:ListItem key="0 0 6,18 1/1 * ? *" text="6AM &amp; 6PM"/>
+								</ComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="20rem" hAlign="Center" visible="{EventBackg>/visFlagS}">
+							<ui:multiLabels>
+								<Label text="Start Root Tag" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{Scenario>startRootTag}" editable="{Scenario>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="20rem" hAlign="Center" visible="{EventBackg>/visFlagS}">
+							<ui:multiLabels>
+								<Label text="End Root Tag" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{Scenario>endRootTag}" editable="{Scenario>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="20rem" hAlign="Center" visible="{EventBackg>/visFlagS}">
+							<ui:multiLabels>
+								<Label text="Destination Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{Scenario>destName}" editable="{Scenario>edit}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

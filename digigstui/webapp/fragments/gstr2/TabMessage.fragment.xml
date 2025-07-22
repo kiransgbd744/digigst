@@ -1,0 +1,25 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog title="Message" type="Message" contentWidth="40%" contentHeight="50%" class="sapUiSizeCompact" draggable="true">
+		<beginButton>
+			<Button text="{i18n>ok}" press="onCloseMessageTab"/>
+		</beginButton>
+		<Table items="{MessageTable>/}" sticky="ColumnHeaders">
+			<columns>
+				<Column width="14rem">
+					<Label text="{i18n>gstin}" design="Bold"/>
+				</Column>
+				<Column>
+					<Label text="{i18n>msgStatus}" design="Bold"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<Text text="{MessageTable>gstin}"/>
+						<Text text="{MessageTable>msg}"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</Dialog>
+</core:FragmentDefinition>

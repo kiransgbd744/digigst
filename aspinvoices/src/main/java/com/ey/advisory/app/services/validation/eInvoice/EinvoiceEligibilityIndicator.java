@@ -1,0 +1,77 @@
+/*package com.ey.advisory.app.services.validation.eInvoice;
+
+import static com.ey.advisory.app.data.entities.client.GSTConstants.APP_VALIDATION;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.IntStream;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+import com.ey.advisory.admin.data.entities.client.EntityConfigPrmtEntity;
+import com.ey.advisory.app.data.entities.client.GSTConstants;
+import com.ey.advisory.app.data.entities.client.OutwardTransDocLineItem;
+import com.ey.advisory.app.data.entities.client.OutwardTransDocument;
+import com.ey.advisory.app.services.validation.DocRulesValidator;
+import com.ey.advisory.app.services.validation.sales.OnboardingQuestionValidationsUtil;
+import com.ey.advisory.common.ProcessingContext;
+import com.ey.advisory.common.ProcessingResult;
+import com.ey.advisory.common.StaticContextHolder;
+import com.ey.advisory.common.TransDocProcessingResultLoc;
+
+*//**
+ * @author Siva.Nandam
+ *
+ *//*
+public class EinvoiceEligibilityIndicator
+		implements DocRulesValidator<OutwardTransDocument> {
+
+	@Autowired
+	@Qualifier("OnboardingQuestionValidationsUtil")
+	private OnboardingQuestionValidationsUtil util;
+
+	@Override
+	public List<ProcessingResult> validate(OutwardTransDocument document,
+			ProcessingContext context) {
+		List<OutwardTransDocLineItem> items = document.getLineItems();
+
+		List<ProcessingResult> errors = new ArrayList<>();
+		if (!GSTConstants.SLF.equalsIgnoreCase(document.getDocType()))
+			return errors;
+		if (document.getCgstin() == null || document.getCgstin().isEmpty())
+			return errors;
+
+		String paramkryId = GSTConstants.I15;
+		util = StaticContextHolder.getBean("OnboardingQuestionValidationsUtil",
+				OnboardingQuestionValidationsUtil.class);
+		Map<Long, List<EntityConfigPrmtEntity>> entityConfigParamMap = document
+				.getEntityConfigParamMap();
+		String paramtrvalue = util.valid(entityConfigParamMap, paramkryId,
+				document.getEntityId());
+		if (paramtrvalue == null || paramtrvalue.isEmpty())
+			return errors;
+		if (GSTConstants.A.equalsIgnoreCase(paramtrvalue)) {
+			IntStream.range(0, items.size()).forEach(idx -> {
+
+				OutwardTransDocLineItem item = items.get(idx);
+				if (item.getEligibilityIndicator() == null) {
+					Set<String> errorLocations = new HashSet<>();
+					errorLocations.add(GSTConstants.ELIGIBILITY_INDICATOR);
+					TransDocProcessingResultLoc location 
+					             = new TransDocProcessingResultLoc(
+							idx, errorLocations.toArray());
+					errors.add(new ProcessingResult(APP_VALIDATION, "ER1100",
+							"Eligibility Indicator cannot be left blank.",
+							location));
+				}
+			});
+		}
+		return errors;
+	}
+
+}
+*/

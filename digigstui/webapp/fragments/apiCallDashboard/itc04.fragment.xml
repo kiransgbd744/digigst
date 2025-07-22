@@ -1,0 +1,163 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:commons="sap.suite.ui.commons" xmlns:ui="sap.ui.table">
+	<commons:ChartContainer id="iditc04" visible="false" showFullScreen="true" showZoom="true" showPersonalization="false"
+		autoAdjustHeight="false">
+		<commons:content>
+			<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+				<commons:content>
+					<ui:Table id="iditc04Tab" rows="{path:'ITC04Table>/'}" selectionMode="Multi" selectionBehavior="Row" visibleRowCount="10"
+						fixedColumnCount="1" rowSelectionChange="onSelectionGstn">
+						<ui:columns>
+							<ui:Column width="15rem" headerSpan="1">
+								<Label text="GSTIN" textAlign="Center" width="100%" design="Bold"/>
+								<ui:template>
+									<VBox width="100%">
+										<HBox>
+											<Text text="{ITC04Table>stateName}" class="stateColor" width="9rem"/>
+											<Text text="{=${ITC04Table>registrationType}==='REGULAR'?'':${ITC04Table>registrationType}}" class="stateColor fontSmall"/>
+										</HBox>
+										<HBox alignContent="Start" justifyContent="SpaceBetween">
+											<Label text="{ITC04Table>gstin}" design="Bold" textAlign="Center" width="100%"/>
+											<core:Icon src="sap-icon://circle-task-2" size="0.8rem" visible="{=${ITC04Table>authStatus}===''?false:true}"
+												tooltip="{=${ITC04Table>authStatus}==='A'?'Active':'Inactive'}" color="{=${ITC04Table>authStatus}==='A'?'#00ff00':'red'}"
+												press="onPressGenerateOTP" class="sapUiTinyMarginBegin"/>
+										</HBox>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" id="col1" visible="false">
+								<ui:multiLabels>
+									<HBox>
+										<CheckBox selected="{Gstr1Property>/Q1Check1}" select="Q1Select"/>
+										<Label text="Q1(Apr-Jun)" design="Bold" class="sapUiTinyMarginTop"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<VBox>
+										<HBox justifyContent="Center">
+											<CheckBox selected="{ITC04Table>Q1Check}" select="Q1Select1"/>
+											<ObjectStatus text="{ITC04Table>Q1Mar}" state="{path:'ITC04Table>Q1Mar', formatter:'.GstrStatus'}"
+												class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+											<!--<core:Icon src="sap-icon://download" size="1rem" press="onDownloadQ1" tooltip="Download" class="sapUiTinyMarginTop sapUiTinyMarginBegin"-->
+											<!--	visible="{= ${ITC04Table>reptStatusQ1} === 'Generated' }"/>-->
+										</HBox>
+										<Text text="{ITC04Table>initiatedOnQ1}"/>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" id="col2" visible="false">
+								<ui:multiLabels>
+									<HBox>
+										<CheckBox selected="{Gstr1Property>/Q2Check1}" select="Q2Select"/>
+										<Label text="Q2(Jul-Sep)" design="Bold" class="sapUiTinyMarginTop"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<VBox>
+										<HBox justifyContent="Center">
+											<CheckBox selected="{ITC04Table>Q2Check}" select="Q2Select1"/>
+											<ObjectStatus text="{ITC04Table>Q2Mar}" state="{path:'ITC04Table>Q2Mar', formatter:'.GstrStatus'}"
+												class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+											<!--<core:Icon src="sap-icon://download" size="1rem" press="onDownloadQ2" tooltip="Download" class="sapUiTinyMarginTop sapUiTinyMarginBegin"-->
+											<!--	visible="{= ${ITC04Table>reptStatusQ2} === 'Generated' }"/>-->
+										</HBox>
+										<Text text="{ITC04Table>initiatedOnQ2}"/>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" id="col3" visible="false">
+								<ui:multiLabels>
+									<HBox>
+										<CheckBox selected="{Gstr1Property>/Q3Check1}" select="Q3Select"/>
+										<Label text="Q3(Oct-Dec)" design="Bold" class="sapUiTinyMarginTop"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<VBox>
+										<HBox justifyContent="Center">
+											<CheckBox selected="{ITC04Table>Q3Check}" select="Q3Select1"/>
+											<ObjectStatus text="{ITC04Table>Q3Mar}" state="{path:'ITC04Table>Q3Mar', formatter:'.GstrStatus'}"
+												class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+											<!--<core:Icon src="sap-icon://download" size="1rem" press="onDownloadQ3" tooltip="Download" class="sapUiTinyMarginTop sapUiTinyMarginBegin"-->
+											<!--	visible="{= ${ITC04Table>reptStatusQ3} === 'Generated' }"/>-->
+										</HBox>
+										<Text text="{ITC04Table>initiatedOnQ3}"/>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" id="col4" visible="false">
+								<ui:multiLabels>
+									<HBox>
+										<CheckBox selected="{Gstr1Property>/Q4Check1}" select="Q4Select"/>
+										<Label text="Q4(Jan-Mar)" design="Bold" class="sapUiTinyMarginTop"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<VBox>
+										<HBox justifyContent="Center">
+											<CheckBox selected="{ITC04Table>Q4Check}" select="Q4Select1"/>
+											<ObjectStatus text="{ITC04Table>Q4Mar}" state="{path:'ITC04Table>Q4Mar', formatter:'.GstrStatus'}"
+												class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+											<!--<core:Icon src="sap-icon://download" size="1rem" press="onDownloadQ4" tooltip="Download" class="sapUiTinyMarginTop sapUiTinyMarginBegin"-->
+											<!--	visible="{= ${ITC04Table>reptStatusQ4} === 'Generated' }"/>-->
+										</HBox>
+										<Text text="{ITC04Table>initiatedOnQ4}"/>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" id="col5" visible="false">
+								<ui:multiLabels>
+									<HBox>
+										<CheckBox selected="{Gstr1Property>/Q3Check1}" select="H1Select"/>
+										<Label text="H1(Apr-Sep)" design="Bold" class="sapUiTinyMarginTop"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<VBox>
+										<HBox justifyContent="Center">
+											<CheckBox selected="{ITC04Table>H1Check}" select="H1Select1"/>
+											<ObjectStatus text="{ITC04Table>H1Mar}" state="{path:'ITC04Table>H1Mar', formatter:'.GstrStatus'}"
+												class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+											<!--<core:Icon src="sap-icon://download" size="1rem" press="onDownloadH1" tooltip="Download" class="sapUiTinyMarginTop sapUiTinyMarginBegin"-->
+											<!--	visible="{= ${ITC04Table>reptStatusQ3} === 'Generated' }"/>-->
+										</HBox>
+										<Text text="{ITC04Table>initiatedOnH1}"/>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" id="col6" visible="false">
+								<ui:multiLabels>
+									<HBox>
+										<CheckBox selected="{Gstr1Property>/Q4Check1}" select="H1Select"/>
+										<Label text="H2(Oct-Mar)" design="Bold" class="sapUiTinyMarginTop"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<VBox>
+										<HBox justifyContent="Center">
+											<CheckBox selected="{ITC04Table>H2Check}" select="H2Select1"/>
+											<ObjectStatus text="{ITC04Table>H2Mar}" state="{path:'ITC04Table>H2Mar', formatter:'.GstrStatus'}"
+												class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+											<!--<core:Icon src="sap-icon://download" size="1rem" press="onDownloadH2" tooltip="Download" class="sapUiTinyMarginTop sapUiTinyMarginBegin"-->
+											<!--	visible="{= ${ITC04Table>reptStatusQ4} === 'Generated' }"/>-->
+										</HBox>
+										<Text text="{ITC04Table>initiatedOnH2}"/>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+					</ui:Table>
+				</commons:content>
+			</commons:ChartContainerContent>
+		</commons:content>
+		<commons:toolbar>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button class="buttoncolorSec" text="Initiate Get Call" ariaLabelledBy="actionButtonLabel" press="onGetStatus"
+					enabled="{= ${userPermission>/appPermission/P99}}"/>
+				<Button class="buttoncolorSec" text="Gstr1 Reports" ariaLabelledBy="actionButtonLabel" press="Gstr1Reports" visible="false"/>
+				<Button press="ITC04Downld" class="buttoncolorSec" text="Download Report" enabled="{= ${userPermission>/appPermission/P99}}"/>
+				<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+			</OverflowToolbar>
+		</commons:toolbar>
+	</commons:ChartContainer>
+</core:FragmentDefinition>

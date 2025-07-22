@@ -1,0 +1,54 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Popover title="Action (GSTN) Audit Trail" class="sapUiContentPadding" placement="Auto" width="40rem" busyIndicatorDelay="0">
+		<VBox width="40rem">
+			<Table items="{ImsActionTrail>/header}" width="40rem">
+				<columns>
+					<Column width="12em" hAlign="Center">
+						<Text text="Document Number"/>
+					</Column>
+					<Column width="12em" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+						<Text text="Document Date"/>
+					</Column>
+					<Column width="12em" minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
+						<Text text="Recipient GSTIN"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem vAlign="Middle">
+						<cells>
+							<Text text="{ImsActionTrail>docNumber}"/>
+							<Text text="{path:'ImsActionTrail>docDate',formatter:'._getDate'}"/>
+							<Text text="{ImsActionTrail>recipienGstin}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+			<Table items="{ImsActionTrail>/resp}" class="sapUiSmallMarginTop" width="40rem">
+				<columns>
+					<Column width="12em" hAlign="Center">
+						<Text text="S.No."/>
+					</Column>
+					<Column width="12em" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+						<Text text="Action (GSTN)"/>
+					</Column>
+					<Column width="12em" minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
+						<Text text="IMS Get Call Date Time"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem vAlign="Middle">
+						<cells>
+							<Text text="{ImsActionTrail>sno}"/>
+							<Text text="{path:'ImsActionTrail>actionGST',formatter:'._getActionDesc'}"/>
+							<Text text="{ImsActionTrail>actionGSTTimeStamp}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</VBox>
+		<HBox justifyContent="End">
+			<ToolbarSpacer/>
+			<Button text="Close" class="buttoncolor" press="onCloseActionGstin"/>
+		</HBox>
+	</Popover>
+</core:FragmentDefinition>

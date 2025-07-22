@@ -1,0 +1,36 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="dynamicLOGO">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Label text="Entity :" class="sapUiTinyMarginTop" design="Bold"/>
+						<Select items="{logoEntity>/resp}" change="onSelectionChangeEntity" width="12rem" id="idEntityLOGO" class="sapUiTinyMarginBegin">
+							<core:Item key="{logoEntity>entityId}" text="{logoEntity>entityName}"/>
+						</Select>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<Button type="Emphasized" icon="sap-icon://save" text="Submit" id="idLOGOSubmit" press="onSubmit" enabled="false"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel height="100%" class="sapUiNoContentPadding sapUiSmallMarginBottom">
+				<Panel height="100%" class="sapUiNoContentPadding">
+					<HBox class="sapUiSmallMarginTop sapUiSmallMarginBottom">
+						<u:FileUploader id="uceinvFileUpload" width="25rem" name="file" fileType="JPEG,JPG,PNG" sameFilenameAllowed="false" sendXHR="true"
+							style="Emphasized" class="sapUiSmallMarginBegin" tooltip="Upload your file to the local server" uploadComplete="handleUploadComplete"/>
+						<Button text="Upload File" press="handleUploadPress" class="sapUiTinyMarginBegin"/>
+					</HBox>
+					<Image id="image" height="2rem"/>
+				</Panel>
+				<!--<Panel class="sapUiSmallMarginTop">-->
+				<!--	<Image src="images/4-layers.png" alt="On Boarding" densityAware="false" height="2rem" class="sapUiTinyMarginBegin"/>-->
+				<!--</Panel>-->
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

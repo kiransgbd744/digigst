@@ -1,0 +1,105 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="dynamicMC">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<HBox>
+							<Label text="Entity :" class="sapUiTinyMarginTop" design="Bold"/>
+							<Select items="{entityMaker>/resp}" change="onSelectionChangeEntityMaker" width="12rem" id="idEntityELReg1" class="sapUiTinyMarginBegin">
+								<core:Item key="{entityMaker>entityId}" text="{entityMaker>entityName}"/>
+							</Select>
+						</HBox>
+						<HBox class="sapUiTinyMarginBegin">
+							<Label text="Return Type :" class=" sapUiTinyMarginTop"/>
+							<Select class="sapUiTinyMarginBegin" id="RTid" forceSelection="true" width="12rem">
+								<core:Item key="GSTR1" text="GSTR-1"/>
+								<core:Item key="GSTR3B" text="GSTR-3B"/>
+								<core:Item key="GSTR6" text="GSTR-6"/>
+								<core:Item key="GSTR7" text="GSTR-7"/>
+								<core:Item key="ITC04" text="ITC04"/>
+								<core:Item key="GSTR9" text="GSTR-9"/>
+							</Select>
+						</HBox>
+						<Button text="Go" type="Emphasized" press="onPressGo1" class="sapUiTinyMarginBegin"/>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<HBox>
+						<Button text="Report Download" press="onExportExcel" class="sapUiTinyMarginEnd"/>
+						<Button type="Emphasized" icon="sap-icon://save" text="Submit" press="onSubmitMaker" class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
+						<!--<Button type="Accept" icon="sap-icon://edit" tooltip="Edit rows" id="idMCEditrow" press="onEditRowsMaker" class="sapUiTinyMarginBegin"/>-->
+					</HBox>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<!--<Panel class="sapUiNoContentPadding">-->
+			<!--	<VBox>-->
+			<!--<SegmentedButton id="idActionInformationDistGstr6" selectedKey="API" selectionChange="onAPICallChangeSegment">-->
+			<!--	<items>-->
+			<!--		<SegmentedButtonItem text="GSTR-1" key="GSTR1"/>-->
+			<!--		<SegmentedButtonItem text="GSTR-3B" key="GSTR3B"/>-->
+			<!--		<SegmentedButtonItem text="GSTR-6" key="GSTR6"/>-->
+			<!--		<SegmentedButtonItem text="GSTR-7" key="GSTR7"/>-->
+			<!--		<SegmentedButtonItem text="ITC04" key="ITC04"/>-->
+			<!--		<SegmentedButtonItem text="GSTR-9" key="GSTR9"/>-->
+			<!--	</items>-->
+			<!--</SegmentedButton>-->
+			<ui:Table id="idTableMC" rows="{Maker>/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10" fixedRowCount="0"
+				enableSelectAll="false">
+				<ui:columns>
+					<ui:Column width="" headerSpan="1" class="columnLine" hAlign="Center">
+						<ui:multiLabels>
+							<Label text="GSTIN" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{Maker>gstin}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="" hAlign="Center">
+						<ui:multiLabels>
+							<Label text="Maker User ID" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<!--<MultiComboBox width="100%">
+										<core:Item key="all" text="All"/>
+										<core:Item key="GSTR1" text="P000066(Mohit@in.ey.com)"/>
+										<core:Item key="GSTR3B" text="P000089(Vishal@in.ey.com)"/>
+										<core:Item key="GSTR6" text="P000056(Raj@in.ey.com)"/>
+									</MultiComboBox>-->
+							<MultiComboBox items="{Maker>makerMailIds}" width="70%" selectedKeys="{Maker>selectedMakers}" editable="{Maker>edit}">
+								<core:Item key="{Maker>userEmailStr}" text="{Maker>userEmailStr}"/>
+							</MultiComboBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="" hAlign="Center">
+						<ui:multiLabels>
+							<Label text="Checker User ID" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<MultiComboBox items="{Maker>checkerMailIds}" width="70%" selectedKeys="{Maker>selectedCheckers}" selectionChange="onChecker">
+								<core:Item key="{Maker>userEmailStr}" text="{Maker>userEmailStr}"/>
+							</MultiComboBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="" hAlign="Center">
+						<ui:multiLabels>
+							<Label text="Checker Notification to" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<MultiComboBox width="70%">
+								<core:Item key="ERP" text="ERP"/>
+								<core:Item key="Cloud" text="Cloud"/>
+							</MultiComboBox>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+			<!--	</VBox>-->
+			<!--</Panel>-->
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

@@ -1,0 +1,257 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.gst.controller.gstrTwo" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:c="sap.ui.core">
+	<f:DynamicPage id="IdDPMatchinggstrTwo">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading></f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="true">
+				<f:content>
+					<fb:FilterBar  showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false" class="sapUiNoContentPadding">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Criteria" visibleInFilterBar="true">
+								<fb:control>
+									<Select forceSelection="true" change="onSelectChange" items="{ path: 'DropDown>/criteria' }">
+										<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="To Tax period" visibleInFilterBar="true">
+								<fb:control>
+									<MultiComboBox id="totaxperiod" items="{GSTTo Tax periodIN>/}" change="onSelectChange" width="100%">
+										<core:Item key="{To Tax period>key}" text="{To Tax period>text}"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<ui:Table id="idmatchtable" rows="{match2aprgmodel>/resp}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="5"
+					fixedRowCount="1" fixedColumnCount="2" enableSelectAll="false">
+					<ui:Column width="7rem">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="Section" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{match2aprgmodel>section}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column id="idmatchtable2" hAlign="End" width="8rem">
+						<ui:multiLabels>
+							<Label text="Difference" textAlign="Center" width="100%" wrapping="true" design="Bold"
+								tooltip="Diffrenece between data sent by SAP and data recieved by ASP"/>
+							<Label text="(In Count)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<HBox alignItems="Start" justifyContent="End">
+								<Text text="{match2aprgmodel>diffCount}"/>
+								<!--<Text text="{Data>diff}"/>-->
+								<!--<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>-->
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column id="idmatchtable3" headerSpan="6" hAlign="End" width="7rem">
+						<ui:multiLabels>
+							<Label text="2A" textAlign="Center" width="100%" design="Bold"/>
+							<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<HBox alignItems="Start" justifyContent="End">
+								<Text text="{match2aprgmodel>count2A}"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="8rem">
+						<ui:multiLabels>
+							<Label text="2A" design="Bold"/>
+							<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<HBox alignItems="Start" justifyContent="End">
+								<Text text="{match2aprgmodel>taxableValue2A}"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<ui:multiLabels>
+							<Label text="2A" textAlign="Center" width="100%" design="Bold"/>
+							<HBox alignItems="Start" justifyContent="Center">
+								<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<!--	<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"/>-->
+							</HBox>
+						</ui:multiLabels>
+						<ui:template>
+							<HBox alignItems="Start" justifyContent="End">
+								<Text text="{match2aprgmodel>igst2A}"/>
+								<!--<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>-->
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="9rem">
+						<ui:multiLabels>
+							<Label text="2A" textAlign="Center" width="100%" design="Bold"/>
+							<HBox alignItems="Start" justifyContent="Center">
+								<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold" tooltip="Information is part of Processed records"/>
+								<!--	<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"/>-->
+							</HBox>
+						</ui:multiLabels>
+						<ui:template>
+							<HBox alignItems="Start" justifyContent="End">
+								<Text text="{match2aprgmodel>cgst2A}"/>
+								<!--	<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>-->
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="9rem">
+						<ui:multiLabels>
+							<Label text="2A" textAlign="Center" width="100%" design="Bold"/>
+							<HBox alignItems="Start" justifyContent="Center">
+								<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold" tooltip="Rectified"/>
+								<!--	<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Rectified Catalog" class="sapUiTinyMarginBegin"/>-->
+							</HBox>
+						</ui:multiLabels>
+						<ui:template>
+							<HBox alignItems="Start" justifyContent="End">
+								<Text text="{match2aprgmodel>sgst2A}"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<ui:multiLabels>
+							<Label text="2A" design="Bold"/>
+							<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{match2aprgmodel>cess2A}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column id="idmatchtable4" headerSpan="6" hAlign="End" width="8rem">
+						<ui:multiLabels>
+							<Label text="PR" design="Bold" textAlign="Center" width="100%"/>
+							<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<HBox alignItems="Start" justifyContent="End">
+								<Text text="{match2aprgmodel>prCount}"/>
+								<!--<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" visible="{=${Data>GSTIN/Process}==='0'?false:true}"/>-->
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<ui:multiLabels>
+							<Label text="PR" design="Bold"/>
+							<HBox alignItems="Start" justifyContent="Center">
+								<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<!--	<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"/>-->
+							</HBox>
+						</ui:multiLabels>
+						<ui:template>
+							<HBox alignItems="Start" justifyContent="End">
+								<Text text="{match2aprgmodel>prTaxableValue}"/>
+								<!--	<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" visible="{=${Data>GSTIN/Error}==='0'?false:true}"/>-->
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<ui:multiLabels>
+							<Label text="PR" design="Bold"/>
+							<HBox alignItems="Start" justifyContent="Center">
+								<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<!--<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"/>-->
+							</HBox>
+						</ui:multiLabels>
+						<ui:template>
+							<HBox alignItems="Start" justifyContent="End">
+								<Text text="{match2aprgmodel>prIgst}"/>
+								<!--	<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" visible="{=${Data>GSTIN/Error}==='0'?false:true}"/>-->
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<ui:multiLabels>
+							<Label text="PR" design="Bold"/>
+							<HBox alignItems="Start" justifyContent="Center">
+								<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<!--<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"/>-->
+							</HBox>
+						</ui:multiLabels>
+						<ui:template>
+							<HBox alignItems="Start" justifyContent="End">
+								<Text text="{match2aprgmodel>prCgst}"/>
+								<!--<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" visible="{=${Data>GSTIN/Error}==='0'?false:true}"/>-->
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<ui:multiLabels>
+							<Label text="PR" design="Bold"/>
+							<HBox alignItems="Start" justifyContent="Center">
+								<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<!--<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"/>-->
+							</HBox>
+						</ui:multiLabels>
+						<ui:template>
+							<HBox alignItems="Start" justifyContent="End">
+								<Text text="{match2aprgmodel>prSgst}"/>
+								<!--	<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" visible="{=${Data>GSTIN/Error}==='0'?false:true}"/>-->
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<ui:multiLabels>
+							<Label text="PR" design="Bold"/>
+							<HBox alignItems="Start" justifyContent="Center">
+								<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<!--	<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"/>-->
+							</HBox>
+						</ui:multiLabels>
+						<ui:template>
+							<HBox alignItems="Start" justifyContent="End">
+								<Text text="{match2aprgmodel>prCess}"/>
+								<!--	<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" visible="{=${Data>GSTIN/Error}==='0'?false:true}"/>-->
+							</HBox>
+						</ui:template>
+					</ui:Column>
+				</ui:Table>
+			<Toolbar >
+					<Label text="Report **" design="Bold"></Label>
+					<Button icon="sap-icon://hint"></Button>
+					<ToolbarSpacer/>
+					<Button text="Initiate Matching"></Button>
+				</Toolbar >
+				<layout:Grid defaultSpan="L3 M3 S12" vSpacing="0">
+					<layout:content>
+						<CheckBox text="Absolute Match" selected=""/>
+						<CheckBox text=" Mismatch" selected=""/>
+						<CheckBox text="Potential Match(Gold)" selected=""/>
+						<CheckBox text="Potential Match(Silver)" selected=""/>
+					
+						<CheckBox text="Addition in PR" selected=""/>
+						<CheckBox text="Addition in 2A" selected=""/>
+						<CheckBox text="Document Number Mismatch" selected=""/>
+					
+						<CheckBox text="Consolidated GSTER 2A" selected=""/>
+						<CheckBox text="Consolidated PR Register" selected=""/>
+						<CheckBox text="Summary Report_tax Period" selected=""/>
+						<CheckBox text="Summary Report_Calender Period" selected=""/>
+						
+						<CheckBox text="Supplier GSTN Summary Report" selected=""/>
+						<CheckBox text="Supplier Pan Summary Report" selected=""/>
+					
+					</layout:content>
+				</layout:Grid>
+			
+				<Label text="** Select report types and initiate matching " class="red" design="Bold"></Label>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

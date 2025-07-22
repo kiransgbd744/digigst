@@ -1,0 +1,1486 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table">
+	<f:DynamicPage id="dpAnx1a" visible="false" class="cl_dpScroll">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" class="sapUiTinyMarginEnd" press="onPressBackAnx1a"/>
+						<Title text="ANX-1A" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false">
+					<fb:filterGroupItems>
+						<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="true" mandatory="true">-->
+						<!--	<fb:control>-->
+						<!--		<Select id="slAnx1aSummEntity" items="{EntityModel>/}" change="onEntityChange">-->
+						<!--			<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>-->
+						<!--		</Select>-->
+						<!--	</fb:control>-->
+						<!--</fb:FilterGroupItem>-->
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label=" GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" id="id_gstinMultiBox">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Tax Period" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<DatePicker id="drsAnx1aPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="onDateChange"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button icon="sap-icon://filter" type="Default" tooltip="Adapt Filters" id="bProcessFilterSummaryAnx1A" press="onPressAdaptFiltersAnx1A"
+						class="sapUiTinyMarginBegin"/>
+					<Button text="Clear" class="sapUiTinyMarginBeginEnd" press="clearAdpatFilter"/>
+					<Button text="Go" type="Emphasized" press="onPressAnx1aSummaryGO" class="sapUiTinyMarginBegin"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel id="iPanelProcessa1a">
+				<headerToolbar>
+					<Toolbar height="3.2rem">
+						<VBox visible="false">
+							<Label text="View"/>
+							<Select id="slViewAnx1a1a" items="{DropDown>/summary}" change="onFilterChange" width="7rem">
+								<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+							</Select>
+						</VBox>
+						<SegmentedButton id="itemsegment1a" selectedKey="summary" selectionChange="onSelectionChangeAnx1asegment" class="sapUiSmallMarginTop">
+							<items>
+								<SegmentedButtonItem text="Summary" key="summary"/>
+								<SegmentedButtonItem text="Detailed" key="details"/>
+							</items>
+						</SegmentedButton>
+						<VBox visible="{VisiSummary>/details}">
+							<Text text="{AnxSummary>}"/>
+							<HBox>
+								<Button type="Ghost" id="bExpAnx1a" icon="sap-icon://expand-all" tooltip="{i18n>expand}" press="onPressExpandCollapseAnx1a"
+									class="sapUiTinyMarginEnd"/>
+								<Button type="Ghost" id="bColAnx1a" icon="sap-icon://collapse-all" tooltip="{i18n>collapse}" press="onPressExpandCollapseAnx1a"/>
+							</HBox>
+						</VBox>
+						<VBox visible="{VisiSummary>/details}">
+							<Label text="Doc Type" class="sapUiTinyMarginBegin"/>
+							<Select id="slDocTypeAnx1a1a" items="{DropDown>/docType}" change="onFilterChange" width="9rem">
+								<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+							</Select>
+						</VBox>
+						<ToolbarSpacer/>
+						<VBox>
+							<Text text="{AnxSummary>}"/>
+							<HBox>
+								<Button type="Emphasized" text="Save Status" press="onPressCheckStatus" class="sapUiTinyMarginEnd" enabled="false"/>
+								<MenuButton id="bErrCorrecta1a" type="Emphasized" text="Online Error Correction" class="sapUiTinyMarginEnd">
+									<Menu id="bErrorCorranx1ASummry" itemSelected="onPressErrorCorrection">
+										<MenuItem key="asp" text="ASP"/>
+										<MenuItem key="gstn" text="GSTN"/>
+									</Menu>
+								</MenuButton>
+								<MenuButton type="Emphasized" text="Download Report" class="sapUiTinyMarginEnd">
+									<Menu itemSelected="onMenuItemPressAnx1down">
+										<MenuItem text="ASP Processed Data(As Uploaded)" key="processLineItem" enabled="false"/>
+										<MenuItem text="ASP Proceessed Data(Save-able)" key="processRate" enabled="false"/>
+										<MenuItem text="Saved / Submitted Records" key="submitted" enabled="false"/>
+										<MenuItem text="Records available for Amendment" key="amendRecord" enabled="false"/>
+										<MenuItem text="Consolidated ASP Error" key="digiError" enabled="false"/>
+										<MenuItem text="Consolidated GSTN Error" key="gstnError" enabled="false"/>
+									</Menu>
+								</MenuButton>
+								<Button type="Reject" text="Delete Data" class="sapUiTinyMarginEnd" press="fnDeleteProcessPress" enabled="false"/>
+							</HBox>
+						</VBox>
+						<VBox>
+							<Text text="Jun 06, 2019, 16:06:26"/>
+							<Button type="Emphasized" text="Request for Approval" press="fnsPressgstr1Request2" class="sapUiTinyMarginEnd" enabled="false"/>
+						</VBox>
+						<VBox>
+							<Text text="Jun 06, 2019, 16:06:26"/>
+							<Button type="Accept" text="Save to GSTN" class="sapUiTinyMarginEnd" press="fnSaveGstnProcessPress" width="10rem" enabled="false"/>
+						</VBox>
+						<VBox>
+							<Text id="anx1Time1a" text="Jun 06, 2019, 16:06:26"/>
+							<HBox>
+								<Button type="Ghost" text="Update GSTN Data" icon="sap-icon://refresh" enabled="false"/>
+								<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" press="onExportExcel" enabled="false"/>
+								<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="Download Pdf" enabled="false"/>
+							</HBox>
+						</VBox>
+					</Toolbar>
+				</headerToolbar>
+				<content>
+					<l:BlockLayout background="Dashboard" class="cl_shadow" id="id_Anx1aBlockLayout">
+						<l:BlockLayoutRow class="sapUiNoContentPadding">
+							<l:BlockLayoutCell id="id_BlCella1a" width="13">
+								<Toolbar height="2.2rem" class="supplToolbar supplToolbarCol">
+									<Label text="Outward Supply" design="Bold" textAlign="Center" width="100%"/>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTopBottom">
+									<VBox width="3rem">
+										<Text/>
+										<Label text="ASP" class="sapUiTinyMarginBegin sapUiTinyMarginTop" design="Bold"/>
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label text="Outward Supply" design="Bold"/>
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Asp/outwardSup', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="204703584.00" class="sapUiTinyMarginTop"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label text="Total Tax" design="Bold"/>
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Asp/totalTax', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="34799609.28" class="sapUiTinyMarginTop"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label text="IGST" design="Bold"/>
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Asp/igst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="13919843.71" class="sapUiTinyMarginTop"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label text="CGST" design="Bold"/>
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Asp/cgst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="10439882.78" class="sapUiTinyMarginTop"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label text="SGST" design="Bold"/>
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Asp/sgst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="10439882.78" class="sapUiTinyMarginTop"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label text="CESS" design="Bold"/>
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Asp/cess', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="0.00" class="sapUiTinyMarginTop"/>-->
+									</VBox>
+								</HBox>
+								<HBox class="sapUiTinyMarginTopBottom" visible="false" id="oHboxGstna1a">
+									<VBox width="3rem">
+										<Label text="GSTN" class="sapUiTinyMarginBegin" design="Bold"/>
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Gstn/outwardSup', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="163762867.20"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Gstn/totalTax', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="27839687.42"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Gstn/igst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="11135874.97"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Gstn/cgst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="8351906.23"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Gstn/sgst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="8351906.23"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Gstn/cess', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="0.00"/>-->
+									</VBox>
+								</HBox>
+								<HBox class="sapUiTinyMarginTopBottom" visible="false" id="oHboxDiffa1a">
+									<VBox width="3rem">
+										<Label text="Diff" class="sapUiTinyMarginBegin" design="Bold"/>
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Diff/outwardSup', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="34117264.00"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Diff/totalTax', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="5799934.88"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Diff/igst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="2319973.95"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Diff/cgst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="1739980.46"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Diff/sgst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="1739980.46"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Diff/cess', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="0.00"/>-->
+									</VBox>
+								</HBox>
+							</l:BlockLayoutCell>
+							<l:BlockLayoutCell width="12">
+								<Toolbar height="2.2rem" class="supplToolbar supplToolbarCol">
+									<Label text="Inward Supply" design="Bold" textAlign="Center" width="100%"/>
+									<core:Icon id="iMorea1a" src="sap-icon://navigation-down-arrow" tooltip="More" press="fnMoreLessPress1" color="white"/>
+									<core:Icon id="iLessa1a" src="sap-icon://navigation-up-arrow" tooltip="Less" press="fnMoreLessPress1" visible="false" color="white"/>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTopBottom">
+									<VBox alignItems="Center" width="16%">
+										<Label text="Inward Supply" design="Bold"/>
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Inward/Asp/outwardSup', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="109175244.80" class="sapUiTinyMarginTop"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label text="Total ITC" design="Bold"/>
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Diff/totalTax', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="14847833.29" class="sapUiTinyMarginTop"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label text="IGST" design="Bold"/>
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Diff/igst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="5939133.32" class="sapUiTinyMarginTop"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label text="CGST" design="Bold"/>
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Diff/cgst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="4454349.99" class="sapUiTinyMarginTop"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label text="SGST" design="Bold"/>
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Diff/sgst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="4454349.99" class="sapUiTinyMarginTop"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label text="CESS" design="Bold"/>
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Outward/Diff/cess', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="0.00" class="sapUiTinyMarginTop"/>-->
+									</VBox>
+								</HBox>
+								<HBox class="sapUiTinyMarginTopBottom" id="iHboxGstna1a" visible="false">
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Inward/Gstn/outwardSup', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="87340195.84"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Inward/Gstn/totalTax', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="11878266.63"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Inward/Gstn/igst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="4751306.65"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Inward/Gstn/cgst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="3563479.99"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Inward/Gstn/sgst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="3563479.99"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Inward/Gstn/cess', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="0.00"/>-->
+									</VBox>
+								</HBox>
+								<HBox class="sapUiTinyMarginTopBottom" id="iHboxDiffa1a" visible="false">
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Inward/Diff/outwardSup', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="21835048.96"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Inward/Diff/totalTax', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="2969566.66"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Inward/Diff/igst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="1187826.66"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Inward/Diff/cgst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="890870.00"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Inward/Diff/sgst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="890870.00"/>-->
+									</VBox>
+									<VBox alignItems="Center" width="16%">
+										<Label design="Bold" text="{path : 'ANX1ASUM>/Inward/Diff/cess', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+										<!--<Text text="0.00"/>-->
+									</VBox>
+								</HBox>
+							</l:BlockLayoutCell>
+						</l:BlockLayoutRow>
+					</l:BlockLayout>
+					<ui:Table id="tabOutward1a" rows="{ProcessSummaryAnx1aSummary>/resp/outward}" selectionMode="None" fixedColumnCount="1" visibleRowCount="3"
+						visible="true" class="cl_tabclass">
+						<ui:extension>
+							<Toolbar>
+								<Label text="Showing:" design="Bold"/>
+								<CheckBox selected="{visiSummAnx1A>/asp}" editable="{=!${visiSummAnx1A>/eAsp}}" select="onSelectCheckBoxAnx1A" text="{i18n>asp}"/>
+								<CheckBox selected="{visiSummAnx1A>/gstn}" editable="{=!${visiSummAnx1A>/eGstn}}" select="onSelectCheckBoxAnx1A" text="{i18n>gstn}"/>
+								<CheckBox selected="{visiSummAnx1A>/diff}" editable="{=!${visiSummAnx1A>/eDiff}}" select="onSelectCheckBoxAnx1A" text="{i18n>difference}"/>
+								<ToolbarSpacer/>
+								<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" press="onDownloadSummary" visible="false"/>
+								<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="Download Pdf" visible="false"/>
+							</Toolbar>
+						</ui:extension>
+						<ui:columns>
+							<ui:Column width="18rem">
+								<Label text="Amendment of Outward" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Link text="{path : 'ProcessSummaryAnx1aSummary>table', formatter : '.aspValueFormat'}" press="onpressB2banx1"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="8rem" headerSpan="8" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text="ASP" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{ProcessSummaryAnx1aSummary>aspCount}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Invoice Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspInvoiceValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspTaxableValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Total Tax" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspTaxPayble'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}" name="cellBorderRight">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="8rem" headerSpan="8" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text="GSTN" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{ProcessSummaryAnx1aSummary>gstnCount}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Invoice Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnInvoiceValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnTaxableValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Total Tax" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnTaxPayble'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="8rem" headerSpan="8" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text="Difference" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{ProcessSummaryAnx1aSummary>diffCount}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Invoice Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffInvoiceValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffTaxableValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Total Tax" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffTaxPayble'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+					</ui:Table>
+					<ui:Table id="tabInward1a" rows="{ProcessSummaryAnx1aSummary>/resp/inward}" selectionMode="None" fixedColumnCount="1" visibleRowCount="4"
+						visible="true" class="sapUiTinyMarginTop sapUiLargeMarginBottom">
+						<ui:columns>
+							<ui:Column width="18rem">
+								<Label text="Amendment of Inward" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Link text="{path : 'ProcessSummaryAnx1aSummary>table', formatter : '.aspValueFormat'}" press="onpressRevcharge"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="8rem" headerSpan="8" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text="ASP" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{ProcessSummaryAnx1aSummary>aspCount}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Invoice Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspInvoiceValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspTaxableValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Total Tax" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspTaxPayble'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="8rem" headerSpan="8" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text="GSTN" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{ProcessSummaryAnx1aSummary>gstnCount}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Invoice Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnInvoiceValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnTaxableValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Total Tax" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnTaxPayble'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="8rem" headerSpan="8" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text="Difference" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{ProcessSummaryAnx1aSummary>diffCount}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Invoice Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffInvoiceValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffTaxableValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Total Tax" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffTaxPayble'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+					</ui:Table>
+					<ui:TreeTable id="tabOutwarda1a"
+						rows="{path:'ProcessSummaryAnx1aSummary>/resp/outward/', parameters:{ arrayNames:['items'], numberOfExpandedLevels:1 }}"
+						selectionMode="None" fixedColumnCount="1" visibleRowCount="12" visible="false" toggleOpenState="onPressToggle" class="cl_tabclass">
+						<ui:extension>
+							<Toolbar>
+								<Label text="Showing:" design="Bold"/>
+								<CheckBox selected="{visiSummAnx1A>/asp}" editable="{=!${visiSummAnx1A>/eAsp}}" select="onSelectCheckBoxAnx1A" text="ASP"/>
+								<CheckBox selected="{visiSummAnx1A>/gstn}" editable="{=!${visiSummAnx1A>/eGstn}}" select="onSelectCheckBoxAnx1A" text="GSTN"/>
+								<CheckBox selected="{visiSummAnx1A>/diff}" editable="{=!${visiSummAnx1A>/eDiff}}" select="onSelectCheckBoxAnx1A" text="Difference"/>
+								<ToolbarSpacer/>
+								<!--	<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary"/>-->
+								<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" press="onDownloadSummary" visible="false"/>
+								<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="Download Pdf" class="sapUiTinyMarginEnd" visible="false"/>
+							</Toolbar>
+						</ui:extension>
+						<ui:columns>
+							<ui:Column width="18rem">
+								<Label text="Amendment of Outward" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Link text="{path : 'ProcessSummaryAnx1aSummary>table', formatter : '.aspValueFormat'}" press="onpressB2banx1"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="8rem" headerSpan="8" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text="ASP" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{ProcessSummaryAnx1aSummary>aspCount}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Invoice Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspInvoiceValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspTaxableValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Total Tax" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspTaxPayble'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}" name="cellBorderRight">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="8rem" headerSpan="8" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text="GSTN" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{ProcessSummaryAnx1aSummary>gstnCount}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Invoice Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnInvoiceValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnTaxableValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Total Tax" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnTaxPayble'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="8rem" headerSpan="8" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text="Difference" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{ProcessSummaryAnx1aSummary>diffCount}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Invoice Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffInvoiceValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffTaxableValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Total Tax" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffTaxPayble'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+					</ui:TreeTable>
+					<ui:TreeTable id="tabInwarda1a"
+						rows="{path:'ProcessSummaryAnx1aSummary>/resp/inward/', parameters:{ arrayNames:['items'], numberOfExpandedLevels:1 }}" selectionMode="None"
+						fixedColumnCount="1" visibleRowCount="16" visible="false" toggleOpenState="onPressToggle" class="sapUiTinyMarginTop sapUiLargeMarginBottom">
+						<ui:columns>
+							<ui:Column width="18rem">
+								<Label text="Amendment of Inward" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Link text="{path : 'ProcessSummaryAnx1aSummary>table', formatter : '.aspValueFormat'}" press="onpressRevcharge"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="8rem" headerSpan="8" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text="ASP" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{ProcessSummaryAnx1aSummary>aspCount}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Invoice Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspInvoiceValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspTaxableValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Total Tax" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspTaxPayble'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="8rem" headerSpan="8" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text="GSTN" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{ProcessSummaryAnx1aSummary>gstnCount}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Invoice Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnInvoiceValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnTaxableValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Total Tax" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnTaxPayble'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="8rem" headerSpan="8" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text="Difference" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{ProcessSummaryAnx1aSummary>diffCount}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Invoice Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffInvoiceValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffTaxableValue'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Total Tax" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffTaxPayble'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+					</ui:TreeTable>
+					<ui:Table id="tabEcom1a" rows="{ProcessSummaryAnx1aSummary>/resp/supplies}" selectionMode="None" fixedColumnCount="1" visibleRowCount="1"
+						visible="true" class="sapUiTinyMarginTop sapUiLargeMarginBottom">
+						<ui:columns>
+							<ui:Column width="18rem">
+								<Label text="Amendment of Ecom Supplies" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Text text="{ProcessSummaryAnx1aSummary>table}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="8rem" headerSpan="8" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text="ASP" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="Supplies Made" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{ProcessSummaryAnx1aSummary>aspSupplyMade}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Supplies Returned" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspSupplyReturn'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Net Supplies" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspNetSupply'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Total Tax" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspTaxPayble'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/asp}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>aspCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="8rem" headerSpan="8" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text="GSTN" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="Supplies Made" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{ProcessSummaryAnx1aSummary>gstnSupplyMade}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Supplies Returned" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnSupplyReturn'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Net Supplies" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnNetSupply'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Total Tax" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnTaxPayble'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/gstn}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>gstnCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="8rem" headerSpan="8" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text="Difference" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="Supplies Made" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{ProcessSummaryAnx1aSummary>diffSupplyMade}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Supplies Returned" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffSupplyReturn'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Net Supplies" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffNetSupply'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Total Tax" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffTaxPayble'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{visiSummAnx1A>/diff}">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'ProcessSummaryAnx1aSummary>diffCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+						<ui:footer>
+							<Toolbar>
+								<core:Icon src="sap-icon://favorite" size="0.60rem" class="sapUiTinyMarginBottom" color="red"/>
+								<Text
+									text="This is an approximate value computed as per the logic shared by GSTN (Taxable Value * Tax Rate, rounded off to two decimal places)"/>
+							</Toolbar>
+						</ui:footer>
+					</ui:Table>
+				</content>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

@@ -1,0 +1,43 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.gst.controller.newReturns" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core"
+	xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:vm="sap.ui.comp.variants"
+	xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt">
+	<IconTabBar expanded="true" id="iditbAnnexure2" select="handleIconTabBarSelect"
+		class="sapUiNoContentPadding sapUiSmallMarginBottom clABC iconTabbarTopMargin" backgroundDesign="Transparent" stretchContentHeight="true"
+		selectedKey="PRSummarySW" expandable="false">
+		<items>
+			<IconTabFilter text="PR Summary" tooltip="PR Summary" key="PRSummarySW">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.anx2.PRSummary" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="GET ANX-2" tooltip="GET ANX-2 (2A)" key="GETANX22A112">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.anx2.GETANX22A" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="ANX-2 &amp; PR Summary" tooltip="Checking" key="Checking1">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.anx2.InitiateRecon" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="ITC Management" tooltip="Recon Results" key="ReconResults">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.anx2.ReconResults" type="XML"/>
+			</IconTabFilter>
+			<!--<IconTabFilter text="Recon Response " tooltip="Recon Response" key="ReconResponse1">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.anx2.ReconResponse1" type="XML"/>
+			</IconTabFilter>-->
+			<IconTabFilter text="RET - 1 Impact" tooltip="RET - 1 Impact" key="RET1Impact">
+				<!--<core:Fragment fragmentName="com.ey.digigst.fragments.anx2.RET1Impact" type="XML"/>-->
+			</IconTabFilter>
+			<IconTabFilter text="Save ANX-2" tooltip="Save ANX-2" key="ANX2Summary">
+				<!--<core:Fragment fragmentName="com.ey.digigst.fragments.anx2.SaveA" type="XML"/>-->
+			</IconTabFilter>
+			<IconTabFilter text="Vendor Summary" tooltip="Vendor Summary" key="VendorSummary">
+				<!--<core:Fragment fragmentName="com.ey.digigst.fragments.anx2.VendorSummary" type="XML"/>-->
+			</IconTabFilter>
+			<IconTabFilter text="Vendor Communication" tooltip="Vendor Communication" key="VendorCommunication">
+				<!--<core:Fragment fragmentName="com.ey.digigst.fragments.anx2.VendorCommunication" type="XML"/>-->
+			</IconTabFilter>
+			<IconTabFilter text="Compare Results" tooltip="Compare Results" key="Checkingscreen">
+				<!--<core:Fragment fragmentName="com.ey.digigst.fragments.anx2.GetAnxcheck" type="XML"/>-->
+			</IconTabFilter>
+			<IconTabFilter text="Recon Reports" tooltip="Recon Reports" key="AdditionalReconResults">
+				<!--<core:Fragment fragmentName="com.ey.digigst.fragments.anx2.ReconResults" type="XML"/>-->
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</core:FragmentDefinition>

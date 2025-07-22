@@ -1,0 +1,68 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:commons="sap.suite.ui.commons" xmlns:ui="sap.ui.table">
+	<commons:ChartContainer id="idChartGstr9" visible="false" showFullScreen="true" class="cl_ChartConHeight" showPersonalization="false"
+		autoAdjustHeight="false">
+		<commons:content>
+			<commons:ChartContainerContent icon="sap-icon://table-view">
+				<commons:content>
+					<ui:Table id="id_Gstr9Tab" rows="{GSTR9Table>/apiGstinDetails}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="11"
+						fixedRowCount="0" fixedColumnCount="0" enableSelectAll="true" rowSelectionChange="onSelectionGstn">
+						<ui:columns>
+							<ui:Column hAlign="Center" width="15rem">
+								<Label text="GSTIN" textAlign="Center" width="100%" design="Bold"/>
+								<ui:template>
+									<HBox alignContent="Center" justifyContent="SpaceBetween">
+										<Label text="{GSTR9Table>gstin}" design="Bold" textAlign="Center" width="100%"/>
+										<core:Icon src="sap-icon://circle-task-2" size="0.8rem" visible="{=${GSTR9Table>authStatus}===''?false:true}"
+											tooltip="{=${GSTR9Table>authStatus}==='A'?'Active':'Inactive'}" color="{=${GSTR9Table>authStatus}==='A'?'#00ff00':'red'}"
+											press="onPressGenerateOTP" class="sapUiTinyMarginBegin"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<Label text="Registration Type" textAlign="Center" width="100%" design="Bold"/>
+								<ui:template>
+									<Text text="{GSTR9Table>registrationType}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<Label text="Financial Year" textAlign="Center" width="100%" design="Bold"/>
+								<ui:template>
+									<Text text="{GSTR9Table>/fy}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<Label text="Get Call Status" textAlign="Center" width="100%" design="Bold"/>
+								<ui:template>
+									<ObjectStatus text="{GSTR9Table>status}" state="{path:'GSTR9Table>status', formatter:'.GstrStatus'}" class="sapUiTinyMarginBegin"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<Label text="Get Call Date" textAlign="Center" width="100%" design="Bold"/>
+								<ui:template>
+									<Text text="{GSTR9Table>getCallDate}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<Label text="Get Call Time" textAlign="Center" width="100%" design="Bold"/>
+								<ui:template>
+									<Text text="{GSTR9Table>getCallTime}"/>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+					</ui:Table>
+				</commons:content>
+			</commons:ChartContainerContent >
+		</commons:content>
+		<commons:toolbar>
+			<OverflowToolbar>
+				<CheckBox selected="" class="" text="Select All" visible="false"/>
+				<ToolbarSpacer/>
+				<Button class="buttoncolorSec" text="Initiate Get Call" ariaLabelledBy="actionButtonLabel" press="onGetStatus"
+					enabled="{= ${userPermission>/appPermission/P99}}"/>
+				<Button class="buttoncolorSec" text="Gstr1 Reports" ariaLabelledBy="actionButtonLabel" press="Gstr1Reports" visible="false"/>
+				<Button press="GSTR9APIDownld" class="buttoncolorSec" text="Download Report" enabled="{= ${userPermission>/appPermission/P99}}"/>
+				<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+			</OverflowToolbar>
+		</commons:toolbar>
+	</commons:ChartContainer>
+</core:FragmentDefinition>

@@ -1,0 +1,33 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.oExtraction1"
+	xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:C="sap.ui.codeeditor" busyIndicatorDelay="0"
+	class="sapUiNoContentPadding sapUiSizeCompact">
+	<IconTabBar expanded="true" id="idIconTabBar" select="handleIconTabBarSelect" class="sapUiNoContentPadding clOther"
+		backgroundDesign="Transparent" stretchContentHeight="true" selectedKey="FileUpload" expandable="false" applyContentPadding="false">
+		<items>
+			<IconTabFilter id="itFileUpload" icon="sap-icon://trip-report" text="Select Event" tooltip="Select Event" key="SelectEvent"
+				design="Vertical">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.Extraction.ManageNIC1" type="XML"/>
+				<!--<core:Fragment fragmentName="com.nic.NICCredential.Fragments.ManageNIC" type="XML"/>-->
+			</IconTabFilter>
+			<IconTabFilter id="itERPDetails3" icon="sap-icon://ppt-attachment" text="Extraction Design" tooltip="Extraction Design"
+				key="ExtractionMetadata" design="Vertical">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.Extraction.DynamicSql1" type="XML"/>
+				<!--<core:Fragment fragmentName="com.nic.NICCredential.Fragments.DynamicSql" type="XML"/>-->
+			</IconTabFilter>
+			<IconTabFilter id="itERPDetails" icon="sap-icon://ppt-attachment" text="Entity Designer" tooltip="Entity Designer" key="DefineMapping"
+				design="Vertical">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.Extraction.DwnldPayld1" type="XML"/>
+				<!--<core:Fragment fragmentName="com.nic.NICCredential.Fragments.DwnldPayld" type="XML"/>-->
+			</IconTabFilter>
+			<IconTabFilter id="itFileUpload2" icon="sap-icon://trip-report" text="Custom Entity" tooltip="Custom Entity" key="CustomEntity"
+				design="Vertical">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.Extraction.CustomEntity1" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter id="itERPDetails4" icon="sap-icon://ppt-attachment" text="Extraction Result" tooltip="Extraction Result"
+				key="ExtractionResult" design="Vertical">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.Extraction.Extraction1" type="XML"/>
+				<!--<core:Fragment fragmentName="com.nic.NICCredential.Fragments.Extraction" type="XML"/>-->
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</mvc:View>

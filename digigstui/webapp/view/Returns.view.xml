@@ -1,0 +1,29 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.Returns"
+	busyIndicatorDelay="0">
+	<IconTabBar expanded="true" id="idIconTab" select="handleIconTabBarSelect" class="sapUiNoContentPadding sapUiNoMargin clITB"
+		backgroundDesign="Transparent" stretchContentHeight="true" selectedKey="{view>/selectedTabKey}" expandable="false">
+		<items>
+			<IconTabFilter id="ifGSTR1" icon="sap-icon://sales-document" text="GSTR - 1" tooltip="GSTR 1" key="GSTR1"
+				enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P3} || ${userPermission>/appPermission/P35})}"/>
+			<IconTabFilter id="ifGSTR1A" icon="sap-icon://sales-document" text="GSTR - 1A" tooltip="GSTR 1A" key="GSTR1A"
+				enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P3} || ${userPermission>/appPermission/P35})}"/>
+			<IconTabFilter id="ifGSTR3B" icon="sap-icon://activity-individual" text="GSTR - 3B" tooltip="GSTR 3B" key="GSTR3B"
+				enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P4})}"/>
+			<IconTabFilter id="ifGSTR6" icon="sap-icon://document-text" text="GSTR - 6" tooltip="GSTR 6" key="GSTR6"
+				enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P5})}"/>
+			<IconTabFilter id="ifGSTR2" icon="sap-icon://add-activity-2" text="ITC Matching" tooltip="GSTR 2" key="GSTR2"
+				enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P8})}" visible="true"/>
+			<IconTabFilter id="ifGSTR7" icon="sap-icon://employee-pane" text="GSTR - 7 (Summary)" tooltip="GSTR 7 (Summary)" key="GSTR7"
+				enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P6})}"/>
+			<IconTabFilter id="ifGSTR7_TXN" icon="sap-icon://employee-pane" text="GSTR - 7 (Transactional)" tooltip="GSTR 7 (Transactional)"
+				key="GSTR7_TXN" enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P6})}"/>
+			<IconTabFilter id="ifGSTR8" icon="sap-icon://customer-briefing" text="GSTR - 8" tooltip="GSTR 8" key="GSTR8"
+				enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P6})}"/>
+			<IconTabFilter id="ifITC04" icon="sap-icon://home-share" text="ITC - 04" tooltip="ITC 04" key="ITC04"
+				enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P7})}"/>
+			<IconTabFilter id="ifAnx1" icon="sap-icon://expense-report" text="ANX - 1" tooltip="Annexure 1" key="ANX1" enabled="false"/>
+			<IconTabFilter id="ifGSTR9" icon="sap-icon://documents" text="GSTR - 9" tooltip="GSTR - 9" key="GSTR9"
+				enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}"/>
+		</items>
+	</IconTabBar>
+</mvc:View>

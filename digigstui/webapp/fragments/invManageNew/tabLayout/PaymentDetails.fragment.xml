@@ -1,0 +1,106 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table" xmlns:form="sap.ui.layout.form">
+	<l:Grid defaultSpan="L2" hSpacing="2" vSpacing="2" class="sapUiTinyMarginTop">
+		<VBox>
+			<Label text="{i18n>payeeName}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/payeeName}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="payeeName" value="{InvoiceItemModel>/payeeName}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/payeeNameState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/payeeNameText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>modeOfPayment}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/modeOfPayment}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="modeOfPayment" value="{InvoiceItemModel>/modeOfPayment}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/modeOfPaymentState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/modeOfPaymentText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>branchOrIfscCode}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/branchOrIfscCode}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="branchOrIfscCode" value="{InvoiceItemModel>/branchOrIfscCode}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/branchOrIfscCodeState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/branchOrIfscCodeText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>paymentTerms}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/paymentTerms}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="paymentTerms" value="{InvoiceItemModel>/paymentTerms}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/paymentTermsState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/paymentTermsText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>paymentInstruction}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/paymentInstruction}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="paymentInstruction" value="{InvoiceItemModel>/paymentInstruction}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/paymentInstructionState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/paymentInstructionText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>creditTransfer}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/creditTransfer}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="creditTransfer" value="{InvoiceItemModel>/creditTransfer}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/creditTransferState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/creditTransferText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>directDebit}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/directDebit}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="directDebit" value="{InvoiceItemModel>/directDebit}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/directDebitState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/directDebitText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>paymentDueDate}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/paymentDueDate}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<DatePicker name="paymentDueDate" value="{InvoiceItemModel>/paymentDueDate}" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd"
+				visible="{InvoiceItemModel>/edit}" placeholder="dd-mm-yyyy"
+				valueState="{path:'InvoiceItemModel>/paymentDueDateState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/paymentDueDateText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>accountDetail}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/accDetail}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="accDetail" value="{InvoiceItemModel>/accDetail}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/accDetailState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/accDetailText}"/>
+		</VBox>
+		<!--<VBox>
+			<Label text="{i18n>paidAmount}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{path:'InvoiceItemModel>/paidAmt', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginBegin"
+				visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="paidAmt" value="{InvoiceItemModel>/paidAmt}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/paidAmtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/paidAmtText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>balanceAmount}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{path:'InvoiceItemModel>/balanceAmt', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginBegin"
+				visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="balanceAmt" value="{InvoiceItemModel>/balanceAmt}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/balanceAmtState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/balanceAmtText}"/>
+		</VBox>-->
+		<VBox>
+			<Label text="{i18n>creditDays}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/creditDays}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="creditDays" value="{InvoiceItemModel>/creditDays}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/creditDaysState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/creditDaysText}"/>
+		</VBox>
+		<!--<ui:Column hAlign="Center" width="14rem">-->
+		<!--	<Label text="{i18n>paidAmount}" textAlign="Center" width="100%" design="Bold"/>-->
+		<!--	<ui:template>-->
+		<!--		<Input name="paidAmt" value="{InvoiceItemModel>paidAmt}" maxLength="100" enabled="{InvoiceItemModel>edit}"-->
+		<!--			valueState="{path:'InvoiceItemModel>paidAmtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>paidAmtText}"/>-->
+		<!--	</ui:template>-->
+		<!--</ui:Column>-->
+		<!--<ui:Column hAlign="Center" width="14rem">-->
+		<!--	<Label text="{i18n>balanceAmount}" textAlign="Center" width="100%" design="Bold"/>-->
+		<!--	<ui:template>-->
+		<!--		<Input name="balanceAmt" value="{InvoiceItemModel>balanceAmt}" maxLength="100" enabled="{InvoiceItemModel>edit}"-->
+		<!--			valueState="{path:'InvoiceItemModel>balanceAmtState', formatter:'.formatter.formatState'}"-->
+		<!--			valueStateText="{InvoiceItemModel>balanceAmtText}"/>-->
+		<!--	</ui:template>-->
+		<!--</ui:Column>-->
+	</l:Grid>
+</core:FragmentDefinition>

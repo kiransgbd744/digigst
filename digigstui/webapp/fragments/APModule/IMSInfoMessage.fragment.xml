@@ -1,0 +1,15 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Popover title="Records where Pending IMS action in blocked" id="statusPopover" class="sapUiContentPadding" placement="Auto" width="40rem">
+		<VBox width="40rem">
+			<Text text="1 Original Credit Note" />
+            <Text text="2 Upward Amendment of Credit Note" />
+            <Text text="3 Downward Amendment of Credit Note, if Original Credit Note was Rejected" />
+            <Text text="4 Downward Amendment of Invoice/Debit Note, if original is accepted &amp; 3B filed by recipient" />
+		</VBox>
+		<Toolbar class="sapUiSmallMarginTop">
+			<ToolbarSpacer/>
+			<Button text="Close" class="buttoncolor" press="onCloseIMSInfoMessage"/>
+		</Toolbar>
+		
+	</Popover>
+</core:FragmentDefinition>

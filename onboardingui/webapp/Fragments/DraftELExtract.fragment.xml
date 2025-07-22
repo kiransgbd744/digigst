@@ -1,0 +1,156 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="dynamicDEE">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading></f:heading>
+				<f:actions>
+					<Button type="Emphasized" icon="sap-icon://save" text="Submit" id="idELESubmit" press="onSubmit" enabled="false" />
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<ui:Table id="idTableDEE" rows="{ELExtractInfo>/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10"
+					fixedRowCount="0" fixedColumnCount="5" enableSelectAll="true">
+					<ui:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<u:FileUploader name="myFileUpload" uploadUrl="upload/" tooltip="Upload your file to the local server" uploadComplete="handleUploadComplete" enabled="false"/>
+							<Button text="PDF Upload" press="handleUploadPress" enabled="false"/>
+							<Button icon="sap-icon://download" press="onExportExcel" enabled="false"/>
+							<Button type="Accept" icon="sap-icon://edit" tooltip="Edit rows" id="idELEEditrow" press="onEditRows" />
+							<!--<Button type="Reject" icon="sap-icon://delete" tooltip="Delete rows" id="idELEDeleteRows" press="onDeleteRows"/>-->
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="4rem">
+							<ui:multiLabels>
+								<Label text="S.No" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{ELExtractInfo>sno}"/>
+							</ui:template>
+						</ui:Column>
+						<!--<ui:Column width="">
+							<ui:multiLabels>
+								<Label text="Group" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{ELExtractInfo>groupCode}"/>
+							</ui:template>
+						</ui:Column>-->
+						<ui:Column width="12rem">
+							<ui:multiLabels>
+								<Label text="Entity Name" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{ELExtractInfo>entityName}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem">
+							<ui:multiLabels>
+								<Label text="PAN" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{ELExtractInfo>pan}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem">
+							<ui:multiLabels>
+								<Label text="Company Code" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{ELExtractInfo>companyCode}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="GSTIN" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Link text="View GSTIN" press="handleLinkPress"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="18rem">
+							<ui:multiLabels>
+								<Label text="Functionality" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<MultiComboBox items="{functionality>/}" selectedKeys="{ELExtractInfo>functionality}" selectionChange="onSelectionChangeEL"
+									editable="{ELExtractInfo>edit}">
+									<core:ListItem key="{functionality>functCode}" text="{functionality>functDesc}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="From Tax Period" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<DatePicker value="{ELExtractInfo>fromTaxPeriod}" displayFormat="MMyyyy" change="handleChange" editable="{ELExtractInfo>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="To Tax Period" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<DatePicker value="{ELExtractInfo>toTaxPeriod}" displayFormat="MMyyyy" change="handleChange" editable="{ELExtractInfo>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="EL Value" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{ELExtractInfo>elValue}" editable="{ELExtractInfo>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="11rem">
+							<ui:multiLabels>
+								<Label text="From Contract Period" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<DatePicker value="{ELExtractInfo>contractStartPeriod}" displayFormat="MMyyyy" change="handleChange" editable="{ELExtractInfo>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="11rem">
+							<ui:multiLabels>
+								<Label text="To Contract Period" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<DatePicker value="{ELExtractInfo>contractEndPeriod}" displayFormat="MMyyyy" change="handleChange" editable="{ELExtractInfo>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="Renewal" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{ELExtractInfo>renewal}" editable="{ELExtractInfo>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="GFIS ID" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{ELExtractInfo>gfisId}" editable="{ELExtractInfo>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text="PACE ID" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{ELExtractInfo>paceId}" editable="{ELExtractInfo>edit}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

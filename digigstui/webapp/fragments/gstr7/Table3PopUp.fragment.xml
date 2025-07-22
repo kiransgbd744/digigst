@@ -1,0 +1,78 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:f="sap.f" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons">
+	<Dialog title="Original Details" type="Message" class="sapUiSizeCompact" xmlns:ui="sap.ui.table" xmlns:form="sap.ui.layout.form">
+		<layout:HorizontalLayout class="sapUiSmallMarginBottom">
+			<Label text="GSTIN : " design="Bold" textAlign="Right" class="sapUiSmallMarginBegin sapUiTinyMarginEnd sapUiTinyMarginTop" width="8rem"/>
+			<Select id="idTable3Gstin" items="{path:'TDSGstin>/'}" width="12rem">
+				<core:Item key="{TDSGstin>value}" text="{TDSGstin>value}"/>
+			</Select>
+			<Label text="Tax Period : " design="Bold" textAlign="Right" class="sapUiSmallMarginBegin sapUiTinyMarginEnd sapUiTinyMarginTop" width="8rem"/>
+			<DatePicker id="idTable3taxPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy" width="10rem"/>
+			<Button id="bTable3Go" text="Filter" class="sapUiSmallMarginBegin buttoncolor" press="getGstr7PopupSummary('Table-3')"/>
+		</layout:HorizontalLayout>
+		<ui:Table rows="{PopupSummary>/resp/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="8" id="idtable3">
+			<ui:extension>
+				<Toolbar>
+					<Label text="Table-3 (Original Details)" design="Bold" class="sapUiSmallMarginBegin titleFont"/>
+					<ToolbarSpacer/>
+					<Button class="buttoncolorSec" text="Add" enabled="false" press="onPressAddProduct"/>
+					<Button class="buttoncolorSec" text="Edit" enabled="false" press="onPressAddProduct"/>
+					<Button class="buttoncolorSec" text="Delete" enabled="false" press="onPressDeleteProduct"/>
+					<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="{i18n>downExcel}" enabled="false" press="onExportExcel('S')"/>
+					<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="{i18n>downPdf}" enabled="false" press="onPressDownloadPdf"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column width="14rem">
+					<ui:multiLabels>
+						<Label text="GSTIN" tooltip="GSTIN of Deductee" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Input value="{PopupSummary>gstin}" enabled="false"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="14rem">
+					<ui:multiLabels>
+						<Label text="Amount paid" tooltip="Amount paid to deductee on which deducted" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Input value="{PopupSummary>amount}" enabled="false"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" headerSpan="3">
+					<ui:multiLabels>
+						<Label text="Amount of Tax deducted at source" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Input value="{PopupSummary>igst}" enabled="false"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<ui:multiLabels>
+						<Label text="Losses Quantity" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Input value="{PopupSummary>cgst}" enabled="false"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<ui:multiLabels>
+						<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Input value="{PopupSummary>sgst}" enabled="false"/>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+		<beginButton>
+			<Button text="Save" id="bTable3Apply" class="buttoncolorSec" enabled="false" press="onPressTableClose"/>
+		</beginButton>
+		<endButton>
+			<Button text="Cancel" class="buttoncolorSec" press="onPressTable3Close"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,62 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.f">
+	<Dialog id="TurnoverDigigstID" title="Please select From and To Tax Periods for calculating the turnover." type="Message"
+		class="sapUiSizeCompact cl_saveHeader" showHeader="true" contentWidth="45%">
+		<!--<f:DynamicPage id="liablityId">
+			<f:title>
+				<f:DynamicPageTitle>
+					<f:heading>
+						<Title text="Do you want to Copy Data to ASP User Input?"/>
+					</f:heading>
+				</f:DynamicPageTitle>
+			</f:title>
+		</f:DynamicPage>-->
+		<l:VerticalLayout width="100%">
+			<l:Grid defaultSpan="L2 M2 S12" vSpacing="0" class="sapUiTinyMarginTop">
+				<l:content>
+					<!--<VBox>-->
+					<!--	<Label text="GSTIN"/>-->
+					<!--	<Select id="slDetrminationSumGstin" width="100%" items="{path:'DataPermission>/respData/dataSecurity/gstin'}">-->
+					<!--		<core:Item key="{DataPermission>value}" text="{DataPermission>value}"/>-->
+					<!--	</Select>-->
+					<!--</VBox>-->
+					<VBox width="13rem">
+						<Label text="From Tax Period" required="false"/>
+						<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" id="idDterSummaryTaxFr" change="onChangeDateValuedigi"/>
+					</VBox>
+					<VBox width="3rem" class="sapUiLargeMarginBegin">
+						<Label text=""/>
+					</VBox>
+					<VBox width="13rem" class="sapUiLargeMarginBegin">
+						<Label text="To Tax Period" required="false"/>
+						<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" id="idDterSummaryTaxTo"/>
+					</VBox>
+					<!--<VBox>-->
+					<!--	<Label text=""/>-->
+					<!--	<HBox>-->
+					<!--<Button icon="sap-icon://filter" type="Default" tooltip="Adapt Filters" press="onPressAdaptFilter" class="sapUiTinyMarginBegin"-->
+					<!--	enabled="false"/>-->
+					<!--		<Button text="Go" type="Emphasized" class="sapUiTinyMarginBegin" press="onPressTcsaSummaryGo"/>-->
+					<!--	</HBox>-->
+					<!--</VBox>-->
+				</l:content>
+			</l:Grid>
+		</l:VerticalLayout>
+		<!--<VBox>-->
+		<!--	<Label text="Outward"/>-->
+		<!--	<RadioButtonGroup id="rbgCopyType1" selectedIndex="-1" columns="2">-->
+		<!--		<RadioButton id="RBDigiCompId1" text="DigiGst Computed"/>-->
+		<!--		<RadioButton id="RBDigiGstnId1" text="GSTN Computed"/>-->
+		<!--	</RadioButtonGroup>-->
+		<!--	<Label text="Inward"/>-->
+		<!--	<RadioButtonGroup id="rbgCopyType12" selectedIndex="0">-->
+		<!--		<RadioButton id="RBDigiComInwrdId2" text="DigiGst Computed"/>-->
+		<!--	</RadioButtonGroup>-->
+		<!--</VBox>-->
+		<beginButton>
+			<Button text="Submit" type="Emphasized" press="onDialogCopySubmitDigi"/>
+		</beginButton>
+		<endButton>
+			<Button text="Cancel" press="onCloseDialogCopy"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

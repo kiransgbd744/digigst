@@ -1,0 +1,239 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f"
+	xmlns:commons="sap.suite.ui.commons" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table">
+	<f:DynamicPage id="dpBulkSaveTCSSummary" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" class="sapUiTinyMarginEnd" press="onPressBackTCSSum"/>
+						<Title text="TCS" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding cl_spacebar" pinnable="false">
+				<l:VerticalLayout width="100%">
+					<l:Grid defaultSpan="L2 M2 S12" vSpacing="0" class="sapUiTinyMarginTop">
+						<l:content>
+							<VBox>
+								<Label text="GSTIN"/>
+								<Select id="slTcsSummaryGstin" width="100%" items="{DataPermission>/respData/dataSecurity/gstin}" selectedKey="{FilterData>/gstnTcsGstin}">
+									<core:Item key="{DataPermission>value}" text="{DataPermission>value}"/>
+								</Select>
+							</VBox>
+							<VBox>
+								<Label text="Tax Period" required="true"/>
+								<DatePicker id="idTcsSummary" value="{FilterData>/gstnTcsPeriod}" maxDate="{FilterData>/maxDate}" displayFormat="MMM yyyy"
+									valueFormat="MMyyyy"/>
+							</VBox>
+							<VBox>
+								<Label text=""/>
+								<HBox>
+									<Button icon="sap-icon://filter" type="Default" tooltip="Adapt Filters" press="onPressAdaptFilter"
+										class="sapUiTinyMarginBegin buttoncolorSec" enabled="false"/>
+									<Button text="Filter" class="sapUiTinyMarginBegin buttoncolor" press="onPressTcsSummaryGo"/>
+								</HBox>
+							</VBox>
+						</l:content>
+					</l:Grid>
+				</l:VerticalLayout>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<VBox>
+				<Panel>
+					<l:BlockLayout background="Dashboard" class="cl_shadow">
+						<l:BlockLayoutRow class="sapUiNoContentPadding">
+							<l:BlockLayoutCell width="10rem">
+								<Toolbar height="2.2rem" class="supplToolbar supplToolbarCol">
+									<Label text="Summary" design="Bold" textAlign="Center" width="100%"/>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTopBottom">
+									<VBox alignItems="End" width="15%">
+										<Label text="Total Count" design="Bold"/>
+										<Text text="{GstrTcsTotalHead>/totalCount}" class="sapUiTinyMarginTop"/>
+									</VBox>
+									<VBox alignItems="End" width="15%">
+										<Label text="Total Amount" design="Bold"/>
+										<Text text="{path:'GstrTcsTotalHead>/totalAmount', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+									</VBox>
+									<VBox alignItems="End" width="15%">
+										<Label text="Total Tax" design="Bold"/>
+										<Text text="{path:'GstrTcsTotalHead>/totalTax', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+									</VBox>
+									<VBox alignItems="End" width="15%">
+										<Label text="IGST" design="Bold"/>
+										<Text text="{path:'GstrTcsTotalHead>/igst', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+									</VBox>
+									<VBox alignItems="End" width="15%">
+										<Label text="CGST" design="Bold"/>
+										<Text text="{path:'GstrTcsTotalHead>/cgst', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+									</VBox>
+									<VBox alignItems="End" width="15%">
+										<Label text="SGST" design="Bold"/>
+										<Text text="{path:'GstrTcsTotalHead>/sgst', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+									</VBox>
+								</HBox>
+							</l:BlockLayoutCell>
+						</l:BlockLayoutRow>
+					</l:BlockLayout>
+					<commons:ChartContainer showFullScreen="false" autoAdjustHeight="false">
+						<commons:content>
+							<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+								<commons:content>
+									<ui:Table id="idTabTcssum" rowSelectionChange="onSelection" rows="{TCSSummaryData>/resp/}" selectionMode="MultiToggle" visibleRowCount="8"
+										fixedBottomRowCount="0" enableSelectAll="true" enableColumnReordering="false">
+										<ui:columns>
+											<ui:Column width="10rem">
+												<Label design="Bold" text="GSTIN of Collector"/>
+												<ui:template>
+													<VBox>
+														<HBox alignContent="Center" justifyContent="SpaceBetween">
+															<Link text="{TCSSummaryData>gstinOfColectr}" press="onPressGstrNew11Summary"/>
+														</HBox>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="End" width="9rem">
+												<Label design="Bold" text="Month of Collector Upload" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Label text="{TCSSummaryData>monOfcollectorUpld}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="4rem">
+												<Label design="Bold" text="POS" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Label text="{TCSSummaryData>pos}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="End" width="8rem">
+												<Label design="Bold" text="Total Amount" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Label text="{path:'TCSSummaryData>totamount', formatter:'.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="End" width="10rem">
+												<Label design="Bold" text="Supplies To Registered Buyers" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Label text="{path:'TCSSummaryData>SuppliesToRegisteredBuyers', formatter:'.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="End" width="10rem">
+												<Label design="Bold" text="Supplies Returned by Registered Buyers" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Label text="{path:'TCSSummaryData>SuppliesReturnedbyRegisteredBuyers', formatter:'.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="End" width="9rem">
+												<Label design="Bold" text="Supplies to UR buyers" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Label text="{path:'TCSSummaryData>SuppliestoURbuyers', formatter:'.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="End" width="9rem">
+												<Label design="Bold" text="Supplies Returned by UR buyers" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Label text="{path:'TCSSummaryData>SuppliesReturnedbyURbuyers', formatter:'.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="End" headerSpan="3" minWidth="160">
+												<ui:multiLabels>
+													<Label text="Amount of Tax Collected by Collector" textAlign="Center" width="100%" design="Bold"/>
+													<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{path:'TCSSummaryData>amountIgst', formatter:'.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="End" minWidth="160">
+												<ui:multiLabels>
+													<Label text=""/>
+													<Label text="{i18n>cgst}" textAlign="Center" width="100%" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{path:'TCSSummaryData>amountCgst', formatter:'.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="End" minWidth="160">
+												<ui:multiLabels>
+													<Label text=""/>
+													<Label text="{i18n>sgst}" textAlign="Center" width="100%" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{path:'TCSSummaryData>amountSgst', formatter:'.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="8rem">
+												<Label design="Bold" text="DigiGST Action" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Label text="{path:'TCSSummaryData>userAction', formatter:'.formatter.amountValue'}" design="{=!${TCSSummaryData>gstin}?'Bold':'Standard'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="9rem">
+												<Label design="Bold" text="DigiGST Remarks" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Label text="{TCSSummaryData>digiGstRemarks}" design="{=!${TCSSummaryData>gstin}?'Bold':'Standard'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="9rem">
+												<Label design="Bold" text="DigiGST Comment" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Label text="{TCSSummaryData>digiGstComment}" design="{=!${TCSSummaryData>gstin}?'Bold':'Standard'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="8rem">
+												<Label design="Bold" text="GSTN Action" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Label text="{path:'TCSSummaryData>savedAction', formatter:'.formatter.amountValue'}" design="{=!${TCSSummaryData>gstin}?'Bold':'Standard'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="8rem">
+												<Label design="Bold" text="GSTN Remarks" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Label text="{TCSSummaryData>gstnRemarks}" design="{=!${TCSSummaryData>gstin}?'Bold':'Standard'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="8rem">
+												<Label design="Bold" text="GSTN Comment" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Label text="{TCSSummaryData>gstnComment}" design="{=!${TCSSummaryData>gstin}?'Bold':'Standard'}"/>
+												</ui:template>
+											</ui:Column>
+										</ui:columns>
+										<ui:footer></ui:footer>
+									</ui:Table>
+								</commons:content>
+							</commons:ChartContainerContent >
+						</commons:content>
+						<commons:toolbar>
+							<OverflowToolbar>
+								<ToolbarSpacer/>
+								<Button text="Get TCS" class="buttoncolorSec" press="onPressProcessGetTds('S','TCS')" enabled="{= ${userPermission>/appPermission/P99}}"/>
+								<MenuButton class="buttoncolorSec" text="Download Reports" enabled="{= ${userPermission>/appPermission/P99}}">
+									<Menu>
+										<MenuItem text="TCS Credit Report" key="Accept" press="onPressProcessDownload('S','TCS','TCS')" visible="false"/>
+										<MenuItem text="Consolidated Report" key="Reject" press="onPressProcessDownload('S','TCS','')"/>
+									</Menu>
+								</MenuButton>
+								<MenuButton class="buttoncolorSec" text="Action" enabled="{= ${userPermission>/appPermission/P99}}">
+									<Menu>
+										<MenuItem text="Accept" key="Accept" press="onAcceptActionPress('S','accept','TCS')"/>
+										<MenuItem text="Reject" key="Reject" press="onAcceptActionPress('S','reject','TCS')"/>
+										<MenuItem text="No Action" key="NoAction" press="onAcceptActionPress('S','noaction','TCS')"/>
+									</Menu>
+								</MenuButton>
+								<Button text="Save to GSTN" class="buttoncolorSec" press="onSaveToGstinPress1('S','TCS')" enabled="{= ${userPermission>/appPermission/P99}}"/>
+								<Button text="Save Status" class="buttoncolorSec" press="onSaveStatusPress('S','TCS')" enabled="{= ${userPermission>/appPermission/P99}}"/>
+								<Button text="Sign &amp; File" class="buttoncolorSec" press="onSignFilePress" enabled="false"/>
+								<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" enabled="false"/>
+								<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="Download Excel" class="sapUiTinyMarginEnd" enabled="false"/>
+								<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+							</OverflowToolbar>
+						</commons:toolbar>
+					</commons:ChartContainer>
+				</Panel>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

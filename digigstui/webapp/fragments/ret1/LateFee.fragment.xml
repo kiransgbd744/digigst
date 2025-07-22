@@ -1,0 +1,145 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<Dialog id="dLateFee" title="{i18n>lateFee}" type="Message" class="sapUiSizeCompact" draggable="true" contentWidth="80%">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="{i18n>lateFee}" design="Bold"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<beginButton>
+			<Button text="{i18n>ok}" press="onCloseLateFee"/>
+		</beginButton>
+		<ui:Table id="tabLateFee" rows="{LateFee>/}" selectionMode="MultiToggle" fixedColumnCount="1" enableColumnReordering="false"
+			rowSelectionChange="onDialogRowSelection">
+			<ui:extension>
+				<Toolbar>
+					<HBox>
+						<Label text="{i18n>entity}:" labelFor="txtLateFeeEntity" design="Bold"/>
+						<Text id="txtLateFeeEntity" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+						<Label text="{i18n>gstin}:" labelFor="txtLateFeeGstin" design="Bold"/>
+						<Text id="txtLateFeeGstin" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+						<Label text="{i18n>taxPeriod}:" labelFor="txtLateFeePeriod" design="Bold"/>
+						<Text id="txtLateFeePeriod" class="sapUiTinyMarginBegin"/>
+					</HBox>
+					<ToolbarSpacer/>
+					<Button type="Accept" icon="sap-icon://save" text="{i18n>save}" enabled="{Property>/enabled}" press="onSaveLateFee"/>
+					<Button type="Reject" icon="sap-icon://delete" tooltip="{i18n>delete}" enabled="{Property>/enabled}" press="onDeleteLateFee"/>
+					<Button type="Emphasized" icon="sap-icon://edit" tooltip="{i18n>edit}" enabled="{Property>/edit}" press="onEditLateFee"/>
+					<Button type="Emphasized" icon="sap-icon://add" tooltip="{i18n>add}" press="onAddLateFee"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column width="7rem">
+					<Label text="{i18n>returnTable}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{path:'LateFee>returnTable'}" visible="{=!${LateFee>visi}}"/>
+							<Select items="{path:'Returns>/ret1LateFee', templateShareable:false}" selectedKey="{LateFee>returnTable}" visible="{LateFee>visi}">
+								<core:Item key="{Returns>key}" text="{Returns>key}"/>
+							</Select>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>igstInterest}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'LateFee>igstInterest', formatter:'.formatter.amountValue'}" visible="{=!${LateFee>edit}}"/>
+							<Input value="{LateFee>igstInterest}" liveChange="positiveDecimal" textAlign="End" visible="{LateFee>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>cgstInterest}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'LateFee>cgstInterest', formatter:'.formatter.amountValue'}" visible="{=!${LateFee>edit}}"/>
+							<Input value="{LateFee>cgstInterest}" liveChange="positiveDecimal" textAlign="End" visible="{LateFee>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>sgstInterest}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'LateFee>sgstInterest', formatter:'.formatter.amountValue'}" visible="{=!${LateFee>edit}}"/>
+							<Input value="{LateFee>sgstInterest}" liveChange="positiveDecimal" textAlign="End" visible="{LateFee>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>cessInterest}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'LateFee>cessInterest', formatter:'.formatter.amountValue'}" visible="{=!${LateFee>edit}}"/>
+							<Input value="{LateFee>cessInterest}" liveChange="positiveDecimal" textAlign="End" visible="{LateFee>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>cgstLateFee}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'LateFee>cgstLateFee', formatter:'.formatter.amountValue'}" visible="{=!${LateFee>edit}}"/>
+							<Input value="{LateFee>cgstLateFee}" liveChange="positiveDecimal" textAlign="End" visible="{LateFee>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>sgstLateFee}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%" justifyContent="End">
+							<Text text="{path:'LateFee>sgstLateFee', formatter:'.formatter.amountValue'}" visible="{=!${LateFee>edit}}"/>
+							<Input value="{LateFee>sgstLateFee}" liveChange="positiveDecimal" textAlign="End" visible="{LateFee>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>userDefinedField1}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{path:'LateFee>userDefined1'}" visible="{=!${LateFee>edit}}"/>
+							<Input value="{LateFee>userDefined1}" visible="{LateFee>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>userDefinedField2}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{path:'LateFee>userDefined2'}" visible="{=!${LateFee>edit}}"/>
+							<Input value="{LateFee>userDefined2}" visible="{LateFee>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<Label text="{i18n>userDefinedField3}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{path:'LateFee>userDefined3'}" visible="{=!${LateFee>edit}}"/>
+							<Input value="{LateFee>userDefined3}" visible="{LateFee>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+			<!--<ui:footer>-->
+			<!--	<HBox width="100%" justifyContent="Center">-->
+			<!--		<Button id="bLateFeePrev" type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="false"-->
+			<!--			press="onPressPagination"/>-->
+			<!--		<Input id="inLateFeePageNo" type="Number" textAlign="End" width="4rem" submit="onSubmitPagination" enabled="false"-->
+			<!--			class="sapUiTinyMarginBegin" value="0"/>-->
+			<!--		<Text id="txLateFeePageNo" text="/ 0" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>-->
+			<!--		<Button id="bLateFeeNext" type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="false"-->
+			<!--			press="onPressPagination"/>-->
+			<!--		<ComboBox textAlign="End" selectedKey="50" selectionChange="onLateFeeRecordPerPage" width="5rem" class="sapUiTinyMarginBegin">-->
+			<!--			<core:Item key="50" text="50"/>-->
+			<!--			<core:Item key="100" text="100"/>-->
+			<!--			<core:Item key="200" text="200"/>-->
+			<!--			<core:Item key="500" text="500"/>-->
+			<!--		</ComboBox>-->
+			<!--	</HBox>-->
+			<!--</ui:footer>-->
+		</ui:Table>
+	</Dialog>
+</core:FragmentDefinition>

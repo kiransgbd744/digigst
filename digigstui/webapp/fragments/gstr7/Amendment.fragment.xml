@@ -1,0 +1,104 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons" xmlns:l="sap.ui.layout">
+	<Dialog title="Amendment Details" type="Message" class="sapUiSizeCompact">
+		<content>
+			<ui:Table rows="{ProcessSummary>/}" width="100%" selectionMode="MultiToggle" fixedColumnCount="0" visibleRowCount="5">
+				<ui:extension>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button type="Emphasized" text="Add"/>
+						<Button type="Accept" text="Edit"/>
+						<Button type="Reject" text="Delete"/>
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="15rem" hAlign="End" headerSpan="3">
+						<ui:multiLabels>
+							<Label text="Original Details" textAlign="Center" width="100%" design="Bold"/>
+							<Label text="Months" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="15rem" hAlign="End">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="GSTIN of Deductee" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="25rem" hAlign="End">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="Amount paid to deductee on which tax is deducted" wrapping="true"  tooltip="Amount paid to deductee on which tax is deducted" textAlign="Center"
+								width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="15rem" hAlign="End" headerSpan="5,1,1">
+						<ui:multiLabels>
+							<Label text="Revised Details" textAlign="Center" width="100%" design="Bold"/>
+							<Label text="GSTIN of Deductee" textAlign="Center" width="100%" design="Bold"/>
+							<Label text=""/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="25rem" hAlign="End" headerSpan="5,1,1">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="Amount paid to deductee on which tax is deducted" wrapping="true" tooltip="Amount paid to deductee on which tax is deducted" textAlign="Center"
+								width="100%" design="Bold"/>
+							<Label text=""/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem" hAlign="End" headerSpan="5,3,1">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="Amount of tax deducted at source" wrapping="true" tooltip="Amount of tax deducted at source" textAlign="Center" width="100%" design="Bold"/>
+							<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem" hAlign="End" headerSpan="5,3,1">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text=""/>
+							<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem" hAlign="End" headerSpan="5,3,1">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text=""/>
+							<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+		</content>
+		<beginButton>
+			<Button id="bApply" text="Submit" type="Emphasized" press="onPressAmendmentClose"/>
+		</beginButton>
+		<endButton>
+			<Button id="bCancel" text="Cancel" press="onPressAmendmentClose"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

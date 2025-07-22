@@ -1,0 +1,344 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f"
+	xmlns:commons="sap.suite.ui.commons" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table">
+	<f:DynamicPage id="dpDetrminationSummary" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" class="sapUiTinyMarginEnd" press="onPressBackDetrSum"/>
+						<Title text="Turnover for Distribution" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding cl_spacebar" pinnable="false">
+				<fb:FilterBar id="fbProcessRecord2A" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox id="idPGstinTrsUm" width="100%" items="{Gstin>/}">
+									<core:Item key="{Gstin>value}" text="{Gstin>value}"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="idPFromtaxPeriod2A" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" id="fbProcessHbox" width="10%">
+					<Button id="bProcessFilter2A" text="Filter" class="buttoncolor" press="onPressGodetrminSum" enabled="true"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<VBox>
+				<Panel>
+					<l:BlockLayout background="Dashboard" id="id_BlockLayoutgstr1" class="cl_shadow">
+						<l:BlockLayoutRow class="sapUiNoContentPadding">
+							<l:BlockLayoutCell id="id_BlCellgstr1" width="13">
+								<Toolbar height="2.2rem" class="supplToolbar supplToolbarCol">
+									<Label text="Summary" design="Bold" textAlign="Center" width="100%"/>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTopBottom">
+									<VBox width="3rem">
+										<Text/>
+										<Label text="Total" class="sapUiTinyMarginBegin sapUiTinyMarginTop" design="Bold"/>
+									</VBox>
+									<VBox alignItems="Center" width="25%">
+										<Label text="GSTIN/ Unregistered Recipient(Count)" design="Bold"/>
+										<Text text="{Gstr6TotalHead>/count}" class="sapUiTinyMarginTop"/>
+									</VBox>
+									<VBox alignItems="Center" width="25%">
+										<Label text="Turnover (DigiGST)" design="Bold"/>
+										<Text text="{path:'Gstr6TotalHead>/digigst', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+									</VBox>
+									<VBox alignItems="Center" width="25%">
+										<Label text="Turnover (GSTN)" design="Bold"/>
+										<Text text="{path:'Gstr6TotalHead>/gstn', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+									</VBox>
+									<VBox alignItems="Center" width="25%">
+										<Label text="Turnover (User edited)" design="Bold"/>
+										<Text text="{path:'Gstr6TotalHead>/userInput', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+									</VBox>
+								</HBox>
+							</l:BlockLayoutCell>
+						</l:BlockLayoutRow>
+					</l:BlockLayout>
+					<commons:ChartContainer showFullScreen="false" autoAdjustHeight="false">
+						<commons:content>
+							<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+								<commons:content>
+									<ui:Table id="idTabDistrisum" rowSelectionChange="onSelection" rows="{path:'Gstr6DetrPRTrSumData>/resp/'}" selectionMode="MultiToggle"
+										visibleRowCount="8" fixedBottomRowCount="0" enableSelectAll="true" enableColumnReordering="false" class="sapUiTinyMarginTop">
+										<ui:columns>
+											<ui:Column width="4rem">
+												<Label design="Bold" text="Sr No"/>
+												<ui:template>
+													<VBox>
+														<HBox alignContent="Center" justifyContent="SpaceBetween">
+															<Text text="{Gstr6DetrPRTrSumData>Sno}"/>
+														</HBox>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Left" width="20rem">
+												<Label design="Bold" text="GSTIN/ Unregistered Recipient" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<HBox alignContent="Start" justifyContent="SpaceBetween">
+														<Input value="{Gstr6DetrPRTrSumData>gstin}" editable="{Gstr6DetrPRTrSumData>edit}" width="16rem"/>
+														<core:Icon src="sap-icon://circle-task-2" size="0.8rem" class="sapUiTinyMarginTop sapUiTinyMarginBegin"
+															tooltip="{Gstr6DetrPRTrSumData>authToken}" visible="{=${Gstr6DetrPRTrSumData>gstin}=== '' ?false:true}"
+															color="{=${Gstr6DetrPRTrSumData>authToken}=== 'Active' ?'#00ff00':'#ff0000'}"
+															press="onActivateAuthToken(${Gstr6DetrPRTrSumData>gstin},${Gstr6DetrPRTrSumData>authToken})"/>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Left">
+												<Label design="Bold" text="State" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<ComboBox editable="{Gstr6DetrPRTrSumData>edit}" change="onSelectChangeFinacial" items="{path:'GstStateCode>/states'}"
+														selectedKey="{Gstr6DetrPRTrSumData>state}" width="100%" showSecondaryValues="false">
+														<core:ListItem key="{GstStateCode>stateCode}" text="{GstStateCode>stateCode} - {GstStateCode>stateName}"
+															additionalText="{GstStateCode>stateCode}"/>
+													</ComboBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Left">
+												<Label design="Bold" text="Get GSTR 1 Status" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<ObjectStatus text="{Gstr6DetrPRTrSumData>getGstr1Status}" active="{=${Gstr6DetrPRTrSumData>getGstr1Status}!=='NOT INITIATED'?true:false}"
+														state="{path:'Gstr6DetrPRTrSumData>getGstr1Status', formatter:'.formatter.statusClr'}" press="onPressGetStatus"/>
+												
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="End">
+												<Label design="Bold" text="Turnover(DigiGST)" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{path:'Gstr6DetrPRTrSumData>turnoverDigiGST',formatter:'.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="End">
+												<Label design="Bold" text="Turnover(GSTIN)" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{path:'Gstr6DetrPRTrSumData>turnoverGstn',formatter:'.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="End">
+												<Label design="Bold" text="Turnover(User Edited)" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Input value="{Gstr6DetrPRTrSumData>turnoverUserEdited}" type="Number" editable="{Gstr6DetrPRTrSumData>edit1}"/>
+												</ui:template>
+											</ui:Column>
+										</ui:columns>
+										<ui:footer></ui:footer>
+									</ui:Table>
+								</commons:content>
+							</commons:ChartContainerContent >
+						</commons:content>
+						<commons:toolbar>
+							<OverflowToolbar height="5rem">
+								<VBox class="sapUiTinyMarginEnd">
+									<Label text="Turnover Period From"/>
+									<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" id="idPFromtaxPeriod2AB" change="onChangeDateValue"/>
+								</VBox>
+								<VBox class="sapUiTinyMarginEnd">
+									<Label text="Turnover Period To"/>
+									<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" id="idPFromtaxPeriod2AB1"/>
+								</VBox>
+								<ToolbarSpacer/>
+								<!--<HBox visible="{= ${userPermission>/appPermission/P5}}">-->
+								<VBox class="sapUiTinyMarginEnd">
+									<Text id="anx1TimegstrNew1" text="{ComputeTimeStamp>/resp/digiGstStatus} {ComputeTimeStamp>/resp/lastUpdatedDigiGstTimeStamp}"/>
+									<HBox>
+										<Button class="buttoncolorSec" text="Calculate Turnover(DigiGST)" enabled="{= ${userPermission>/appPermission/P5}}"
+											press="OnpressCalculateTurnOverdigi($event,'S')"/>
+									</HBox>
+								</VBox>
+								<VBox class="sapUiTinyMarginEnd">
+									<Text id="anx1TimegstrNew2" text="{ComputeTimeStamp>/resp/gstnStatus} {ComputeTimeStamp>/resp/lastUpdatedGstnTimeStamp}"/>
+									<HBox>
+										<Button class="buttoncolorSec" text="Calculate Turnover(GSTN)" enabled="{= ${userPermission>/appPermission/P5}}"
+											press="OnpressCalTurnoverGstn($event,'S')"/>
+									</HBox>
+								</VBox>
+								<VBox class="sapUiTinyMarginEnd">
+									<Text text=""/>
+									<HBox>
+										<Button class="buttoncolorSec" text="Copy Data to User Input" press="onCopy1($event,'S')" enabled="{= ${userPermission>/appPermission/P5}}"/>
+									</HBox>
+								</VBox>
+								<VBox class=" sapUiTinyMarginEnd">
+									<Text text="{ComputeTimeStamp>/resp/creditStatus} {ComputeTimeStamp>/resp/lastUpdatedCreditTimeStamp}"/>
+									<HBox>
+										<Button class="buttoncolorSec" text="Compute Credit Distribution" press="OnpressComputeCredit($event,'S')"
+											enabled="{= ${userPermission>/appPermission/P5}}"/>
+									</HBox>
+								</VBox>
+								<VBox class="sapUiTinyMarginEnd">
+									<Text text=""/>
+									<HBox>
+										<Button class="buttoncolorSec" text="Save" press="onPressDistSave" enabled="{buttonVis>/dataEditable}"/>
+									</HBox>
+								</VBox>
+								<VBox class="sapUiTinyMarginEnd">
+									<Text text=""/>
+									<HBox>
+										<Button icon="sap-icon://add" class="buttoncolorSec" press="onPressDistAdd" enabled="{buttonVis>/dataEditable}"/>
+									</HBox>
+								</VBox>
+								<VBox class="sapUiTinyMarginEnd">
+									<Text text=""/>
+									<HBox>
+										<Button icon="sap-icon://edit" class="buttoncolorSec" press="onPressDistEdit" enabled="{buttonVis>/dataEditable}"/>
+									</HBox>
+								</VBox>
+								<VBox class="sapUiTinyMarginEnd">
+									<Text text=""/>
+									<HBox>
+										<Button icon="sap-icon://delete" class="buttoncolorSec" press="onPressDistDelete" enabled="{buttonVis>/dataEditable}"/>
+									</HBox>
+								</VBox>
+								<VBox class="sapUiTinyMarginEnd">
+									<Text text=""/>
+									<HBox>
+										<MenuButton class="buttoncolorSec" text="Download Reports" enabled="{= ${userPermission>/appPermission/P5}}">
+											<Menu itemSelected="onMenuItemPressGstr6downSr">
+												<!--<MenuItem text="Credit Distribution Data" key="current"/>-->
+												<MenuItem text="Credit Distribution Annexure Report" key="Cdar" enabled="{=!!${Gstr6DetrPRSumData>/creditAnnexure}}"/>
+											</Menu>
+										</MenuButton>
+									</HBox>
+								</VBox>
+								<VBox class="sapUiTinyMarginEnd">
+									<Text text=""/>
+									<HBox>
+										<Link text="Request ID wise" press="onPressRequestIDwiseSummary" class="sapUiSmallMarginBeginEnd "/>
+									</HBox>
+								</VBox>
+								<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+							</OverflowToolbar>
+						</commons:toolbar>
+					</commons:ChartContainer>
+				</Panel>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="id_RequestIDpageSummary" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button icon="sap-icon://nav-back" type="Transparent" press="onPressRequestIDwiseSummaryBack"/>
+						<Title text="Request ID wise" class="sapUiSmallMarginBegin clTitleMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false"
+				class="sapUiTinyMarginBeginEnd">
+				<commons:toolbar>
+					<OverflowToolbar class="colorToolbar toolbarHeight">
+						<ToolbarSpacer/>
+						<Button class="buttoncolorSec" text="Refresh" press="onLoadRequestIdWise"/>
+						<commons:ChartContainerToolbarPlaceholder/>
+					</OverflowToolbar>
+				</commons:toolbar>
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table rows="{path:'oRequestIDWise>/requestDetails', sorter: {path: 'requestId',descending:true}}" visibleRowCount="16"
+								fixedColumnCount="0" enableSelectAll="false" selectionMode="None">
+								<ui:columns>
+									<ui:Column width="10%">
+										<Label design="Bold" text="Request ID"/>
+										<ui:template>
+											<Text text="{oRequestIDWise>requestId}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="10%">
+										<Label design="Bold" text="No. of GSTIN"/>
+										<ui:template>
+											<HBox alignItems="Center" justifyContent="Center">
+												<Link text="{oRequestIDWise>noOfGstin}" press="onPressGSTIN"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="10%" visible="false">
+										<Label design="Bold" text="Recon Type"/>
+										<ui:template>
+											<HBox alignItems="Center" justifyContent="Center">
+												<Text text="{= ${ReqWiseData2A>reconType} === '2BPR' ? '2B vs PR' : '2A vs PR' }"
+													class="{path:'ReqWiseData2A>reconType', formatter:'.formatter.ReconTypeClass'}"/>
+												<ObjectStatus text="{= ${ReqWiseData2A>reconType} === '2BPR' ? '2B vs PR' : '2A vs PR' }"
+													state="{= ${ReqWiseData2A>reconType} === '2BPR' ? 'Information' : 'None' }"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="10%">
+										<Label design="Bold" text="Tax Period" wrapping="true"/>
+										<ui:template>
+											<Text text="{oRequestIDWise>taxPeriod}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="10%">
+										<Label design="Bold" text="Initiated On"/>
+										<ui:template>
+											<HBox alignItems="Center" justifyContent="Center">
+												<Text text="{oRequestIDWise>initiatedOn}"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="10%">
+										<Label design="Bold" text="Initiated By"/>
+										<ui:template>
+											<HBox alignItems="Center" justifyContent="Center">
+												<Text text="{oRequestIDWise>InitiatedBy}"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="10%">
+										<Label design="Bold" text="Completed On"/>
+										<ui:template>
+											<HBox alignItems="Center" justifyContent="Center">
+												<Text text="{oRequestIDWise>completedOn}"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="12%">
+										<Label design="Bold" text="Download"/>
+										<ui:template>
+											<HBox alignItems="Start" justifyContent="Center">
+												<Button text="Report Download" press="onConfigExtractPress2A1" class="sapUiSmallMarginEnd buttoncolorSec"/>
+												<!--{=${oRequestIDWise>status}==='REPORT_GENERATED'}-->
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="14%">
+										<Label design="Bold" text="Status"/>
+										<ui:template>
+											<Text text="{oRequestIDWise>status}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+								<!--<ui:footer>
+									<Toolbar height="3rem" class="bacCol">
+										<ToolbarSpacer/>
+										<Label text="© 2021 | All Rights Reserved. Content within this application is confidential and meant for EY staff and EY clients only."
+											class="logoText"/>
+										<ToolbarSpacer/>
+									</Toolbar>
+								</ui:footer>-->
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent>
+				</commons:content>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

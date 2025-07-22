@@ -1,0 +1,26 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form">
+	<Dialog id="bulkSaveID1" title="File a NIL Return Status" type="Message" class="sapUiSizeCompact cl_saveHeader" showHeader="true">
+		<beginButton>
+			<Button text="OKAY" class="buttoncolorSec" press="onCloseDialogBulkSave1"/>
+		</beginButton>
+		<Table items="{BulkGstinSaveModel>/}" id="idTableBulkSave1" noDataText="No Products">
+			<columns>
+				<Column hAlign="Center">
+					<Text text="GSTIN"/>
+				</Column>
+				<Column hAlign="Center">
+					<Text text="Message Status"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem vAlign="Middle">
+					<cells>
+						<Text text="{BulkGstinSaveModel>gstin}" wrapping="true"/>
+						<Text text="{BulkGstinSaveModel>msg}" wrapping="true"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</Dialog>
+</core:FragmentDefinition>

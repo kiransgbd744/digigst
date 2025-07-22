@@ -1,0 +1,249 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.f" xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table"
+	xmlns:u="sap.ui.unified" xmlns:html="http://www.w3.org/1999/xhtml">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="GSTIN Validator"/>
+				</f:heading>
+				<f:actions>
+					<SegmentedButton selectionChange="onChangeSegment">
+						<items>
+							<SegmentedButtonItem text="Bulk Validation" key="SearchByGSTIN" width="10rem"/>
+							<SegmentedButtonItem text="Search" key="SearchByPAN" width="10rem"/>
+						</items>
+					</SegmentedButton>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapMPanelBGTranslucent">
+				<l:BlockLayout background="Dashboard" class="sapUiTinyMarginBottom">
+					<l:BlockLayoutRow class="sapUiNoContentPadding">
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Daily API call limit" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ApiLimit>/limit}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="API calls used" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ApiLimit>/usage}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="API calls remaining" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ApiLimit>/remainingCnt}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+				<VBox justifyContent="SpaceBetween" class="sapUiSmallMarginBeginEnd">
+					<Label text="Upload GSTIN list :" id="GSTINTEXTID" design="Bold" visible="true" class="sapUiTinyMarginTop"/>
+					<Label text="Single GSTIN Validation :" design="Bold" class="sapUiTinyMarginTop" id="GSTINTEXTIDPAN" visible="false"/>
+				</VBox>
+				<ui:Table id="gstinId" selectionMode="None" rows="{BulkValidList>/resp/det}" visibleRowCount="10">
+					<ui:extension>
+						<Toolbar>
+							<u:FileUploader id="ucWebUpload22" name="file" fileType="xlsx,csv,xls" class="buttoncolorSec" sameFilenameAllowed="false" sendXHR="true"
+								style="Emphasized" width="25rem" uploadComplete="onUploadComplete" enabled="{= ${userPermission>/appPermission/P9}}"/>
+							<Button text="Upload" press="onUpload" class="sapUiTinyMarginBegin buttoncolor" enabled="{= ${userPermission>/appPermission/P9}}"/>
+							<ToolbarSpacer></ToolbarSpacer>
+							<Button class="buttoncolorSec" text="Refresh" press="onRefresh"/>
+							<Button class="buttoncolorSec" id="buttenId" iconFirst="false" text="Download Template In Excel" press="onGSTINExclDwnld"
+								enabled="{= ${userPermission>/appPermission/P9}}"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Sr.No" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{BulkValidList>SrNum}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Date of Upload" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{BulkValidList>dateOfUpload}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Request Id" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{BulkValidList>requestId}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Uploaded By" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{BulkValidList>uploadedBy}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="25rem">
+							<ui:multiLabels>
+								<Label text="File Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{BulkValidList>fileName}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Number GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{BulkValidList>noOfGstins}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{BulkValidList>status}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Download" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<core:Icon src="sap-icon://download" size="0.75rem" press="onDownloadCatalog" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"
+									visible="{=${BulkValidList>status}==='GENERATED' &amp;&amp;(${userPermission>/appPermission/P99}||${userPermission>/appPermission/P9})}"/>
+								<!--visible="{= ${BulkValidList>status} === 'GENERATED' }"-->
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:Table>
+				<Toolbar visible="false" id="idtoolbargstn">
+					<Input id="idpangstn" placeholder="Enter PAN / GSTIN" width="25rem"></Input>
+					<Button text="Search" press="onSearchGSTN" class="sapUiSmallMarginBegin buttoncolor"/>
+				</Toolbar>
+				<l:BlockLayout background="Dashboard" visible="false" id="idblocklayoutgstn">
+					<l:BlockLayoutRow class="sapUiNoContentPadding">
+						<l:BlockLayoutCell width="8" class="clBlockLayout1">
+							<Toolbar class="colorToolbar sapUiTinyMarginBottom">
+								<Label text="GSTIN Details" design="Bold" class="titleFont"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<l:Grid defaultSpan="L6" hSpacing="2" vSpacing="2" class="sapUiMediumMarginTop">
+								<VBox>
+									<Label text="GSTIN/UIN" design="Bold" class="sapUiTinyMarginBegin"/>
+									<Text text="{SearchGstnData>/gstin}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Constitution of Business" design="Bold" class="sapUiTinyMarginBegin"/>
+									<Text text="{SearchGstnData>/ctb}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Centre Jurisdiction" design="Bold" class="sapUiTinyMarginBegin"/>
+									<Text text="{SearchGstnData>/ctj}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Taxpayer Type" design="Bold" class="sapUiTinyMarginBegin"/>
+									<Text text="{SearchGstnData>/dty}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="E-Invoice Applicability" design="Bold" class="sapUiTinyMarginBegin"/>
+									<Text text="{SearchGstnData>/einvApplicable}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Legal Name of Business" design="Bold" class="sapUiTinyMarginBegin"/>
+									<Text text="{SearchGstnData>/lgnm}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Trade Name" design="Bold" class="sapUiTinyMarginBegin"/>
+									<Text text="{SearchGstnData>/tradenm}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Nature of Business Activity" design="Bold" class="sapUiTinyMarginBegin"/>
+									<Text text="{SearchGstnData>/nba}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Building Name" design="Bold" class="sapUiTinyMarginBegin"/>
+									<Text text="{SearchGstnData>/bnm}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Street" design="Bold" class="sapUiTinyMarginBegin"/>
+									<Text text="{SearchGstnData>/Street}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Location" design="Bold" class="sapUiTinyMarginBegin"/>
+									<Text text="{SearchGstnData>/loc}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Door Number" design="Bold" class="sapUiTinyMarginBegin"/>
+									<Text text="{SearchGstnData>/bno}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="State" design="Bold" class="sapUiTinyMarginBegin"/>
+									<Text text="{SearchGstnData>/State}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Floor Number" design="Bold" class="sapUiTinyMarginBegin"/>
+									<Text text="{SearchGstnData>/flno}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Pincode" design="Bold" class="sapUiTinyMarginBegin"/>
+									<Text text="{SearchGstnData>/pncd}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Date of Registration" design="Bold" class="sapUiTinyMarginBegin"/>
+									<Text text="{SearchGstnData>/rgdt}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="State Jurisdiction" design="Bold" class="sapUiTinyMarginBegin"/>
+									<Text text="{SearchGstnData>/stj}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Date of Cancellation" design="Bold" class="sapUiTinyMarginBegin"/>
+									<Text text="{SearchGstnData>/cxdt}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="GSTN Status" design="Bold" class="sapUiTinyMarginBegin"/>
+									<Text text="{SearchGstnData>/sts}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Error Code" design="Bold" class="sapUiTinyMarginBegin"/>
+									<Text text="{SearchGstnData>/errorCd}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Error Message" design="Bold" class="sapUiTinyMarginBegin"/>
+									<Text text="{SearchGstnData>/errormsg}" class="sapUiTinyMarginBegin"/>
+								</VBox>
+							</l:Grid>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

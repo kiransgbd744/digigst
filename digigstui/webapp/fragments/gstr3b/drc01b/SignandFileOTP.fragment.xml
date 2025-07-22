@@ -1,0 +1,16 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form">
+	<Dialog title="Sign &amp; File DRC01B Confirmation OTP" type="Message" class="sapUiSizeCompact cl_saveHeader" contentWidth="30%"
+		showHeader="true">
+		<buttons>
+			<Button text="Sign" class="buttoncolorSec" press="onPopupOTPSign"/>
+			<Button text="Cancel" class="buttoncolorSec" press="onPopupOTPCancel"/>
+		</buttons>
+		<!--<l:HorizontalLayout>-->
+		<VBox>
+			<Label text="OTP has been sent to the registered Email &amp; Mobile No." design="Bold"/>
+			<Input id="otpValue" width="10rem" class="sapUiTinyMarginTop"/>
+		</VBox>
+		<!--</l:HorizontalLayout>-->
+	</Dialog>
+</core:FragmentDefinition>

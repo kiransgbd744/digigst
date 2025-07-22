@@ -1,0 +1,84 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table" xmlns:form="sap.ui.layout.form">
+	<l:Grid defaultSpan="L2" hSpacing="2" vSpacing="2" class="sapUiTinyMarginTop">
+		<VBox>
+			<Label text="{i18n>companyCode}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/companyCode}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="companyCode" value="{InvoiceItemModel>/companyCode}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/companyCodeState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/companyCodeText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>division}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/division}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<ComboBox name="division" items="{path:'userPermission>/respData/dataSecurity/division', templateShareable:false}"
+				visible="{InvoiceItemModel>/edit}" selectedKey="{InvoiceItemModel>/division}"
+				valueState="{path:'InvoiceItemModel>/divisionState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/divisionText}">
+				<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+			</ComboBox>
+		</VBox>
+		<!--<VBox>
+			<Label text="{i18n>subDivision}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>subDivision}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="subDivision" value="{InvoiceItemModel>subDivision}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>subDivisionState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>subDivisionText}"/>
+		</VBox>-->
+		<VBox>
+			<Label text="{i18n>location}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/location}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<ComboBox name="location" items="{path:'userPermission>/respData/dataSecurity/location', templateShareable:false}"
+				visible="{InvoiceItemModel>/edit}" selectedKey="{InvoiceItemModel>/location}"
+				valueState="{path:'InvoiceItemModel>/locationState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/locationText}">
+				<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+			</ComboBox>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>salesOrgnization}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/salesOrg}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<ComboBox name="salesOrg" items="{path:'userPermission>/respData/dataSecurity/salesOrg', templateShareable:false}"
+				visible="{InvoiceItemModel>/edit}" selectedKey="{InvoiceItemModel>/salesOrg}"
+				valueState="{path:'InvoiceItemModel>/salesOrgState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/salesOrgText}">
+				<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+			</ComboBox>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>distChannel}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/distChannel}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<ComboBox name="distChannel" items="{path:'userPermission>/respData/dataSecurity/distChannel', templateShareable:false}"
+				visible="{InvoiceItemModel>/edit}" selectedKey="{InvoiceItemModel>/distChannel}"
+				valueState="{path:'InvoiceItemModel>/distChannelState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/distChannelText}">
+				<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+			</ComboBox>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>ProfitCentre1}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/profitCentre1}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<ComboBox name="profitCentre1" items="{path:'userPermission>/respData/dataSecurity/profitCenter', templateShareable:false}"
+				visible="{InvoiceItemModel>/edit}" selectedKey="{InvoiceItemModel>/profitCentre1}"
+				valueState="{path:'InvoiceItemModel>/profitCentre1State', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/profitCentre1Text}">
+				<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+			</ComboBox>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>profitCentre2}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/profitCentre2}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="profitCentre2" value="{InvoiceItemModel>/profitCentre2}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/profitCentre2State', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/profitCentre2Text}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>sourceIdentifier}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/srcIdentifier}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="srcIdentifier" value="{InvoiceItemModel>/srcIdentifier}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/srcIdentifierState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/srcIdentifierText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>srcFileName}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/srcFileName}"/>
+		</VBox>
+	</l:Grid>
+</core:FragmentDefinition>

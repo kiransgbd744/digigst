@@ -1,0 +1,240 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.f" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table"
+	xmlns:u="sap.ui.unified" xmlns:fb="sap.ui.comp.filterbar" xmlns:html="http://www.w3.org/1999/xhtml">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="On-Boarding" titleStyle="H3" class="tinyMarginTop"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<ui:TreeTable rows="{path:'onboarding>/resp', parameters:{ arrayNames:['categories'], numberOfExpandedLevels:2 }}" visibleRowCount="17"
+					selectionMode="None" selectionBehavior="Row" fixedColumnCount="1" enableSelectAll="false"
+					class="sapUiTinyMarginBottom sapUiSmallMarginBeginEnd">
+					<ui:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<HBox>
+								<Label text="Last Updated On :"/>
+								<Label id="statusId"/>
+							</HBox>
+							<Button text="Submit" class="buttoncolor" press="onOBsubmit" enabled="{= (${userPermission>/appPermission/P22})}"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:Column width="15.5rem">
+						<Label text="Report Category" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{onboarding>Particulars}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="15rem">
+						<Label text="Report Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox>
+								<CheckBox selected="{onboarding>OptionalReportSelected}" class="sapUiTinyMarginEnd" text="{onboarding>ReportType}"
+									editable="{path:'onboarding>ReportType', formatter:'.formatter.editableRR'}" visible="{=${onboarding>HDR} !== 'L1'}"/>
+								<!--<Text text="{onboarding>ReportType}"/>-->
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<Label text="Auto Lock" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox direction="Column">
+								<ComboBox selectedKey="{onboarding>AutoLock}" selectionChange="AutoLockChange"
+									editable="{path:'onboarding>ReportType',formatter:'.formatter.editable'}" width="100%"
+									visible="{parts:[{path:'onboarding>ReportType'},{path:'onboarding>HDR'}], formatter:'.formatter.AutolockVis'}">
+									<core:Item key="Yes" text="Yes"/>
+									<core:Item key="No" text="No"/>
+									<core:Item key="3B Lock" text="3B Lock"/>
+								</ComboBox>
+								<ComboBox selectedKey="NA" width="100%" editable="false"
+									visible="{=(${onboarding>ReportType} === 'Force Match Report' || ${onboarding>ReportType} === 'GSTR-3B Locked Records')}">
+									<core:Item key="NA" text="NA"/>
+								</ComboBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" headerSpan="2" width="14rem" visible="{=(!!${GroupPermission>/GR1} &amp;&amp; !!${GroupPermission>/GR5})}">
+						<ui:multiLabels>
+							<Label text="IMS Action Response" textAlign="Center" width="100%" design="Bold"/>
+							<Label text="Invoice/ Debit Note" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<ComboBox selectedKey="{onboarding>ImsActionAllowed}" editable="{path:'onboarding>ReportType',formatter:'.formatter.IMSEditable'}"
+								visible="{=${onboarding>HDR}!=='L1'}">
+								<core:Item key="No Response" text="No Response"/>
+								<core:Item key="Accept" text="Accept"/>
+								<core:Item key="Reject" text="Reject"/>
+								<core:Item key="Pending" text="Pending"/>
+								<core:Item key="No Action" text="No Action - Reset"/>
+							</ComboBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="15rem" visible="{=(!!${GroupPermission>/GR1} &amp;&amp; !!${GroupPermission>/GR5})}">
+						<ui:multiLabels>
+							<Label text="" textAlign="Center" width="100%" design="Bold"/>
+							<HBox>
+								<Label text="Credit Note/ Other Scenarios" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<core:Icon src="sap-icon://message-information" tooltip="More information available" class="sapUiTinyMarginBegin" press="onInfoIconPress"
+									color="blue" size="1.2rem"/>
+							</HBox>
+						</ui:multiLabels>
+						<ui:template>
+							<ComboBox selectedKey="{onboarding>ImsActionBlocked}" editable="{path:'onboarding>ReportType',formatter:'.formatter.IMSEditable'}"
+								visible="{=${onboarding>HDR}!=='L1'}">
+								<core:Item key="No Response" text="No Response"/>
+								<core:Item key="Accept" text="Accept"/>
+								<core:Item key="Reject" text="Reject"/>
+								<core:Item key="No Action" text="No Action - Reset"/>
+							</ComboBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<Label text="Reverse Feed" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<ComboBox selectedKey="{onboarding>ReverseFeed}" editable="{=${onboarding>AutoLock}==='No'}" visible="{=${onboarding>HDR}!=='L1'}"
+								width="100%">
+								<core:Item key="Yes" text="Yes"/>
+								<core:Item key="No" text="No"/>
+							</ComboBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<Label text="ERP Report Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox direction="Column">
+								<ComboBox selectedKey="{onboarding>ERPReportType}" width="100%"
+									visible="{parts:[{path:'onboarding>ReportType'},{path:'onboarding>HDR'}],formatter:'.formatter.ERT'}">
+									<core:Item key="Match" text="Match"/>
+									<core:Item key="MisMatch" text="MisMatch"/>
+								</ComboBox>
+								<ComboBox selectedKey="{onboarding>ERPReportType}" width="100%"
+									visible="{=${onboarding>ReportType} === 'Addition in PR'?true:${onboarding>ReportType} === 'Addition in 2A' ? true : false}">
+									<core:Item key="MisMatch" text="MisMatch"/>
+									<core:Item key="Additional Entries" text="Additional Entries"/>
+								</ComboBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="20rem">
+						<Label text="Approval Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox direction="Column" renderType="Bare">
+								<ComboBox selectedKey="{onboarding>ApporvalStatus}" width="100%"
+									visible="{=(${onboarding>HDR}!=='L1'&amp;&amp;!['Match(Imports)','Mismatch(Imports)'].includes(${onboarding>ReportType}))}">
+									<core:Item key="Approved for full payment" text="Approved for full payment"/>
+									<core:Item key="Approved for part payment" text="Approved for part payment"/>
+									<core:Item key="Approved for part payment (only GST)" text="Approved for part payment (only GST)"/>
+									<core:Item key="Approved for part payment (only principal)" text="Approved for part payment (only principal)"/>
+									<core:Item key="Not approved for payment" text="Not approved for payment"/>
+								</ComboBox>
+								<ComboBox editable="false" selectedKey="{onboarding>ApporvalStatus}" width="100%"
+									visible="{=(${onboarding>ReportType}==='Match(Imports)' || ${onboarding>ReportType}==='Mismatch(Imports)')}">
+									<core:Item key="NA" text="NA"/>
+								</ComboBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+				</ui:TreeTable>
+				<ui:Table rows="{path:'onboarding2>/resp'}" selectionMode="None" selectionBehavior="Row" fixedColumnCount="1" enableSelectAll="false"
+					visibleRowCount="6" class="sapUiTinyMarginBottom sapUiSmallMarginBeginEnd">
+					<ui:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<HBox>
+								<Label text="Last Updated On :"/>
+								<Label id="statusId1"/>
+							</HBox>
+							<Button text="Submit" class="buttoncolor" press="onOBsubmit1" enabled="{= (${userPermission>/appPermission/P22})}"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:Column width="15.5rem">
+						<Label text="Particulars" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{onboarding2>Particulars}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<Label text="Auto Lock" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<ComboBox selectedKey="{onboarding2>AutoLock}" editable="{parts:[{path : 'onboarding2>ReportType'}], formatter : '.formatter.editable'}">
+								<core:Item key="No change" text="No Change"/>
+								<core:Item key="No" text="No"/>
+							</ComboBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" headerSpan="2" visible="{=(!!${GroupPermission>/GR1} &amp;&amp; !!${GroupPermission>/GR5})}">
+						<ui:multiLabels>
+							<Label text="IMS Action Response" textAlign="Center" width="100%" design="Bold"/>
+							<Label text="Invoice/ Debit Note" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<ComboBox selectedKey="{onboarding2>ImsActionAllowed}">
+								<core:Item key="No change" text="No Change"/>
+								<core:Item key="No Response" text="No Response"/>
+								<core:Item key="Accept" text="Accept"/>
+								<core:Item key="Reject" text="Reject"/>
+								<core:Item key="Pending" text="Pending"/>
+								<core:Item key="No Action" text="No Action - Reset"/>
+							</ComboBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" visible="{=(!!${GroupPermission>/GR1} &amp;&amp; !!${GroupPermission>/GR5})}">
+						<ui:multiLabels>
+							<Label text="" textAlign="Center" width="100%" design="Bold"/>
+							<HBox>
+								<Label text="Credit Note/ Other Scenarios" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<core:Icon src="sap-icon://message-information" tooltip="More information available" class="sapUiTinyMarginBeginEnd" press="onInfoIconPress"
+									color="blue" size="1.2rem"/>
+							</HBox>
+						</ui:multiLabels>
+						<ui:template>
+							<ComboBox selectedKey="{onboarding2>ImsActionBlocked}">
+								<core:Item key="No change" text="No Change"/>
+								<core:Item key="No Response" text="No Response"/>
+								<core:Item key="Accept" text="Accept"/>
+								<core:Item key="Reject" text="Reject"/>
+								<core:Item key="No Action" text="No Action - Reset"/>
+							</ComboBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<Label text="Reverse Feed" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<ComboBox selectedKey="{onboarding2>ReverseFeed}" editable="{parts:[{path : 'onboarding2>ReportType'}], formatter : '.formatter.editable'}">
+								<core:Item key="No change" text="No Change"/>
+								<core:Item key="No" text="No"/>
+							</ComboBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<Label text="ERP Report Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<ComboBox selectedKey="{onboarding2>ERPReportType}"
+								editable="{parts:[{path : 'onboarding2>ReportType'}], formatter : '.formatter.editable'}">
+								<core:Item key="No change" text="No Change"/>
+								<core:Item key="MisMatch" text="MisMatch"/>
+							</ComboBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<Label text="Approval Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<ComboBox selectedKey="{onboarding2>ApporvalStatus}"
+								editable="{parts:[{path : 'onboarding2>ReportType'}], formatter : '.formatter.editable'}" width="100%">
+								<core:Item key="No change" text="No Change"/>
+								<core:Item key="Approved for part payment" text="Approved for part payment"/>
+								<core:Item key="Approved for part payment (only GST)" text="Approved for part payment (only GST)"/>
+								<core:Item key="Approved for part payment (only principal)" text="Approved for part payment (only principal)"/>
+								<core:Item key="Not approved for payment" text="Not approved for payment"/>
+							</ComboBox>
+						</ui:template>
+					</ui:Column>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

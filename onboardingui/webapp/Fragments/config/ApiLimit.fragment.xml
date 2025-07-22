@@ -1,0 +1,81 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="dynamicERP">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading></f:heading>
+				<f:actions>
+					<Button type="Emphasized" icon="sap-icon://save" text="Submit" id="idERPSubmit" press="onSubmitAPI"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<ui:Table id="idTableERP" rows="{ApiLimit>/}" selectionMode="None" selectionBehavior="Row" visibleRowCount="10" fixedRowCount="0"
+					fixedColumnCount="0" enableSelectAll="true">
+					<ui:extension>
+						<Toolbar>
+							<Label text="1.Date range configuration for limits of GSTN API calls basis date:" design="Bold"/>
+							<ToolbarSpacer/>
+							<Button type="Accept" text="Edit" tooltip="Edit rows" id="idERPEditRows" press="onEditRows"/>
+							<Button type="Accept" icon="sap-icon://add" tooltip="Add row" id="idERPAddrow" press="onAddrow"/>
+							<!--<Button type="Reject" icon="sap-icon://delete" tooltip="Delete rows" id="idERPDeleteRows" press="onDeleteRows"/>-->
+							<Button type="Accept" icon="sap-icon://download" tooltip="Delete rows" id="idERPDeleteRow" press="onDeleteRows"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column headerSpan="0" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="S.No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{ApiLimit>Sno}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="From Day" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{ApiLimit>fromDate}" editable="{ApiLimit>edit}" maxLength="2" change="dateChangeFrom"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="To Day" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{ApiLimit>toDate}" editable="{ApiLimit>edit}" maxLength="2" change="dateChangeTo"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="FY" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{ApiLimit>fy}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="API Call Limits" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{ApiLimit>limit}" editable="{ApiLimit>edit}" maxLength="17" change="limitChange"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="5rem">
+							<ui:multiLabels>
+								<Label/>
+							</ui:multiLabels>
+							<ui:template>
+								<Button icon="sap-icon://delete" press="onDeleteRows"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

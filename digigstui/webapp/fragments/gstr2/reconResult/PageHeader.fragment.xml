@@ -1,0 +1,123 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar">
+	<fb:FilterBar id="fbRecResult" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false"
+		class="sapUiNoContentPadding" width="90%">
+		<fb:filterGroupItems>
+			<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Recon Type" visibleInFilterBar="true" mandatory="true">
+				<fb:control>
+					<Select id="idReconTypeRR" class="input" forceSelection="true" change="onRecontypeChangeRR">
+						<core:Item key="2A_PR" text="GSTR-2A/6A Vs PR"/>
+						<core:Item key="2B_PR" text="GSTR-2B Vs PR"/>
+					</Select>
+				</fb:control>
+			</fb:FilterGroupItem>
+			<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Tax Period Base" visibleInFilterBar="true">
+				<fb:control>
+					<Select id="sTaxPeriodBase">
+						<core:Item key="PR" text="PR"/>
+						<core:Item key="{Display>/LabelRR}" text="{Display>/LabelRR}"/>
+						<core:Item key="Both" text="Both PR &amp; {Display>/LabelRR}"/>
+					</Select>
+				</fb:control>
+			</fb:FilterGroupItem>
+			<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="From Tax Period" visibleInFilterBar="true" mandatory="true">
+				<fb:control>
+					<DatePicker id="dtConsldFrom" displayFormat="MMM yyyy" valueFormat="yyyyMM" change="handleChangeRR($event,'T')" width="12rem"/>
+				</fb:control>
+			</fb:FilterGroupItem>
+			<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="To Tax Period" visibleInFilterBar="true" mandatory="true">
+				<fb:control>
+					<DatePicker id="dtConsld1To" displayFormat="MMM yyyy" valueFormat="yyyyMM" width="12rem"/>
+				</fb:control>
+			</fb:FilterGroupItem>
+			<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Recipient GSTIN" visibleInFilterBar="true">
+				<fb:control>
+					<MultiComboBox id="idRRGstins" width="100%" items="{path:'ReconResultGstin>/'}" selectionChange="selectAll">
+						<core:Item key="{ReconResultGstin>gstin}" text="{ReconResultGstin>gstin}"/>
+					</MultiComboBox>
+				</fb:control>
+			</fb:FilterGroupItem>
+			<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="Document Type" visibleInFilterBar="true">
+				<fb:control>
+					<MultiComboBox id="DocTypeIDConslM" showSelectAll="true">
+						<core:Item key="INV" text="Invoice"/>
+						<core:Item key="CR" text="Credit Note"/>
+						<core:Item key="DR" text="Debit Note"/>
+						<core:Item key="RNV" text="Invoice - Amendment"/>
+						<core:Item key="RCR" text="Credit Note - Amendment"/>
+						<core:Item key="RDR" text="Debit Note - Amendment"/>
+						<core:Item key="IMPG" text="IMPG"/>
+						<core:Item key="SEZG" text="IMPGSEZ"/>
+					</MultiComboBox>
+				</fb:control>
+			</fb:FilterGroupItem>
+			<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="Recon Criteria" visibleInFilterBar="true">
+				<fb:control>
+					<Select id="sRecResultCriteria" change="onReconResultCriteria(${$source>/selectedKey})">
+						<core:Item key="Regular" text="Regular"/>
+						<core:Item key="Import" text="Import"/>
+						<core:Item key="ISD" text="ISD"/>
+					</Select>
+				</fb:control>
+			</fb:FilterGroupItem>
+			<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="H" label="Report Type" visibleInFilterBar="true">
+				<fb:control>
+					<VBox>
+						<MultiComboBox id="idConsldReptType" items="{ReportType>/}" selectionChange="selectAll" visible="{=!${Display>/swRecon}}">
+							<core:Item key="{ReportType>key}" text="{ReportType>text}"/>
+						</MultiComboBox>
+						<MultiComboBox id="iUnlockReportType" selectionChange="selectAll" visible="{Display>/swRecon}">
+							<core:Item key="All" text="All"/>
+							<core:Item key="Force Match" text="Locked - Force Match"/>
+							<core:Item key="3B Response" text="Locked - 3B Response"/>
+						</MultiComboBox>
+					</VBox>
+				</fb:control>
+			</fb:FilterGroupItem>
+			<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="I" label="From Document Date" visibleInFilterBar="true">
+				<fb:control>
+					<DatePicker id="dtDocFrom" displayFormat="dd MMM yyyy" valueFormat="yyyy-MM-dd" placeholder="DD MMM YYYY"
+						change="handleChangeRR($event,'D')" width="12rem"/>
+				</fb:control>
+			</fb:FilterGroupItem>
+			<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="J" label="To Document Date" visibleInFilterBar="true">
+				<fb:control>
+					<DatePicker id="dtDocTo" displayFormat="dd MMM yyyy" valueFormat="yyyy-MM-dd" placeholder="DD MMM YYYY" width="12rem"/>
+				</fb:control>
+			</fb:FilterGroupItem>
+			<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="K" label="Document No" visibleInFilterBar="true">
+				<fb:control>
+					<MultiInput id="reconDocnumber" change="onMultiInputChange" showValueHelp="false"/>
+				</fb:control>
+			</fb:FilterGroupItem>
+			<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="L" label="Accounting Voucher No." visibleInFilterBar="true">
+				<fb:control>
+					<MultiInput id="iAccVocNo" change="onMultiInputChange" showValueHelp="false"/>
+				</fb:control>
+			</fb:FilterGroupItem>
+			<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="M" label="Vendor PAN" visibleInFilterBar="true">
+				<fb:control>
+					<Input id="iVendorPAN" maxLength="10"/>
+				</fb:control>
+			</fb:FilterGroupItem>
+			<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="N" label="Vendor GSTIN" visibleInFilterBar="true">
+				<fb:control>
+					<MultiInput id="iVendorGstin" change="onMultiInputChange" maxLength="15" showValueHelp="false"/>
+				</fb:control>
+			</fb:FilterGroupItem>
+			<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="O" label="From Tax Period 3B" visibleInFilterBar="true">
+				<fb:control>
+					<DatePicker id="dFrPeriod3b" displayFormat="MMM yyyy" valueFormat="yyyyMM" placeholder="MMM YYYY" change="handleChangeRR($event,'T3b')"/>
+				</fb:control>
+			</fb:FilterGroupItem>
+			<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="P" label="To Tax Period 3B" visibleInFilterBar="true">
+				<fb:control>
+					<DatePicker id="dToPeriod3b" displayFormat="MMM yyyy" valueFormat="yyyyMM" placeholder="MMM YYYY"/>
+				</fb:control>
+			</fb:FilterGroupItem>
+		</fb:filterGroupItems>
+	</fb:FilterBar>
+	<HBox justifyContent="End" class="clMain" width="10%">
+		<Button text="Clear" press="onPressClearRR" visible="true" class="sapUiTinyMarginEnd buttoncolorSec"/>
+		<Button text="Filter" press="onReconResults" class="buttoncolor"/>
+	</HBox>
+</core:FragmentDefinition>

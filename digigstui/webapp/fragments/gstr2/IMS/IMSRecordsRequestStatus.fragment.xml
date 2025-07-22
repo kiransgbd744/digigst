@@ -1,0 +1,81 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage visible="{=(${ViewProperty>/btnSegment}==='IMSRecords' &amp;&amp; ${ViewProperty>/imsRecords}==='Request Status')}" class="clDataStatusAPI">
+		<f:content>
+			<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false">
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table rows="{path:'RequestStatus>/resp', sorter: {path: 'reqId',descending:true}}" selectionMode="None"
+								selectionBehavior="Row" visibleRowCount="13" fixedColumnCount="0" enableSelectAll="false" id="RRRSTabId">
+								<ui:columns>
+									<ui:Column>
+										<Label design="Bold" text="Request ID"/>
+										<ui:template>
+											<Text text="{RequestStatus>reqId}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column  hAlign="Center">
+										<Label design="Bold" text="IMS Action Type"/>
+										<ui:template>
+											<Text text="{path:'RequestStatus>actionTaken', formatter:'.formatter.IMSText'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="Date"/>
+										<ui:template>
+											<HBox alignItems="Center" justifyContent="Center">
+												<Text text="{RequestStatus>date}"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="Request Status"/>
+										<ui:template>
+											<HBox alignItems="Center" justifyContent="Center">
+												<Text text="{RequestStatus>reqStatus}"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="Total Records Participated"/>
+										<ui:template>
+											<HBox alignItems="Center" justifyContent="Center">
+												<Text text="{RequestStatus>totalRecords}"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="Processed Records"/>
+										<ui:template>
+											<HBox alignItems="Center" justifyContent="Center">
+												<Text text="{RequestStatus>processed}"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="12rem">
+										<Label design="Bold" text="Error Records"/>
+										<ui:template>
+											<HBox renderType="Bare" justifyContent="SpaceBetween">
+												<Text text="{RequestStatus>error}" textAlign="End" class="btnDownload"/>
+												<core:Icon src="sap-icon://download" press="onDownloadRequestStatus(${RequestStatus>docId},${RequestStatus>reqId})"
+													visible="{RequestStatus>isErrorDownld}"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+				<commons:toolbar>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+						<Button class="buttoncolorSec" text="Refresh" press="onRequestStatus"/>
+						<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+					</OverflowToolbar>
+				</commons:toolbar>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

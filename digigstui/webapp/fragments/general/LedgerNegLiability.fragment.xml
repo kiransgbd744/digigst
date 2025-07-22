@@ -1,0 +1,244 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<ui:Table id="tabNegativeLiability" rows="{NegativeLiability>/}" selectionMode="None" class="sapUiTinyMarginTop sapUiTinyMarginBeginEnd"
+		visible="{=${ViewProperty>/table}==='negLiability'}">
+		<ui:extension>
+			<Toolbar height="4rem">
+				<VBox>
+					<Label text="From Date"/>
+					<DatePicker id="negLiaDtFr" displayFormat="MMM dd, yyyy" valueFormat="dd-MM-yyyy" dateValue="{ViewProperty>/frNegLia}"
+						maxDate="{ViewProperty>/maxDate}" change="onDateChange($event,'negLia')"/>
+				</VBox>
+				<VBox>
+					<Label text="To Date"/>
+					<DatePicker id="negLiaDtTo" displayFormat="MMM dd, yyyy" valueFormat="dd-MM-yyyy" dateValue="{ViewProperty>/toNegLia}"
+						maxDate="{ViewProperty>/maxDate}" minDate="{ViewProperty>/frNegLia}"/>
+				</VBox>
+				<VBox>
+					<Label/>
+					<Button text="Filter" press="onNegativeLiabilityDetail" class="buttoncolor"/>
+				</VBox>
+				<ToolbarSpacer/>
+				<Button text="Excel Download" icon="sap-icon://excel-attachment" tooltip="Download details in Excel" iconFirst="false"
+					press="onExcelDownloadNegLiability" class="buttoncolorSec"/>
+				<Button text="PDF Download" icon="sap-icon://pdf-attachment" tooltip="Download details in PDF" iconFirst="false"
+					press="onPdfDownloadReclaim" class="buttoncolorSec"/>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="4rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Sr. No." textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{NegativeLiability>srNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="7rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Date" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{NegativeLiability>trandt}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="10rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Reference No." textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{NegativeLiability>refNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="6rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Tax Period" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{NegativeLiability>rtnprd}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Description" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{NegativeLiability>desc}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Transaction Type" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{NegativeLiability>tranTyp}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" headerSpan="8,4" width="8rem">
+				<ui:multiLabels>
+					<Label text="Amount Credited/Debited (Rs)" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="A.Other than reverse charge" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Integrated Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'NegativeLiability>amtCrDrOtherIgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text=""/>
+					<Label text="Central Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'NegativeLiability>amtCrDrOtherCgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text=""/>
+					<Label text="State/UT Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'NegativeLiability>amtCrDrOtherSgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text=""/>
+					<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'NegativeLiability>amtCrDrOtherCess',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" headerSpan="8,4" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="B.Reverse charge and supplies made u/s 9(5)" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Integrated Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'NegativeLiability>amtCrDrRevChargeIgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text=""/>
+					<Label text="Central Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'NegativeLiability>amtCrDrRevChargeCgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text=""/>
+					<Label text="State/UT Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'NegativeLiability>amtCrDrRevChargeSgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text=""/>
+					<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'NegativeLiability>amtCrDrRevChargeCess',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" headerSpan="8,4" width="8rem">
+				<ui:multiLabels>
+					<Label text="Closing Balance" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="A.Other than reverse charge" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Integrated Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'NegativeLiability>clsBalOtherIgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text=""/>
+					<Label text="Central Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'NegativeLiability>clsBalOtherCgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text=""/>
+					<Label text="State/UT Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'NegativeLiability>clsBalOtherSgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text=""/>
+					<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'NegativeLiability>clsBalOtherCess',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" headerSpan="8,4" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="B.Reverse charge and supplies made u/s 9(5)" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Integrated Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'NegativeLiability>clsBalRevChargeIgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text=""/>
+					<Label text="Central Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'NegativeLiability>clsBalRevChargeCgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text=""/>
+					<Label text="State/UT Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'NegativeLiability>clsBalRevChargeSgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text=""/>
+					<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'NegativeLiability>clsBalRevChargeCess',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+	</ui:Table>
+</core:FragmentDefinition>

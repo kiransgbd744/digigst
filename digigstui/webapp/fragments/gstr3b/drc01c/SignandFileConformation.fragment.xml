@@ -1,0 +1,39 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form">
+	<Dialog title="Sign &amp; File DRC01C Confirmation" type="Message" class="sapUiSizeCompact cl_saveHeader" contentWidth="40%"
+		showHeader="true">
+		<!--<buttons>-->
+		<!--	<Button text="Confirm" class="buttoncolorSec" press="onPopupConfirm"/>-->
+		<!--	<Button text="Cancel" class="buttoncolorSec" press="onPopupCancel"/>-->
+		<!--</buttons>-->
+		<!--<l:HorizontalLayout>-->
+		<!--	<VBox>-->
+		<!--		<Label test="GSTINs Selected :" />-->
+		<!--		<Text test="{confirmval>/gstin}"></Text>-->
+		<!--	</VBox>-->
+		<!--	<VBox>-->
+		<!--		<Label test="Return Period :"></Label>-->
+		<!--		<Text test="{confirmval>/taxPeriod}"></Text>-->
+		<!--	</VBox>-->
+		<!--</l:HorizontalLayout>-->
+		<VBox>
+			<VBox>
+				<Text text="OTP will be sent to the registered mobile no. and email id by GSTN. Do you want to continue with below details?"></Text>
+			</VBox>
+			<VBox class="sapUiSmallMarginTop">
+				<Label text="GSTINs Selected :" design="Bold"/>
+				<Text text="{confirmval>/gstin}" class="sapUiTinyMarginTop"></Text>
+			</VBox>
+			<VBox class="sapUiSmallMarginTop">
+				<Label text="Return Period :" design="Bold"></Label>
+				<Text text="{confirmval>/taxPeriod}" class="sapUiTinyMarginTop"></Text>
+			</VBox>
+		</VBox>
+		<beginButton>
+			<Button text="Confirm" class="buttoncolorSec" press="onPopupConfirm"/>
+		</beginButton>
+		<endButton>
+			<Button text="Cancel" class="buttoncolorSec" press="onPopupCancel"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

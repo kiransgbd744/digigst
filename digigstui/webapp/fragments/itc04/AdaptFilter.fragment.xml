@@ -1,0 +1,46 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:fb="sap.ui.comp.filterbar">
+	<Dialog id="dAdapt" title="Adapt Filters" type="Message" class="sapUiSizeCompact">
+		<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" filterContainerWidth="12rem" useToolbar="false"
+			hSpacing="0" vSpacing="0">
+			<fb:filterGroupItems>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>plantCode}" visibleInFilterBar="true"
+					visible="{userPermission>/respData/dataSecurity/items/plant}">
+					<fb:control>
+						<MultiComboBox id="slPlant" items="{userPermission>/respData/dataSecurity/plant}">
+							<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+						</MultiComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="{i18n>division}" visibleInFilterBar="true"
+					visible="{userPermission>/respData/dataSecurity/items/division}">
+					<fb:control>
+						<MultiComboBox id="slDivision" items="{userPermission>/respData/dataSecurity/division}">
+							<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+						</MultiComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>profitCentre}" visibleInFilterBar="true"
+					visible="{userPermission>/respData/dataSecurity/items/profitCenter}">
+					<fb:control>
+						<MultiComboBox id="slProfitCtr" items="{userPermission>/respData/dataSecurity/profitCenter}">
+							<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+						</MultiComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="I" label="{i18n>profitCenter2}" visibleInFilterBar="true"
+					visible="{userPermission>/respData/dataSecurity/items/profitCenter2}">
+					<fb:control>
+						<MultiComboBox id="slprofitCenter2" items="{userPermission>/respData/dataSecurity/profitCenter2}">
+							<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+						</MultiComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+			</fb:filterGroupItems>
+		</fb:FilterBar>
+		<buttons>
+			<Button id="bApply" text="Apply" class="buttoncolorSec" type="Default" press="onPressFilterClose"/>
+			<!--<Button text="{i18n>clear}" class="sapUiTinyMarginBeginEnd" press="onPressClear('A','')"/>-->
+			<Button id="bCancel" text="Cancel" class="buttoncolorSec" type="Default" press="onPressFilterClose"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

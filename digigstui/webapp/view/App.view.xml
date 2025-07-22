@@ -1,0 +1,191 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:tnt="sap.tnt" displayBlock="true"
+	controllerName="com.ey.digigst.controller.App" xmlns:f="sap.f" xmlns:main="sap.ui.webc.main" busyIndicatorDelay="0">
+	<Page id="app" showHeader="false" class="hideScroll">
+		<content>
+			<Toolbar height="3.2rem" class="bacCol">
+				<Image src="images/eylogo.png" alt="EY DigiGST" densityAware="false" height="2rem" class="sapUiTinyMarginBegin"/>
+				<Image src="images/digigst.png" alt="EY DigiGST" densityAware="false" height="2rem"/>
+				<ToolbarSpacer/>
+				<Label id="iTimeOut" design="Bold"/>
+				<Button type="Transparent" text="Configurations Opted" icon="sap-icon://action-settings" iconFirst="false" visible="false"/>
+				<Button type="Transparent" press="fnPdfView" id="id_pdfViewr" text="PDF" visible="false"/>
+				<core:Icon src="sap-icon://bell" tooltip="Notification" class="sapUiTinyMarginBeginEnd" visible="false"/>
+				<Label text="Group :" class="Text"/>
+				<Label text="{UserInfo>/groupName}" class="Text" design="Bold"/>
+				<Label text="Entity Name : " class="sapUiSmallMarginBegin Text" visible="{Display>/entity}"/>
+				<Select id="slAppEntity" items="{entity>/}" width="15rem" change="onEntityChange" visible="{Display>/entity}" class="clEntity">
+					<core:Item key="{entity>entityId}" text="{entity>entityName}"/>
+				</Select>
+				<Switch customTextOn="G" customTextOff="E" state="false" change="onChangeApp" visible="{=!!${UserInfo>/groupPermissions/opted}}"/>
+				<f:Avatar id="iAvatar" initials="{=(${UserInfo>/firstName}[0]+${UserInfo>/lastName}[0])}" displaySize="XS" press="fnAvatarPress"/>
+			</Toolbar>
+			<Toolbar id="entity" visible="{Display>/entity}" height="2.3rem" class="bacCol">
+				<Button type="Transparent" id="bHome" text="Home" press="fnMenuItemPress" class="sapUiSmallMarginBeginEnd btnClr cl_refresh"/>
+				<Button type="Transparent" id="bNewStatus" text="Data Status" press="fnMenuItemPress" class="sapUiSmallMarginBeginEnd btnClr cl_refresh"
+					enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99} || ${userPermission>/appPermission/P13} || ${userPermission>/appPermission/P27})}"/>
+				<MenuButton text="Invoice Management" id="bNewManage" type="Transparent" class="sapUiSmallMarginBeginEnd btnClr"
+					enabled="{=(${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P28} || ${userPermission>/appPermission/P41})}">
+					<Menu itemSelected="fnMenuItemPressInvManage">
+						<MenuItem key="OutwardInward" text="Outward Inward"/>
+						<MenuItem key="InwardEInvoices" text="Inward E-Invoices"
+							enabled="{=(${userPermission>/appPermission/R8} &amp;&amp; ${userPermission>/appPermission/P41})}"/>
+						<MenuItem key="gstnRecords" text="GSTN Saved/Submitted Records"/>
+					</Menu>
+				</MenuButton>
+				<MenuButton text="Returns" id="mbReturns" type="Transparent" class="sapUiSmallMarginBeginEnd btnClr"
+					enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P3} || ${userPermission>/appPermission/P4}|| ${userPermission>/appPermission/P5}|| ${userPermission>/appPermission/P6}|| ${userPermission>/appPermission/P7}|| ${userPermission>/appPermission/P8})}">
+					<Menu itemSelected="fnNewReturnMenuItemPress">
+						<MenuItem key="GSTR1" text="GSTR - 1"
+							enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P3} || ${userPermission>/appPermission/P35})}"/>
+						<MenuItem key="GSTR1A" text="GSTR - 1A"
+							enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P3} || ${userPermission>/appPermission/P35})}"/>
+						<MenuItem key="GSTR3B" text="GSTR - 3B" enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P4})}"/>
+						<MenuItem key="GSTR6" text="GSTR - 6" enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P5})}"/>
+						<MenuItem key="GSTR2" text="ITC Matching" enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P8})}"/>
+						<MenuItem key="GSTR7" text="GSTR - 7 (Summary)" enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P6})}"/>
+						<MenuItem key="GSTR7_TXN" text="GSTR - 7 (Transactional)"
+							enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P6})}"/>
+						<MenuItem key="GSTR8" text="GSTR - 8" enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P6})}"/>
+						<MenuItem key="ITC04" text="ITC - 04" enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P7})}"/>
+						<MenuItem key="ANX1" text="ANX - 1" enabled="false"/>
+						<MenuItem key="GSTR9" text="GSTR - 9" enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}"/>
+					</Menu>
+				</MenuButton>
+				<Button type="Transparent" id="bReports" text="Reports" press="fnMenuItemPress" class="sapUiSmallMarginBeginEnd btnClr"
+					enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99} )}" visible="false"/>
+				<MenuButton text="Reports" id="mbReports" type="Transparent" class="sapUiSmallMarginBeginEnd btnClr"
+					enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99} || ${userPermission>/appPermission/P12})}">
+					<Menu itemSelected="fnNewReportMenuItemPress">
+						<MenuItem key="Reports" text="Generate Report" visible="false"/>
+						<MenuItem key="asnycReports" text="Request Reports"
+							enabled="{= (${userPermission>/appPermission/P1} || ${userPermission>/appPermission/P29})}"/>
+						<!--<MenuItem text="Operational Monitoring Report" enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}">-->
+						<!--	<MenuItem key="operMonitoringReport" text="Outward"/>-->
+						<!--	<MenuItem key="operMonitoringReportInward" text="Inward"/>-->
+						<!--</MenuItem>-->
+						<!--<MenuItem text="Transactional Monitoring Report" enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}">-->
+						<!--	<MenuItem key="transMonitoringReportOutward" text="Outward"/>-->
+						<!--	<MenuItem key="transMonitoringReportInward" text="Inward"/>-->
+						<!--</MenuItem>-->
+					</Menu>
+				</MenuButton>
+				<MenuButton text="SAC Reports" type="Transparent" class="sapUiSmallMarginBeginEnd btnClr" visible="false"
+					enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}">
+					<Menu itemSelected="fnSACMenuItemPress">
+						<MenuItem key="Einvoice" text="E-invoice"/>
+						<MenuItem key="GSTR-1 Inward Report" text="Inward Report"/>
+						<MenuItem key="GSTR-1 Outward Report" text="Outward Report"/>
+					</Menu>
+				</MenuButton>
+				<Button type="Transparent" id="bLedger" text="Ledger" press="fnMenuItemPress" class="sapUiSmallMarginBeginEnd btnClr cl_refresh"
+					enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}"/>
+				<!--<Button type="Transparent" id="bTaskInbox" text="Task Inbox" press="fnMenuItemPress" class="sapUiSmallMarginBeginEnd btnClr" enabled="false"/>-->
+				<MenuButton id="bOthers" text="Others" type="Transparent"
+					enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P9} || ${userPermission>/appPermission/P10} || ${userPermission>/appPermission/P11} || ${userPermission>/appPermission/P13} || ${userPermission>/appPermission/P30} || ${userPermission>/appPermission/P31})}"
+					class="sapUiSmallMarginBeginEnd btnClr">
+					<Menu itemSelected="onOthersMenuItemPress">
+						<MenuItem text="Manage Auth Token" tooltip="Manage Auth Token" key="ManageAuthToken"
+							enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99} || ${userPermission>/appPermission/P30})}"/>
+						<MenuItem text="Compliance History" tooltip="Compliance History" key="ComplianceHistory"
+							enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}"/>
+						<MenuItem text="GSTIN Validator" tooltip="GSTIN Validator" key="GSTINValidator"
+							enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P9})}"/>
+						<MenuItem text="Return Filing Status" tooltip="Return Filing Status" key="VenRetFilngStatus"
+							enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P10})}"/>
+						<MenuItem text="Common Credit Reversal" tooltip="CreditReversal" key="Creditreversal"
+							enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}"/>
+						<MenuItem text="ITC Reversal - 180 Days" tooltip="ITC Reversal - 180 Days" key="180DCredit"
+							enabled="{= ${userPermission>/appPermission/P13}}"/>
+						<MenuItem text="Non Compliant Vendors" class="cl_ccr" tooltip="Non Compliant Vendors" key="NonCompliantVendors"
+							enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99} || ${userPermission>/appPermission/P31})}"/>
+						<MenuItem text="TDS/TCS" tooltip="TDS/TCS" key="TDSTCS"
+							enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}"/>
+						<MenuItem text="GL Summary" tooltip="GL Summary" key="GLSummary"
+							enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}"/>
+						<MenuItem text="B2C DQR SetUp" tooltip="B2C Dynamic QR Code" key="B2CDynamicQRNew" enabled="{= ${userPermission>/appPermission/P11}}"/>
+						<MenuItem text="Customize Report" tooltip="Customize Report" key="CustomizeReport" enabled="{= ${userPermission>/appPermission/P34}}"/>
+						<MenuItem text="GL Recon" tooltip="GL Recon" key="GLRecon" visible="{userPermission>/appPermission/R10}"
+							enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}"/>
+						<MenuItem text="Manage NIC/IRP Credentials" tooltip="Manage NIC/IRP Credentials" key="ManageNIC"
+							enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}"/>
+					</Menu>
+				</MenuButton>
+				<Button type="Transparent" id="bEWB" text="EWB" press="fnMenuItemPress"
+					enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}" class="sapUiSmallMarginBeginEnd btnClr"/>
+				<!--<Button type="Transparent" id="bGSTNotices" text="GST Notices" press="fnMenuItemPress" class="sapUiSmallMarginBeginEnd btnClr"/>-->
+				<!--<Button type="Transparent" id="bGSTNotices" text="GST Notices" press="fnMenuItemPress" class="sapUiSmallMarginBeginEnd btnClr">-->
+				<!--	<customData>-->
+				<!--		<BadgeCustomData key="badge" value="1" visible="true"/>-->
+				<!--	</customData>-->
+				<!--</Button>-->
+				<!--<Button type="Transparent" id="bGSTNotices" text="GST Notices" press="fnMenuItemPress" class="sapUiSmallMarginBeginEnd btnClr">-->
+				<!--	<customData>-->
+				<!--<Badge text="New" colorScheme="Success" class="badgeStyle"/>-->
+				<!--		<BadgeCustomData key="badge" value="134" visible="true"/>-->
+				<!--	</customData>-->
+				<!--</Button>-->
+				<HBox class="buttonWithBadge" alignItems="Center">
+					<Button type="Transparent" id="bGSTNotices" text="GST Notices" press="fnMenuItemPress" class="sapUiSmallMarginBeginEnd btnClr"/>
+					<main:Badge text="New" colorScheme="Success" class="badgeLabel"/>
+				</HBox>
+				<!--<main:Button type="Transparent" id="bGSTNotices" text="GST Notices" press="fnMenuItemPress" class="sapUiSmallMarginBeginEnd btnClr">-->
+				<!--	<customData>-->
+				<!--		<main:Badge text="New" colorScheme="Success" class="badgeStyle"/>-->
+				<!--	</customData>-->
+				<!--</main:Button>-->
+				<Button type="Transparent" id="bAPICallDB" text="API Call Dashboard" press="fnMenuItemPress" class="sapUiSmallMarginBeginEnd btnClr"
+					enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}"/>
+				<Button type="Transparent" text="Extraction" press="fnSACMenuItemPressEx" class="sapUiSmallMarginBeginEnd btnClr"
+					enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}"/>
+				<Button type="Transparent" text="Extraction-1" press="fnSACMenuItemPressEx1" class="sapUiSmallMarginBeginEnd btnClr"
+					enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}"/>
+				<MenuButton text="Dashboard" type="Transparent" id="mbSACDashboard"
+					enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99} || ${userPermission>/appPermission/P33})}"
+					class="sapUiSmallMarginBeginEnd btnClr">
+					<Menu itemSelected="fnSACDashboard">
+						<MenuItem key="SACOutward" text="Outward" enabled="{= (${userPermission>/appPermission/P2} || ${userPermission>/appPermission/P99})}"/>
+						<MenuItem key="Inward" text="Inward" enabled="{= (${userPermission>/appPermission/P99} || ${userPermission>/appPermission/P33})}"/>
+						<MenuItem key="SACLiabilityPayment" text="Liability Payment"/>
+						<MenuItem key="Einvoice" text="E-Invoice"/>
+					</Menu>
+				</MenuButton>
+				<Button type="Transparent" id="APModule" text="A.I.M" press="fnMenuItemPress" class="sapUiSmallMarginBeginEnd btnClr cl_refresh"
+					enabled="{= (${userPermission>/appPermission/P12} || ${userPermission>/appPermission/R5})}"/>
+				<MenuButton text="Help" type="Transparent" class="sapUiSmallMarginBeginEnd btnClr">
+					<Menu itemSelected="fnHelpPress">
+						<MenuItem key="UserFeedback" text="Suggestion" enabled="{=!${UserFeedback>/isSubmitted}}"/>
+					</Menu>
+				</MenuButton>
+				<ToolbarSpacer/>
+				<Button icon="sap-icon://synchronize" tooltip="Refresh" type="Transparent" class="cl_refresh" visible="false"/>
+			</Toolbar>
+			<Toolbar id="GropTid" visible="{Display>/group}" height="2.3rem" class="bacCol">
+				<Button id="bGrpCompHistory" type="Transparent" text="Compliance History" press="onGrpLvlMenuItem('compHistory')"
+					enabled="{=!!${GroupPermission>/G1}}" class="sapUiSmallMarginBeginEnd btnClr"/>
+				<MenuButton id="bGrpDashboard" type="Transparent" text="Dashboard" enabled="{=!!${GroupPermission>/G2}}"
+					class="sapUiSmallMarginBeginEnd btnClr">
+					<Menu itemSelected="fnGourpDashboard(${$parameters>/item/mProperties/key})">
+						<MenuItem key="GDashboardOutward1" text="Outward"/>
+						<MenuItem key="GDashboardInward1" text="Inward"/>
+						<MenuItem key="GDashboardLiability" text="Liability Payment"/>
+						<MenuItem key="GEInvoiceDashboard" text="E-Invoice"/>
+					</Menu>
+				</MenuButton>
+				<Button id="bGrpAuthToken" type="Transparent" text="Manage Auth Token" press="onGrpLvlMenuItem('authToken')"
+					enabled="{=!!${GroupPermission>/G3}}" class="sapUiSmallMarginBeginEnd btnClr"/>
+				<Button id="bGrpReconReq" type="Transparent" text="Recon Request Status" press="onGrpLvlMenuItem('reconRequest')"
+					enabled="{=!!${GroupPermission>/G4}}" class="sapUiSmallMarginBeginEnd btnClr"/>
+			</Toolbar>
+			<App id="mainContents" backgroundColor="#ffffff" class="custHeight"/>
+		</content>
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Label text="© 2021 | All Rights Reserved. Content within this application is confidential and meant for EY staff and EY clients only."
+					class="logoText"/>
+				<ToolbarSpacer/>
+				<Link text="Privacy" subtle="true" press="onPrivacyNotice" class="linkWhite sapUiTinyMarginEnd"/>
+			</Toolbar>
+		</footer>
+	</Page>
+</mvc:View>

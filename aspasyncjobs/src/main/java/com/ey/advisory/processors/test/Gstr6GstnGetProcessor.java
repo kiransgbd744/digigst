@@ -1,0 +1,54 @@
+package com.ey.advisory.processors.test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+import com.ey.advisory.app.processors.handler.Gstr6GstnGetJobHandler;
+import com.ey.advisory.common.AppException;
+import com.ey.advisory.common.AppExecContext;
+import com.ey.advisory.common.Message;
+import com.ey.advisory.common.TaskProcessor;
+
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * 
+ * @author Anand3.M
+ *
+ */
+@Service("Gstr6GstnGetProcessor")
+@Slf4j
+public class Gstr6GstnGetProcessor implements TaskProcessor {
+
+	@Autowired
+	@Qualifier("Gstr6GstnGetJobHandlerImpl")
+	private Gstr6GstnGetJobHandler gstr6JobHandler;
+
+	@Override
+	public void execute(Message message, AppExecContext context) {
+		try {
+			String groupCode = message.getGroupCode();
+			String jsonString = message.getParamsJson();
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug(
+						"Gstr6 Get Gstn Data Execute method is ON with "
+								+ "groupcode {} and params {}",
+						groupCode, jsonString);
+			}
+			if (jsonString != null && groupCode != null) {
+				gstr6JobHandler.gstr6GstnGetCall(jsonString, groupCode);
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("Gstr6 Get Gstn Processed with args {} ",
+							jsonString);
+				}
+			}
+		} catch (Exception ex) {
+			String msg = "Gstr6GstnGetProcessor got interrupted. "
+					+ "Jobs might not be completed. Marking as 'Failed'";
+			LOGGER.error(msg);
+			throw new AppException(msg, ex);
+		}
+
+	}
+}

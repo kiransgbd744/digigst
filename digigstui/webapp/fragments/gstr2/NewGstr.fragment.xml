@@ -1,0 +1,567 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="dpGetGstr2aProcessNew" visible="{Get2aProp>/process}">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="{i18n>gstnData}"/>
+				</f:heading>
+				<f:actions>
+					<SegmentedButton id="sbGstr2a" selectionChange="onSbChangeGstr2A(${$source>/selectedKey})" width="22rem">
+						<items>
+							<SegmentedButtonItem key="getCall" text="GSTR-2A Get Call" width="8rem"/>
+							<SegmentedButtonItem key="linkStats" text="GSTR2A - GSTR2B Linking Status" width="14rem"/>
+						</items>
+					</SegmentedButton>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slGet2aProcessGstinNew" items="{path:'userPermission>/respData/dataSecurity/gstin'}" selectionChange="selectAll">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Financial Year" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<Select width="100%" id="dtFinYearGstrNew" items="{oFyModel>/finYears}">
+									<core:Item key="{oFyModel>fy}" text="{oFyModel>fy}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" type="Default" press="onPressClearGet2a('Process')" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+					<Button text="Filter" class="buttoncolor" press="onSearch2AnewGo"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel>
+				<commons:ChartContainer id="idCcGet2aProcessNew" showFullScreen="false" autoAdjustHeight="false">
+					<commons:toolbar>
+						<OverflowToolbar>
+							<ToolbarSpacer/>
+							<Button text="GET GSTR-2A" class="buttoncolorSec" press="onPressGetGstr2anew" enabled="{= ${userPermission>/appPermission/P8}}"/>
+							<MenuButton class="buttoncolorSec" text="{i18n>downReport}" enabled="{= ${userPermission>/appPermission/P8}}">
+								<Menu itemSelected="onDownloadnewGet2aReport($event,${$parameters>/item},'P')">
+									<MenuItem key="getGstr2AComplete" text="{i18n>gstr2aComplete}"/>
+									<MenuItem key="dropOut" text="{i18n>gstr2aDropOut}" enabled="false"/>
+									<MenuItem key="exDropOut" text="{i18n>gst2aExDropOut}" enabled="false"/>
+								</Menu>
+							</MenuButton>
+							<!--<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="{i18n>downExcel}" enabled="false"/>-->
+							<!--<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="{i18n>downPdf}" enabled="false"/>-->
+							<Button type="Transparent" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="{=!${Get2aProp>/processFullScreen}}"
+								press="onGet2aFullScreen('openProcess')"/>
+							<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="{Get2aProp>/processFullScreen}"
+								press="onGet2aFullScreen('closeProcess')"/>
+							<commons:ChartContainerToolbarPlaceholder/>
+						</OverflowToolbar>
+					</commons:toolbar>
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<ui:Table id="idgetVtablegstr6progstr2New" rows="{path:'Gstr2ANewPRSumData>/resp', sorter: {path: 'gstin',descending:false}}"
+									selectionBehavior="Row" class="sapUiTinyMarginTop cl_popupCheck" fixedColumnCount="1" rowSelectionChange="onRowSelectionChange2A">
+									<ui:columns>
+										<ui:Column hAlign="Left" width="15rem">
+											<HBox>
+												<Label text="GSTN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</HBox>
+											<ui:template>
+												<VBox>
+													<HBox>
+														<Text text="{Gstr2ANewPRSumData>state}" width="8rem" class="stateColor"/>
+														<Text text="{=${Gstr2ANewPRSumData>regType}==='REGULAR'?'':${Gstr2ANewPRSumData>regType}}" class="stateColor fontSmall"/>
+													</HBox>
+													<HBox justifyContent="SpaceBetween" width="100%">
+														<Link text="{Gstr2ANewPRSumData>gstin}" press="handleLinkPressGetGSTINMain1"/>
+														<core:Icon src="sap-icon://circle-task-2" size="0.8rem" class="sapUiTinyMarginBegin" tooltip="{Gstr2ANewPRSumData>authToken}"
+															visible="{=${Gstr2ANewPRSumData>gstin}=== '' ?false:true}" color="{=${Gstr2ANewPRSumData>authToken}=== 'Active' ?'#00ff00':'#ff0000'}"
+															press="onActivateAuthToken(${EntitySummary>gstin},${EntitySummary>authToken})"/>
+													</HBox>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Left" width="12rem">
+											<HBox>
+												<CheckBox text="" selected="{month>/aprFlag}"/>
+												<Label text="April" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+											</HBox>
+											<ui:template>
+												<VBox width="100%">
+													<ObjectStatus text="{Gstr2ANewPRSumData>aprilStatus}" state="{path:'Gstr2ANewPRSumData>aprilStatus', formatter:'.formatter.Gstr2BStatus'}"
+														press="onPressGetGstr2a($event,'2A',${Gstr2ANewPRSumData>gstin},'apr')" active="true"/>
+													<Text text="{Gstr2ANewPRSumData>apriltimestamp}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Left" width="12rem">
+											<HBox>
+												<CheckBox text="" selected="{month>/mayFlag}"/>
+												<Label text="May" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+											</HBox>
+											<ui:template>
+												<VBox width="100%">
+													<ObjectStatus text="{Gstr2ANewPRSumData>mayStatus}" state="{path:'Gstr2ANewPRSumData>mayStatus', formatter:'.formatter.Gstr2BStatus'}"
+														press="onPressGetGstr2a($event,'2A',${Gstr2ANewPRSumData>gstin},'may')" active="true"/>
+													<Text text="{Gstr2ANewPRSumData>mayTimeStamp}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Left" width="12rem">
+											<HBox>
+												<CheckBox text="" selected="{month>/junFlag}"/>
+												<Label text="June" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+											</HBox>
+											<ui:template>
+												<VBox width="100%">
+													<ObjectStatus text="{Gstr2ANewPRSumData>juneStatus}" state="{path:'Gstr2ANewPRSumData>juneStatus', formatter:'.formatter.Gstr2BStatus'}"
+														press="onPressGetGstr2a($event,'2A',${Gstr2ANewPRSumData>gstin},'jun')" active="true"/>
+													<Text text="{Gstr2ANewPRSumData>juneTimeStamp}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Left" width="12rem">
+											<HBox>
+												<CheckBox text="" selected="{month>/julFlag}"/>
+												<Label text="July" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+											</HBox>
+											<ui:template>
+												<VBox width="100%">
+													<ObjectStatus text="{Gstr2ANewPRSumData>julyStatus}" state="{path:'Gstr2ANewPRSumData>julyStatus', formatter:'.formatter.Gstr2BStatus'}"
+														press="onPressGetGstr2a($event,'2A',${Gstr2ANewPRSumData>gstin},'jul')" active="true"/>
+													<Text text="{Gstr2ANewPRSumData>julyTimestamp}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Left" width="12rem">
+											<HBox>
+												<CheckBox text="" selected="{month>/augFlag}"/>
+												<Label text="August" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+											</HBox>
+											<ui:template>
+												<VBox width="100%">
+													<ObjectStatus text="{Gstr2ANewPRSumData>augStatus}" state="{path:'Gstr2ANewPRSumData>augStatus', formatter:'.formatter.Gstr2BStatus'}"
+														press="onPressGetGstr2a($event,'2A',${Gstr2ANewPRSumData>gstin},'aug')" active="true"/>
+													<Text text="{Gstr2ANewPRSumData>augTimeStamp}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Left" width="12rem">
+											<HBox>
+												<CheckBox text="" selected="{month>/sepFlag}"/>
+												<Label text="September" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+											</HBox>
+											<ui:template>
+												<VBox width="100%">
+													<ObjectStatus text="{Gstr2ANewPRSumData>sepStatus}" state="{path:'Gstr2ANewPRSumData>sepStatus', formatter:'.formatter.Gstr2BStatus'}"
+														press="onPressGetGstr2a($event,'2A',${Gstr2ANewPRSumData>gstin},'sep')" active="true"/>
+													<Text text="{Gstr2ANewPRSumData>sepTimeStamp}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Left" width="12rem">
+											<HBox>
+												<CheckBox text="" selected="{month>/octFlag}"/>
+												<Label text="October" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+											</HBox>
+											<ui:template>
+												<VBox width="100%">
+													<ObjectStatus text="{Gstr2ANewPRSumData>octStatus}" state="{path:'Gstr2ANewPRSumData>octStatus', formatter:'.formatter.Gstr2BStatus'}"
+														press="onPressGetGstr2a($event,'2A',${Gstr2ANewPRSumData>gstin},'oct')" active="true"/>
+													<Text text="{Gstr2ANewPRSumData>octTimestamp}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Left" width="12rem">
+											<HBox>
+												<CheckBox text="" selected="{month>/novFlag}"/>
+												<Label text="November" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+											</HBox>
+											<ui:template>
+												<VBox width="100%">
+													<ObjectStatus text="{Gstr2ANewPRSumData>novStatus}" state="{path:'Gstr2ANewPRSumData>novStatus', formatter:'.formatter.Gstr2BStatus'}"
+														press="onPressGetGstr2a($event,'2A',${Gstr2ANewPRSumData>gstin},'nov')" active="true"/>
+													<Text text="{Gstr2ANewPRSumData>novTimeStamp}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Left" width="12rem">
+											<HBox>
+												<CheckBox text="" selected="{month>/decFlag}"/>
+												<Label text="December" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+											</HBox>
+											<ui:template>
+												<VBox width="100%">
+													<ObjectStatus text="{Gstr2ANewPRSumData>decStatus}" state="{path:'Gstr2ANewPRSumData>decStatus', formatter:'.formatter.Gstr2BStatus'}"
+														press="onPressGetGstr2a($event,'2A',${Gstr2ANewPRSumData>gstin},'dec')" active="true"/>
+													<Text text="{Gstr2ANewPRSumData>decTimestamp}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Left" width="12rem">
+											<HBox>
+												<CheckBox text="" selected="{month>/janFlag}"/>
+												<Label text="January" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+											</HBox>
+											<ui:template>
+												<VBox width="100%">
+													<ObjectStatus text="{Gstr2ANewPRSumData>janStatus}" state="{path:'Gstr2ANewPRSumData>janStatus', formatter:'.formatter.Gstr2BStatus'}"
+														press="onPressGetGstr2a($event,'2A',${Gstr2ANewPRSumData>gstin},'jan')" active="true"/>
+													<Text text="{Gstr2ANewPRSumData>janTimestamp}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Left" width="12rem">
+											<HBox>
+												<CheckBox text="" selected="{month>/febFlag}"/>
+												<Label text="February" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+											</HBox>
+											<ui:template>
+												<VBox width="100%">
+													<ObjectStatus text="{Gstr2ANewPRSumData>febStatus}" state="{path:'Gstr2ANewPRSumData>febStatus', formatter:'.formatter.Gstr2BStatus'}"
+														press="onPressGetGstr2a($event,'2A',${Gstr2ANewPRSumData>gstin},'feb')" active="true"/>
+													<Text text="{Gstr2ANewPRSumData>febTimeStamp}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Left" width="12rem">
+											<HBox>
+												<CheckBox text="" selected="{month>/marFlag}"/>
+												<Label text="March" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+											</HBox>
+											<ui:template>
+												<VBox width="100%">
+													<ObjectStatus text="{Gstr2ANewPRSumData>marchStatus}" state="{path:'Gstr2ANewPRSumData>marchStatus', formatter:'.formatter.Gstr2BStatus'}"
+														press="onPressGetGstr2a($event,'2A',${Gstr2ANewPRSumData>gstin},'mar')" active="true"/>
+													<Text text="{Gstr2ANewPRSumData>marchTimestamp}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<ui:footer>
+										<HBox>
+											<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+											<Text text="Auth Token Active" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+											<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+											<Text text="Auth Token Inactive" class="sapUiTinyMarginBegin"/>
+										</HBox>
+									</ui:footer>
+								</ui:Table>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+				</commons:ChartContainer>
+				<ui:Table id="tabGstr2a2bLinkStats" rows="{Gstr2a2bLink>/}" enableColumnReordering="false" fixedColumnCount="1" visible="false"
+					selectionMode="None" class="sapUiTinyMarginTop cl_popupCheck">
+					<ui:extension>
+						<Toolbar>
+							<ObjectStatus text="L = Linked, NL = Not Linked, NF = GSTR 1 is not filed" state="Information"/>
+							<!--		<ToolbarSpacer/>-->
+							<!--		<Button text="Refresh" press="onRefreshGstr2a2bLinkedStats" class="buttoncolorSec"/>-->
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column hAlign="Left" width="15rem">
+							<Label text="GSTN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<VBox>
+									<HBox>
+										<Text text="{Gstr2a2bLink>stateName}" width="8rem" class="stateColor"/>
+										<Text text="{=${Gstr2a2bLink>registrationType}==='REGULAR'?'':${Gstr2a2bLink>registrationType}}" class="stateColor fontSmall"/>
+									</HBox>
+									<HBox justifyContent="SpaceBetween" width="100%">
+										<Link text="{Gstr2a2bLink>gstin}" press="handleLinkPressGetGSTINMain1"/>
+										<core:Icon src="sap-icon://circle-task-2" size="0.8rem" class="sapUiTinyMarginBegin" tooltip="Generate OTP"
+											visible="{=${Gstr2a2bLink>gstin}=== '' ?false:true}" color="{=${Gstr2a2bLink>authToken}=== 'Active' ?'#00ff00':'#ff0000'}"
+											press="onPressGenerateOTP2"/>
+									</HBox>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Left" width="13rem">
+							<Label text="April" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+							<ui:template>
+								<VBox alignItems="Center" width="100%">
+									<HBox renderType="Bare" visible="{Gstr2a2bLink>aprilCntVisi}" width="100%">
+										<Text text="L: {Gstr2a2bLink>aprilL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>aprilL}>0?'G':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NL: {Gstr2a2bLink>aprilNL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>aprilNL}>0?'R':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NF: {Gstr2a2bLink>aprilNF}" width="33%" class="fontSize12"/>
+									</HBox>
+									<ObjectStatus text="{Gstr2a2bLink>aprilStatus}" state="{path:'Gstr2a2bLink>aprilStatus', formatter:'.formatter.statusClr'}"/>
+									<Text text="{Gstr2a2bLink>aprilTimestamp}" class="timeStmpClr"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Left" width="13rem">
+							<Label text="May" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+							<ui:template>
+								<VBox width="100%">
+									<HBox renderType="Bare" visible="{Gstr2a2bLink>mayCntVisi}" width="100%">
+										<Text text="L: {Gstr2a2bLink>mayL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>mayL}>0?'G':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NL: {Gstr2a2bLink>mayNL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>mayNL}>0?'R':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NF: {Gstr2a2bLink>mayNF}" width="33%" class="fontSize12"/>
+									</HBox>
+									<ObjectStatus text="{Gstr2a2bLink>mayStatus}" state="{path:'Gstr2a2bLink>mayStatus', formatter:'.formatter.statusClr'}"/>
+									<Text text="{Gstr2a2bLink>mayTimeStamp}" class="timeStmpClr"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Left" width="13rem">
+							<Label text="June" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+							<ui:template>
+								<VBox width="100%">
+									<HBox renderType="Bare" visible="{Gstr2a2bLink>juneCntVisi}">
+										<Text text="L: {Gstr2a2bLink>juneL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>juneL}>0?'G':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NL: {Gstr2a2bLink>juneNL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>juneNL}>0?'R':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NF: {Gstr2a2bLink>juneNF}" width="33%" class="fontSize12"/>
+									</HBox>
+									<ObjectStatus text="{Gstr2a2bLink>juneStatus}" state="{path:'Gstr2a2bLink>juneStatus', formatter:'.formatter.statusClr'}"/>
+									<Text text="{Gstr2a2bLink>juneTimeStamp}" class="timeStmpClr"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Left" width="13rem">
+							<Label text="July" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+							<ui:template>
+								<VBox width="100%">
+									<HBox renderType="Bare" visible="{Gstr2a2bLink>julyCntVisi}">
+										<Text text="L: {Gstr2a2bLink>julyL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>julyL}>0?'G':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NL: {Gstr2a2bLink>julyNL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>julyNL}>0?'R':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NF: {Gstr2a2bLink>julyNF}" width="33%" class="fontSize12"/>
+									</HBox>
+									<ObjectStatus text="{Gstr2a2bLink>julyStatus}" state="{path:'Gstr2a2bLink>julyStatus', formatter:'.formatter.statusClr'}"/>
+									<Text text="{Gstr2a2bLink>julyTimestamp}" class="timeStmpClr"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Left" width="13rem">
+							<Label text="August" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+							<ui:template>
+								<VBox width="100%">
+									<HBox renderType="Bare" visible="{Gstr2a2bLink>augCntVisi}">
+										<Text text="L: {Gstr2a2bLink>augL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>augL}>0?'G':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NL: {Gstr2a2bLink>augNL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>augNL}>0?'R':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NF: {Gstr2a2bLink>augNF}" width="33%" class="fontSize12"/>
+									</HBox>
+									<ObjectStatus text="{Gstr2a2bLink>augStatus}" state="{path:'Gstr2a2bLink>augStatus', formatter:'.formatter.statusClr'}"/>
+									<Text text="{Gstr2a2bLink>augTimeStamp}" class="timeStmpClr"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Left" width="13rem">
+							<Label text="September" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+							<ui:template>
+								<VBox width="100%">
+									<HBox renderType="Bare" visible="{Gstr2a2bLink>sepCntVisi}">
+										<Text text="L: {Gstr2a2bLink>sepL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>sepL}>0?'G':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NL: {Gstr2a2bLink>sepNL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>sepNL}>0?'R':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NF: {Gstr2a2bLink>sepNF}" width="33%" class="fontSize12"/>
+									</HBox>
+									<ObjectStatus text="{Gstr2a2bLink>sepStatus}" state="{path:'Gstr2a2bLink>sepStatus', formatter:'.formatter.statusClr'}"/>
+									<Text text="{Gstr2a2bLink>sepTimeStamp}" class="timeStmpClr"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Left" width="13rem">
+							<Label text="October" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+							<ui:template>
+								<VBox width="100%">
+									<HBox renderType="Bare" visible="{Gstr2a2bLink>octCntVisi}">
+										<Text text="L: {Gstr2a2bLink>octL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>octL}>0?'G':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NL: {Gstr2a2bLink>octNL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>octNL}>0?'R':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NF: {Gstr2a2bLink>octNF}" width="33%" class="fontSize12"/>
+									</HBox>
+									<ObjectStatus text="{Gstr2a2bLink>octStatus}" state="{path:'Gstr2a2bLink>octStatus', formatter:'.formatter.statusClr'}"/>
+									<Text text="{Gstr2a2bLink>octTimestamp}" class="timeStmpClr"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Left" width="13rem">
+							<Label text="November" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+							<ui:template>
+								<VBox width="100%">
+									<HBox renderType="Bare" visible="{Gstr2a2bLink>novCntVisi}">
+										<Text text="L: {Gstr2a2bLink>novL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>novL}>0?'G':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NL: {Gstr2a2bLink>novNL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>novNL}>0?'R':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NF: {Gstr2a2bLink>novNF}" width="33%" class="fontSize12"/>
+									</HBox>
+									<ObjectStatus text="{Gstr2a2bLink>novStatus}" state="{path:'Gstr2a2bLink>novStatus', formatter:'.formatter.statusClr'}"/>
+									<Text text="{Gstr2a2bLink>novTimeStamp}" class="timeStmpClr"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Left" width="13rem">
+							<Label text="December" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+							<ui:template>
+								<VBox width="100%">
+									<HBox renderType="Bare" visible="{Gstr2a2bLink>decCntVisi}">
+										<Text text="L: {Gstr2a2bLink>decL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>decL}>0?'G':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NL: {Gstr2a2bLink>decNL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>decNL}>0?'R':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NF: {Gstr2a2bLink>decNF}" width="33%" class="fontSize12"/>
+									</HBox>
+									<ObjectStatus text="{Gstr2a2bLink>decStatus}" state="{path:'Gstr2a2bLink>decStatus', formatter:'.formatter.statusClr'}"/>
+									<Text text="{Gstr2a2bLink>decTimestamp}" class="timeStmpClr"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Left" width="13rem">
+							<Label text="January" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+							<ui:template>
+								<VBox width="100%">
+									<HBox renderType="Bare" visible="{Gstr2a2bLink>janCntVisi}">
+										<Text text="L: {Gstr2a2bLink>janL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>janL}>0?'G':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NL: {Gstr2a2bLink>janNL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>janNL}>0?'R':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NF: {Gstr2a2bLink>janNF}" width="33%" class="fontSize12"/>
+									</HBox>
+									<ObjectStatus text="{Gstr2a2bLink>janStatus}" state="{path:'Gstr2a2bLink>janStatus', formatter:'.formatter.statusClr'}"/>
+									<Text text="{Gstr2a2bLink>janTimestamp}" class="timeStmpClr"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Left" width="13rem">
+							<Label text="February" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+							<ui:template>
+								<VBox width="100%">
+									<HBox renderType="Bare" visible="{Gstr2a2bLink>febCntVisi}">
+										<Text text="L: {Gstr2a2bLink>febL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>febL}>0?'G':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NL: {Gstr2a2bLink>febNL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>febNL}>0?'R':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NF: {Gstr2a2bLink>febNF}" width="33%" class="fontSize12"/>
+									</HBox>
+									<ObjectStatus text="{Gstr2a2bLink>febStatus}" state="{path:'Gstr2a2bLink>febStatus', formatter:'.formatter.statusClr'}"/>
+									<Text text="{Gstr2a2bLink>febTimeStamp}" class="timeStmpClr"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Left" width="13rem">
+							<Label text="March" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+							<ui:template>
+								<VBox width="100%">
+									<HBox renderType="Bare" visible="{Gstr2a2bLink>marchCntVisi}">
+										<Text text="L: {Gstr2a2bLink>marchL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>marchL}>0?'G':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NL: {Gstr2a2bLink>marchNL}" width="33%" class="fontSize12">
+											<customData>
+												<core:CustomData key="countClr" value="{=${Gstr2a2bLink>marchNL}>0?'R':''}" writeToDom="true"/>
+											</customData>
+										</Text>
+										<Text text="NF: {Gstr2a2bLink>marchNF}" width="33%" class="fontSize12"/>
+									</HBox>
+									<ObjectStatus text="{Gstr2a2bLink>marchStatus}" state="{path:'Gstr2a2bLink>marchStatus', formatter:'.formatter.statusClr'}"/>
+									<Text text="{Gstr2a2bLink>marchTimestamp}" class="timeStmpClr"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+					<ui:footer>
+						<HBox>
+							<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+							<Text text="Auth Token Active" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+							<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+							<Text text="Auth Token Inactive" class="sapUiTinyMarginBegin"/>
+						</HBox>
+					</ui:footer>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

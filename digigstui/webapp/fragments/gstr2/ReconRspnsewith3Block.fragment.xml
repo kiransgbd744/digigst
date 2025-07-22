@@ -1,0 +1,161 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:ui="sap.ui.table">
+	<Dialog title="Recon Response Action" type="Standard" contentHeight="80%" contentWidth="100%" busyIndicatorDelay="0" draggable="true">
+		<buttons>
+			<Button text="Save" press="onwith3Brec" class="buttoncolorSec"/>
+			<Button text="Cancel" press="onwith3BrecClose" class="buttoncolorSec"/>
+		</buttons>
+		<Panel>
+			<ui:Table id="idReconRTable3bLock" rows="{path:'Response>/'}" selectionMode="None" fixedColumnCount="1" visibleRowCount="3">
+				<ui:extension>
+					<Label text="Records selected for 'Force Match (with 3B lock)' action" design="Bold"/>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="180px">
+						<Label design="Bold" text="Source" textAlign="Center"/>
+						<ui:template>
+							<Label text="{Response>source}" design="{path:'Response>source', formatter:'.formatter.RecRespLabel'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="150px">
+						<Label design="Bold" text="Recipient GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<ObjectStatus text="{Response>gstin}" state="None"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="150px">
+						<Label design="Bold" text="Vendor GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<ObjectStatus text="{Response>vendorGstin}" state="None"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="150px">
+						<Label design="Bold" text="Vendor Name" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<ObjectStatus text="{Response>vendorName}" state="None"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="12rem">
+						<Label design="Bold" text="Report Type" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{Response>reportType}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="100px">
+						<Label design="Bold" text="Doc Type" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{Response>docType}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="10rem" visible="{=${RecRespProperty>/criteria}!=='Import'}">
+						<Label design="Bold" text="Doc No" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{Response>docNumber}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="6rem" visible="{=${RecRespProperty>/criteria}!=='Import'}">
+						<Label design="Bold" text="Doc Date" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{Response>docdate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="8rem" visible="{=${RecRespProperty>/criteria}==='Import'}">
+						<Label design="Bold" text="BOE No" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{Response>boeNumber}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="6rem" visible="{=${RecRespProperty>/criteria}==='Import'}">
+						<Label design="Bold" text="BOE Date" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{Response>boedate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="4rem">
+						<Label design="Bold" text="POS" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{Response>pos}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<Label design="Bold" text="Taxable value" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Label text="{Response>taxablevalue}" design="{path:'Response>source', formatter:'.formatter.RecRespLabel'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<Label design="Bold" text="IGST" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Label text="{Response>igst}" design="{path:'Response>source', formatter:'.formatter.RecRespLabel'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<Label design="Bold" text="CGST" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Label text="{Response>cgst}" design="{path:'Response>source', formatter:'.formatter.RecRespLabel'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<Label design="Bold" text="SGST" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Label text="{Response>sgst}" design="{path:'Response>source', formatter:'.formatter.RecRespLabel'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<Label design="Bold" text="Cess" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Label text="{Response>cess}" design="{path:'Response>source', formatter:'.formatter.RecRespLabel'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<Label design="Bold" text="Total Tax" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Label text="{Response>totalTax}" design="{path:'Response>source', formatter:'.formatter.RecRespLabel'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<Label design="Bold" text="Invoice Value" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Label text="{Response>invoiceVale}" design="{path:'Response>source', formatter:'.formatter.RecRespLabel'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="3.5rem">
+						<Label design="Bold" text="RCM" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{Response>rcmFlag}"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+			<HBox class="sapUiSmallMarginTop">
+				<VBox class="sapUiSmallMarginEnd">
+					<Label text="Tax Period for GSTR-3B" design="Bold" required="true"/>
+					<DatePicker id="tpid9" displayFormat="MMM yyyy" valueFormat="yyyyMM" change="onChangeTaxPeriod3B"/>
+				</VBox>
+				<VBox class="sapUiSmallMarginBegin sapUiSmallMarginEnd" visible="{Display>/RRIVis}">
+					<Label text="Available IGST" design="Bold"/>
+					<Input id="AIid9" textAlign="End"/>
+				</VBox>
+				<VBox class="sapUiSmallMarginBegin sapUiSmallMarginEnd" visible="{Display>/RRIVis}">
+					<Label text="Available CGST" design="Bold"/>
+					<Input id="ACid9" textAlign="End"/>
+				</VBox>
+				<VBox class="sapUiSmallMarginBegin sapUiSmallMarginEnd" visible="{Display>/RRIVis}">
+					<Label text="Available SGST" design="Bold"/>
+					<Input id="ASid9" textAlign="End"/>
+				</VBox>
+				<VBox class="sapUiSmallMarginBegin sapUiSmallMarginEnd" visible="{Display>/RRIVis}">
+					<Label text="Available CESS" design="Bold"/>
+					<Input id="ACEid9" textAlign="End"/>
+				</VBox>
+				<VBox class="sapUiSmallMarginBegin sapUiSmallMarginEnd" visible="{Display>/RRIVis}">
+					<Label text="ITC Reversal Identifier" design="Bold"/>
+					<Input id="ITCid9" textAlign="End"/>
+				</VBox>
+			</HBox>
+			<VBox class="sapUiSmallMarginTop">
+				<Label text="Response Remarks (Max 500 characters)" design="Bold"/>
+				<TextArea id="RMidRER9" maxLength="500" width="25rem" rows="3"/>
+			</VBox>
+		</Panel>
+	</Dialog>
+</core:FragmentDefinition>

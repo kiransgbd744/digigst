@@ -1,0 +1,25 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout">
+	<Dialog title="{EmailContent>/title}" contentWidth="50rem" class="sapUiSizeCompact">
+		<content>
+			<HBox class="sapUiTinyMarginBegin sapUiTinyMarginTop">
+				<Label text="To:" design="Bold" width="4rem"/>
+				<Text text="{EmailContent>/to}"/>
+			</HBox>
+			<HBox class="sapUiTinyMarginBegin">
+				<Label text="CC:" design="Bold" width="4rem"/>
+				<Text text="{EmailContent>/cc}"/>
+			</HBox>
+			<HBox class="sapUiTinyMarginBegin sapUiSmallMarginTopBottom">
+				<Label text="Subject:" design="Bold" width="4rem"/>
+				<Label text="{EmailContent>/subject}" design="Bold"/>
+			</HBox>
+			<TextArea value="{EmailContent>/content}" enabled="false" height="{EmailContent>/height}" width="49rem"
+				class="sapUiTinyMarginBeginEnd txtAreaEmail"/>
+			<TextArea value="{EmailContent>/notes}" enabled="false" height="7rem" width="49rem"
+				class="sapUiTinyMarginTopBottom sapUiTinyMarginBeginEnd txtAreaEmail"/>
+		</content>
+		<buttons>
+			<Button text="Close" press="onCloseEmail" class="buttoncolorSec"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

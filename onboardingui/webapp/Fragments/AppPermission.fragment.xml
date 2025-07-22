@@ -1,0 +1,267 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="dynamicAppPermission">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Label text="Entity :" class="sapUiTinyMarginTop" design="Bold"/>
+						<Select items="{entityAppPer>/resp/}" change="onSelectionChangeEntity" width="12rem" id="idEntityAppPermission" class="sapUiTinyMarginBegin">
+							<core:Item key="{entityAppPer>entityId}" text="{entityAppPer>entityName}"/>
+						</Select>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<Button type="Emphasized" icon="sap-icon://save" text="Submit" id="idAPSubmit" enabled="false" press="onSubmit"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<!--<f:header>
+			<f:DynamicPageHeader>
+				<f:content>
+					<fb:FilterBar id="fbStatusUC" reset="onReset" search="onSearch" useToolbar="false" showGoOnFB="true" class="sapUiNoContentPadding">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Group" visibleInFilterBar="true">
+								<fb:control>
+									<Select forceSelection="true" change="onSelectChange" items="{ path: 'DropDown>/criteria' }">
+										<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Entity" visibleInFilterBar="true">
+								<fb:control>
+									<Select items="{DropDown>/Entity}" change="onSelectionChange" width="100%">
+										<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="GSTIN" visibleInFilterBar="true">
+								<fb:control>
+									<MultiComboBox items="{GSTIN>/}" change="onSelectChange" width="100%">
+										<core:Item key="{GSTIN>key}" text="{GSTIN>text}"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>-->
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<ui:Table id="idTableAP" rows="{AppPermission>/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10" fixedRowCount="0"
+					fixedColumnCount="2" enableSelectAll="true">
+					<ui:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<Button type="Accept" icon="sap-icon://edit" tooltip="Edit row" id="idAPAEditrows" press="onEditRows"/>
+							<Button type="Reject" icon="sap-icon://delete" tooltip="Delete rows" id="idAPDeleteRows" press="onDeleteRows" enabled="false"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="4rem" headerSpan="2">
+							<ui:multiLabels>
+								<Label text="" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="S.No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{AppPermission>sno}"/>
+							</ui:template>
+						</ui:Column>
+						
+						<ui:Column width="15rem">
+							<ui:multiLabels>
+								<Label text="" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="User Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{AppPermission>userName}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="4rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="All" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Y/N" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<CheckBox select="OnSelectAllCheckBox" editable="{AppPermission>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="6rem" headerSpan="4" class="sapUiTableCol1" hAlign="Center">
+							<ui:multiLabels class="sapUiTableCol1">
+								<Label text="ANX-1" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="File Upload" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<CheckBox selected="{AppPermission>gstr1FileUpload}" editable="{AppPermission>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="6rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="GSTR1" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Save" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<CheckBox selected="{AppPermission>gstr1Save}" editable="{AppPermission>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="6rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="GSTR1" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Submit/File" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<CheckBox selected="{AppPermission>gstr1SubmitFile}" editable="{AppPermission>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="6rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="GSTR1" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Reports" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<CheckBox selected="{AppPermission>gstr1Reports}" editable="{AppPermission>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem" hAlign="Center" headerSpan="4">
+							<ui:multiLabels>
+								<Label text="ANX-2" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="File Upload" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<CheckBox selected="{AppPermission>gstr2FileUpload}" editable="{AppPermission>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="6rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="GSTR2" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="2A vs PR" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<CheckBox selected="{AppPermission>gstr22AVsPr}" editable="{AppPermission>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="GSTR2" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Get GSTR-2A" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<CheckBox selected="{AppPermission>gstr2GetGstr2a}" editable="{AppPermission>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="6rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="GSTR2" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Reports" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<CheckBox selected="{AppPermission>gstr2Reports}" editable="{AppPermission>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem" hAlign="Center" headerSpan="4">
+							<ui:multiLabels>
+								<Label text="RET-1" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="File Upload" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<CheckBox selected="{AppPermission>gstr3bFileUpload}" editable="{AppPermission>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="6rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="GSTR 3B" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Save" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<CheckBox selected="{AppPermission>gstr3Save}" editable="{AppPermission>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="6rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="GSTR 3B" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Submit/File" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<CheckBox selected="{AppPermission>gstr3SubmitFile}" editable="{AppPermission>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="6rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="GSTR 3B" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Reports" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<CheckBox selected="{AppPermission>gstr3Reports}" editable="{AppPermission>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem" hAlign="Center" headerSpan="4">
+							<ui:multiLabels>
+								<Label text="GSTR6" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="File Upload" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<CheckBox selected="{AppPermission>gstr6FileUpload}" editable="{AppPermission>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="6rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="GSTR6" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="6A vs PR" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<CheckBox selected="{AppPermission>gstr66AVsPr}" editable="{AppPermission>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="GSTR6" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Get GSTR-2A" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<CheckBox selected="{AppPermission>gstr6GetGstr6a}" editable="{AppPermission>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="6rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="GSTR6" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Reports" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<CheckBox selected="{AppPermission>gstr6Reports}" editable="{AppPermission>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="GSTR-9 &amp; 9C" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Y/N" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<CheckBox selected="{AppPermission>gstr9And9cYesOrNo}" editable="{AppPermission>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Dash-Board" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Y/N" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<CheckBox selected="{AppPermission>dashBoardYesOrNo}" editable="{AppPermission>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Intutive Dash-Board" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Y/N" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<CheckBox selected="{AppPermission>intutDashBoardYesOrNo}" editable="{AppPermission>edit}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

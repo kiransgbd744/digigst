@@ -1,0 +1,14 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m">
+	<Dialog id="dAuthTokenConfirmation" type="Message" showHeader="false" class="sapUiSizeCompact">
+		<beginButton>
+			<Button text="{i18n>yes}" press="onGenerateOTP" class="buttoncolorSec"/>
+		</beginButton>
+		<endButton>
+			<Button text="{i18n>cancel}" press="onCloseGenerateOTP" class="buttoncolorSec"/>
+		</endButton>
+		<VBox alignItems="Center" height="7rem">
+			<Title titleStyle="H4" text="{i18n>confirmOTPGene}" class="sapUiMediumMarginTop"/>
+			<Title titleStyle="H5" text="{i18n>generateConfirm}" class="sapUiSmallMarginTop"/>
+		</VBox>
+	</Dialog>
+</core:FragmentDefinition>

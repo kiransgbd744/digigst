@@ -1,0 +1,286 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<Dialog type="Message" class="sapUiSizeCompact" contentWidth="100%" contentHeight="60%" showHeader="false">
+		<beginButton>
+			<Button text="Close" press="onCloseDialog"/>
+		</beginButton>
+		<Bar>
+			<contentMiddle>
+				<Title text="GET ANX-2 Last Call Status" visible="true" id="idtitle1"/>
+				<Title text="GET ANX-2 Last Success Status" visible="false" id="idtittle2"/>
+			</contentMiddle>
+		</Bar>
+		<Toolbar>
+			<ToolbarSpacer/>
+			<SegmentedButton id="sbUpdatStatus" selectedKey="LCS" selectionChange="onChangeSegmentStatus" class="sapUiSmallMarginEnd">
+				<items>
+					<SegmentedButtonItem text="Last Call Status" key="LCS" width="10rem"/>
+					<SegmentedButtonItem text="Last Success Status" key="LSS" width="10rem"/>
+				</items>
+			</SegmentedButton>
+		</Toolbar>
+		<ui:Table id="idgetVtable" rows="{path:'Anx2Sucess>/resp/lastCall'}" selectionMode="None" selectionBehavior="Row" visibleRowCount="10"
+			class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop" fixedColumnCount="1">
+			<!--<ui:extension>-->
+			<!--	<Toolbar>-->
+			<!--		<ToolbarSpacer/>-->
+			<!--		<SegmentedButton id="sbUpdatStatus" selectedKey="LCS" selectionChange="onChangeSegmentStatus" class="sapUiSmallMarginEnd">-->
+			<!--			<items>-->
+			<!--				<SegmentedButtonItem text="Last Call Status" key="LCS" width="10rem"/>-->
+			<!--				<SegmentedButtonItem text="Last Success Status" key="LSS" width="10rem"/>-->
+			<!--			</items>-->
+			<!--		</SegmentedButton>-->
+			<!--	</Toolbar>-->
+			<!--</ui:extension>-->
+			<ui:columns>
+				<ui:Column width="12rem" hAlign="Center">
+					<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{Anx2Sucess>gstin}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="B2B" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>b2bStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>b2bStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>b2bLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="DE" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>deStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>deStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>deaLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="SEZWP" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>sezwpStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>sezwpStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>sezwpLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="SEZWOP" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>sezwopStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>sezwopStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>sezwopLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="ISD" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>isdStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>isdStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>isdLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="B2BA" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>b2baStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>b2baStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>b2baLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="DEA" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>deaStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>deaStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>deaLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="SEZWPA" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>sezwpaStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>sezwpaStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>sezwpaLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="SEZWOPA" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>sezwopaStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>sezwopaStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>sezwopaLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="ISDA" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>isdaStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>isdaStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>isdaLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="Get Summary" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>getStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>getStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>getLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+		<ui:Table id="idlastScuess" rows="{path:'Anx2Sucess>/resp/lastSuccess'}" selectionMode="None" selectionBehavior="Row" visibleRowCount="10"
+			class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop" fixedColumnCount="1" visible="false">
+			<!--<ui:extension>-->
+			<!--	<Toolbar>-->
+			<!--		<ToolbarSpacer/>-->
+			<!--		<SegmentedButton id="sbUpdatStatus" selectedKey="LCS" selectionChange="onChangeSegmentStatus" class="sapUiSmallMarginEnd">-->
+			<!--			<items>-->
+			<!--				<SegmentedButtonItem text="Last Call Status" key="LCS" width="10rem"/>-->
+			<!--				<SegmentedButtonItem text="Last Success Status" key="LSS" width="10rem"/>-->
+			<!--			</items>-->
+			<!--		</SegmentedButton>-->
+			<!--	</Toolbar>-->
+			<!--</ui:extension>-->
+			<ui:columns>
+				<ui:Column width="12rem" hAlign="Center">
+					<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{Anx2Sucess>gstin}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="B2B" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>b2bStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>b2bStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>b2bLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="DE" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>deStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>deStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>deaLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="SEZWP" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>sezwpStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>sezwpStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>sezwpLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="SEZWOP" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>sezwopStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>sezwopStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>sezwopLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="ISD" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>isdStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>isdStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>isdLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="B2BA" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>b2baStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>b2baStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>b2baLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="DEA" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>deaStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>deaStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>deaLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="SEZWPA" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>sezwpaStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>sezwpaStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>sezwpaLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="SEZWOPA" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>sezwopaStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>sezwopaStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>sezwopaLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="ISDA" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>isdaStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>isdaStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>isdaLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" hAlign="Left">
+					<Label text="Get Summary" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<ObjectStatus text="{Anx2Sucess>getStatus}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+								state="{= ${Anx2Sucess>getStatus} ==='Success' ?'Success':'Error'}"/>
+							<Text text="{Anx2Sucess>getLastUpdate}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,93 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="dynamicLOGO">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Upload Sales Register"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiNoContentPadding sapUiSmallMarginBottom">
+				<HBox class="sapUiSmallMarginTop sapUiSmallMarginBottom">
+					<u:FileUploader id="uceinvFileUpload" width="50rem" name="file" fileType="xlsx,csv,xlsm" sameFilenameAllowed="false" sendXHR="true"
+						style="Emphasized" class="sapUiSmallMarginBegin" tooltip="Upload your file to the local server" uploadComplete="handleUploadComplete"/>
+					<Button text="Upload File" press="handleUploadPress" class="sapUiTinyMarginBegin"/>
+				</HBox>
+				<Toolbar>
+					<Label text="From Date" class="sapUiLargeMarginBegin"></Label>
+					<DatePicker id="iFromDate" width="10rem" class="sapUiTinyMarginBegin" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd"
+						change="onChangeDateValue"/>
+					<Label text="To Date" class="sapUiLargeMarginBegin"></Label>
+					<DatePicker id="iToDate" width="10rem" class="sapUiTinyMarginBegin" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd"/>
+					<Button text="Filter" class="buttoncolor sapUiLargeMarginBegin" press="onSearch"/>
+					<ToolbarSpacer/>
+					<Button class="buttoncolorSec" type="Emphasized" text="Download SR" press="onDownloadSR"/>
+				</Toolbar>
+				<ui:Table rows="{path:'FileStatus>/resp/'}" selectionMode="None" selectionBehavior="Row" visibleRowCount="10" fixedColumnCount="0"
+					enableSelectAll="false">
+					<ui:Column>
+						<Label design="Bold" text="Date Of Upload"/>
+						<ui:template>
+							<Text text="{FileStatus>uploadedOn}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label design="Bold" text="Uploaded By"/>
+						<ui:template>
+							<HBox alignContent="Start" justifyContent="SpaceBetween" width="100%" displayInline="true">
+								<HBox>
+									<Text text="{FileStatus>uploadedBy}"/>
+								</HBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="30rem">
+						<Label design="Bold" text="File Name"/>
+						<ui:template>
+							<Text text="{FileStatus>fileName}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label design="Bold" text="Status"/>
+						<ui:template>
+							<Text text="{FileStatus>status}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<Label design="Bold" text="Total Records"/>
+						<ui:template>
+							<HBox justifyContent="End" width="100%">
+								<Text text="{FileStatus>totalRecords}"/>
+								<core:Icon src="sap-icon://download" size="0.75rem" visible="{= (${FileStatus>totalRecords} !== 0 ? true:false)}" tooltip="Download"
+									class="sapUiTinyMarginBegin" press="onPressFileStatusDownload($event,${FileStatus>totalRecords},'totalrecords',null)"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<Label design="Bold" text="Processed Records" wrapping="true"/>
+						<ui:template>
+							<HBox justifyContent="End" width="100%">
+								<Text text="{FileStatus>processedRecords}"/>
+								<core:Icon src="sap-icon://download" size="0.75rem" visible="{= (${FileStatus>processedRecords} !== 0 ? true:false)}" tooltip="Download"
+									class="sapUiTinyMarginBegin" press="onPressFileStatusDownload($event,${FileStatus>processedRecords},'processed',null)"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<Label design="Bold" text="Error Records" wrapping="true"/>
+						<ui:template>
+							<HBox justifyContent="End" width="100%">
+								<Text text="{FileStatus>errorRecords}"/>
+								<core:Icon src="sap-icon://download" size="0.75rem" visible="{= (${FileStatus>errorRecords} !== 0 ? true:false)}" tooltip="Download"
+									class="sapUiTinyMarginBegin" press="onPressFileStatusDownload($event,${FileStatus>errorRecords},'error',null)"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

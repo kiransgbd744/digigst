@@ -1,0 +1,28 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:fb="sap.ui.comp.filterbar">
+	<Dialog title="Recon Type and Report Type Selection" type="Message" class="sapUiSizeCompact" contentWidth="40rem">
+		<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false"
+			hSpacing="0" vSpacing="0">
+			<fb:filterGroupItems>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Recon Type" visibleInFilterBar="true">
+					<fb:control>
+						<Select id="idReconTypeFil" change="onRecontypeChangeFil" selectedKey="2apr" width="12rem">
+							<core:Item key="2apr" text="GSTR-2A/6AvsPR"/>
+							<core:Item key="2bpr" text="GSTR-2BvsPR"/>
+						</Select>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Report Type"  visibleInFilterBar="true">
+					<fb:control>
+						<MultiComboBox id="idReportTypeFil" items="{ReportType>/}" selectionChange="selectAll" width="12rem">
+							<core:Item key="{ReportType>key}" text="{ReportType>text}"/>
+						</MultiComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+			</fb:filterGroupItems>
+		</fb:FilterBar>
+		<buttons>
+			<Button text="Download" class="buttoncolorSec" type="Default" press="onReconReportTypeFilterClose('Apply')"/>
+			<Button text="Cancel" class="buttoncolorSec" type="Default" press="onReconReportTypeFilterClose('cancel')"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

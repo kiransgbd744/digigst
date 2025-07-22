@@ -1,0 +1,21 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.VGLReconSrVsGL"
+	busyIndicatorDelay="0">
+	<IconTabBar selectedKey="dumpUpload" expandable="false" expanded="true" stretchContentHeight="true" backgroundDesign="Transparent"
+		select="onSelectSrVsGlTab(${$source>/selectedKey})" class="sapUiNoContentPadding sapUiSmallMarginBottom">
+		<items>
+			<IconTabFilter key="dumpUpload" text="GL Dump Upload">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.others.GLRecon.GlDumpUpload" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter key="processSumm" text="GL Processed Summary">
+				<NavContainer id="navCon" initialPage="dpEntity">
+					<core:Fragment fragmentName="com.ey.digigst.fragments.others.GLRecon.GlProcessSummaryEntity" type="XML"/>
+					<core:Fragment fragmentName="com.ey.digigst.fragments.others.GLRecon.GlProcessSummaryGstin" type="XML"/>
+					<core:Fragment fragmentName="com.ey.digigst.fragments.others.GLRecon.RequestIdWise" type="XML"/>
+				</NavContainer>
+			</IconTabFilter>
+			<IconTabFilter key="reconResult" text="GL Recon Result">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.others.GLRecon.GlReconResult" type="XML"/>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</mvc:View>

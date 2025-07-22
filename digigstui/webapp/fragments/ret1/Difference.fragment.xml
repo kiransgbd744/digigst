@@ -1,0 +1,53 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m">
+	<Dialog id="dDifference" title="{i18n>diffHeader}" type="Message" draggable="true" contentWidth="65%" class="sapUiSizeCompact">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="{i18n>diffHeader}" design="Bold"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<beginButton>
+			<Button text="{i18n>close}" press="onCloseDifference"/>
+		</beginButton>
+		<Toolbar>
+			<ToolbarSpacer/>
+			<Text id="tDiffTimeStamp" text="{Ret1Property>/updateDate}" class="timeStmpClr"/>
+			<Button type="Ghost" text="{i18n>updataGstnData}" icon="sap-icon://refresh" press="onUpdateGstnData($event,'D')"/>
+		</Toolbar>
+		<Table items="{Difference>/}">
+			<columns>
+				<Column width="16rem">
+					<Label text="{i18n>section}" design="Bold"/>
+				</Column>
+				<Column width="7rem" hAlign="End">
+					<Label text="{i18n>value}" design="Bold"/>
+				</Column>
+				<Column width="7rem" hAlign="End">
+					<Label text="{i18n>igst}" design="Bold"/>
+				</Column>
+				<Column width="7rem" hAlign="End">
+					<Label text="{i18n>cgst}" design="Bold"/>
+				</Column>
+				<Column width="7rem" hAlign="End">
+					<Label text="{i18n>sgst}" design="Bold"/>
+				</Column>
+				<Column width="7rem" hAlign="End">
+					<Label text="{i18n>cess}" design="Bold"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<Text text="{Difference>section}"/>
+						<Text text="{path:'Difference>value', formatter:'.formatter.amountValue'}"/>
+						<Text text="{path:'Difference>igst', formatter:'.formatter.amountValue'}"/>
+						<Text text="{path:'Difference>cgst', formatter:'.formatter.amountValue'}"/>
+						<Text text="{path:'Difference>sgst', formatter:'.formatter.amountValue'}"/>
+						<Text text="{path:'Difference>cess', formatter:'.formatter.amountValue'}"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</Dialog>
+</core:FragmentDefinition>

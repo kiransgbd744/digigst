@@ -1,0 +1,66 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form">
+	<Dialog id="reconFilter" title="GL Recon Filter" draggable="true" contentWidth="30rem" class="sapUiSizeCompact sapUiContentPadding">
+		<buttons>
+			<Button text="{i18n>filter}" press="onCloseReconFilter('F')"/>
+			<Button text="{i18n>close}" press="onCloseReconFilter('C')"/>
+		</buttons>
+		<content>
+			<form:Form>
+				<form:formContainers>
+					<form:FormContainer>
+						<form:formElements>
+							<form:FormElement visible="{=${ReconFilter>/type}==='masterData'}">
+								<form:label>
+									<Label text="File Type" class="sapUiTinyMarginTop"/>
+								</form:label>
+								<form:fields>
+									<MultiComboBox selectedKeys="{ReconFilter>/fileType}">
+										<core:Item key="GL_Code_Mapping_Master_GL" text="GL Code Mapping Master - GL"/>
+										<core:Item key="Business_Unit_code" text="Business Unit code"/>
+										<core:Item key="Document_type" text="Document type"/>
+										<core:Item key="Supply_Type" text="Supply Type"/>
+										<core:Item key="Tax_code" text="Tax code"/>
+										<!--<core:Item key="GL_dump_mapping_file" text="GL dump - mapping file"/>-->
+									</MultiComboBox>
+								</form:fields>
+							</form:FormElement>
+							<form:FormElement>
+								<form:label>
+									<Label text="Uploaded From" class="sapUiTinyMarginTop"/>
+								</form:label>
+								<form:fields>
+									<DatePicker id="dtUploadFrom" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" placeholder="DD-MM-YYYY" maxDate="{ReconFilter>/maxDate}"
+										value="{ReconFilter>/uploadedFrom}" change="onChangeReconFilterDate($event,'F')"/>
+								</form:fields>
+							</form:FormElement>
+							<form:FormElement>
+								<form:label>
+									<Label text="Uploaded To" class="sapUiTinyMarginTop"/>
+								</form:label>
+								<form:fields>
+									<DatePicker id="dtUploadTo" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" placeholder="DD-MM-YYYY" maxDate="{ReconFilter>/maxDate}"
+										minDate="{ReconFilter>/minDate}" value="{ReconFilter>/uploadedTo}" change="onChangeReconFilterDate($event,'T')"/>
+								</form:fields>
+							</form:FormElement>
+							<form:FormElement>
+								<form:label>
+									<Label text="Status" class="sapUiTinyMarginTop"/>
+								</form:label>
+								<form:fields>
+									<MultiComboBox selectedKeys="{ReconFilter>/status}">
+										<core:Item key="Initiated" text="Initiated"/>
+										<core:Item key="Success" text="Success"/>
+										<core:Item key="Failed" text="Failed"/>
+									</MultiComboBox>
+								</form:fields>
+							</form:FormElement>
+						</form:formElements>
+					</form:FormContainer>
+				</form:formContainers>
+				<form:layout>
+					<form:ResponsiveGridLayout labelSpanXL="3" labelSpanL="3" labelSpanM="4" labelSpanS="4" columnsXL="1" columnsL="1" columnsM="1"/>
+				</form:layout>
+			</form:Form>
+		</content>
+	</Dialog>
+</core:FragmentDefinition>

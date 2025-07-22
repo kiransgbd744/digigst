@@ -1,0 +1,101 @@
+resources:
+  repositories:
+  - repository: templates
+    type: git
+    name: SAPDigiGST/DevOps
+    ref: refs/heads/main
+
+parameters:
+  - name: environment
+    displayName: 'Environment'
+    type: string
+    default: 'DEV'
+    values:
+      - 'DEV'
+      - 'UAT'
+      - 'PROD'
+  - name: sonar
+    displayName: 'Sonar_Required'
+    type: string
+    default: false
+    values:
+      - 'true'
+      - 'false'
+  - name: ossscan
+    displayName: 'Oss_Scan'
+    type: string
+    default: NotRequired
+    values:
+      - 'Required'
+      - 'NotRequired'   
+  - name: eycore
+    displayName: eycore
+    type: boolean
+    default: true
+  - name: eyeinvapi
+    displayName: eyeinvapi
+    type: boolean
+    default: true  
+  - name: eyewbapi
+    displayName: eyewbapi
+    type: boolean
+    default: true       
+  - name: eygstnapi
+    displayName: eygstnapi
+    type: boolean
+    default: true  
+  - name: eygstnapiwrapper
+    displayName: eygstnapiwrapper
+    type: boolean
+    default: true       
+  - name: aspcore
+    displayName: aspcore
+    type: boolean
+    default: true
+  - name: aspcommon
+    displayName: aspcommon
+    type: boolean
+    default: true
+  - name: aspinvoices
+    displayName: aspinvoices
+    type: boolean
+    default: true
+  - name: aspinvoices_recon
+    displayName: aspinvoices_recon
+    type: boolean
+    default: true
+
+variables:
+- name: releaseVersion
+  ${{ if eq(parameters.environment, 'DEV') }}:
+    value: "$(DEV-RELEASE)"
+  ${{ if eq(parameters.environment, 'UAT') }}:
+    value: "$(UAT-RELEASE)"
+  ${{ if eq(parameters.environment, 'PROD') }}:
+    value: "$(PROD-RELEASE)"
+
+name: $(Build.BuildId)
+
+
+jobs:
+- job: Building_sap_dependencies_modules
+  displayName: 'Building sap depencencies modules'
+  pool:
+    name: 'SAP-CF'
+  steps:
+  - checkout: templates
+  - template: DiGiGST-Build-Pipelines/Pipeline-SAP-Dependencies.yaml@templates  # Template reference with repository
+    parameters:
+      environment: ${{ parameters.environment }}
+      eycore: ${{ parameters.eycore }}
+      aspcore: ${{ parameters.aspcore }}
+      eygstnapi: ${{ parameters.eygstnapi }}
+      eyeinvapi: ${{ parameters.eyeinvapi }}
+      aspcommon: ${{ parameters.aspcommon }}
+      eygstnapiwrapper: ${{ parameters.eygstnapiwrapper }}
+      eyewbapi: ${{ parameters.eyewbapi }}
+      aspinvoices: ${{ parameters.aspinvoices }}
+      aspinvoices_recon: ${{ parameters.aspinvoices_recon }}
+      sonar: ${{ parameters.sonar }}
+      ossscan: ${{ parameters.ossscan }}
+      releaseVersion: $(releaseVersion)

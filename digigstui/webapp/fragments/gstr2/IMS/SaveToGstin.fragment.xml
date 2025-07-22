@@ -1,0 +1,37 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:f="sap.ui.layout.form">
+	<Dialog title="Save IMS Action" type="Message" contentWidth="50rem" busyIndicatorDelay="0" class="sapUiSizeCompact cl_saveHeader">
+		<content>
+			<layout:VerticalLayout>
+				<layout:Grid defaultSpan="L12 M12 S12" hSpacing="0.5" vSpacing="0">
+					<HBox alignItems="Center">
+						<Label text="GSTIN:" design="Bold" class="sapUiTinyMarginEnd"/>
+						<Label text="{=${GetSection>/gstins}.join(', ')}" wrapping="true" visible="{=${GetSection>/type}==='entityLevel'}"/>
+						<Select items="{path:'DataPermission>/respData/dataSecurity/gstin'}" selectedKey="{GetSection>/gstin}" width="12rem"
+							visible="{=${GetSection>/type}==='gstinLevel'}">
+							<core:Item key="{DataPermission>value}" text="{DataPermission>value}"/>
+						</Select>
+					</HBox>
+				</layout:Grid>
+				<CheckBox text="All Tables" selected="{GetSection>/allFlag}" select="onSelectSaveStatausPopup"
+					class="cl_check clCheckBoxText sapUiSmallMarginTop"/>
+				<layout:Grid defaultSpan="L3 M3 S12" vSpacing="0">
+					<layout:content>
+						<CheckBox text="B2B" selected="{GetSection>/b2bFlag}" select="onSelectTableType"/>
+						<CheckBox text="B2BA" selected="{GetSection>/b2baFlag}" select="onSelectTableType"/>
+						<CheckBox text="ECOM" selected="{GetSection>/ecomFlag}" select="onSelectTableType"/>
+						<CheckBox text="ECOMA" selected="{GetSection>/ecomaFlag}" select="onSelectTableType"/>
+						<CheckBox text="CN" selected="{GetSection>/cnFlag}" select="onSelectTableType"/>
+						<CheckBox text="CNA" selected="{GetSection>/cnaFlag}" select="onSelectTableType"/>
+						<CheckBox text="DN" selected="{GetSection>/dnFlag}" select="onSelectTableType"/>
+						<CheckBox text="DNA" selected="{GetSection>/dnaFlag}" select="onSelectTableType"/>
+					</layout:content>
+				</layout:Grid>
+			</layout:VerticalLayout>
+		</content>
+		<buttons>
+			<Button class="buttoncolorSec" text="Reset" press="onSaveIMSBtnDialog('R')"/>
+			<Button class="buttoncolorSec" text="Save" press="onSaveIMSBtnDialog('S')"/>
+			<Button class="buttoncolorSec" text="Cancel" press="onSaveIMSBtnDialog('C')"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

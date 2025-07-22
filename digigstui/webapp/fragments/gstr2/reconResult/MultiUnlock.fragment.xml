@@ -1,0 +1,312 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<ui:Table id="tabMultiUnlock" rows="{path:'UnlockReconResult>/'}" selectionMode="MultiToggle" enableSelectAll="true" visibleRowCount="7"
+		visible="{Display>/swRecon}">
+		<ui:columns>
+			<ui:Column width="9rem">
+				<Label design="Bold" text="Recipient GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox>
+						<VBox items="{path:'UnlockReconResult>gstins',templateShareable:true}">
+							<HBox direction="Column">
+								<ObjectStatus text="{UnlockReconResult>gstin}" state="Information"
+									visible="{parts:[{value:'V'},'UnlockReconResult>gstin','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" "
+									visible="{parts:[{value:'T1'},'UnlockReconResult>gstin','UnlockReconResult>gstin2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<ObjectStatus text="{UnlockReconResult>gstin2A}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>gstin2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>gstin2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+							</HBox>
+						</VBox>
+						<Link text="View All Records" press="onViewMoreReconResult" visible="{UnlockReconResult>visiMore}" class="redLink"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="9.5rem">
+				<Label design="Bold" text="Vendor GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox>
+						<VBox items="{path:'UnlockReconResult>vendorGstins',templateShareable:true}">
+							<HBox direction="Column">
+								<ObjectStatus text="{UnlockReconResult>vendorGstin}" state="Information"
+									visible="{parts:[{value:'V'},'UnlockReconResult>vendorGstin','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" "
+									visible="{parts:[{value:'T1'},'UnlockReconResult>vendorGstin','UnlockReconResult>vendorGstin2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<ObjectStatus text="{UnlockReconResult>vendorGstin2A}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>vendorGstin2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>vendorGstin2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+							</HBox>
+						</VBox>
+						<Text text="" visible="{UnlockReconResult>visiMore}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="5rem">
+				<Label design="Bold" text="Doc Type" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox>
+						<VBox items="{path:'UnlockReconResult>docTypes',templateShareable:true}">
+							<HBox direction="Column">
+								<ObjectStatus text="{UnlockReconResult>docTypePR}" state="{path:'UnlockReconResult>isDocTypeMatch', formatter:'.formatter.reconcolorPR'}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>docTypePR','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>docTypePR','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<ObjectStatus text="{UnlockReconResult>docType2A}" state="{path:'UnlockReconResult>isDocTypeMatch', formatter:'.formatter.reconcolor'}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>docType2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>docType2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+							</HBox>
+						</VBox>
+						<Text text="" visible="{UnlockReconResult>visiMore}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="150" id="recMuDocNo">
+				<Label design="Bold" text="Doc No" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox>
+						<VBox items="{path:'UnlockReconResult>docNumbers',templateShareable:true}">
+							<HBox direction="Column">
+								<ObjectStatus text="{UnlockReconResult>docNumberPR}"
+									state="{path:'UnlockReconResult>isDocNumberMatch', formatter:'.formatter.reconcolorPR'}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>docNumberPR','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>docNumberPR','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<ObjectStatus text="{UnlockReconResult>docNumber2A}" state="{path:'UnlockReconResult>isDocNumberMatch', formatter:'.formatter.reconcolor'}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>docNumber2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>docNumber2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+							</HBox>
+						</VBox>
+						<Text text="" visible="{UnlockReconResult>visiMore}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="6.5rem" id="recMuDocDate">
+				<Label design="Bold" text="Doc Date" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox>
+						<VBox items="{path:'UnlockReconResult>docDates',templateShareable:true}">
+							<HBox direction="Column">
+								<ObjectStatus text="{UnlockReconResult>docDatePR}" state="{path:'UnlockReconResult>isDocDateMatch', formatter:'.formatter.reconcolorPR'}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>docDatePR','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>docDatePR','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<ObjectStatus text="{UnlockReconResult>docDate2A}" state="{path:'UnlockReconResult>isDocDateMatch', formatter:'.formatter.reconcolor'}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>docDate2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>docDate2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+							</HBox>
+						</VBox>
+						<Text text="" visible="{UnlockReconResult>visiMore}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="150" id="recMuBoeNo" visible="false">
+				<Label design="Bold" text="BOE No" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox>
+						<VBox items="{path:'UnlockReconResult>boeNumbers',templateShareable:true}">
+							<HBox direction="Column">
+								<ObjectStatus text="{UnlockReconResult>boeNoPR}" state="{path:'UnlockReconResult>isBoeNoMatch', formatter:'.formatter.reconcolorPR'}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>boeNoPR','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>boeNoPR','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<ObjectStatus text="{UnlockReconResult>boeNo2A}" state="{path:'UnlockReconResult>isBoeNoMatch', formatter:'.formatter.reconcolor'}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>boeNo2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>boeNo2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+							</HBox>
+						</VBox>
+						<Text text="" visible="{UnlockReconResult>visiMore}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="6.5rem" id="recMuBoeDate" visible="false">
+				<Label design="Bold" text="BOE Date" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox>
+						<VBox items="{path:'UnlockReconResult>boeDates',templateShareable:true}">
+							<HBox direction="Column">
+								<ObjectStatus text="{UnlockReconResult>boeDatePR}" state="{path:'UnlockReconResult>isBoeDateMatch', formatter:'.formatter.reconcolorPR'}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>boeDatePR','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>boeDatePR','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<ObjectStatus text="{UnlockReconResult>boeDate2A}" state="{path:'UnlockReconResult>isBoeDateMatch', formatter:'.formatter.reconcolor'}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>boeDate2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>boeDate2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+							</HBox>
+						</VBox>
+						<Text text="" visible="{UnlockReconResult>visiMore}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" minWidth="105">
+				<Label design="Bold" text="Total Tax" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox>
+						<VBox items="{path:'UnlockReconResult>totalTax',templateShareable:true}">
+							<HBox direction="Column" alignItems="End" width="100%">
+								<ObjectStatus text="{UnlockReconResult>totalTaxPR}" state="{path:'UnlockReconResult>isTotalTaxMatch', formatter:'.formatter.reconcolorPR'}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>totalTaxPR','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>totalTaxPR','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<ObjectStatus text="{UnlockReconResult>totalTax2A}" state="{path:'UnlockReconResult>isTotalTaxMatch', formatter:'.formatter.reconcolor'}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>totalTax2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>totalTax2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+							</HBox>
+						</VBox>
+						<Text text="" visible="{UnlockReconResult>visiMore}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" minWidth="105">
+				<Label design="Bold" text="IGST" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox>
+						<VBox items="{path:'UnlockReconResult>igst',templateShareable:true}">
+							<HBox direction="Column" alignItems="End" width="100%">
+								<ObjectStatus text="{UnlockReconResult>igstPR}" state="{path:'UnlockReconResult>isIgstMatch', formatter:'.formatter.reconcolorPR'}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>igstPR','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>igstPR','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<ObjectStatus text="{UnlockReconResult>igst2A}" state="{path:'UnlockReconResult>isIgstMatch', formatter:'.formatter.reconcolor'}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>igst2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>igst2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+							</HBox>
+						</VBox>
+						<Text text="" visible="{UnlockReconResult>visiMore}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" minWidth="105">
+				<Label design="Bold" text="CGST" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox>
+						<VBox items="{path:'UnlockReconResult>cgst',templateShareable:true}">
+							<HBox direction="Column" alignItems="End" width="100%">
+								<ObjectStatus text="{UnlockReconResult>cgstPR}" state="{path:'UnlockReconResult>isCgstMatch', formatter:'.formatter.reconcolorPR'}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>cgstPR','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>cgstPR','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<ObjectStatus text="{UnlockReconResult>cgst2A}" state="{path:'UnlockReconResult>isCgstMatch', formatter:'.formatter.reconcolor'}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>cgst2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>cgst2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+							</HBox>
+						</VBox>
+						<Text text="" visible="{UnlockReconResult>visiMore}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" minWidth="105">
+				<Label design="Bold" text="SGST" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox>
+						<VBox items="{path:'UnlockReconResult>sgst',templateShareable:true}">
+							<HBox direction="Column" alignItems="End" width="100%">
+								<ObjectStatus text="{UnlockReconResult>sgstPR}" state="{path:'UnlockReconResult>isSgstMatch', formatter:'.formatter.reconcolorPR'}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>sgstPR','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>sgstPR','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<ObjectStatus text="{UnlockReconResult>sgst2A}" state="{path:'UnlockReconResult>isSgstMatch', formatter:'.formatter.reconcolor'}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>sgst2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>sgst2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+							</HBox>
+						</VBox>
+						<Text text="" visible="{UnlockReconResult>visiMore}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" minWidth="105">
+				<Label design="Bold" text="Cess" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox>
+						<VBox items="{path:'UnlockReconResult>cess',templateShareable:true}">
+							<HBox direction="Column" alignItems="End" width="100%">
+								<ObjectStatus text="{UnlockReconResult>cessPR}" state="{path:'UnlockReconResult>isCessMatch', formatter:'.formatter.reconcolorPR'}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>cessPR','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>cessPR','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<ObjectStatus text="{UnlockReconResult>cess2A}" state="{path:'UnlockReconResult>isCessMatch', formatter:'.formatter.reconcolor'}"
+									visible="{parts:[{value:'V'},'UnlockReconResult>cess2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+								<Text text=" " visible="{parts:[{value:'T'},'UnlockReconResult>cess2A','UnlockReconResult>visi'],formatter:'._displayControl'}"/>
+							</HBox>
+						</VBox>
+						<Text text="" visible="{UnlockReconResult>visiMore}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="180">
+				<Label design="Bold" text="Accounting Voucher No" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox>
+						<VBox items="{path:'UnlockReconResult>accVoucherNo',templateShareable:true}">
+							<HBox direction="Column">
+								<Text text="{UnlockReconResult>acVocNo}"/>
+								<Text text=" " visible="{UnlockReconResult>visi}"/>
+							</HBox>
+						</VBox>
+						<Text text="" visible="{UnlockReconResult>visiMore}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="230">
+				<Label design="Bold" text="Mismatch Reason" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox>
+						<VBox items="{path:'UnlockReconResult>reason',templateShareable:true}">
+							<HBox direction="Column">
+								<Text text="{UnlockReconResult>mismatchReason}"/>
+								<Text text=" " visible="{UnlockReconResult>visi}"/>
+							</HBox>
+						</VBox>
+						<Text text="" visible="{UnlockReconResult>visiMore}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="150">
+				<Label design="Bold" text="Recon Response" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<Text text="{path:'UnlockReconResult>responseTaken'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="20rem">
+				<Label design="Bold" text="Response Remarks"/>
+				<ui:template>
+					<Text text="{UnlockReconResult>respRemarks}" textAlign="Center"/>
+				</ui:template>
+			</ui:Column>
+			<!--<ui:Column width="10rem"-->
+			<!--	visible="{=(!!${GroupPermission>/GR1} &amp;&amp; (${Display>/LabelRR} ==='2B' ? !!${GroupPermission>/GR2} : !!${GroupPermission>/GR4}))}">-->
+			<!--	<Label design="Bold" text="IMS Action (GSTN)"/>-->
+			<!--	<ui:template>-->
+			<!--		<Text text="{UnlockReconResult>imsActionGstn}" textAlign="Center"/>-->
+			<!--	</ui:template>-->
+			<!--</ui:Column>-->
+			<!--<ui:Column width="10rem"-->
+			<!--	visible="{=(!!${GroupPermission>/GR1} &amp;&amp; (${Display>/LabelRR} ==='2B' ? !!${GroupPermission>/GR2} : !!${GroupPermission>/GR4}))}">-->
+			<!--	<Label design="Bold" text="IMS Action (DigiGST)"/>-->
+			<!--	<ui:template>-->
+			<!--		<Text text="{UnlockReconResult>imsActionDigiGst}" textAlign="Center"/>-->
+			<!--	</ui:template>-->
+			<!--</ui:Column>-->
+			<!--<ui:Column width="10rem"-->
+			<!--	visible="{=(!!${GroupPermission>/GR1} &amp;&amp; (${Display>/LabelRR} ==='2B' ? !!${GroupPermission>/GR2} : !!${GroupPermission>/GR4}))}">-->
+			<!--	<Label design="Bold" text="IMS UniqueID"/>-->
+			<!--	<ui:template>-->
+			<!--		<Text text="{UnlockReconResult>imsUniqId}" textAlign="Center"/>-->
+			<!--	</ui:template>-->
+			<!--</ui:Column>-->
+		</ui:columns>
+		<ui:footer>
+			<HBox width="100%" justifyContent="Center">
+				<Button type="Ghost" icon="sap-icon://media-rewind" tooltip="First Page" enabled="{Display>/bFirstRR}" class="sapUiTinyMarginBeginEnd"
+					press="onPaginationUnlockRR('F')"/>
+				<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="{Display>/bPrevRR}"
+					press="onPaginationUnlockRR('P')"/>
+				<Input type="Number" textAlign="End" width="4rem" enabled="{Display>/ePageNoRR}" value="{Display>/inPageNoRR}"
+					submit="onSubmitPaginationUnlock" class="sapUiTinyMarginBegin"/>
+				<Text text="/ {Display>/pgTotalRR}" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+				<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" press="onPaginationUnlockRR('N')"
+					enabled="{Display>/bNextRR}"/>
+				<Button type="Ghost" icon="sap-icon://media-forward" tooltip="Last Page" enabled="{Display>/bLastRR}" class="sapUiTinyMarginBeginEnd"
+					press="onPaginationUnlockRR('L')"/>
+				<Select forceSelection="true" selectedKey="{Display>/pgSizeRR}" enabled="{=!${visReport>/optedMultiResponse}}"
+					change="onSubmitPaginationUnlock">
+					<core:Item key="10" text="10"/>
+					<core:Item key="25" text="25"/>
+					<core:Item key="50" text="50"/>
+					<core:Item key="75" text="75"/>
+					<core:Item key="100" text="100"/>
+					<core:Item key="200" text="200"/>
+					<core:Item key="300" text="300"/>
+				</Select>
+			</HBox>
+		</ui:footer>
+	</ui:Table>
+</core:FragmentDefinition>

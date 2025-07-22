@@ -1,0 +1,176 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table" xmlns:u="sap.ui.unified">
+	<ui:Table id="imsSummaryEntity" rows="{EntitySummary>/resp/}" visibleRowCount="8" visible="{=${ViewProperty>/imsSummary}==='entity'}">
+		<ui:extension>
+			<Toolbar>
+				<RadioButtonGroup id="rgbImsSummType" columns="2" select="onSelectFileType1(${$parameters>/selectedIndex})" class="sapUiMediumMarginEnd">
+					<RadioButton text="Excel"/>
+				</RadioButtonGroup>
+				<u:FileUploader id="fuImsSummary" name="file" fileType="xlsx,xlsm,xls,csv" sameFilenameAllowed="false" sendXHR="true" class="buttoncolorSec"
+					width="30rem" uploadComplete="onImsSummUploadComplete"/>
+				<Button text="{i18n>upload}" press="onUploadImsSummary" class="sapUiTinyMarginBegin buttoncolor"/>
+				<Button text="Download Template" press="onImsSummDownloadTemplate" class="sapUiSmallMarginBegin buttoncolorSec"/>
+				<ToolbarSpacer/>
+				<Button text="Delete from DigiGST" press="onDeleteDigiGST" class="buttoncolorSec"/>
+				<Button text="Save to GSTN" press="onEntityLevelSaveToGstn" class="buttoncolorSec"/>
+				<MenuButton text="Download Report" class="buttoncolorSec">
+					<Menu itemSelected="">
+						<MenuItem text="Table Data" press="onDownloadImsSummaryTabData"/>
+						<MenuItem text="IMS Records Active+Inactive Report" press="onDownloadImsRecordReport('E','ALL')"/>
+						<MenuItem text="IMS Records Active Report" press="onDownloadImsRecordReport('E','ACTIVE')"/>
+						<MenuItem text="IMS Amendment Original Track Report" press="onDownloadImsRecordReport('E','Amendment')"/>
+					</Menu>
+				</MenuButton>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column hAlign="Left" width="12rem">
+				<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<VBox>
+						<HBox>
+							<Text text="{EntitySummary>state}" width="8rem" class="stateColor"/>
+							<Text text="{=${EntitySummary>regType}==='REGULAR'?'':${EntitySummary>regType}}" class="stateColor fontSmall"/>
+						</HBox>
+						<HBox justifyContent="SpaceBetween" width="100%">
+							<Link text="{EntitySummary>gstin}" press="onSelectGstin(${EntitySummary>gstin})"/>
+							<core:Icon src="sap-icon://circle-task-2" size="0.8rem" class="sapUiTinyMarginBegin" tooltip="{EntitySummary>authToken}"
+								visible="{=${EntitySummary>gstin}=== '' ?false:true}" color="{=${EntitySummary>authToken}=== 'Active' ?'#00ff00':'#ff0000'}"
+								press=" onActivateAuthToken(${EntitySummary>gstin},${EntitySummary>authToken})"/>
+						</HBox>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<Label text="Save Status" design="Bold" textAlign="Center" width="100%"/>
+				<ui:template>
+					<HBox direction="Column">
+						<ObjectStatus text="{EntitySummary>saveStatus}" state="{path:'EntitySummary>saveStatus', formatter:'.formatter.statusClr'}"
+							active="{=${EntitySummary>saveStatus}!=='Not Initiated'?true:false}" press="onPressSaveStatus(${EntitySummary>gstin})"/>
+						<Text text="{EntitySummary>timeStamp}" class="timeStmpClr"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="5" hAlign="End">
+				<ui:multiLabels>
+					<Label text="Record Count as per GSTN" design="Bold" textAlign="Center" width="100%"/>
+					<Label text="Total" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{EntitySummary>gstnTotal}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="No Action" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{EntitySummary>gstnNoAction}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Accepted" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{EntitySummary>gstnAccepted}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Rejected" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{EntitySummary>gstnRejected}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Pending" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{EntitySummary>gstnPendingTotal}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="5" hAlign="End">
+				<ui:multiLabels>
+					<Label text="Record Count as per DigiGST (Not Saved to GSTN)" design="Bold" textAlign="Center" width="100%"/>
+					<Label text="Total" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{EntitySummary>aspTotal}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="No Action" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{EntitySummary>aspNoAction}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Accepted" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{EntitySummary>aspAccepted}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Rejected" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{EntitySummary>aspRejected}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Pending" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{EntitySummary>aspPendingTotal}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="9rem">
+				<Label text="Record Count as per DigiGST (All)" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<Text text="{EntitySummary>recordCountsAll}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="9rem">
+				<Label text="Difference with GSTN" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<HBox renderType="Bare" justifyContent="Center" alignItems="Center">
+						<core:Icon src="sap-icon://complete" color="#00ff00" tooltip="No Difference" visible="{=!${EntitySummary>totalDiff}}"/>
+						<core:Icon src="sap-icon://message-warning" color="red" tooltip="View Difference" visible="{=!!${EntitySummary>totalDiff}}"
+							press="onEntityViewDifference"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+		<ui:footer>
+			<HBox>
+				<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+				<Text text="Auth Token Active" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+				<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+				<Text text="Auth Token Inactive" class="sapUiTinyMarginBegin"/>
+			</HBox>
+		</ui:footer>
+	</ui:Table>
+	<VBox visible="{=${ViewProperty>/imsSummary}==='entity'}" class="sapUiSmallMarginBegin">
+		<Label design="Bold" text="Note:"/>
+		<Label design="Bold" class="sapUiSmallMarginBegin"
+			text="1. IMS status count as per GSTN is computed based on Invoice Count Get Call and it will not update automatically based on action taken in DigiGST."/>
+		<Label design="Bold" class="sapUiSmallMarginBegin"
+			text="2. Please initiate the fresh 'IMS Invoices' get call after 'Save to GSTN' to update the values."/>
+	</VBox>
+</core:FragmentDefinition>

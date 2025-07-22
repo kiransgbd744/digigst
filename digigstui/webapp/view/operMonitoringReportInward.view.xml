@@ -1,0 +1,178 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+	controllerName="com.ey.digigst.controller.operMonitoringReportInward" xmlns:commons="sap.suite.ui.commons" xmlns:ui="sap.ui.table"
+	xmlns:l="sap.ui.layout" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" busyIndicatorDelay="0">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Operational Monitoring Report - Inward" class="TitleColor"/>
+				</f:heading>
+				<f:actions></f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar width="100%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Accounting Voucher - {i18n>fromDate}" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="iFromDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Accounting Voucher - {i18n>toDate}" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="iToDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" change="onChangeValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Extraction - {i18n>fromDate}" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="iExtractionFromDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Extraction - {i18n>toDate}" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="iExtractionToDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" change="onChangeValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End">
+					<Button text="{i18n>clear}" press="onPressClear" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+					<Button text="Filter" class="buttoncolor" press="onSearch"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel>
+				<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<ui:Table rows="{path:'DailyReconResults>/resp/'}" selectionMode="None" selectionBehavior="Row" visibleRowCount="12" fixedColumnCount="0"
+									enableSelectAll="false">
+									<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="Acc. Voucher Date" tooltip="Accounting Voucher Date"/>
+										<ui:template>
+											<HBox alignItems="Center" justifyContent="Center">
+												<Text text="{DailyReconResults>accVchrDate}"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="Extraction Date" tooltip="Extraction ID"/>
+										<ui:template>
+											<HBox alignItems="Center" justifyContent="Center">
+												<Text text="{DailyReconResults>extractedOn}"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="Extraction ID" tooltip="Extraction ID"/>
+										<ui:template>
+											<HBox alignItems="Center" justifyContent="Center">
+												<Text text="{DailyReconResults>extId}"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<!--<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="Extraction Type" tooltip="Extraction Type"/>
+										<ui:template>
+											<HBox alignItems="Center" justifyContent="Center">
+												<Text text="{DailyReconResults>extType}"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>-->
+									<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="Extracted Doc. Count" tooltip="Extracted Document Count"/>
+										<ui:template>
+											<VBox alignItems="Center" justifyContent="Center">
+												<Text text="{DailyReconResults>extDocCount}"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="Structural Error Count" tooltip="Structural Error Count"/>
+										<ui:template>
+											<VBox alignItems="Center" justifyContent="Center">
+												<Text text="{DailyReconResults>strErrCount}" visible="{=${DailyReconResults>strErrCount}>0 ? false: true}"/>
+												<Text text="{DailyReconResults>strErrCount}" class="redText" visible="{=${DailyReconResults>strErrCount}>0 ? true: false}"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="On Hold" tooltip="On Hold"/>
+										<ui:template>
+											<HBox alignItems="Center" justifyContent="Center">
+												<Text text="{DailyReconResults>onHold}"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="Available for Push" tooltip="Available for Push"/>
+										<ui:template>
+											<VBox alignItems="Center" justifyContent="Center">
+												<Text text="{DailyReconResults>availForPush}"
+													visible="{=(${DailyReconResults>availForPush} !==${DailyReconResults>pushToCloud})? false: true}"/>
+												<Text text="{DailyReconResults>availForPush}" class="redText"
+													visible="{=(${DailyReconResults>availForPush} !==${DailyReconResults>pushToCloud})? true: false}"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="Pushed to Cloud" tooltip="Pushed to Cloud"/>
+										<ui:template>
+											<VBox alignItems="Center" justifyContent="Center">
+												<Text text="{DailyReconResults>pushToCloud}"
+													visible="{=(${DailyReconResults>availForPush} !==${DailyReconResults>pushToCloud})? false: true}"/>
+												<Text text="{DailyReconResults>pushToCloud}" class="redText"
+													visible="{=(${DailyReconResults>availForPush} !==${DailyReconResults>pushToCloud})? true: false}"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="Errored in Push" tooltip="Errored in Push"/>
+										<ui:template>
+											<VBox alignItems="Center" justifyContent="Center">
+												<Text text="{DailyReconResults>errorInPush}" visible="{=${DailyReconResults>errorInPush}>0 ? false: true}"/>
+												<Text text="{DailyReconResults>errorInPush}" class="redText" visible="{=${DailyReconResults>errorInPush}>0 ? true: false}"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="Available in Cloud" tooltip="Available in Cloud"/>
+										<ui:template>
+											<VBox alignItems="Center" justifyContent="Center">
+												<Text text="{DailyReconResults>availInCloud}"/>
+											</VBox>
+											<!--<VBox alignItems="Center" justifyContent="Center">
+												<Text text="{DailyReconResults>availInCloud}" visible="{=${DailyReconResults>availInCloud}>0 ? false: true}"/>
+												<Text text="{DailyReconResults>availInCloud}" class="redText" visible="{=${DailyReconResults>availInCloud}>0 ? true: false}"/>
+											</VBox>-->
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="">
+										<Label design="Bold" text="Difference in Count" tooltip="Difference in Coun"/>
+										<ui:template>
+											<VBox alignItems="Center" justifyContent="Center">
+												<Text text="{DailyReconResults>difference}" visible="{=${DailyReconResults>difference}>0 ? false: true}"/>
+												<Text text="{DailyReconResults>difference}" class="redText" visible="{=${DailyReconResults>difference}>0 ? true: false}"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+								</ui:Table>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar>
+							<ToolbarSpacer/>
+							<Button type="Emphasized" text="Download Report" tooltip="Download" press="onDownloadSummary" visible="false"/>
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

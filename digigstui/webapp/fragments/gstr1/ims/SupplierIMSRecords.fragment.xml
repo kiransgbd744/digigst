@@ -1,0 +1,269 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage visible="{=${ViewProperty>/btnSegment}==='IMSRecords'}">
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<FlexBox renderType="Bare">
+					<VBox width="90%">
+						<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" class="sapUiNoContentPadding">
+							<fb:filterGroupItems>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>gstin}" visibleInFilterBar="true">
+									<fb:control>
+										<MultiComboBox items="{userPermission>/respData/dataSecurity/gstin}" selectedKeys="{FilterModel>/recordGstin}" selectionChange="selectAll">
+											<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+										</MultiComboBox>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Return Period From" visibleInFilterBar="true">
+									<fb:control>
+										<DatePicker id="dtFromDate" displayFormat="MMM yyyy" dateValue="{FilterModel>/recordFrPeriod}" maxDate="{FilterModel>/maxDate}"
+											change="onChangeDateValue"/>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Return Period To" visibleInFilterBar="true">
+									<fb:control>
+										<DatePicker id="dtToDate" displayFormat="MMM yyyy" dateValue="{FilterModel>/recordToPeriod}" maxDate="{FilterModel>/maxDate}"
+											minDate="{FilterModel>/recordFrPeriod}"/>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Return Type" visibleInFilterBar="true">
+									<fb:control>
+										<MultiComboBox selectedKeys="{FilterModel>/recordRetType}" selectionChange="selectAll">
+											<core:Item key="All" text="All"/>
+											<core:Item key="GSTR1" text="GSTR-1"/>
+											<core:Item key="GSTR1A" text="GSTR-1A"/>
+										</MultiComboBox>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="Table Type" visibleInFilterBar="true">
+									<fb:control>
+										<MultiComboBox selectedKeys="{FilterModel>/recordTabType}" selectionChange="selectAll">
+											<core:Item key="All" text="All"/>
+											<core:Item key="B2B" text="B2B"/>
+											<core:Item key="B2BA" text="B2BA"/>
+											<core:Item key="CDNR" text="CDNR"/>
+											<core:Item key="CDNRA" text="CDNRA"/>
+											<core:Item key="ECOM" text="ECOM"/>
+											<core:Item key="ECOMA" text="ECOMA"/>
+										</MultiComboBox>
+									</fb:control>
+								</fb:FilterGroupItem>
+							</fb:filterGroupItems>
+						</fb:FilterBar>
+						<HBox>
+							<Label text="Action Type:" class="sapUiTinyMarginTop sapUiTinyMarginEnd"/>
+							<RadioButtonGroup columns="7" selectedIndex="{FilterModel>/recordActionType}">
+								<RadioButton text="All"/>
+								<RadioButton text="No Action"/>
+								<RadioButton text="Accepted"/>
+								<RadioButton text="Rejected"/>
+								<RadioButton text="Pending"/>
+								<RadioButton text="Not Eligible" enabled="false"/>
+								<RadioButton text="Rejected - GSTR-3B Liability" enabled="false"/>
+							</RadioButtonGroup>
+						</HBox>
+					</VBox>
+					<VBox justifyContent="End" width="10%">
+						<HBox justifyContent="End">
+							<Button text="{i18n>clear}" press="onClearIMSRecords" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+							<Button text="Filter" press="onPressImsRecords" class="buttoncolor"/>
+						</HBox>
+					</VBox>
+				</FlexBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table id="tabRecordsView" rows="{SuppImsRecords>/}" selectionMode="MultiToggle" selectionBehavior="Row" fixedColumnCount="2"
+				class="sapUiTinyMarginTop">
+				<ui:extension>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button text="Download Table data" press="onDownloadTableDataImsRecord" class="buttoncolorSec"/>
+						<Button text="Download Report" press="onDownloadImsReportView" class="buttoncolorSec"/>
+						<!--<Button text="Download Autit Trail" class="buttoncolorSec"/>-->
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="9rem">
+						<Label text="IMS Action" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<HBox justifyContent="SpaceBetween">
+								<Text text="{path:'SuppImsRecords>actionGstn',formatter:'._getActionDesc'}"/>
+								<Button text="Trail" press="onSupplierImsTrail" class="buttoncolorSec"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="Supplier GSTIN" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{SuppImsRecords>gstinSupplier}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="14rem">
+						<Label text="Supplier Name" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<ExpandableText text="{SuppImsRecords>supplierName}" maxCharacters="30" overflowMode="Popover"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Return Period" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{SuppImsRecords>returnPeriod}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Table Type" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{SuppImsRecords>tableType}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Document Type" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{SuppImsRecords>docType}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Supply Type" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{SuppImsRecords>supplyType}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="Recipient GSTIN" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{SuppImsRecords>gstinRecipient}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="14rem">
+						<Label text="Recipient Name" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<ExpandableText text="{SuppImsRecords>recipientName}" maxCharacters="30" overflowMode="Popover"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="Document Number" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{SuppImsRecords>docNumber}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="8rem">
+						<Label text="Document Date" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{path:'SuppImsRecords>docDate',formatter:'._getDate'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="8.5rem">
+						<Label text="Taxable Value" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{path:'SuppImsRecords>taxableValue', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="8.5rem">
+						<Label text="Total Tax" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{path:'SuppImsRecords>totalTax', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="8.5rem">
+						<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{path:'SuppImsRecords>igst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="8.5rem">
+						<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{path:'SuppImsRecords>cgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="8.5rem">
+						<Label text="SGST" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{path:'SuppImsRecords>sgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="8.5rem">
+						<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{path:'SuppImsRecords>cess', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="8.5rem">
+						<Label text="Invoice Value" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{path:'SuppImsRecords>invoiceValue', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Return Type" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{SuppImsRecords>returnType}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="GSTR-1 Filing status" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{SuppImsRecords>gstr1FillingStatus}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="15rem">
+						<Label text="Recipient GSTR-3B Filing Status" tooltip="Recipient GSTR-3B Filing Status" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{SuppImsRecords>gstrRecipient3BStatus}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="13rem">
+						<Label text="Estimated GSTR-3B Period" tooltip="Estimated GSTR-3B Period" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{SuppImsRecords>estimatedGstr3BPeriod}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="13rem">
+						<Label text="Original Document Number" tooltip="Original Document Number" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{SuppImsRecords>orgDocNumber}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="11rem">
+						<Label text="Original Document Date" tooltip="Original Document Date" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{path:'SuppImsRecords>orgDocDate',formatter:'._getDate'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="18rem">
+						<Label text="Checksum" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{SuppImsRecords>checkSum}"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+				<ui:footer>
+					<HBox renderType="Bare" alignItems="Center">
+						<Text text="Note: Data will be populated basis Successful get call under Get Supplier IMS Records screen" width="40%" class="clTextSize1"/>
+						<HBox justifyContent="Center">
+							<Button type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" enabled="{ViewProperty>/bFirst}"
+								press="onPressPagination('F')" class="sapUiTinyMarginBeginEnd"/>
+							<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="{ViewProperty>/bPrev}"
+								press="onPressPagination('P')"/>
+							<Input type="Number" textAlign="End" width="4rem" submit="onSubmitPagination('I')" enabled="{ViewProperty>/ePageNo}"
+								value="{ViewProperty>/pageNo}" class="sapUiTinyMarginBegin"/>
+							<Text text="/ {ViewProperty>/pgTotal}" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+							<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="{ViewProperty>/bNext}"
+								press="onPressPagination('N')"/>
+							<Button type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" enabled="{ViewProperty>/bLast}"
+								press="onPressPagination('L')" class="sapUiTinyMarginBeginEnd"/>
+							<Select selectedKey="{ViewProperty>/pgSize}" change="onSubmitPagination('S')" forceSelection="true" width="10%">
+								<core:Item key="10" text="10"/>
+								<core:Item key="25" text="25"/>
+								<core:Item key="50" text="50"/>
+								<core:Item key="75" text="75"/>
+								<core:Item key="100" text="100"/>
+							</Select>
+						</HBox>
+					</HBox>
+				</ui:footer>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

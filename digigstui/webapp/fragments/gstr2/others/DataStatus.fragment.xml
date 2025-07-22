@@ -1,0 +1,95 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="idDPPRDataStatus">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<SegmentedButton id="sbStatus" selectedKey="API" selectionChange="onSelectionChange">
+							<items>
+								<SegmentedButtonItem text="API" key="API" width="4rem"/>
+								<SegmentedButtonItem text="Web Upload" key="Upload" width="6rem"/>
+								<SegmentedButtonItem text="SFTP" key="SFTP" width="4rem"/>
+							</items>
+						</SegmentedButton>
+						<SegmentedButton id="sbUpload" selectedKey="Upload" selectionChange="onSelectionChange" class="sapUiLargeMarginBegin" visible="false">
+							<items>
+								<SegmentedButtonItem text="Upload" key="Upload" width="4rem"/>
+								<SegmentedButtonItem text="File Status" key="Status" width="6rem"/>
+							</items>
+						</SegmentedButton>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader>
+				<f:content>
+					<VBox>
+						<HBox id="hbStatusPR" visible="false">
+							<Label id="lRbgStatus" text="Data Type:" labelFor="rbgStatus" design="Bold" class="sapUiTinyMarginTop sapUiTinyMarginEnd"/>
+							<RadioButtonGroup id="rbgStatusPR" columns="6" width="100%">
+								<buttons>
+									<RadioButton text="Raw File"/>
+									<RadioButton text="B2CS"/>
+									<RadioButton text="Nil / Exempt / Non"/>
+									<RadioButton text="Advances Received"/>
+									<RadioButton text="Advances Adjusted"/>
+									<RadioButton text="Invoice Series"/>
+								</buttons>
+							</RadioButtonGroup>
+						</HBox>
+						<fb:FilterBar id="fbStatusPR" showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+							useToolbar="false" class="sapUiNoContentPadding">
+							<fb:filterGroupItems>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>FileType}" visibleInFilterBar="true" id="idFileType"
+									visible="false">
+									<fb:control>
+										<Select id="slFileTypeG2" items="{ path: 'DropDown>/fileType/' }">
+											<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+										</Select>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Criteria" visibleInFilterBar="true">
+									<fb:control>
+										<Select id="slStatsCriteriaG2" forceSelection="true" change="onSelectChange" items="{ path: 'DropDown>/criteria' }">
+											<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+										</Select>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="From Date - To Date" visibleInFilterBar="true">
+									<fb:control>
+										<DateRangeSelection id="drsStatsGstr2" displayFormat="MMM dd, yyyy" change="onChange"/>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Entity" id="iEntityPR" visibleInFilterBar="true">
+									<fb:control>
+										<MultiComboBox id="slStatEntityG2" items="{DropDown>/Entity}" change="onSelectionChange" width="100%">
+											<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+										</MultiComboBox>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Supplier GSTIN" id="iGstinPR" visibleInFilterBar="true">
+									<fb:control>
+										<MultiComboBox id="slStatGstnG2" items="{GSTIN>/}" change="onSelectChange" width="100%">
+											<core:Item key="{GSTIN>key}" text="{GSTIN>text}"/>
+										</MultiComboBox>
+									</fb:control>
+								</fb:FilterGroupItem>
+							</fb:filterGroupItems>
+						</fb:FilterBar>
+					</VBox>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.DataStatusAPI" type="XML"/>
+				<u:FileUploader id="fuPR" name="file" fileType="xlsx,csv,xls" sameFilenameAllowed="false" sendXHR="true" style="Emphasized" width="50%"
+					uploadComplete="onUploadComplete" visible="false"/>
+				<Button id="btnUploadPR" text="Upload" press="onUpload" class="sapUiTinyMarginBegin" visible="false"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.DataStatusFile" type="XML"/>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

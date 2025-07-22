@@ -1,0 +1,992 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table" xmlns:form="sap.ui.layout.form">
+	<ui:Table rows="{InvoiceItemModel>/lineItems/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="8" id="idtableproduct1">
+		<!--<ui:extension>-->
+		<!--	<Toolbar>-->
+		<!--		<ToolbarSpacer/>-->
+		<!--		<Button type="Emphasized" icon="sap-icon://add" enabled="false" press="onPressAddProduct"/>-->
+		<!--		<Button type="Reject" icon="sap-icon://delete" enabled="false" press="onPressDeleteProduct"/>-->
+		<!--	</Toolbar>-->
+		<!--</ui:extension>-->
+		<ui:columns>
+			<ui:Column width="14rem">
+				<ui:multiLabels>
+					<Label text="{i18n>itemNo}" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{InvoiceItemModel>itemNo}"/>
+					<!--<Input value="{ScreenData>hsn}"/>-->
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left" width="14rem">
+				<ui:multiLabels>
+					<Label text="{i18n>supplyType}" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Input name="supplyType" value="{InvoiceItemModel>supplyType}" maxLength="5" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>supplyTypeState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>supplyTypeText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>serialNumberII}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="serialNoII" value="{InvoiceItemModel>serialNoII}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>serialNoIIState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>serialNoIIText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>productName}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="productName" value="{InvoiceItemModel>productName}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>productNameState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>productNameText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>itemDesc}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="itemDesc" value="{InvoiceItemModel>itemDesc}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>itemDescState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>itemDescText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>productCode}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="productCode" value="{InvoiceItemModel>productCode}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>productCodeState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>productCodeText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>itemType}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="itemType" value="{InvoiceItemModel>itemType}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>itemTypeState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>itemTypeText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>itcFlag}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<ComboBox name="itcFlag" items="{path:'DropDown>/itcFlag', templateShareable:false}" selectedKey="{InvoiceItemModel>itcFlag}"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>/itcFlagState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/itcFlagText}">
+						<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>isService}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="isService" value="{InvoiceItemModel>isService}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>isServiceState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>isServiceText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>hsnsacCode}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="hsnsacCode" value="{InvoiceItemModel>hsnsacCode}" maxLength="8" liveChange="positiveInteger" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>hsnsacCodeState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>hsnsacCodeText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>Barcode}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="barcode" value="{InvoiceItemModel>barcode}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>barcodeState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>barcodeText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>batchNameOrNumber}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="batchNameOrNo" value="{InvoiceItemModel>batchNameOrNo}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>batchNameOrNoState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>batchNameOrNoText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>batchExpiryDate}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<DatePicker name="batchExpiryDate" value="{InvoiceItemModel>batchExpiryDate}" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd"
+						editable="{InvoiceItemModel>edit}" placeholder="dd-mm-yyyy"
+						valueState="{path:'InvoiceItemModel>batchExpiryDateState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>batchExpiryDateText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>warrantyDate}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<DatePicker name="warrantyDate" value="{InvoiceItemModel>warrantyDate}" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd"
+						editable="{InvoiceItemModel>edit}" placeholder="dd-mm-yyyy"
+						valueState="{path:'InvoiceItemModel>warrantyDateState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>warrantyDateText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>orderLineReference}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="orderLineRef" value="{InvoiceItemModel>orderLineRef}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>orderLineRefState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>orderLineRefText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>attributeName}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="attributeName" value="{InvoiceItemModel>attributeName}" maxLength="12" liveChange="alphaNumberSpecial"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>attributeNameState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>attributeNameText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>attributeValue}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="attributeValue" value="{InvoiceItemModel>attributeValue}" maxLength="12" liveChange="alphaNumberSpecial"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>attributeValueState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>attributeValueText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>originCountry}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="originCountry" value="{InvoiceItemModel>originCountry}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>originCountryState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>originCountryText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>uqc}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<ComboBox width="100%" name="itemUqcUser" items="{path:'UQC>/resp', templateShareable:false}" selectedKey="{InvoiceItemModel>itemUqcUser}"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>itemUqcUserState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>itemUqcUserText}">
+						<core:Item key="{UQC>uqc}" text="{UQC>uqc} - {UQC>uqcDesc}"/>
+					</ComboBox>
+					<!--<Input name="itemUqc" value="{InvoiceItemModel>itemUqc}" editable="{InvoiceItemModel>edit}"-->
+					<!--	valueState="{path:'InvoiceItemModel>itemUqcState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>itemUqcText}"/>-->
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>itemQty}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="itemQtyUser" value="{InvoiceItemModel>itemQtyUser}" type="Number" liveChange="positiveDecimal" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>itemQtyUserState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>itemQtyUserText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>freeQuantity}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="freeQuantity" value="{InvoiceItemModel>freeQuantity}" type="Number" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>freeQuantityState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>freeQuantityText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>unitPrice}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="unitPrice" value="{InvoiceItemModel>unitPrice}" type="Number" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>unitPriceState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>unitPriceText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>itemAmount}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="itemAmt" value="{InvoiceItemModel>itemAmt}" type="Number" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>itemAmtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>itemAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>itemDiscount}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="itemDiscount" value="{InvoiceItemModel>itemDiscount}" type="Number" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>itemDiscountState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>itemDiscountText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>preTaxAmount}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="preTaxAmt" value="{InvoiceItemModel>preTaxAmt}" type="Number" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>preTaxAmtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>preTaxAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>ItemAssessableAmount}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="taxableVal" value="{InvoiceItemModel>taxableVal}" type="Number" liveChange="anyDecimalValue" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>taxableValState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>taxableValText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>igstRate}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="igstRt" value="{InvoiceItemModel>igstRt}" type="Number" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>igstRtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>igstRtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>igstAmt}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="igstAmt" value="{InvoiceItemModel>igstAmt}" type="Number" liveChange="anyDecimalValue" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>igstAmtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>igstAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>cgstRate}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="cgstRt" value="{InvoiceItemModel>cgstRt}" type="Number" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>cgstRtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>cgstRtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>cgstAmt}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="cgstAmt" value="{InvoiceItemModel>cgstAmt}" type="Number" liveChange="anyDecimalValue" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>cgstAmtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>cgstAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>sgstRate}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="sgstRt" value="{InvoiceItemModel>sgstRt}" type="Number" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>sgstRtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>sgstRtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>sgstAmt}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="sgstAmt" value="{InvoiceItemModel>sgstAmt}" type="Number" liveChange="anyDecimalValue" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>sgstAmtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>sgstAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>cessAdvaloremRate}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="cessRtAdvalorem" value="{InvoiceItemModel>cessRtAdvalorem}" type="Number" liveChange="positiveDecimal"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>cessRtAdvaloremState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>cessRtAdvaloremText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>cessAmtAdvalorem}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="cessAmtAdvalorem" value="{InvoiceItemModel>cessAmtAdvalorem}" type="Number" liveChange="anyDecimalValue"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>cessAmtAdvaloremState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>cessAmtAdvaloremText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>cessRateSpecific}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="cessRtSpecific" value="{InvoiceItemModel>cessRtSpecific}" type="Number" liveChange="positiveDecimal"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>cessRtSpecificState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>cessRtSpecificText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>cessAmtSpecfic}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="cessAmtSpecfic" value="{InvoiceItemModel>cessAmtSpecfic}" type="Number" liveChange="anyDecimalValue"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>cessAmtSpecficState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>cessAmtSpecficText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>stateCessRate}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="stateCessRt" value="{InvoiceItemModel>stateCessRt}" type="Number" liveChange="positiveDecimal"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>stateCessRtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>stateCessRtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>stateCessAmt}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="stateCessAmt" value="{InvoiceItemModel>stateCessAmt}" type="Number" liveChange="anyDecimalValue"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>stateCessAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>stateCessAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>stateCessSpecificRate}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="stateCessSpecificRt" value="{InvoiceItemModel>stateCessSpecificRt}" type="Number" liveChange="alphaNumberSpecial"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>stateCessSpecificRtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>stateCessSpecificRtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>stateCessSpecificAmt}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="stateCessSpecificAmt" value="{InvoiceItemModel>stateCessSpecificAmt}" type="Number" liveChange="alphaNumberSpecial"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>stateCessSpecificAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>stateCessSpecificAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>otherValues}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="otherValues" value="{InvoiceItemModel>otherValues}" type="Number" liveChange="anyDecimalValue"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>otherValuesState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>otherValuesText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>totalItemAmount}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="totalItemAmt" value="{InvoiceItemModel>totalItemAmt}" type="Number" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>totalItemAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>totalItemAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>fob}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="fob" value="{InvoiceItemModel>fob}" textAlign="End" maxLength="19" liveChange="anyDecimalValue"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>fobState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>fobText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>exportDuty}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="exportDuty" value="{InvoiceItemModel>exportDuty}" textAlign="End" maxLength="19" liveChange="anyDecimalValue"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>exportDutyState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>exportDutyText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>tcsRateIncomeTax}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="tcsRtIncomeTax" value="{InvoiceItemModel>tcsRtIncomeTax}" maxLength="12" liveChange="alphaNumberSpecial"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>tcsRtIncomeTaxState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>tcsRtIncomeTaxText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>tcsAmountIncomeTax}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="tcsAmtIncomeTax" value="{InvoiceItemModel>tcsAmtIncomeTax}" maxLength="12" liveChange="alphaNumberSpecial"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>tcsAmtIncomeTaxState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>tcsAmtIncomeTaxText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left" width="14rem">
+				<ui:multiLabels>
+					<Label text="{i18n>preceedingInvoiceNumber}" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Input name="preceedingInvNo" value="{InvoiceItemModel>preceedingInvNo}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>preceedingInvNoState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>preceedingInvNoText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>preceedingInvoiceDate}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<DatePicker name="preceedingInvDate" value="{InvoiceItemModel>preceedingInvDate}" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd"
+						editable="{InvoiceItemModel>edit}" placeholder="dd-mm-yyyy"
+						valueState="{path:'InvoiceItemModel>preceedingInvDateState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>preceedingInvDateText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>paidAmount}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="paidAmt" value="{InvoiceItemModel>paidAmt}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>paidAmtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>paidAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>balanceAmount}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="balanceAmt" value="{InvoiceItemModel>balanceAmt}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>balanceAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>balanceAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>OtherReference}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="invRef" value="{InvoiceItemModel>invRef}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>invRefState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>invRefText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>receiptAdviceRef}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="receiptAdviceRef" value="{InvoiceItemModel>receiptAdviceRef}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>receiptAdviceRefState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>receiptAdviceRefText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>receiptAdviceDate}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<DatePicker name="receiptAdviceDate" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" value="{InvoiceItemModel>receiptAdviceDate}"
+						editable="{InvoiceItemModel>edit}" placeholder="dd-mm-yyyy"
+						valueState="{path:'InvoiceItemModel>receiptAdviceDateState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>receiptAdviceDateText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>tenderReference}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<DatePicker name="tenderRef" value="{InvoiceItemModel>tenderRef}" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd"
+						editable="{InvoiceItemModel>edit}" placeholder="dd-mm-yyyy"
+						valueState="{path:'InvoiceItemModel>tenderRefState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>tenderRefText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>contractReference}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="contractRef" value="{InvoiceItemModel>contractRef}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>contractRefState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>contractRefText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>externalReference}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="externalRef" value="{InvoiceItemModel>externalRef}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>externalRefState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>externalRefText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>projectReference}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="projectRef" value="{InvoiceItemModel>projectRef}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>projectRefState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>projectRefText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>customerPoRefNumber}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="custPoRefNo" value="{InvoiceItemModel>custPoRefNo}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>custPoRefNoState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>custPoRefNoText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>customerPoRefDate}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<DatePicker name="custPoRefDate" value="{InvoiceItemModel>custPoRefDate}" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd"
+						editable="{InvoiceItemModel>edit}" placeholder="dd-mm-yyyy"
+						valueState="{path:'InvoiceItemModel>custPoRefDateState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>custPoRefDateText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>supportingDocURL}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="supportingDocURL" value="{InvoiceItemModel>supportingDocURL}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>supportingDocURLState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>supportingDocURLText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>SupportingDocument}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="supportingDocBase64" value="{InvoiceItemModel>supportingDocBase64}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>supportingDocBase64State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>supportingDocBase64Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>additionalInformation}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="addlInfo" value="{InvoiceItemModel>addlInfo}" maxLength="100" liveChange="alphaNumberSpecial"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>addlInfoState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>addlInfoText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>crDrReason}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="crDrReason" value="{InvoiceItemModel>crDrReason}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>crDrReasonState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>crDrReasonText}"/>
+				</ui:template>
+			</ui:Column>
+			<!--<ui:Column hAlign="Left" width="14rem">
+				<ui:multiLabels>
+					<Label text="{i18n>tcsFlag}" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Input name="tcsFlag" value="{InvoiceItemModel>/tcsFlag}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>/tcsFlagState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/tcsFlagText}"/>
+				</ui:template>
+			</ui:Column>-->
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>TCSIGSTAmount}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="tcsAmt" value="{InvoiceItemModel>tcsAmt}" maxLength="18" textAlign="Right" liveChange="positiveDecimal"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>tcsAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>tcsAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>TCSCGSTAmount}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="tcsCgstAmt" value="{InvoiceItemModel>tcsCgstAmt}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>tcsCgstAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>tcsCgstAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>TCSSGSTAmount}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="tcsSgstAmt" value="{InvoiceItemModel>tcsSgstAmt}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>tcsSgstAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>tcsSgstAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<!--<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>tdsFlag}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<ComboBox name="tdsFlag" items="{path:'DropDown>/flag', templateShareable:false}" editable="{InvoiceItemModel>edit}"
+						selectedKey="{InvoiceItemModel>/tdsFlag}" valueState="{path:'InvoiceItemModel>/tdsFlagState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/tdsFlagText}">
+						<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>-->
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>TDSIGSTAmount}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="tdsIgstAmt" value="{InvoiceItemModel>tdsIgstAmt}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>tdsIgstAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>tdsIgstAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>TDSCGSTAmount}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="tdsCgstAmt" value="{InvoiceItemModel>tdsCgstAmt}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>tdsCgstAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>tdsCgstAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>TDSSGSTAmount}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="tdsSgstAmt" value="{InvoiceItemModel>tdsSgstAmt}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>tdsSgstAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>tdsSgstAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>tcsFlagIncomeTax}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<!--<Input name="tcsFlagIncomeTax" value="{InvoiceItemModel>/tcsFlagIncomeTax}" maxLength="12" liveChange="alphaNumberSpecial"-->
+					<!--	editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>/tcsFlagIncomeTaxState', formatter:'.formatter.formatState'}"-->
+					<!--	valueStateText="{InvoiceItemModel>/tcsFlagIncomeTaxText}"/>-->
+					<ComboBox name="tcsFlagIncomeTax" items="{path:'DropDown>/flag', templateShareable:false}" editable="{InvoiceItemModel>edit}"
+						selectedKey="{InvoiceItemModel>/tcsFlagIncomeTax}"
+						valueState="{path:'InvoiceItemModel>/tcsFlagIncomeTaxState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/tcsFlagIncomeTaxText}">
+						<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>tcsRateIncomeTax}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="tcsRtIncomeTax" value="{InvoiceItemModel>tcsRtIncomeTax}" maxLength="12" liveChange="alphaNumberSpecial"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>tcsRtIncomeTaxState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>tcsRtIncomeTaxText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>tcsAmountIncomeTax}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="tcsAmtIncomeTax" value="{InvoiceItemModel>tcsAmtIncomeTax}" maxLength="12" liveChange="alphaNumberSpecial"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>tcsAmtIncomeTaxState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>tcsAmtIncomeTaxText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="10rem">
+				<Label text="{i18n>userId}" tooltip="{i18n>userId}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<!--<Text text="{InvoiceItemModel>/userId}"/>-->
+					<Input value="{InvoiceItemModel>/userId}" enabled="false"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>plantCode}" tooltip="{i18n>plantCode}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox items="{path:'userPermission>/respData/dataSecurity/plant', templateShareable:false}" selectedKey="{InvoiceItemModel>plantCode}"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>plantCodeState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>plantCodeText}">
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>subDivision}" tooltip="{i18n>subDivision}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox items="{path:'userPermission>/respData/dataSecurity/subDivision', templateShareable:false}" editable="{InvoiceItemModel>edit}"
+						selectedKey="{InvoiceItemModel>subDivision}" valueState="{path:'InvoiceItemModel>subDivisionState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>subDivisionText}">
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="Profit Centre 3" tooltip="Profit Centre 3" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess1', templateShareable:false}" editable="{InvoiceItemModel>edit}"
+						selectedKey="{InvoiceItemModel>/profitCentre3}"
+						valueState="{path:'InvoiceItemModel>/profitCentre3State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/profitCentre3Text}">
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="Profit Centre 4" tooltip="Profit Centre 4" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess2', templateShareable:false}" editable="{InvoiceItemModel>edit}"
+						selectedKey="{InvoiceItemModel>/profitCentre4}"
+						valueState="{path:'InvoiceItemModel>/profitCentre4State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/profitCentre4Text}">
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="Profit Centre 5" tooltip="Profit Centre 5" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess3', templateShareable:false}" editable="{InvoiceItemModel>edit}"
+						selectedKey="{InvoiceItemModel>/profitCentre5}"
+						valueState="{path:'InvoiceItemModel>/profitCentre5State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/profitCentre5Text}">
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="Profit Centre 6" tooltip="Profit Centre 6" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess4', templateShareable:false}" editable="{InvoiceItemModel>edit}"
+						selectedKey="{InvoiceItemModel>/profitCentre6}"
+						valueState="{path:'InvoiceItemModel>/profitCentre6State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/profitCentre6Text}">
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="Profit Centre 7" tooltip="Profit Centre 7" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess5', templateShareable:false}" editable="{InvoiceItemModel>edit}"
+						selectedKey="{InvoiceItemModel>/profitCentre7}"
+						valueState="{path:'InvoiceItemModel>/profitCentre7State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/profitCentre7Text}">
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="Profit Centre 8" tooltip="Profit Centre 8" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess6', templateShareable:false}" editable="{InvoiceItemModel>edit}"
+						selectedKey="{InvoiceItemModel>/profitCentre8}"
+						valueState="{path:'InvoiceItemModel>/profitCentre8State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/profitCentre8Text}">
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="270" visible="{display>/GLAssessableValue}">
+				<Label text="{i18n>glCodeTaxableVal}" tooltip="{i18n>glCodeTaxableVal}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="glCodeTaxableVal" value="{InvoiceItemModel>glCodeTaxableVal}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>glCodeTaxableValState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>glCodeTaxableValText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="270" visible="{display>/GLIGST}">
+				<Label text="{i18n>glCodeIgst}" tooltip="{i18n>glCodeIgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="glCodeIgst" value="{InvoiceItemModel>/glCodeIgst}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>/glCodeIgstState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/glCodeIgstText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="270" visible="{display>/GLCGST}">
+				<Label text="{i18n>glCodeCgst}" tooltip="{i18n>glCodeCgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="glCodeCgst" value="{InvoiceItemModel>/glCodeCgst}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>/glCodeCgstState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/glCodeCgstText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="270" visible="{display>/GLSGST}">
+				<Label text="{i18n>glCodeSgst}" tooltip="{i18n>glCodeSgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="glCodeSgst" value="{InvoiceItemModel>/glCodeSgst}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>/glCodeSgstState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/glCodeSgstText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="270" visible="{display>/GLAdvaloremCess}">
+				<Label text="{i18n>glCodeAdvCess}" tooltip="{i18n>glCodeAdvCess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="glCodeAdvCess" value="{InvoiceItemModel>/glCodeAdvCess}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>/glCodeAdvCessState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/glCodeAdvCessText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="270" visible="{display>/GLSpecificCess}">
+				<Label text="{i18n>glCodeSpCess}" tooltip="{i18n>glCodeSpCess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="glCodeSpCess" value="{InvoiceItemModel>/glCodeSpCess}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>/glCodeSpCessState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/glCodeSpCessText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="270" visible="{display>/GLStateCessAdvalorem}">
+				<Label text="{i18n>glCodeStateCess}" tooltip="{i18n>glCodeStateCess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="glCodeStateCess" value="{InvoiceItemModel>/glCodeStateCess}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>/glCodeStateCessState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/glCodeStateCessText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="160" visible="{display>/GLStateCessSpecific}">
+				<Label text="{i18n>glStateCessSpecific}" tooltip="{i18n>glStateCessSpecific}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="glStateCessSpecific" value="{InvoiceItemModel>/glStateCessSpecific}" maxLength="12" liveChange="alphaNumberSpecial"
+						editable="{InvoiceItemModel>edit}" valueState="{path:'InvoiceItemModel>/glStateCessSpecificState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/glStateCessSpecificText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="160" visible="{display>/DocumentReferenceNumber}">
+				<Label text="{i18n>docReferenceNumber}" tooltip="{i18n>docReferenceNumber}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="docRefNo" value="{InvoiceItemModel>docRefNo}" maxLength="12" liveChange="alphaNumberSpecial" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>docRefNoState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>docRefNoText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left" width="14rem">
+				<ui:multiLabels>
+					<Label text="{i18n>userDefinedField1}" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Input name="udf1" value="{InvoiceItemModel>udf1}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf1State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf1Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField2}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf2" value="{InvoiceItemModel>udf2}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf2State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf2Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField3}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf3" value="{InvoiceItemModel>udf3}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf3State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf3Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField4}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf4" value="{InvoiceItemModel>udf4}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf4State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf4Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField5}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf5" value="{InvoiceItemModel>udf5}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf5State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf5Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField6}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf6" value="{InvoiceItemModel>udf6}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf6State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>userDefinedField6Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField7}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf7" value="{InvoiceItemModel>udf7}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf7State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf7Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField8}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf8" value="{InvoiceItemModel>udf8}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf8State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf8Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField9}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf9" value="{InvoiceItemModel>udf9}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf9State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf9Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField10}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf10" value="{InvoiceItemModel>udf10}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf10State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf10Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField11}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf11" value="{InvoiceItemModel>udf11}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf11State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf11Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField12}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf12" value="{InvoiceItemModel>udf12}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf12State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf12Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField12}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf13" value="{InvoiceItemModel>udf13}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf13State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf13Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField14}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf14" value="{InvoiceItemModel>udf14}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf14State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf14Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField15}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf15" value="{InvoiceItemModel>udf15}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf15State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf15Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField16}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf16" value="{InvoiceItemModel>udf16}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf16State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf16Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField17}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf17" value="{InvoiceItemModel>udf17}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf17State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf17Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField18}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf18" value="{InvoiceItemModel>udf18}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf18State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf18Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField19}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf19" value="{InvoiceItemModel>udf19}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf19State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf19Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField20}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf20" value="{InvoiceItemModel>udf20}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf20State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf20Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField21}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf21" value="{InvoiceItemModel>udf21}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf21State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf21Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField22}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf22" value="{InvoiceItemModel>udf22}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf22State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf22Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField23}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf23" value="{InvoiceItemModel>udf23}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf23State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf23Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField24}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf24" value="{InvoiceItemModel>udf24}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf24State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf24Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField25}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf25" value="{InvoiceItemModel>udf25}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf25State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf25Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField26}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf26" value="{InvoiceItemModel>udf26}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf26State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf26Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField27}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf27" value="{InvoiceItemModel>udf27}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf27State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf27Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField28}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf28" value="{InvoiceItemModel>udf28}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf28State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf28Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField29}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf29" value="{InvoiceItemModel>udf29}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf29State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf29Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="14rem">
+				<Label text="{i18n>userDefinedField30}" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Input name="udf30" value="{InvoiceItemModel>udf30}" maxLength="100" editable="{InvoiceItemModel>edit}"
+						valueState="{path:'InvoiceItemModel>udf30State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf30Text}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+	</ui:Table>
+</core:FragmentDefinition>

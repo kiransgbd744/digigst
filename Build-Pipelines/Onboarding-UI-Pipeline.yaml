@@ -1,0 +1,22 @@
+resources:
+  repositories:
+  - repository: templates
+    type: git
+    name: SAPDigiGST/DevOps
+    ref: refs/heads/main
+  
+variables:
+- name: moduleName
+  value: "onboardingui"  
+
+
+name: $(Build.BuildId)
+
+jobs:
+- job: Building_OnBoardingUI
+  displayName: 'Building OnBoarding UI module'
+  pool:
+    name: 'SAP-CF'
+  steps:
+  - checkout: templates
+  - template: DiGiGST-Build-Pipelines/Pipeline-SAP-UI.yaml@templates  # Template reference with repository

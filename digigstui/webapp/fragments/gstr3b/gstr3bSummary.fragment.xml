@@ -1,0 +1,2506 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" xmlns:l="sap.ui.layout" xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage id="dpGstr3b" showFooter="true">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<Title text="GSTR-3B" titleStyle="H3" class="tinyMarginTop"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="GSTINEntityID" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" selectionChange="selectAll">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>taxPeriod}" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="gstr3bDate" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="dateDynamicValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button icon="sap-icon://filter" tooltip="Adapt Filters" press="onPressGSTR1AdaptFilters" class="buttoncolorSec"/>
+					<Button text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onPressClear3B"/>
+					<Button text="Filter" press="onSearch3B1" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapFDynamicPageAlignContent" width="auto" height="500px">
+				<ui:Table rows="{GSTR3B>/resp/}" enableColumnReordering="false" class="sapUiTinyMarginTop" visibleRowCount="8" id="gstrTabId">
+					<ui:extension >
+						<Toolbar>
+							<ObjectStatus text="GSTR-3B Table 4 Computation Base - {Gstr3bOnboard>/resp}" state="Error"/>
+							<ToolbarSpacer/>
+							<Button text="Update GSTN Data" press="onGSTNdataPressEntity" class="buttoncolorSec" enabled="{= ${userPermission>/appPermission/P4}}"/>
+							<!--<Button text="Auto Calculate 3B - GSTN" press="onAutoCalcGSTN('P')" class="buttoncolorSec" enabled="{= ${userPermission>/appPermission/P4}}"/>-->
+							<!--<Button text="Auto Calculate 3B - DigiGST" press="onAutoCalcDigiGst" class="buttoncolorSec"/>-->
+							<MenuButton text="Auto Calculate 3B" enabled="{= ${userPermission>/appPermission/P4}}" class="buttoncolorSec" tooltip="Auto Calculate 3B">
+								<Menu>
+									<MenuItem text="As per GSTN" key="GSTN" press="onAutoCalcGSTN('P')"/>
+									<MenuItem text="As per DigiGST" key="DigiGST" press="onAutoCalcDigiGst"/>
+								</Menu>
+							</MenuButton>
+							<Button text="Copy Data to User Input" press="onCopy1('P')" class="buttoncolorSec"/>
+							<Button text="Save GSTR-3B" class="buttoncolorSec" press="onSaveGSTR" enabled="{= ${userPermission>/appPermission/P4}}"/>
+							<MenuButton text="Download Report" enabled="{= ${userPermission>/appPermission/P4}}" class="buttoncolorSec">
+								<Menu itemSelected="onMenuItemPressAnx1down">
+									<MenuItem text="ASP Processed Data(As Uploaded)" key="processLineItem" enabled="false"/>
+									<MenuItem text="ASP Proceessed Data(Save-able)" key="processRate" enabled="false"/>
+									<MenuItem text="Saved / Submitted Records" key="submitted"/>
+									<MenuItem text="Entity Level Summary" key="entityLevel"/>
+									<MenuItem text="Auto Calculate 3B - GSTN" key="autoCalcGstn"/>
+									<MenuItem text="Consolidated ASP Error" key="digiError" enabled="false"/>
+									<MenuItem text="Consolidated GSTN Error" key="gstnError" enabled="false"/>
+									<MenuItem text="Interest liability details" key="ILD"/>
+								</Menu>
+							</MenuButton>
+							<Button text="Request for Approval" enabled="false" class="buttoncolorSec"/>
+							<Button text="Delete Data" press="onButtonDeleteInGSTR3b" enabled="false" class="buttoncolorSec"/>
+							<MenuButton text="Rupess in Absolute" enabled="false" class="buttoncolorSec">
+								<Menu itemSelected="onMenuItemSelect">
+									<MenuItem key="A" text="Absolute"/>
+									<MenuItem key="L" text="Lakhs"/>
+									<MenuItem key="C" text="Crores"/>
+									<MenuItem key="M" text="Millions"/>
+									<MenuItem key="B" text="Billions"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" press="onExportExcel" enabled="false"/>
+							<MenuButton icon="sap-icon://pdf-attachment" type="Transparent" enabled="{= ${userPermission>/appPermission/P4}}" class="cl_dropgstr1"
+								tooltip="{i18n>downPdf}">
+								<Menu>
+									<MenuItem text="As per DigiGST Values" key="delete1" press="onPressDownloadEntityPDF('true')"/>
+									<MenuItem text="As per GSTN Values" key="delete2" press="onPressDownloadEntityPDF('false')"/>
+								</Menu>
+							</MenuButton>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column>
+							<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<VBox>
+									<Text text="{GSTR3B>stateName}" class="stateColor"/>
+									<HBox alignContent="Start" justifyContent="SpaceBetween">
+										<Link text="{GSTR3B>gstin}" emphasized="true" press="onPressGstr3bGstin"/>
+										<core:Icon src="sap-icon://circle-task-2" visible="{=${GSTR3B>state}===''?false:true}" size="0.8rem"
+											color="{=${GSTR3B>auth}==='A'?'#00ff00':'#ff0000'}" press="onPressGenerateOTP"/>
+									</HBox>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column >
+							<Label text="Return Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<VBox width="100%">
+									<ObjectStatus text="{path:'GSTR3B>savedStatus', formatter:'.formatter.status3B'}"
+										state="{path:'GSTR3B>savedStatus', formatter:'.formatter.statusClr'}" active="true" press="onSaveStatus"/>
+									<Text text="{= ${GSTR3B>savedStatus} === 'FILED' ? ${GSTR3B>filedDate} : ${GSTR3B>lastUpdatedOn}}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="250">
+							<Label text="Auto Calculate 3B - DigiGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox direction="Column">
+									<ObjectStatus text="{GSTR3B>digiStatus}"/>
+									<ObjectStatus text="{GSTR3B>digiUpdateOn}" visible="{=${GSTR3B>digiStatus}!=='Not_Initiated'}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<Label text="Total Liability" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{parts:[{path : 'GSTR3B>totalLiability'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<Label text="Total ITC" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{parts:[{path : 'GSTR3B>totalItc'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<Label text="Difference" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox justifyContent="Center">
+									<core:Icon src="sap-icon://show" size="1.5rem" tooltip="View Differential Data" color="#2e2e38" press="onPressDifferenceGSTR3B"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+					<ui:footer>
+						<HBox>
+							<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+							<Text text="Auth Token Active" class="sapUiTinyMarginBegin"/>
+							<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem" class="sapUiSmallMarginBegin"/>
+							<Text text="Auth Token Inactive" class="sapUiTinyMarginBegin"/>
+						</HBox>
+					</ui:footer>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpGstr3bSummary" visible="false" fitContent="true">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onPressBackGstr3b"/>
+						<Title text="GSTR-3B" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="false">
+							<fb:control>
+								<Select items="{EntityList>/resp/}" width="100%" change="onEntityChange" id="linkEntityID">
+									<core:Item key="{EntityList>entityId}" text="{EntityList>entityName}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox id="linkGSTID" width="100%" items="{path:'DataPermission>/respData/dataSecurity/gstin/'}">
+									<core:Item key="{DataPermission>value}" text="{DataPermission>value}"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="linkDate" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onClearFilter"/>
+					<Button text="Filter" press="onSearch" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer showFullScreen="false" showZoom="true" showPersonalization="false" autoAdjustHeight="false">
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:TreeTable id="tabGstr3bSumm" rows="{path:'LinkTabGSTN1>/', parameters:{ arrayNames:['level2','level3'], numberOfExpandedLevels:2 }}"
+								selectionMode="None" enableSelectAll="false" fixedColumnCount="2" enableColumnReordering="false" visibleRowCount="8"
+								toggleOpenState="onToggleGstr3bSummary" visible="true" class="sapUiTinyMarginTop sapUiLargeMarginBottom">
+								<ui:extension>
+									<HBox justifyContent="Start">
+										<Label text="Showing:" design="Bold"/>
+										<CheckBox select="showingCheck" selected="true" text="DigiGST (Computed)" id="ASPCID" class="sapUiTinyMarginEnd"/>
+										<CheckBox select="showingCheck" selected="true" text="GSTN (Computed)" id="GSTNCOMPID" class="sapUiTinyMarginEnd"/>
+										<CheckBox select="showingCheck" selected="true" text="DigiGST (User Input)" id="ASPUID" class="sapUiTinyMarginEnd"/>
+										<CheckBox select="showingCheck" selected="true" text="GSTN" id="GSTNID" class="sapUiTinyMarginEnd"/>
+										<CheckBox select="showingCheck" selected="true" text="Difference" id="DiffID" class="sapUiTinyMarginEnd"/>
+									</HBox>
+									<HBox justifyContent="End" class="clMain1">
+										<!--<Button text="Auto Calculate 3B - GSTN" press="onAutoCalcGSTN('S')" class="sapUiTinyMarginEnd buttoncolorSec"-->
+										<!--	enabled="{= ${userPermission>/appPermission/P4}}"/>-->
+										<!--<Button text="Auto Calculate 3B - DigiGST" press="onGenerate3bPress" class="sapUiTinyMarginEnd buttoncolorSec"-->
+										<!--	enabled="{= ${userPermission>/appPermission/P4}}"/>-->
+										<MenuButton text="File a NIL Return" width="9rem" class="sapUiTinyMarginEnd buttoncolorSec"
+											enabled="{= ${userPermission>/appPermission/P4}}">
+											<Menu itemSelected="onSignFile($event, 'Nil')">
+												<MenuItem text="As per DSC" key="DSC"/>
+												<MenuItem text="As per EVC" key="EVC"/>
+											</Menu>
+										</MenuButton>
+										<MenuButton text="Auto Calculate 3B" enabled="{= ${userPermission>/appPermission/P4}}" class="sapUiTinyMarginEnd buttoncolorSec"
+											tooltip="Auto Calculate 3B">
+											<Menu>
+												<MenuItem text="As per GSTN" key="delete1" press="onAutoCalcGSTN('S')"/>
+												<MenuItem text="As per DigiGST" key="delete2" press="onGenerate3bPress"/>
+											</Menu>
+										</MenuButton>
+										<Button text="Copy Data to User Input" press="onCopy1('S')" class="sapUiTinyMarginEnd buttoncolorSec" enabled="{buttonVis>/dataEditable}"/>
+										<Button text="Edit User Input" press="onEdit" class="sapUiTinyMarginEnd buttoncolorSec" enabled="{buttonVis>/dataEditable}"/>
+										<Button text="Clear User Data" class="sapUiTinyMarginEnd buttoncolorSec" press="onClearUserData" enabled="{buttonVis>/dataEditable}"/>
+										<Button text="Save Changes" press="onPressSaveChanges" class="sapUiTinyMarginEnd buttoncolorSec"
+											enabled="{= ${userPermission>/appPermission/P4}}"/>
+										<Button type="Ghost" id="bExpGstr3b" class="sapUiTinyMarginEnd buttoncolorSec" icon="sap-icon://expand-all" tooltip="Expand All"
+											press="onPressExpandCollapseGstr3b"/>
+										<Button type="Ghost" id="bColGstr3b" icon="sap-icon://collapse-all" tooltip="Collapse All" press="onPressExpandCollapseGstr3b"
+											class="sapUiTinyMarginEnd buttoncolorSec"/>
+										<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" press="XLDownload" class="sapUiTinyMarginEnd"
+											enabled="{= ${userPermission>/appPermission/P4}}"/>
+										<MenuButton icon="sap-icon://pdf-attachment" type="Transparent" enabled="{= ${userPermission>/appPermission/P4}}" class="cl_dropgstr1"
+											tooltip="{i18n>downPdf}">
+											<Menu>
+												<MenuItem text="As per DigiGST Values" key="delete1" press="onDownloadPDF('true')"/>
+												<MenuItem text="As per GSTN Values" key="delete2" press="onDownloadPDF('false')"/>
+											</Menu>
+										</MenuButton>
+									</HBox>
+								</ui:extension>
+								<ui:columns>
+									<ui:Column width="7rem">
+										<Label text="Table" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{path:'LinkTabGSTN1>table', formatter:'.formatter.tableType'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column width="22rem">
+										<Label text="Type of Supply" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<HBox>
+												<Text text="{path:'LinkTabGSTN1>supplyType', formatter:'.formatter.supplyTypeDesc'}" visible="{=!${LinkTabGSTN1>link}}"/>
+												<Link text="{path:'LinkTabGSTN1>supplyType', formatter:'.formatter.supplyTypeDesc'}" visible="{LinkTabGSTN1>link}" press="onPressSupplyType"
+													wrapping="true"/>
+												<Button text="Validate" class="sapUiTinyMarginBegin sapUiTinyMarginTop buttoncolorSec" press="onValidate"
+													visible="{=${LinkTabGSTN1>supplyType}==='APS17'}" enabled="{display>/validate4D1}"/>
+												<core:Icon src="sap-icon://message-information" class="sapUiTinyMarginBegin sapUiTinyMarginTop" color="#FF0000" size="1.2rem"
+													tooltip="ITC reclaimed by you in Table 4D(1) is more than the available ITC Reversed including the reported/amended opening balance"
+													visible="{=(${LinkTabGSTN1>supplyType}==='APS17'&amp;&amp;${timeStamp>/errorFlag})}">
+													<core:layoutData>
+														<FlexItemData growFactor="1"/>
+													</core:layoutData>
+												</core:Icon>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column headerSpan="5" hAlign="End" width="12rem" visible="{visiGSTR3B>/eyC}">
+										<ui:multiLabels>
+											<Label text="DigiGST (Computed)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path : 'LinkTabGSTN1>computedTaxableVal'}], formatter : '.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="12rem" visible="{visiGSTR3B>/eyC}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path : 'LinkTabGSTN1>computedIgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="12rem" visible="{visiGSTR3B>/eyC}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path : 'LinkTabGSTN1>computedCgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="12rem" visible="{visiGSTR3B>/eyC}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path : 'LinkTabGSTN1>computedSgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiSgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="12rem" visible="{visiGSTR3B>/eyC}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path : 'LinkTabGSTN1>computdCess'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCess}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column headerSpan="5" hAlign="End" width="12rem" visible="{visiGSTR3B>/copy}">
+										<ui:multiLabels>
+											<HBox alignItems="Center" alignContent="Center">
+												<Label text="GSTN (Computed)" textAlign="Center" wrapping="true" design="Bold" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
+												<Button icon="sap-icon://refresh" class="sapUiTinyMarginBegin buttoncolorSec" press="onRecompute"
+													tooltip="Re-compute Interest required only if after filing any amnesty is declared by government and auto populated interest is not reflecting that amnesty effect"/>
+											</HBox>
+											<Label text="Taxable Value" textAlign="Center" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path : 'LinkTabGSTN1>autoCalTaxableVal'}], formatter : '.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="12rem" visible="{visiGSTR3B>/copy}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path : 'LinkTabGSTN1>autoCalIgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="12rem" visible="{visiGSTR3B>/copy}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path : 'LinkTabGSTN1>autoCalCgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="12rem" visible="{visiGSTR3B>/copy}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path : 'LinkTabGSTN1>autoCalSgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiSgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="12rem" visible="{visiGSTR3B>/copy}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path : 'LinkTabGSTN1>autoCalCess'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCess}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column headerSpan="5" hAlign="End" width="12rem" visible="{visiGSTR3B>/eyU}">
+										<ui:multiLabels>
+											<Label text="DigiGST (User Input)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<VBox>
+												<Text text="{path:'LinkTabGSTN1>userInputTaxableVal',formatter:'.formatter.amountValue'}" visible="{LinkTabGSTN1>header}"
+													class="sapUiTinyMarginEnd"/>
+												<Input value="{LinkTabGSTN1>userInputTaxableVal}" liveChange="onChangeGstr3bSummaryUserInput($event, ${LinkTabGSTN1>table}, 'TaxableVal')"
+													editable="{LinkTabGSTN1>edit}" visible="{=!${LinkTabGSTN1>header}}" textAlign="End" maxLength="19"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="12rem" visible="{visiGSTR3B>/eyU}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<VBox>
+												<Text text="{path:'LinkTabGSTN1>userInputIgst',formatter:'.formatter.amountValue'}" visible="{LinkTabGSTN1>igst}" class="sapUiTinyMarginEnd"/>
+												<Input value="{LinkTabGSTN1>userInputIgst}" liveChange="onChangeGstr3bSummaryUserInput($event, ${LinkTabGSTN1>table}, 'Igst')"
+													editable="{LinkTabGSTN1>edit}" visible="{=!${LinkTabGSTN1>igst}}" textAlign="End" maxLength="19"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="12rem" visible="{visiGSTR3B>/eyU}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<VBox>
+												<Text text="{path:'LinkTabGSTN1>userInputCgst',formatter:'.formatter.amountValue'}" visible="{LinkTabGSTN1>cgst}" class="sapUiTinyMarginEnd"/>
+												<Input value="{LinkTabGSTN1>userInputCgst}" liveChange="onChangeGstr3bSummaryUserInput($event, ${LinkTabGSTN1>table}, 'Cgst')"
+													editable="{LinkTabGSTN1>edit}" visible="{=!${LinkTabGSTN1>cgst}}" textAlign="End" maxLength="19"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="12rem" visible="{visiGSTR3B>/eyU}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<VBox>
+												<Text text="{path:'LinkTabGSTN1>userInputSgst',formatter:'.formatter.amountValue'}" visible="{=${LinkTabGSTN1>sgst}}"
+													class="sapUiTinyMarginEnd"/>
+												<Input value="{LinkTabGSTN1>userInputSgst}" liveChange="onChangeGstr3bSummaryUserInput($event, ${LinkTabGSTN1>table}, 'Sgst')"
+													editable="{LinkTabGSTN1>edit}" visible="{=!${LinkTabGSTN1>sgst}}" textAlign="End" maxLength="19"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="12rem" visible="{visiGSTR3B>/eyU}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<VBox>
+												<Text text="{path:'LinkTabGSTN1>userInputCess',formatter:'.formatter.amountValue'}" visible="{=${LinkTabGSTN1>cess}}"
+													class="sapUiTinyMarginEnd"/>
+												<Input value="{LinkTabGSTN1>userInputCess}" liveChange="onChangeGstr3bSummaryUserInput($event, ${LinkTabGSTN1>table}, 'Cess')"
+													editable="{LinkTabGSTN1>edit}" visible="{=!${LinkTabGSTN1>cess}}" textAlign="End" maxLength="19"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column headerSpan="5" hAlign="End" width="12rem" visible="{visiGSTR3B>/gstn}">
+										<ui:multiLabels>
+											<Label text="GSTN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path : 'LinkTabGSTN1>gstinTaxableVal'}], formatter : '.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="15em" visible="{visiGSTR3B>/gstn}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path : 'LinkTabGSTN1>gstinIgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="12rem" visible="{visiGSTR3B>/gstn}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path : 'LinkTabGSTN1>gstinCgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="12rem" visible="{visiGSTR3B>/gstn}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path : 'LinkTabGSTN1>gstinSgst'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiSgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="12rem" visible="{visiGSTR3B>/gstn}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path : 'LinkTabGSTN1>gstinCess'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCess}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column headerSpan="5" hAlign="End" width="12rem" visible="{visiGSTR3B>/diff}">
+										<ui:multiLabels>
+											<Label text="Difference" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path : 'LinkTabGSTN1>diffenceTaxableVal'}], formatter : '.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="12rem" visible="{visiGSTR3B>/diff}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path : 'LinkTabGSTN1>diffenceIGSTVal'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="12rem" visible="{visiGSTR3B>/diff}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path : 'LinkTabGSTN1>diffenceCGSTVal'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="12rem" visible="{visiGSTR3B>/diff}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path : 'LinkTabGSTN1>diffenceSGSTVal'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiSgst}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="12rem" visible="{visiGSTR3B>/diff}">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{parts:[{path : 'LinkTabGSTN1>diffenceCESSVal'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCess}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+								<ui:footer>
+									<VBox>
+										<Toolbar height="3.2rem">
+											<HBox>
+												<MenuButton text="Download Report" width="9rem" class="sapUiTinyMarginEnd buttoncolorSec" enabled="{= ${userPermission>/appPermission/P4}}">
+													<Menu itemSelected="onMenuItemSummary">
+														<MenuItem text="Inward - Report" key="INWARD"/>
+														<MenuItem text="Outward - Report" key="OUTWARD"/>
+														<MenuItem text="180 Days Reversal response - Report" key="REVERSAL"/>
+														<MenuItem text="Interest liability details" key="ILD"/>
+														<MenuItem text="GSTR-3B Table 4 Transactional Report" key="Table4Trans"
+															enabled="{=${visReport>/optionSelected}==='B'||${visReport>/optionSelected}==='C'}"/>
+													</Menu>
+												</MenuButton>
+												<Button text="Liability Set Off Details" press="on3bSummLiabillityDetails" class="sapUiTinyMarginEnd buttoncolorSec"/>
+											</HBox>
+											<ToolbarSpacer/>
+											<VBox>
+												<Text text="" class="timeStmpClr"/>
+												<HBox>
+													<Button text="Save Past Period liability" press="onPPliaSave" width="12rem" class="sapUiTinyMarginEnd buttoncolorSec"/>
+												</HBox>
+											</VBox>
+											<VBox>
+												<Text text="{timeStamp>/recentUpdatedDate}" class="timeStmpClr sapUiTinyMarginEnd"/>
+												<Button text="Update GSTN Data" press="onGSTNdataPress" class="sapUiTinyMarginEnd buttoncolorSec"
+													enabled="{= ${userPermission>/appPermission/P4}}"/>
+											</VBox>
+											<VBox>
+												<Text text="{timeStamp>/recentSavedDate}" class="timeStmpClr sapUiTinyMarginEnd"/>
+												<Button text="Save to GSTN" press="onPressSaveToGSTN" width="9rem" class="sapUiTinyMarginEnd buttoncolorSec"
+													enabled="{=${userPermission>/appPermission/P4}&amp;&amp;${timeStamp>/validationFlag}}"
+													tooltip="{=!${timeStamp>/validationFlag}?'Please complete the validation for table 4D1 value to enable the Save':''}"/>
+											</VBox>
+											<VBox>
+												<Text text="{timeStamp>/recentFilingDate}" class="timeStmpClr sapUiTinyMarginEnd"/>
+												<MenuButton text="Sign &amp; File" width="9rem" class="sapUiTinyMarginEnd buttoncolorSec" enabled="{= ${userPermission>/appPermission/P4}}">
+													<Menu itemSelected="onSignFile($event,'Sign')">
+														<MenuItem text="Sign &amp; File GSTR-3B (DSC)" key="DSC"/>
+														<MenuItem text="Sign &amp; File GSTR-3B (EVC)" key="EVC"/>
+													</Menu>
+												</MenuButton>
+											</VBox>
+											<VBox>
+												<Text text="" class="timeStmpClr"/>
+												<HBox>
+													<Button text="Filing Status" press="onFilingStatus" width="9rem" class="sapUiTinyMarginEnd buttoncolorSec"/>
+													<Button text="Save Status" press="onSaveStatus" width="9rem" class="sapUiTinyMarginEnd buttoncolorSec"/>
+													<Button text="Submit" press="onSubmit" enabled="false" width="9rem" class="sapUiTinyMarginEnd buttoncolorSec"/>
+												</HBox>
+											</VBox>
+										</Toolbar>
+										<!--<Toolbar class="cl_toolbar1">-->
+										<!--	<HBox>-->
+										<!--		<Text text="*" class="cl_star1"></Text>-->
+										<!--		<Text text=" Note: All Other ITC values (DigiGST Computed) will always derived based on the processed Purchase Register data."/>-->
+										<!--	</HBox>-->
+										<!--</Toolbar>-->
+									</VBox>
+								</ui:footer>
+							</ui:TreeTable>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+				<commons:toolbar>
+					<OverflowToolbar>
+						<ObjectStatus text="GSTR-3B Table 4 Computation Base - {Gstr3bOnboard>/resp}" state="Error"/>
+						<commons:ChartContainerToolbarPlaceholder/>
+					</OverflowToolbar>
+				</commons:toolbar>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpGstr3bAddItem" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackGstr3bSummary"/>
+						<Title text="Inter-State Supplies" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+				<f:actions >
+					<Button class="buttoncolorSec" text="Clear User Data" press="onclearData" enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" text="Save User Data Changes" press="onInterStateSave" enabled="{buttonVis>/dataEditable}"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel>
+				<HBox>
+					<ui:Table rows="{InterStateSuppliesCompute>/}" selectionMode="None" visibleRowCount="4" class="sapUiTinyMarginEnd sapUiSmallMarginTop">
+						<ui:extension>
+							<Toolbar>
+								<Title text="(a) Supplies made to Unregistered Persons" level="H2"/>
+							</Toolbar>
+						</ui:extension>
+						<ui:columns>
+							<ui:Column headerSpan="3" hAlign="Center" width="12rem">
+								<ui:multiLabels>
+									<Label text="DigiGST (Computed)" textAlign="Center" design="Bold"/>
+									<Label text="Place of Supply" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Select items="{getAllState>/}" selectedKey="{InterStateSuppliesCompute>posCompute}" forceSelection="false" enabled="false">
+										<core:Item key="{getAllState>state}"
+											text="{parts:[{path : 'getAllState>state'},{path :'getAllState>value'}], formatter : '.formatter.state'}"/>
+									</Select>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Taxable Value" design="Bold" wrapping="true"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{path:'InterStateSuppliesCompute>taxableValCompute', formatter:'.formatter.calcualtion1'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="IGST" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{path:'InterStateSuppliesCompute>igstCompute', formatter:'.formatter.calcualtion1'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="3" hAlign="Center" width="12rem">
+								<ui:multiLabels>
+									<Label text="GSTN (Computed)" design="Bold"/>
+									<Label text="Place of Supply" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Select items="{getAllState>/}" selectedKey="{InterStateSuppliesCompute>posAutoCal}" forceSelection="false" enabled="false">
+										<core:Item key="{getAllState>state}"
+											text="{parts:[{path : 'getAllState>state'},{path :'getAllState>value'}], formatter : '.formatter.state'}"/>
+									</Select>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Taxable Value" design="Bold" wrapping="true"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{path:'InterStateSuppliesCompute>taxableValAutoCal', formatter:'.formatter.calcualtion1'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="IGST" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{path:'InterStateSuppliesCompute>igstAutoCal', formatter:'.formatter.calcualtion1'}"/>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+					</ui:Table>
+					<ui:Table rows="{InterStateSupplies>/}" selectionMode="None" visibleRowCount="4" class="sapUiTinyMarginEnd sapUiSmallMarginTop">
+						<ui:extension>
+							<Toolbar>
+								<!--<Title text="(a) Supplies made to Unregistered Persons" level="H2"/>-->
+								<ToolbarSpacer/>
+								<Button icon="sap-icon://add" class="buttoncolorSec" press="onPressAddRecords" enabled="{buttonVis>/dataEditable}"/>
+							</Toolbar>
+						</ui:extension>
+						<ui:columns>
+							<ui:Column headerSpan="3" hAlign="Center" width="15rem">
+								<ui:multiLabels>
+									<Label text="DigiGST (User Input)" design="Bold"/>
+									<Label text="Place of Supply" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Select items="{getAllState>/}" selectedKey="{InterStateSupplies>pos}" change="onSupplyChange" forceSelection="false"
+										enabled="{buttonVis>/dataEditable}">
+										<core:Item key="{getAllState>state}"
+											text="{parts:[{path : 'getAllState>state'},{path :'getAllState>value'}], formatter : '.formatter.state'}"/>
+									</Select>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Taxable Value" textAlign="Center" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Input enabled="{buttonVis>/dataEditable}" value="{InterStateSupplies>taxableVal}" liveChange="InterStateSuppliesChage" textAlign="End"
+										maxLength="19"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="IGST" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Input enabled="{buttonVis>/dataEditable}" value="{InterStateSupplies>igst}" liveChange="InterStateSuppliesChage" textAlign="End"
+										maxLength="19"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="5rem">
+								<ui:multiLabels>
+									<Label/>
+								</ui:multiLabels>
+								<ui:template>
+									<Button enabled="{buttonVis>/dataEditable}" icon="sap-icon://delete" press="onInterStateDelete"/>
+									<!--visible="{parts:[{path : 'InterStateSupplies>posCompute'},{path :'InterStateSupplies>posAutoCal'}], formatter : '.formatter.DelVis'}"-->
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+					</ui:Table>
+				</HBox>
+				<HBox>
+					<ui:Table rows="{InterStateSuppliesCompute1>/}" class="sapUiSmallMarginTopBottom sapUiTinyMarginEnd" selectionMode="None"
+						visibleRowCount="4">
+						<ui:extension>
+							<Toolbar>
+								<Title text="(b) Supplies made to Composition Taxable Persons" level="H2"/>
+							</Toolbar>
+						</ui:extension>
+						<ui:columns>
+							<ui:Column headerSpan="3" hAlign="Center" width="12rem">
+								<ui:multiLabels>
+									<Label text="DigiGST (Computed)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									<Label text="Place of Supply" design="Bold" width="100%" textAlign="Center"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Select items="{getAllState1>/}" selectedKey="{InterStateSuppliesCompute1>posCompute}" forceSelection="false" enabled="false">
+										<core:Item key="{getAllState1>state}"
+											text="{parts:[{path : 'getAllState1>state'},{path :'getAllState1>value'}], formatter : '.formatter.state'}"/>
+									</Select>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Taxable Value" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{path:'InterStateSuppliesCompute1>taxableValCompute', formatter:'.formatter.calcualtion1'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="IGST" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{path:'InterStateSuppliesCompute1>igstCompute', formatter:'.formatter.calcualtion1'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="3" hAlign="Center" width="15rem">
+								<ui:multiLabels>
+									<Label text="GSTN (Computed)" design="Bold"/>
+									<Label text="Place of Supply" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Select items="{getAllState1>/}" selectedKey="{InterStateSuppliesCompute1>posAutoCal}" width="100%" forceSelection="false" enabled="false">
+										<core:Item key="{getAllState1>state}"
+											text="{parts:[{path : 'getAllState1>state'},{path :'getAllState1>value'}], formatter : '.formatter.state'}"/>
+									</Select>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Taxable Value" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{path:'InterStateSuppliesCompute1>taxableValAutoCal', formatter:'.formatter.calcualtion1'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="IGST" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{path:'InterStateSuppliesCompute1>igstAutoCal', formatter:'.formatter.calcualtion1'}"/>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+					</ui:Table>
+					<ui:Table rows="{InterStateSupplies1>/}" class="sapUiSmallMarginTopBottom" selectionMode="None" visibleRowCount="4">
+						<ui:extension>
+							<Toolbar>
+								<ToolbarSpacer/>
+								<Button icon="sap-icon://add" class="buttoncolorSec" press="onPressAddRecords1" enabled="{buttonVis>/dataEditable}"/>
+							</Toolbar>
+						</ui:extension>
+						<ui:columns>
+							<ui:Column headerSpan="3" hAlign="Center" width="15rem">
+								<ui:multiLabels>
+									<Label text="DigiGST (User Input)" design="Bold"/>
+									<Label text="Place of Supply" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Select items="{getAllState1>/}" selectedKey="{InterStateSupplies1>pos}" change="onSupplyChange1" width="100%" forceSelection="false"
+										enabled="{buttonVis>/dataEditable}">
+										<core:Item key="{getAllState1>state}"
+											text="{parts:[{path : 'getAllState1>state'},{path :'getAllState1>value'}], formatter : '.formatter.state'}"/>
+									</Select>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Taxable Value" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Input enabled="{buttonVis>/dataEditable}" value="{InterStateSupplies1>taxableVal}" liveChange="InterStateSuppliesChage" textAlign="End"
+										maxLength="19"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="IGST" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Input enabled="{buttonVis>/dataEditable}" value="{InterStateSupplies1>igst}" liveChange="InterStateSuppliesChage" textAlign="End"
+										maxLength="19"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="5rem">
+								<ui:multiLabels>
+									<Label/>
+								</ui:multiLabels>
+								<ui:template>
+									<Button enabled="{buttonVis>/dataEditable}" icon="sap-icon://delete" press="onInterStateDelete1"/>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+					</ui:Table>
+				</HBox>
+				<HBox>
+					<ui:Table rows="{InterStateSuppliesCompute2>/}" class="sapUiSmallMarginTopBottom sapUiTinyMarginEnd" selectionMode="None"
+						visibleRowCount="4">
+						<ui:extension>
+							<Toolbar>
+								<Title text="(c) Supplies made to UIN holders" level="H2"/>
+							</Toolbar>
+						</ui:extension>
+						<ui:columns>
+							<ui:Column headerSpan="3" hAlign="Center" width="12rem">
+								<ui:multiLabels>
+									<Label text="DigiGST (Computed)" design="Bold"/>
+									<Label text="Place of Supply" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Select items="{getAllState2>/}" selectedKey="{InterStateSuppliesCompute2>posCompute}" forceSelection="false" enabled="false">
+										<core:Item key="{getAllState2>state}"
+											text="{parts:[{path : 'getAllState2>state'},{path :'getAllState2>value'}], formatter : '.formatter.state'}"/>
+									</Select>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Taxable Value" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{path:'InterStateSuppliesCompute2>taxableValCompute', formatter:'.formatter.calcualtion1'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="IGST" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{path:'InterStateSuppliesCompute2>igstCompute', formatter:'.formatter.calcualtion1'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="3" hAlign="Center" width="12rem">
+								<ui:multiLabels>
+									<Label text="GSTN (Computed)" design="Bold"/>
+									<Label text="Place of Supply" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Select items="{getAllState2>/}" selectedKey="{InterStateSuppliesCompute2>posAutoCal}" forceSelection="false" enabled="false">
+										<core:Item key="{getAllState2>state}"
+											text="{parts:[{path : 'getAllState2>state'},{path :'getAllState2>value'}], formatter : '.formatter.state'}"/>
+									</Select>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{path:'InterStateSuppliesCompute2>taxableValAutoCal', formatter:'.formatter.calcualtion1'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="IGST" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{path:'InterStateSuppliesCompute2>igstAutoCal', formatter:'.formatter.calcualtion1'}"/>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+					</ui:Table>
+					<ui:Table rows="{InterStateSupplies2>/}" class="sapUiSmallMarginTopBottom" selectionMode="None" visibleRowCount="4">
+						<ui:extension>
+							<Toolbar>
+								<ToolbarSpacer/>
+								<Button icon="sap-icon://add" class="buttoncolorSec" press="onPressAddRecords2" enabled="{buttonVis>/dataEditable}"/>
+							</Toolbar>
+						</ui:extension>
+						<ui:columns>
+							<ui:Column headerSpan="3" hAlign="Center" width="15rem">
+								<ui:multiLabels>
+									<Label text="DigiGST (User Input)" design="Bold"/>
+									<Label text="Place of Supply" design="Bold" textAlign="Center"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Select items="{getAllState2>/}" selectedKey="{InterStateSupplies2>pos}" change="onSupplyChange2" forceSelection="false"
+										enabled="{buttonVis>/dataEditable}">
+										<core:Item key="{getAllState2>state}"
+											text="{parts:[{path : 'getAllState2>state'},{path :'getAllState2>value'}], formatter : '.formatter.state'}"/>
+									</Select>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Taxable Value" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Input enabled="{buttonVis>/dataEditable}" value="{InterStateSupplies2>taxableVal}" liveChange="InterStateSuppliesChage" textAlign="End"
+										maxLength="19"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="IGST" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Input enabled="{buttonVis>/dataEditable}" value="{InterStateSupplies2>igst}" liveChange="InterStateSuppliesChage" textAlign="End"
+										maxLength="19"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="5rem">
+								<ui:multiLabels>
+									<Label/>
+								</ui:multiLabels>
+								<ui:template>
+									<Button enabled="{buttonVis>/dataEditable}" icon="sap-icon://delete" press="onInterStateDelete2"/>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+					</ui:Table>
+				</HBox>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpGstr3b1AddItem" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackGstr3bTax"/>
+						<Title text="GSTR-3B" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiTinyMarginTop">
+				<headerToolbar>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button type="Emphasized" text="Edit" press="OnpressEditgstr3b"/>
+						<Button type="Emphasized" text="Save Changes" press="OnpressSavegstr3b"/>
+					</Toolbar>
+				</headerToolbar>
+				<Table items="{GSTR3B>/unregisterPerson2/}">
+					<headerToolbar>
+						<Toolbar>
+							<Title text="Tax on Outward and Reverse Charge Inward Supplies" level="H2"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column width="4rem">
+							<Label text="Table" design="Bold" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Type of Supply" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Taxable Value" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="IGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="CGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{GSTR3B>tableno}"/>
+								<Text text="{GSTR3B>supplytype}"/>
+								<VBox>
+									<Text text="{GSTR3B>taxableValue}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>taxableValue}" editable="{GSTR3B>edittax}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>igst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>igst}" editable="{GSTR3B>editigst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>taxableValue}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>cgst}" editable="{GSTR3B>editcgst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>sgst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>sgst}" editable="{GSTR3B>editsgst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>cess}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>cess}" editable="{GSTR3B>editcess}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpGstr3bAddItemInterst" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackGstr3bInterest"/>
+						<Title text="GSTR-3B" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiTinyMarginTop">
+				<headerToolbar>
+					<Toolbar visible="{= ${userPermission>/appPermission/P4}}">
+						<ToolbarSpacer/>
+						<Button type="Emphasized" text="Edit" press="OnpressSavegstr3bInterest"/>
+						<Button type="Emphasized" text="Save Changes" press="OnpressSavegstr3bInterest"/>
+					</Toolbar>
+				</headerToolbar>
+				<Table items="{GSTR3B>/InterstPayable/}">
+					<headerToolbar>
+						<Toolbar>
+							<Title text="Interest &amp; Late Fee Payable" level="H2"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column width="4rem">
+							<Label text="Table" design="Bold" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Type of Supply" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Taxable Value" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="IGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="CGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{GSTR3B>tableno}"/>
+								<Text text="{GSTR3B>supplytype}"/>
+								<VBox>
+									<Text text="{GSTR3B>taxableValue}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>taxableValue}" editable="{GSTR3B>edittax}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>igst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>igst}" editable="{GSTR3B>editigst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>cgst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>cgst}" editable="{GSTR3B>editcgst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>sgst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>sgst}" editable="{GSTR3B>editsgst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>cess}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>cess}" editable="{GSTR3B>editcess}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpGstr3bAddItemITCAV" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackGstr3bITCAv"/>
+						<Title text="GSTR-3B" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiTinyMarginTop">
+				<headerToolbar>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button type="Emphasized" text="Edit" press="OnpressEditgstr3bITCAv"/>
+						<Button type="Emphasized" text="Save Changes" press="OnpressSavegstr3bITCAv"/>
+					</Toolbar>
+				</headerToolbar>
+				<Table items="{GSTR3B>/ITCAvailable/}">
+					<headerToolbar>
+						<Toolbar>
+							<Title text="ITC Avalilabe (Whether in full or part)" level="H2"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column width="4rem">
+							<Label text="Table" design="Bold" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Type of Supply" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Taxable Value" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="IGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="CGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{GSTR3B>tableno}"/>
+								<Text text="{GSTR3B>supplytype}"/>
+								<VBox>
+									<Text text="{GSTR3B>taxableValue}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>taxableValue}" editable="{GSTR3B>edittax}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>igst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>igst}" editable="{GSTR3B>editigst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>cgst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>cgst}" editable="{GSTR3B>editcgst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>sgst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>sgst}" editable="{GSTR3B>editsgst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>cess}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>cess}" editable="{GSTR3B>editcess}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpGstr3bAddItemITCR" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackGstr3bITCR"/>
+						<Title text="GSTR-3B" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiTinyMarginTop">
+				<headerToolbar>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button type="Emphasized" text="Edit" press="OnpressEditgstr3bITCR"/>
+						<Button type="Emphasized" text="Save Changes" press="OnpressSavegstr3bITCR"/>
+					</Toolbar>
+				</headerToolbar>
+				<Table items="{GSTR3B>/ITCReverse/}">
+					<headerToolbar>
+						<Toolbar>
+							<Title text="ITC Reversed" level="H2"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column width="4rem">
+							<Label text="Table" design="Bold" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Type of Supply" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Taxable Value" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="IGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="CGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{GSTR3B>tableno}"/>
+								<Text text="{GSTR3B>supplytype}"/>
+								<VBox>
+									<Text text="{GSTR3B>taxableValue}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>taxableValue}" editable="{GSTR3B>edittax}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>igst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>igst}" editable="{GSTR3B>editigst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>cgst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>cgst}" editable="{GSTR3B>editcgst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>sgst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>sgst}" editable="{GSTR3B>editsgst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>cess}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>cess}" editable="{GSTR3B>editcess}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpGstr3bAddItemINITC" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackGstr3bInITC"/>
+						<Title text="GSTR-3B" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiTinyMarginTop">
+				<headerToolbar>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button type="Emphasized" text="Edit" press="OnpressEditgstr3bINITC"/>
+						<Button type="Emphasized" text="Save Changes" press="OnpressSavegstr3bINITC"/>
+					</Toolbar>
+				</headerToolbar>
+				<Table items="{GSTR3B>/InEligITC/}">
+					<headerToolbar>
+						<Toolbar>
+							<Title text="Ineligible ITC" level="H2"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column width="4rem">
+							<Label text="Table" design="Bold" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Type of Supply" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Taxable Value" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="IGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="CGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{GSTR3B>tableno}"/>
+								<Text text="{GSTR3B>supplytype}"/>
+								<VBox>
+									<Text text="{GSTR3B>taxableValue}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>taxableValue}" editable="{GSTR3B>edittax}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>igst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>igst}" editable="{GSTR3B>editigst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>cgst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>cgst}" editable="{GSTR3B>editcgst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>sgst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>sgst}" editable="{GSTR3B>editsgst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>cess}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>cess}" editable="{GSTR3B>editcess}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpGstr3bAddItemITCAR" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackGstr3bSummary"/>
+						<Title text="GSTR-3B" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiTinyMarginTop">
+				<headerToolbar>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button type="Emphasized" text="Edit" press="OnpressEditgstr3b"/>
+						<Button type="Emphasized" text="Save Changes" press="OnpressSavegstr3b"/>
+					</Toolbar>
+				</headerToolbar>
+				<Table items="{GSTR3B>/ITCAvailable/}">
+					<headerToolbar>
+						<Toolbar>
+							<Title text="ITC Avalilabe (Whether in full or part)" level="H2"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column width="4rem">
+							<Label text="Table" design="Bold" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Type of Supply" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Taxable Value" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="IGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="CGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{GSTR3B>tableno}"/>
+								<Text text="{GSTR3B>supplytype}"/>
+								<Input value="{GSTR3B>taxableValue}" editable="{GSTR3B>edittax}"/>
+								<Input value="{GSTR3B>igst}" editable="{GSTR3B>editigst}"/>
+								<Input value="{GSTR3B>cgst}" editable="{GSTR3B>editcgst}"/>
+								<Input value="{GSTR3B>sgst}" editable="{GSTR3B>editsgst}"/>
+								<Input value="{GSTR3B>cess}" editable="{GSTR3B>editcess}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpNilNonExempt" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackGstr3bNil"/>
+						<Title text="Exempt, Nil &amp; Non-GST Inward Supplies" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<ui:Table rows="{ExemptNill>/resp/}" class="sapUiTinyMarginTop" enableColumnReordering="false">
+				<ui:extension>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button class="buttoncolorSec" text="Clear User Data" press="onExemptclearData" enabled="{buttonVis>/dataEditable}"/>
+						<Button class="buttoncolorSec" text="Save Changes" press="ExemptNillSave" enabled="{buttonVis>/dataEditable}"/>
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="25rem">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Nature of Supplies" design="Bold" width="100%" textAlign="Center"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path : 'ExemptNill>subSectionName'}], formatter : '.formatter.exmpsubSectionName'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column headerSpan="2" hAlign="End" width="25rem">
+						<ui:multiLabels>
+							<Label text="DigiGST (Computed)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Inter-State Supplies" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ExemptNill>interStateCompute}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="25rem" visible="{visiGSTR3B>/gstn}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Intra-State Supplies" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ExemptNill>intraStateCompute}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column headerSpan="2" hAlign="End" width="25rem">
+						<ui:multiLabels>
+							<Label text="DigiGST (User Input)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Inter-State Supplies" design="Bold" width="100%" textAlign="Center"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{ExemptNill>interState}" liveChange="InterStateSuppliesChage" textAlign="End" maxLength="19"
+								enabled="{buttonVis>/dataEditable}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="25rem" visible="{visiGSTR3B>/gstn}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Intra-State Supplies" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{ExemptNill>intraState}" liveChange="InterStateSuppliesChage" textAlign="End" maxLength="19"
+								enabled="{buttonVis>/dataEditable}"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpAllOtherITC" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackGstr3bNil1"/>
+						<Title text="All Other ITC" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<ui:TreeTable rows="{path:'AllOtherITC>/', parameters:{ arrayNames:['level2','level3'], numberOfExpandedLevels:2 }}" visibleRowCount="12"
+				selectionMode="None">
+				<ui:extension>
+					<Toolbar visible="false">
+						<ToolbarSpacer/>
+						<Button class="buttoncolorSec" press="onPressEditRecords" text="Edit User Input"/>
+						<Button press="onReset" text="Clear User Input" type="Emphasized" visible="false"/>
+						<Button press="onPressSaveRecords" text="Save Changes" type="Accept" visible="false"/>
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="14rem" hAlign="Center">
+						<Label text="Section Name" textAlign="Center" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox alignContent="Center" alignItems="Center">
+								<RadioButton id="radioId" visible="{AllOtherITC>Check}" enabled="{AllOtherITC>edit}" selected="{AllOtherITC>radioFlag}"
+									select="onSelectCheckBoxAmount"/>
+								<Text text="{AllOtherITC>sectionName}"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="30rem" hAlign="Center">
+						<Label text="Details" textAlign="Center" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox>
+								<Text text="{path:'AllOtherITC>subSectionName', formatter:'.formatter.subSectionNameOR'}"/>
+								<core:Icon color="#1C4C98" src="sap-icon://message-information" class="sapUiTinyMarginBegin"
+									visible="{=${AllOtherITC>icon}=== true ?true:false}" press="OnPressOtherITC(${AllOtherITC>subSectionName})"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" headerSpan="4">
+						<ui:multiLabels>
+							<Label text="DigiGST (Computed)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Integrated Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{AllOtherITC>igstAsp}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Central Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{AllOtherITC>cgstAsp}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="State/UT Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{AllOtherITC>sgstAsp}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CESS(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{AllOtherITC>cessAsp}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" headerSpan="4">
+						<ui:multiLabels>
+							<Label text="GSTN (Computed)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Integrated Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{AllOtherITC>igstAutoCal}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Central Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{AllOtherITC>cgstAutoCal}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="State/UT Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{AllOtherITC>sgstAutoCal}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CESS(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{AllOtherITC>cessAutoCal}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" headerSpan="4">
+						<ui:multiLabels>
+							<Label text="DigiGST (User Input)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Integrated Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{AllOtherITC>igstUser}" enabled="{AllOtherITC>edit}" change="onChangeAmount" maxLength="19" liveChange="onLiveChangeNumber"></Input>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Central Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{AllOtherITC>cgstUser}" enabled="{AllOtherITC>edit}" change="onChangeAmount" maxLength="19"></Input>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="State/UT Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{AllOtherITC>sgstUser}" enabled="{AllOtherITC>edit}" change="onChangeAmount" maxLength="19"></Input>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CESS(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{AllOtherITC>cessUser}" enabled="{AllOtherITC>edit}" change="onChangeAmount" maxLength="19"></Input>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+				<!--<ui:footer>-->
+				<!--	<Toolbar class="cl_toolbar">-->
+				<!--		<VBox>-->
+				<!--			<HBox>-->
+				<!--				<Text text="*" class="cl_star1"></Text>-->
+				<!--				<Text text="Note :" class="redLabel1"/>-->
+				<!--			</HBox>-->
+				<!--			<Text text="1.All Other ITC values (DigiGST Computed) will always derived based on the processed Purchase Register data." class="redLabel1"/>-->
+				<!--			<Text-->
+				<!--				text="2.Post changing options available above, kindly re-compute the GSTR 3B by clicking on button 'Auto Calculate3B - DigiGST' to refresh values in table 4(B)."-->
+				<!--				class="redLabel1"/>-->
+				<!--		</VBox>-->
+				<!--	</Toolbar>-->
+				<!--</ui:footer>-->
+			</ui:TreeTable>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="Other" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackGstr3bOtrs"/>
+						<Title text="Others Reversal" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<ui:TreeTable rows="{path:'OtherReversal>/', parameters:{ arrayNames:['level2'], numberOfExpandedLevels:2 }}" visibleRowCount="7"
+				selectionMode="None">
+				<ui:columns>
+					<ui:Column width="14rem" hAlign="Center">
+						<Label text="Section Name" textAlign="Center" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox alignContent="Center" alignItems="Center">
+								<Text visible="{=${OtherReversal>sectionName}==='4(b)(2)' ? false : true}" text="{OtherReversal>sectionName}"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="27rem" hAlign="Center">
+						<Label text="Details" textAlign="Center" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox>
+								<Label text="{path:'OtherReversal>subSectionName', formatter:'.formatter.subSectionNameOR'}"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" headerSpan="4">
+						<ui:multiLabels>
+							<Label text="DigiGST (Computed)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Integrated Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{OtherReversal>igstAsp}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Central Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{OtherReversal>cgstAsp}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="State/UT Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{OtherReversal>sgstAsp}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CESS(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{OtherReversal>cessAsp}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" headerSpan="4">
+						<ui:multiLabels>
+							<Label text="DigiGST (User Input)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Integrated Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{OtherReversal>igstUser}" enabled="{OtherReversal>edit}" change="onChangeAmount1" maxLength="19"
+								liveChange="onLiveChangeNumber"></Input>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Central Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{OtherReversal>cgstUser}" enabled="{OtherReversal>edit}" change="onChangeAmount1" maxLength="19"></Input>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="State/UT Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{OtherReversal>sgstUser}" enabled="{OtherReversal>edit}" change="onChangeAmount1" maxLength="19"></Input>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CESS(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{OtherReversal>cessUser}" enabled="{OtherReversal>edit}" change="onChangeAmount1" maxLength="19"></Input>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:TreeTable>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpGstr3bPastPeriod" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackPastPeriod"/>
+						<Title text="Past period liability" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Table items="{PastLiabDtls>/}" mode="Delete" delete="onInterPP">
+				<headerToolbar>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<!--<Button type="Emphasized" text="Clear User Data" press="onclearData"/>-->
+						<Button class="buttoncolorSec" text="Save Changes" press="onPPsave"/>
+						<Button icon="sap-icon://add" press="onPressAddRecordsppl" class="buttoncolorSec"/>
+					</Toolbar>
+				</headerToolbar>
+				<columns>
+					<Column hAlign="Center">
+						<Label text="Return Period" design="Bold" width="100%" textAlign="Center"/>
+					</Column>
+					<Column hAlign="Center">
+						<Label text="IGST" design="Bold" width="100%" textAlign="Center"/>
+					</Column>
+					<Column hAlign="Center">
+						<Label text="CGST" design="Bold" width="100%" textAlign="Center"/>
+					</Column>
+					<Column hAlign="Center">
+						<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+					</Column>
+					<Column hAlign="Center">
+						<Label text="Cess" design="Bold" width="100%" textAlign="Center"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<DatePicker value="{PastLiabDtls>userRetPeriod}" displayFormat="MMM yyy" valueFormat="MMyyyy" width="75%"/>
+							<Input value="{PastLiabDtls>igst}" maxLength="19" width="75%"/>
+							<Input value="{PastLiabDtls>cgst}" maxLength="19" width="75%"/>
+							<Input value="{PastLiabDtls>sgst}" maxLength="19" width="75%"/>
+							<Input value="{PastLiabDtls>cess}" maxLength="19" width="75%"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpInwardSupplies" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackGstr3bInwardSupplies"/>
+						<Title text="Inward Supplies liable to Reverse Charge (Other than 1 &amp; 2 above)" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<ui:TreeTable rows="{path:'InwardSupplies>/', parameters:{ arrayNames:['level2','level3'], numberOfExpandedLevels:2 }}" visibleRowCount="12"
+				selectionMode="None">
+				<ui:extension>
+					<Toolbar visible="false">
+						<ToolbarSpacer/>
+						<Button press="onPressEditRecords" text="Edit User Input" type="Emphasized"/>
+						<Button press="onReset" text="Clear User Input" type="Emphasized" visible="false"/>
+						<Button press="onPressSaveRecords" text="Save Changes" type="Accept" visible="false"/>
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="15rem" hAlign="Center">
+						<Label text="Section Name" textAlign="Center" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox alignContent="Center">
+								<RadioButton visible="{InwardSupplies>Check}" enabled="{InwardSupplies>edit}" selected="{InwardSupplies>radioFlag}"
+									select="onSelectInwardSupply"/>
+								<Text text="{InwardSupplies>sectionName}"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="30rem" hAlign="Center">
+						<Label text="Details" textAlign="Center" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox>
+								<Text text="{path:'InwardSupplies>subSectionName', formatter:'.formatter.subSectionNameOR'}"/>
+								<core:Icon color="#1C4C98" src="sap-icon://message-information" class="sapUiTinyMarginBegin"
+									visible="{=${InwardSupplies>icon}=== true ?true:false}" press="OnPressOtherITC(${InwardSupplies>subSectionName})"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" headerSpan="4">
+						<ui:multiLabels>
+							<Label text="DigiGST (Computed)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Integrated Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{InwardSupplies>digiIgst}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Central Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{InwardSupplies>digiCgst}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="State/UT Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{InwardSupplies>digiSgst}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CESS(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{InwardSupplies>digiCess}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" headerSpan="4">
+						<ui:multiLabels>
+							<Label text="GSTN (Computed)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Integrated Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{InwardSupplies>autoCompIgst}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Central Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{InwardSupplies>autoCompCgst}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="State/UT Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{InwardSupplies>autoCompSgst}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CESS(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{InwardSupplies>autoCompCess}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" headerSpan="4">
+						<ui:multiLabels>
+							<Label text="DigiGST (User Input)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Integrated Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{InwardSupplies>userIgst}" textAlign="End" enabled="{InwardSupplies>edit}"
+								change="onChangeAmtGeneral($event,'InwardSupplies')" maxLength="19" type="Number"></Input>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Central Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{InwardSupplies>userCgst}" textAlign="End" enabled="{InwardSupplies>edit}"
+								change="onChangeAmtGeneral($event,'InwardSupplies')" maxLength="19"></Input>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="State/UT Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{InwardSupplies>userSgst}" textAlign="End" enabled="{InwardSupplies>edit}"
+								change="onChangeAmtGeneral($event,'InwardSupplies')" maxLength="19"></Input>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CESS(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{InwardSupplies>userCess}" textAlign="End" enabled="{InwardSupplies>edit}"
+								change="onChangeAmtGeneral($event,'InwardSupplies')" maxLength="19"></Input>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+				<!--<ui:footer>-->
+				<!--	<Toolbar class="cl_toolbar">-->
+				<!--		<VBox>-->
+				<!--			<HBox>-->
+				<!--				<Text text="*" class="cl_star1"></Text>-->
+				<!--				<Text text="Note :" class="redLabel1"/>-->
+				<!--			</HBox>-->
+				<!--			<Text-->
+				<!--				text="1.Inward Supplies liable to Reverse Charge (Other than 1 &amp; 2 above) values (DigiGST Computed) will always derived based on the processed Purchase Register data."-->
+				<!--				class="redLabel1"/>-->
+				<!--			<Text-->
+				<!--				text="2.Post changing options available above, kindly re-compute the GSTR 3B by clicking on button 'Auto Calculate3B - DigiGST' to refresh values in table 4(B)."-->
+				<!--				class="redLabel1"/>-->
+				<!--		</VBox>-->
+				<!--	</Toolbar>-->
+				<!--</ui:footer>-->
+			</ui:TreeTable>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpImportofGoods" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackGstr3bImportofGoods"/>
+						<Title text="Import of Goods" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<ui:TreeTable rows="{path:'ImportofGoods>/', parameters:{ arrayNames:['level2','level3'], numberOfExpandedLevels:2 }}" visibleRowCount="12"
+				selectionMode="None">
+				<ui:extension>
+					<Toolbar visible="false">
+						<ToolbarSpacer/>
+						<Button press="onPressEditRecords" text="Edit User Input" type="Emphasized"/>
+						<Button press="onReset" text="Clear User Input" type="Emphasized" visible="false"/>
+						<Button press="onPressSaveRecords" text="Save Changes" type="Accept" visible="false"/>
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="14rem" hAlign="Center">
+						<Label text="Section Name" textAlign="Center" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox alignContent="Center" alignItems="Center">
+								<RadioButton visible="{ImportofGoods>Check}" enabled="{ImportofGoods>edit}" selected="{ImportofGoods>radioFlag}"
+									select="onSelectImportOfGoods"/>
+								<Text text="{ImportofGoods>sectionName}"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="30rem" hAlign="Center">
+						<Label text="Details" textAlign="Center" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox>
+								<Text text="{path:'ImportofGoods>subSectionName', formatter:'.formatter.subSectionNameOR'}"/>
+								<core:Icon color="#1C4C98" src="sap-icon://message-information" class="sapUiTinyMarginBegin"
+									visible="{=${ImportofGoods>icon}=== true ?true:false}" press="OnPressOtherITC(${ImportofGoods>subSectionName})"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" headerSpan="4">
+						<ui:multiLabels>
+							<Label text="DigiGST (Computed)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Integrated Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ImportofGoods>digiIgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Central Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ImportofGoods>digiCgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="State/UT Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ImportofGoods>digiSgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CESS(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ImportofGoods>digiCess}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" headerSpan="4">
+						<ui:multiLabels>
+							<Label text="GSTN (Computed)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Integrated Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ImportofGoods>autoCompIgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Central Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ImportofGoods>autoCompCgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="State/UT Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ImportofGoods>autoCompSgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CESS(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ImportofGoods>autoCompCess}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" headerSpan="4">
+						<ui:multiLabels>
+							<Label text="DigiGST (User Input)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Integrated Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{ImportofGoods>userIgst}" textAlign="End" enabled="{ImportofGoods>edit}" change="onChangeAmtGeneral($event,'ImportofGoods')"
+								maxLength="19" liveChange="onLiveChangeNumber"></Input>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Central Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{ImportofGoods>userCgst}" textAlign="End" enabled="{ImportofGoods>edit}" change="onChangeAmtGeneral($event,'ImportofGoods')"
+								maxLength="19"></Input>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="State/UT Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{ImportofGoods>userSgst}" textAlign="End" enabled="{ImportofGoods>edit}" change="onChangeAmtGeneral($event,'ImportofGoods')"
+								maxLength="19"></Input>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CESS(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{ImportofGoods>userCess}" textAlign="End" enabled="{ImportofGoods>edit}" change="onChangeAmtGeneral($event,'ImportofGoods')"
+								maxLength="19"></Input>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+				<!--<ui:footer>-->
+				<!--	<Toolbar class="cl_toolbar">-->
+				<!--		<VBox>-->
+				<!--			<HBox>-->
+				<!--				<Text text="*" class="cl_star1"></Text>-->
+				<!--				<Text text="Note :" class="redLabel1"/>-->
+				<!--			</HBox>-->
+				<!--			<Text text="1.Import of Goods values (DigiGST Computed) will always derived based on the processed Purchase Register data."-->
+				<!--				class="redLabel1"/>-->
+				<!--			<Text-->
+				<!--				text="2.Post changing options available above, kindly re-compute the GSTR 3B by clicking on button 'Auto Calculate3B - DigiGST' to refresh values in table 4(B)."-->
+				<!--				class="redLabel1"/>-->
+				<!--		</VBox>-->
+				<!--	</Toolbar>-->
+				<!--</ui:footer>-->
+			</ui:TreeTable>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpISDInwardSupplies" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackGstr3bISDInwardSupplies"/>
+						<Title text="Inward Supplies from ISD" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<ui:TreeTable rows="{path:'ISDInwardSupplies>/', parameters:{ arrayNames:['level2','level3'], numberOfExpandedLevels:2 }}"
+				visibleRowCount="12" selectionMode="None">
+				<ui:extension>
+					<Toolbar visible="false">
+						<ToolbarSpacer/>
+						<Button press="onPressEditRecords" text="Edit User Input" type="Emphasized"/>
+						<Button press="onReset" text="Clear User Input" type="Emphasized" visible="false"/>
+						<Button press="onPressSaveRecords" text="Save Changes" type="Accept" visible="false"/>
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="14rem" hAlign="Center">
+						<Label text="Section Name" textAlign="Center" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox alignItems="Center">
+								<RadioButton selected="{ISDInwardSupplies>radioFlag}" enabled="{ISDInwardSupplies>edit}" visible="{ISDInwardSupplies>Check}"
+									select="onSelectCheckBoxAmountISD"/>
+								<Text text="{ISDInwardSupplies>sectionName}"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="30rem" hAlign="Center">
+						<Label text="Details" textAlign="Center" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox>
+								<Text text="{path:'ISDInwardSupplies>subSectionName', formatter:'.formatter.subSectionNameOR'}"/>
+								<core:Icon color="#1C4C98" src="sap-icon://message-information" class="sapUiTinyMarginBegin"
+									visible="{=${ISDInwardSupplies>icon}=== true ?true:false}" press="OnPressOtherITC(${ISDInwardSupplies>subSectionName})"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" headerSpan="4">
+						<ui:multiLabels>
+							<Label text="DigiGST (Computed)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Integrated Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ISDInwardSupplies>digiIgst}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Central Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ISDInwardSupplies>digiCgst}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="State/UT Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ISDInwardSupplies>digiSgst}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CESS(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ISDInwardSupplies>digiCess}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" headerSpan="4">
+						<ui:multiLabels>
+							<Label text="GSTN (Computed)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Integrated Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ISDInwardSupplies>autoCompIgst}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Central Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ISDInwardSupplies>autoCompCgst}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="State/UT Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ISDInwardSupplies>autoCompSgst}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CESS(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ISDInwardSupplies>autoCompCess}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" headerSpan="4">
+						<ui:multiLabels>
+							<Label text="DigiGST (User Input)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Integrated Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{ISDInwardSupplies>userIgst}" textAlign="End" enabled="{=${ISDInwardSupplies>edit}&amp;&amp;${ISDInwardSupplies>editInput}}"
+								change="onChangeAmtGeneral($event,'ISDInwardSupplies')" maxLength="19"></Input>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Central Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{ISDInwardSupplies>userCgst}" textAlign="End" enabled="{=${ISDInwardSupplies>edit}&amp;&amp;${ISDInwardSupplies>editInput}}"
+								change="onChangeAmtGeneral($event,'ISDInwardSupplies')" maxLength="19"></Input>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="State/UT Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{ISDInwardSupplies>userSgst}" textAlign="End" enabled="{=${ISDInwardSupplies>edit}&amp;&amp;${ISDInwardSupplies>editInput}}"
+								change="onChangeAmtGeneral($event,'ISDInwardSupplies')" maxLength="19"></Input>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CESS(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{ISDInwardSupplies>userCess}" textAlign="End" enabled="{=${ISDInwardSupplies>edit}&amp;&amp;${ISDInwardSupplies>editInput}}"
+								change="onChangeAmtGeneral($event,'ISDInwardSupplies')" maxLength="19"></Input>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+				<!--<ui:footer>-->
+				<!--	<Toolbar class="cl_toolbar">-->
+				<!--		<VBox>-->
+				<!--			<HBox>-->
+				<!--				<Text text="*" class="cl_star1"></Text>-->
+				<!--				<Text text="Note :" class="redLabel1"/>-->
+				<!--			</HBox>-->
+				<!--			<Text text="1.Inward Supplies ISD values (DigiGST Computed) will always derived based on the processed Purchase Register data."-->
+				<!--				class="redLabel1"/>-->
+				<!--			<Text-->
+				<!--				text="2.Post changing options available above, kindly re-compute the GSTR 3B by clicking on button 'Auto Calculate3B - DigiGST' to refresh values in table 4(B)."-->
+				<!--				class="redLabel1"/>-->
+				<!--		</VBox>-->
+				<!--	</Toolbar>-->
+				<!--</ui:footer>-->
+			</ui:TreeTable>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dp4243" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBack3842"/>
+						<Title text="ITC Reversal - As per rules 38, 42 and 43 of CGST Rules and Section 17(5)" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<ui:TreeTable rows="{path:'Rule3842>/', parameters:{ arrayNames:['level2'], numberOfExpandedLevels:2 }}" visibleRowCount="6"
+				selectionMode="None">
+				<ui:columns>
+					<ui:Column width="14rem" hAlign="Center">
+						<Label text="Section Name" textAlign="Center" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox alignContent="Center" alignItems="Center">
+								<!--<Text text="{Rule3842>sectionName}"></Text>-->
+								<Label text="{path:'Rule3842>sectionName', formatter:'.formatter.SectionName3842'}"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="30rem" hAlign="Center">
+						<Label text="Details" textAlign="Center" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox>
+								<Label text="{path:'Rule3842>subSectionName', formatter:'.formatter.subSectionName3842'}"/>
+								<!--<core:Icon color="#1C4C98" src="sap-icon://message-information" class="sapUiTinyMarginBegin"-->
+								<!--	visible="{=${Rule3842>level}==='L2'?true:false}" press="OnPressSS"/>-->
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" headerSpan="4">
+						<ui:multiLabels>
+							<Label text="DigiGST (Computed)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Integrated Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{Rule3842>igstAsp}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Central Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{Rule3842>cgstAsp}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="State/UT Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{Rule3842>sgstAsp}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CESS(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{Rule3842>cessAsp}"></Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" headerSpan="4">
+						<ui:multiLabels>
+							<Label text="DigiGST (User Input)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Integrated Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{Rule3842>igstUser}" enabled="{Rule3842>edit}" change="onChangeAmount3842" maxLength="19" liveChange="onLiveChangeNumber"></Input>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Central Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{Rule3842>cgstUser}" enabled="{Rule3842>edit}" change="onChangeAmount3842" maxLength="19"></Input>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="State/UT Tax(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{Rule3842>sgstUser}" enabled="{Rule3842>edit}" change="onChangeAmount3842" maxLength="19"></Input>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CESS(₹)" textAlign="Center" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Input value="{Rule3842>cessUser}" enabled="{Rule3842>edit}" change="onChangeAmount3842" maxLength="19"></Input>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:TreeTable>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

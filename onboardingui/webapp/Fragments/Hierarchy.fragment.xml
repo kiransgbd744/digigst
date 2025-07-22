@@ -1,0 +1,134 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<IconTabBar expanded="true" select="handleIconTabBarSelect" class="sapUiNoContentPadding"
+		backgroundDesign="Transparent" stretchContentHeight="true" selectedKey="OrganizationConfiguration" expandable="false">
+		<items>
+			<IconTabFilter text="Organization Configuration" tooltip="Organization Configuration" key="OrganizationConfiguration">
+				<f:DynamicPage>
+					<f:title>
+						<f:DynamicPageTitle>
+							<f:heading>
+								<HBox>
+									<Label text="Entity :" class="sapUiTinyMarginTop" design="Bold"/>
+									<Select items="{entityOrg>/resp/}" change="onSelectionChangeEntity" id="idEntityOrg" width="12rem" class="sapUiTinyMarginBegin">
+										<core:Item key="{entityOrg>entityId}" text="{entityOrg>entityName}"/>
+									</Select>
+								</HBox>
+							</f:heading>
+							<f:actions>
+								<HBox>
+									<Button type="Emphasized" icon="sap-icon://save" id="idOrgConfigSubmit" text="Submit" class="sapUiTinyMarginBegin" press="onSubmit"/>
+								</HBox>
+							</f:actions>
+						</f:DynamicPageTitle>
+					</f:title>
+					<f:content>
+						<ui:Table rows="{hierar>/}" id="idOrgConfig" selectionMode="None" selectionBehavior="Row" visibleRowCount="12" fixedRowCount="0"
+							fixedColumnCount="1" enableSelectAll="true">
+							<ui:columns>
+								<ui:Column width="8rem" headerSpan="1" class="columnLine" hAlign="Center">
+									<ui:multiLabels>
+										<Label text="Applicable" textAlign="Center" width="100%" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<CheckBox select="onSelectOrg" selected="{hierar>isApplicable}" editable="{hierar>isActive}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="15rem" headerSpan="1" class="columnLine">
+									<ui:multiLabels>
+										<Label text="Attribute" textAlign="Center" width="100%" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<HBox width="100%">
+											<Text text="{hierar>attName}" width="100%" visible="true"/>
+											<!--<Input width="100%" value="{hierar>attName}"
+													visible="{=(${hierar>attCode}=== 'UD1'|| ${hierar>attCode}=== 'UD2' || ${hierar>attCode}=== 'UD3' || ${hierar>attCode}=== 'UD4' || ${hierar>attCode}=== 'UD5' || ${hierar>attCode}=== 'UD6')?true:false}"
+													editable="{hierar>isApplicable}"/>-->
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem" hAlign="Center">
+									<ui:multiLabels>
+										<Label text="Outward" textAlign="Center" width="100%" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<CheckBox visible="{=(${hierar>attCode}=== 'PO')?false:true}" editable="{hierar>isApplicable}" selected="{hierar>outword}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem" hAlign="Center">
+									<ui:multiLabels>
+										<Label text="Inward" textAlign="Center" width="100%" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<CheckBox visible="{=(${hierar>attCode}=== 'SO'|| ${hierar>attCode}=== 'DC')?false:true}" editable="{hierar>isApplicable}"
+											selected="{hierar>inword}"/>
+									</ui:template>
+								</ui:Column>
+							</ui:columns>
+						</ui:Table>
+					</f:content>
+				</f:DynamicPage>
+			</IconTabFilter>
+			<IconTabFilter text="Organization Data" tooltip="Organization Data" key="OrganizationData">
+				<f:DynamicPage id="dynamicPageId">
+					<f:title>
+						<f:DynamicPageTitle>
+							<f:heading>
+								<HBox>
+									<Label text="Entity :" class="sapUiTinyMarginTop" design="Bold"/>
+									<ComboBox items="{entityOrg>/resp/}" change="onSelectionChangeEntity" id="idEntityValueOrg" width="12rem" class="sapUiTinyMarginBegin">
+										<core:Item key="{entityOrg>entityId}" text="{entityOrg>entityName}"/>
+									</ComboBox>
+									<Label text="Attribute :" class="sapUiTinyMarginTop sapUiSmallMarginBegin" design="Bold"/>
+									<ComboBox items="{hierarValue>/}" id="idAttributOrg" selectionChange="onSelectionChangeAttribut" class="sapUiTinyMarginBegin">
+										<core:Item key="{hierarValue>attCode}" text="{hierarValue>attName}"/>
+									</ComboBox>
+									<CheckBox text="Outward" id="idCheckBoxOutward" editable="false"/>
+									<CheckBox text="Inward" id="idCheckBoxInward" editable="false"/>
+									<Button type="Emphasized" class="sapUiSmallMarginBegin" text="Go" press="onPressGo"/>
+								</HBox>
+							</f:heading>
+							<f:actions>
+								<Button type="Emphasized" icon="sap-icon://save" text="Submit" id="idOrgDataSubmit" press="onSubmit"/>
+							</f:actions>
+						</f:DynamicPageTitle>
+					</f:title>
+					<f:content>
+						<Panel class="sapUiNoContentPadding">
+							<ui:Table id="idOrgDataGridTable" rows="{OrgData>/}" selectionMode="MultiToggle" rowSelectionChange="onSelection" enableColumnReordering="false"
+								selectionBehavior="Row" visibleRowCount="10" fixedRowCount="0" fixedColumnCount="0" enableSelectAll="false">
+								<ui:extension>
+									<Toolbar>
+										<ToolbarSpacer/>
+										<Button type="Accept" icon="sap-icon://edit" tooltip="Edit rows" id="idOrgDataEditRows" press="onEditRows"/>
+										<Button type="Accept" icon="sap-icon://add" tooltip="Add row" id="idOrgDataAddrow" press="onAddrow"/>
+										<Button type="Reject" icon="sap-icon://delete" tooltip="Delete rows" id="idOrgDataDeleteRows" press="onDeleteRows"/>
+									</Toolbar>
+								</ui:extension>
+								<ui:columns>
+									<ui:Column width="4rem" visible="true" headerSpan="1" class="columnLine">
+										<ui:multiLabels>
+											<Label text="SNO" textAlign="Center" width="100%" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{OrgData>sno}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column width="20rem" visible="true" headerSpan="1" class="columnLine">
+										<ui:multiLabels>
+											<Label text="Attribute" textAlign="Center" width="100%" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Input value="{OrgData>attributeName}" editable="{OrgData>edit}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</Panel>
+					</f:content>
+				</f:DynamicPage>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</core:FragmentDefinition>

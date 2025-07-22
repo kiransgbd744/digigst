@@ -1,0 +1,18 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.ITC04"
+	displayBlock="true" busyIndicatorDelay="0">
+	<IconTabBar id="IconTab" select="handleIconTabBarSelect" expanded="true" class="sapUiNoContentPadding sapUiNoMargin"
+		backgroundDesign="Transparent" stretchContentHeight="true" selectedKey="ITC04" expandable="false">
+		<items>
+			<IconTabFilter text="ITCO4 Summary" tooltip="TCO4 Summary" key="ITC04" class="sapUiSmallMarginEnd">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.itc04.ProcessRecords" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.itc04.ProcessSummary" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="ITC04 Stock Tracking Report" tooltip="ITC04 Stock Tracking Report" key="STR">
+				<mvc:XMLView viewName="com.ey.digigst.view.ITC04Str"/>
+			</IconTabFilter>
+			<IconTabFilter text="ITC04 vs EWB" tooltip="ITC04 vs EWB" key="IvE" enabled="{= ${userPermission>/appPermission/P39}}">
+				<mvc:XMLView viewName="com.ey.digigst.view.ITC04vsEWB"/>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</mvc:View>

@@ -1,0 +1,96 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.ui.layout.form">
+	<Dialog id="dSaveStatus" title="Save Status" type="Message" contentWidth="70%" class="sapUiSizeCompact" draggable="true">
+		<customHeader>
+            <Toolbar>
+                <ToolbarSpacer/>
+                <Label text="Save Status" />
+                <ToolbarSpacer/>
+                <Button icon="sap-icon://refresh" press="onSearchSaveStatus" tooltip="Refresh" class="buttoncolorSec"/>
+            </Toolbar>
+        </customHeader>
+		<beginButton>
+			<Button text="{i18n>ok}" class="buttoncolorSec" press="onCloseSaveStatus"/>
+		</beginButton>
+		<f:Form width="55rem">
+			<f:layout>
+				<f:ResponsiveGridLayout columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false"/>
+			</f:layout>
+			<f:formContainers>
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement>
+							<f:label>
+								<Label text="{i18n>gstin}" class="sapUiTinyMarginTop"/>
+							</f:label>
+							<f:fields>
+								<Select items="{GstinModel>/}" selectedKey="{SaveStatsFilter>/gstin}" width="13rem">
+									<core:Item key="{GstinModel>gstin}" text="{GstinModel>gstin}"/>
+								</Select>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement>
+							<f:label>
+								<Label text="{i18n>taxPeriod}" class="sapUiTinyMarginTop"/>
+							</f:label>
+							<f:fields>
+								<HBox renderType="Bare" alignItems="Center" class="sapUiTinyMarginTop">
+									<DatePicker id="dtSaveStats" displayFormat="MMM yyyy" valueFormat="MMyyyy" value="{SaveStatsFilter>/taxPeriod}"
+										maxDate="{SaveStatsFilter>/maxDate}" width="13rem"/>
+									<Button text="Filter" press="onSearchSaveStatus" class="sapUiSmallMarginBegin buttoncolorSec buttoncolor"/>
+								</HBox>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+		<ScrollContainer horizontal="false" vertical="true" height="24rem" class="sapUiNoMargin sapUiNoContentPadding">
+			<Table id="tabSaveStatus" items="{SaveStatus>/}" sticky="ColumnHeaders" noDataText="No Data" class="sapUiNoContentPadding">
+				<columns >
+					<Column hAlign="End" width="4rem">
+						<Label text="{i18n>sNo}" design="Bold"/>
+					</Column>
+					<Column hAlign="Center" width="8rem">
+						<Label text="{i18n>date}" design="Bold"/>
+					</Column>
+					<Column hAlign="Center" width="7rem">
+						<Label text="{i18n>time}" design="Bold"/>
+					</Column>
+					<Column>
+						<Label text="{i18n>action}" design="Bold" textAlign="Center" width="100%"/>
+					</Column>
+					<Column>
+						<Label text="{i18n>refId}" design="Bold" textAlign="Center" width="100%"/>
+					</Column>
+					<Column hAlign="Begin" width="7rem">
+						<Label text="{i18n>status}" design="Bold"/>
+					</Column>
+					<Column hAlign="End" width="6rem">
+						<Label text="{i18n>error} {i18n>count}" design="Bold"/>
+					</Column>
+					<Column hAlign="Center" width="13rem">
+						<Label text="Save JSON" design="Bold"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem vAlign="Middle">
+						<cells>
+							<Text text="{SaveStatus>sNo}"/>
+							<Text text="{SaveStatus>date}"/>
+							<Text text="{SaveStatus>time}"/>
+							<Text text="{SaveStatus>action}"/>
+							<Text text="{SaveStatus>refId}"/>
+							<Text text="{SaveStatus>status}"/>
+							<!--<HBox>-->
+							<!--	<Text text="{SaveStatus>status}" visible="{=(!${SaveStatus>status}||${SaveStatus>status}==='P'||${SaveStatus>errorCount}==='0')}"/>-->
+							<!--	<Link text="{SaveStatus>status}" visible="{=!(!${SaveStatus>status}||${SaveStatus>status}==='P'||${SaveStatus>errorCount}==='0')}"/>-->
+							<!--</HBox>-->
+							<Text text="{SaveStatus>errorCount}"/>
+							<core:Icon src="sap-icon://download" press="onSaveStatusDownload2" visible="{=${SaveStatus>action}==='Generate Summary (PTF)'?false:true}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</ScrollContainer>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,1491 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:layout="sap.ui.layout" height="100%"
+	xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table"
+	xmlns:form="sap.ui.layout.form" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:commons="sap.suite.ui.commons"
+	xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data" xmlns:viz="sap.viz.ui5.controls">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Validated Data" titleStyle="H3" class="tinyMarginTop"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Recipient GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="GstinId" width="100%" items="{path:'QRRecipientGstin>/'}" selectionChange="selectAll">
+									<core:Item key="{QRRecipientGstin>gstin}" text="{QRRecipientGstin>gstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Vendor PAN" visibleInFilterBar="true" id="vBox1ID2A"
+							visible="{Display>/DOC}">
+							<fb:control>
+								<MultiComboBox id="PanId" width="100%" items="{path:'QRVendorPan>/vendorGstins'}" selectionChange="selectAll" selectionFinish="onPAN">
+									<core:Item key="{QRVendorPan>gstin}" text="{QRVendorPan>gstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Vendor GSTIN" visibleInFilterBar="true" id="vBox1ID2A1"
+							visible="{Display>/DOC}">
+							<fb:control>
+								<MultiComboBox id="VGid" width="100%" items="{path:'QRVendorGstin>/'}" selectionChange="selectAll">
+									<core:Item key="{QRVendorGstin>gstin}" text="{QRVendorGstin>gstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="Validated From" visibleInFilterBar="true" id="vBox2ID2A"
+							visible="{Display>/TAX}">
+							<fb:control>
+								<DatePicker displayFormat="dd MMM yyyy" id="FromDate" valueFormat="dd-MM-yyyy" class="input " change="onFromTaxPeriodChange"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="Validated To" visibleInFilterBar="true" id="vBox2ID2A1"
+							visible="{Display>/TAX}">
+							<fb:control>
+								<DatePicker displayFormat="dd MMM yyyy" id="ToDate" valueFormat="dd-MM-yyyy" class="input "/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="H" label="Record Status" visibleInFilterBar="true" id="vBox2ID2A2"
+							visible="{Display>/TAX}">
+							<fb:control>
+								<MultiComboBox id="RSid" class="input" selectionChange="selectAll">
+									<core:Item key="All" text="All"/>
+									<core:Item key="Processed with QR" text="Processed with QR"/>
+									<core:Item key="Signature Mismatch" text="Signature Mismatch"/>
+									<core:Item key="Full Match" text="Full Match"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="Filter" press="onSearchValidateData" class="input sapUiTinyMarginBegin buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<VBox class="sapUiSizeCompact">
+				<l:BlockLayout background="Dashboard" class="sapUiTinyMarginBottom">
+					<l:BlockLayoutRow class="sapUiNoContentPadding">
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Total Invoice(s) Uploaded" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ConsolidatedData>/qrUploadCounts/totalDoc}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Total Errored Out Invoices" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ConsolidatedData>/qrUploadCounts/errMatch}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Processed with QR" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ConsolidatedData>/qrUploadCounts/qrProc}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Signature Mis-Match" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ConsolidatedData>/qrUploadCounts/sigMisMatch}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Full Match" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ConsolidatedData>/qrUploadCounts/fullMatch}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+				<Toolbar>
+					<Title text="Feature - {path:'PropValidate>/optionOpted', formatter:'.formatter.optionOpted'}" titleStyle="H5" class="sapUiTinyMarginBegin redLabel"/>
+					<ToolbarSpacer/>
+					<Button text="Report Download" press="onReportDownload" class="buttoncolorSec"/>
+				</Toolbar>
+				<l:BlockLayout class="cl_Contentpading">
+					<l:BlockLayoutRow accentCells="Accent1">
+						<l:BlockLayoutCell class="sapUiTinyMarginBeginEnd" width="4">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer/>
+									<Label text="Count/Type of Mismatches" design="Bold" class="titleFont"/>
+									<ToolbarSpacer/>
+								</Toolbar>
+								<viz:Popover id="idPopOver12"></viz:Popover>
+								<viz:VizFrame id="idVizFrame12" xmlns="sap.viz" uiConfig="{applicationSet:'fiori'}" vizType='column' class="cl_vizHeig2 sapUiTinyMarginTop">
+									<viz:dataset>
+										<viz.data:FlattenedDataset data="{ConsolidatedData>/misMatchCounts}">
+											<viz.data:dimensions>
+												<viz.data:DimensionDefinition name="Report Type" value="{ConsolidatedData>reportType}"/>
+											</viz.data:dimensions>
+											<viz.data:measures>
+												<viz.data:MeasureDefinition name="Count" value="{ConsolidatedData>mismatCount}"/>
+											</viz.data:measures>
+										</viz.data:FlattenedDataset>
+									</viz:dataset>
+									<viz:feeds>
+										<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Count"/>
+										<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Report Type"/>
+									</viz:feeds>
+								</viz:VizFrame>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="2.5">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer/>
+									<Label text="Supplier GSTIN-wise Statistics" design="Bold" class="titleFont"/>
+									<ToolbarSpacer/>
+								</Toolbar>
+								<ui:Table id="GSTINTabId" rows="{ConsolidatedData>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+									class="sapUiTinyMarginTop">
+									<ui:columns>
+										<ui:Column hAlign="Center" width="10rem">
+											<VBox>
+												<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Input placeholder="filter column" liveChange="onSearchGstinTab1"/>
+											</VBox>
+											<ui:template>
+												<Text text="{ConsolidatedData>gstin}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<VBox>
+												<Label text="Invoice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Input placeholder="filter column" liveChange="onSearchGstinTab1"/>
+											</VBox>
+											<ui:template>
+												<Text text="{ConsolidatedData>invoices}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<VBox>
+												<Label text="Full Match %" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Input placeholder="filter column" liveChange="onSearchGstinTab1"/>
+											</VBox>
+											<ui:template>
+												<Text text="{ConsolidatedData>match}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="2.5">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer/>
+									<Label text="Supplier PAN-wise Statistics" design="Bold" class="titleFont"/>
+									<ToolbarSpacer/>
+								</Toolbar>
+								<ui:Table rows="{ConsolidatedData>/panStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+									class="sapUiTinyMarginTop" id="PANTabId1">
+									<ui:columns>
+										<ui:Column hAlign="Center">
+											<VBox>
+												<Label text="PAN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Input placeholder="filter column" liveChange="onSearchPANTab1"/>
+											</VBox>
+											<ui:template>
+												<Text text="{ConsolidatedData>gstin}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<VBox>
+												<Label text="Invoice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Input placeholder="filter column" liveChange="onSearchPANTab1"/>
+											</VBox>
+											<ui:template>
+												<Text text="{ConsolidatedData>invoices}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<VBox>
+												<Label text="Full Match %" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Input placeholder="filter column" liveChange="onSearchPANTab1"/>
+											</VBox>
+											<ui:template>
+												<Text text="{ConsolidatedData>match}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+							</Panel>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+					<l:BlockLayoutRow accentCells="Accent1" visible="{=['B','C'].includes(${PropValidate>/optionOpted})}">
+						<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="5">
+							<Text text=" "/>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="4">
+							<HBox>
+								<Text text="Note: " class="sapUiTinyMarginEnd boldFont redLink"/>
+								<Text class="redLink"
+									text="Supplier GSTIN/PAN wise statistics summary has been calculated based on Supplier GSTIN {=${PropValidate>/optionOpted}==='B'?'(QR)':'(JSON)'}"/>
+							</HBox>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+					<l:BlockLayoutRow accentCells="Accent1" class="sapUiTinyMarginTop">
+						<l:BlockLayoutCell visible="{=${PropValidate>/optionOpted}==='A'}">
+							<commons:ChartContainer fullScreen="{PropValidate>/fullScreenA}" showFullScreen="false" showZoom="true" showPersonalization="false"
+								autoAdjustHeight="false" id="noId1">
+								<commons:content>
+									<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+										<commons:content>
+											<ui:Table id="qrVDSummaryTab" rows="{ConsolidatedTableData>/qrSummaryData}" enableColumnReordering="false" selectionMode="None"
+												visibleRowCount="{=${PropValidate>/fullScreenA}?20:10}" class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+												<ui:columns>
+													<ui:Column hAlign="Center" width="5rem">
+														<VBox width="100%">
+															<Label text="Sr No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>slNo}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="File Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>File Name}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="Validated Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>Validated_Date}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="Recipient GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>BuyerGstin}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="Supplier GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>SellerGstin}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="Document Number" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>DocNo}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="Document Date " textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>DocDt}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="Document Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>DocTyp}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="Total Invoice Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>TotInvVal}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="Item Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>ItemCnt}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="Main HSN Code" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>MainHsnCode}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="22rem">
+														<VBox width="100%">
+															<Label text="IRN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>Irn}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="IRN Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>IrnDt}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="Signature" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>Signature}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{ConsolidatedTableData>Signature}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="Recipient GSTIN-Match" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>BuyerGstin_Match}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{ConsolidatedTableData>BuyerGstin_Match}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="Supplier GSTIN-Match" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>SellerGstin_Match}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{ConsolidatedTableData>SellerGstin_Match}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="Document Number-Match" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>DocNo_Match}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{ConsolidatedTableData>DocNo_Match}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="Document Date-Match" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>DocDt_Match}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{ConsolidatedTableData>DocDt_Match}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="Document Type-Match" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>DocTyp_Match}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{ConsolidatedTableData>DocTyp_Match}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="Total Invoice Value-Match" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>TotInvVal_Match}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{ConsolidatedTableData>TotInvVal_Match}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="Main HSN Code-Match" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>MainHsnCode_Match}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{ConsolidatedTableData>MainHsnCode_Match}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="IRN-Match" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>Irn_Match}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{ConsolidatedTableData>Irn_Match}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="Match Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>Match_Count}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="Mismatch Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>Mismatch_Count}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{=${ConsolidatedTableData>Mismatch_Count}>0?'R':''}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox width="100%">
+															<Label text="Declaration - Rule 48 (4)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'A')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>Declaration_Rule48_(4)}"/>
+														</ui:template>
+													</ui:Column>
+												</ui:columns>
+												<ui:footer class="sapUiSizeCompact">
+													<HBox justifyContent="Center">
+														<Button type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" enabled="{PropValidate>/bFirstA}"
+															press="onValidateDataPagination('A','F')" class="sapUiTinyMarginBeginEnd"/>
+														<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="{PropValidate>/bPrevA}"
+															press="onValidateDataPagination('A','P')"/>
+														<Input type="Number" textAlign="End" width="4rem" enabled="{PropValidate>/ePageNoA}" value="{PropValidate>/pageNoA}"
+															submit="onVDPaginationSubmit('A','I')" class="sapUiTinyMarginBegin"/>
+														<Text text="/ {PropValidate>/pgTotalA}" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+														<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="{PropValidate>/bNextA}"
+															press="onValidateDataPagination('A','N')"/>
+														<Button type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" enabled="{PropValidate>/bLastA}"
+															press="onValidateDataPagination('A','L')" class="sapUiTinyMarginBeginEnd"/>
+														<Select change="onVDPaginationSubmit('A','S')" selectedKey="{PropValidate>/pgSizeA}" forceSelection="true" width="10%">
+															<core:Item key="10" text="10"/>
+															<core:Item key="25" text="25"/>
+															<core:Item key="50" text="50"/>
+															<core:Item key="75" text="75"/>
+															<core:Item key="100" text="100"/>
+														</Select>
+													</HBox>
+												</ui:footer>
+											</ui:Table>
+										</commons:content>
+									</commons:ChartContainerContent>
+								</commons:content>
+								<commons:toolbar>
+									<OverflowToolbar height="9rem">
+										<Label text="Result Summary" design="Bold" class="titleFont"/>
+										<ToolbarSpacer/>
+										<Button type="Transparent" id="openFbtn" icon="sap-icon://full-screen" tooltip="Open Full Screen" visible="{=!${PropValidate>/fullScreenA}}"
+											press="onFullScreenVD('A','open')"/>
+										<Button type="Transparent" id="closeFbtn" icon="sap-icon://exit-full-screen" tooltip="Close Full Screen"
+											visible="{PropValidate>/fullScreenA}" press="onFullScreenVD('A','close')"/>
+										<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+									</OverflowToolbar>
+								</commons:toolbar>
+							</commons:ChartContainer>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell visible="{=${PropValidate>/optionOpted}==='B'}">
+							<commons:ChartContainer fullScreen="{PropValidate>/fullScreenB}" showFullScreen="false" showZoom="true" showPersonalization="false"
+								autoAdjustHeight="false">
+								<commons:content>
+									<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+										<commons:content>
+											<ui:Table id="qrpdfVDSummaryData" rows="{ConsolidatedTableData>/qrpdfSummaryData}" enableColumnReordering="false" selectionMode="None"
+												visibleRowCount="{=${PropValidate>/fullScreenB}?20:10}" class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+												<ui:columns>
+													<ui:Column hAlign="Center" width="5rem">
+														<VBox width="100%">
+															<Label text="Sr No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>slNo}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Report Category" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>reportCategory}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="24rem">
+														<VBox width="100%">
+															<Label text="Match Reasons" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>matchReasons}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="24rem">
+														<VBox width="100%">
+															<Label text="Mismatch Reasons" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>misMatchReasons}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{=${ConsolidatedTableData>mismatchCount}>0?'R':''}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<VBox width="100%">
+															<Label text="Match Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>matchCount}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="9rem">
+														<VBox width="100%">
+															<Label text="Mismatch Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>mismatchCount}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{=${ConsolidatedTableData>mismatchCount}>0?'R':''}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Recipient GSTIN (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>buyerGstinQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Recipient GSTIN (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>buyerGstinPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Supplier GSTIN (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>sellerGstinQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Supplier GSTIN (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>sellerGstinPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Document Number (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>docNoQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Document Number (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>docNoPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="Document Date (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>docDtQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Document Date (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>docDtPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Document Type (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>docTypeQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Document Type (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>docTypePDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Total Invoice Value (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>totInvValQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Total Invoice Value (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>totInvValPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="9rem">
+														<VBox width="100%">
+															<Label text="Item Count (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>itemCntQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="Main HSN Code (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>mainHsnCodeQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Main HSN Code (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>mainHsnCodePDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="22rem">
+														<VBox width="100%">
+															<Label text="IRN (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>irnQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="22rem">
+														<VBox width="100%">
+															<Label text="IRN (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>irnPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="IRN Date (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>irnDateQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="IRN Date (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>irnDatePDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<VBox width="100%">
+															<Label text="Signature" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>signatureQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="18rem">
+														<VBox width="100%">
+															<Label text="File Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>Filename}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<VBox width="100%">
+															<Label text="Validated Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>validatedDate}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Declaration - Rule 48 (4)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>declaration}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="E-Invoice Applicability" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>einvAppli}"/>
+														</ui:template>
+													</ui:Column>
+												</ui:columns>
+												<ui:footer class="sapUiSizeCompact">
+													<HBox justifyContent="Center">
+														<Button type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" enabled="{PropValidate>/bFirstB}"
+															press="onValidateDataPagination('B','F')" class="sapUiTinyMarginBeginEnd"/>
+														<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="{PropValidate>/bPrevB}"
+															press="onValidateDataPagination('B','P')"/>
+														<Input type="Number" textAlign="End" width="4rem" enabled="{PropValidate>/ePageNoB}" value="{PropValidate>/pageNoB}"
+															submit="onVDPaginationSubmit('B','I')" class="sapUiTinyMarginBegin"/>
+														<Text text="/ {PropValidate>/pgTotalB}" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+														<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="{PropValidate>/bNextB}"
+															press="onValidateDataPagination('B','N')"/>
+														<Button type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" enabled="{PropValidate>/bLastB}"
+															press="onValidateDataPagination('B','L')" class="sapUiTinyMarginBeginEnd"/>
+														<Select change="onVDPaginationSubmit('B','S')" selectedKey="{PropValidate>/pgSizeB}" forceSelection="true" width="10%">
+															<core:Item key="10" text="10"/>
+															<core:Item key="25" text="25"/>
+															<core:Item key="50" text="50"/>
+															<core:Item key="75" text="75"/>
+															<core:Item key="100" text="100"/>
+														</Select>
+													</HBox>
+												</ui:footer>
+											</ui:Table>
+										</commons:content>
+									</commons:ChartContainerContent>
+								</commons:content>
+								<commons:toolbar>
+									<OverflowToolbar height="9rem">
+										<Label text="Result Summary" design="Bold" class="titleFont"/>
+										<ToolbarSpacer/>
+										<Button type="Transparent" icon="sap-icon://full-screen" tooltip="Open Full Screen" visible="{=!${PropValidate>/fullScreenB}}"
+											press="onFullScreenVD('B','open')"/>
+										<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="Close Full Screen" visible="{PropValidate>/fullScreenB}"
+											press="onFullScreenVD('B','close')"/>
+										<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+									</OverflowToolbar>
+								</commons:toolbar>
+							</commons:ChartContainer>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell visible="{=${PropValidate>/optionOpted}==='C'}">
+							<commons:ChartContainer fullScreen="{PropValidate>/fullScreenC}" showFullScreen="false" showZoom="true" showPersonalization="false"
+								autoAdjustHeight="false">
+								<commons:content>
+									<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+										<commons:content>
+											<ui:Table id="qrPdfJsonVDSummaryTab" rows="{ConsolidatedTableData>/qrpdfJsonSummaryData}" enableColumnReordering="false"
+												selectionMode="None" visibleRowCount="{=${PropValidate>/fullScreenC}?20:10}" class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+												<ui:columns>
+													<ui:Column hAlign="Center" width="5rem">
+														<VBox width="100%">
+															<Label text="Sr No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>slNo}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Report Category" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>reportCategory}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="24rem">
+														<VBox width="100%">
+															<Label text="Match Reasons" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>matchReasons}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="24rem">
+														<VBox width="100%">
+															<Label text="Mismatch Reasons" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>misMatchReasons}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{=${ConsolidatedTableData>mismatchCount}>0?'R':''}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<VBox width="100%">
+															<Label text="Match Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>matchCount}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="9rem">
+														<VBox width="100%">
+															<Label text="Mismatch Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>mismatchCount}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{=${ConsolidatedTableData>mismatchCount}>0?'R':''}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Recipient GSTIN (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>buyerGstinJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Recipient GSTIN (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>buyerGstinPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Supplier GSTIN (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>sellerGstinJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Supplier GSTIN (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>sellerGstinPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="13rem">
+														<VBox width="100%">
+															<Label text="Document Number (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>docNoJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Document Number (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>docNoJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Document Date (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>docDtJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Document Date (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>docDtPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Document Type (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>docTypeJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Document Type (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>docTypePDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="13rem">
+														<VBox width="100%">
+															<Label text="Total Invoice Value (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>totInvValJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Total Invoice Value (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>totInvValPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="9rem">
+														<VBox width="100%">
+															<Label text="Item Count (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>itemCntJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="9rem">
+														<VBox width="100%">
+															<Label text="Item Count (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>itemCntPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Main HSN Code (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>mainHsnCodeJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Main HSN Code (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>mainHsnCodePDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<VBox width="100%">
+															<Label text="Signature (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>signatureQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="22rem">
+														<VBox width="100%">
+															<Label text="IRN (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>irnJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="22rem">
+														<VBox width="100%">
+															<Label text="IRN (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>irnPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="IRN Date (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>irnDateJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="IRN Date (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>irnDatePDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="IRN Status (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>irnStatusJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="14rem">
+														<VBox width="100%">
+															<Label text="IRN Cancellation Date (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>irnCancellationDateJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="POS (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>posJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="POS (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>posPdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="Taxable Value (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>taxableValueJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="Taxable Value (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>taxableValuePdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="IGST (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>igstJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="IGST (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>igstPdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="CGST (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>cgstJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="CGST (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>cgstPdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="SGST/UTGST (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>sgstUtgstJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="SGST/UTGST (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>sgstUtgstPdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="CESS (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>cessJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="CESS (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>cessPdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="Total Tax (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>totalTaxJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="Total Tax (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>totalTaxPdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Reverse Charge (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>reverseChargeJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Reverse Charge (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>reverseChargePdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="13rem">
+														<VBox width="100%">
+															<Label text="Purchase Order No (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>purchaseOrderNoJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Purchase Order No (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>purchaseOrderNoPdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="14rem">
+														<VBox width="100%">
+															<Label text="Quantity (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>quantityJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="14rem">
+														<VBox width="100%">
+															<Label text="Quantity (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>quantityPdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="13rem">
+														<VBox width="100%">
+															<Label text="Unit Price (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>unitPriceJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="13rem">
+														<VBox width="100%">
+															<Label text="Unit Price (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>unitPricePdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="14rem">
+														<VBox width="100%">
+															<Label text="Line Item Amount (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>lineItemAmountJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="14rem">
+														<VBox width="100%">
+															<Label text="Line Item Amount (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>lineItemAmountPdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="18rem">
+														<VBox width="100%">
+															<Label text="File Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>Filename}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<VBox width="100%">
+															<Label text="Validated Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>validatedDate}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Declaration - Rule 48 (4)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>declaration}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="E-Invoice Applicability" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="ValidateDataTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ConsolidatedTableData>einvAppli}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="JSON Download" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+														</VBox>
+														<ui:template>
+															<Button type="Emphasized" text="Download" enabled="{=${ConsolidatedTableData>jsonResponse} === undefined ? false : true}"
+																press="onDownloadJSON(${ConsolidatedTableData>jsonResponse})" width="5.5rem"/>
+														</ui:template>
+													</ui:Column>
+												</ui:columns>
+												<ui:footer class="sapUiSizeCompact">
+													<HBox justifyContent="Center">
+														<Button type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" enabled="{PropValidate>/bFirstC}"
+															press="onValidateDataPagination('C','F')" class="sapUiTinyMarginBeginEnd"/>
+														<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="{PropValidate>/bPrevC}"
+															press="onValidateDataPagination('C','P')"/>
+														<Input type="Number" textAlign="End" width="4rem" enabled="{PropValidate>/ePageNoC}" value="{PropValidate>/pageNoC}"
+															submit="onVDPaginationSubmit('C','I')" class="sapUiTinyMarginBegin"/>
+														<Text text="/ {PropValidate>/pgTotalC}" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+														<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="{PropValidate>/bNextC}"
+															press="onValidateDataPagination('C','N')"/>
+														<Button type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" enabled="{PropValidate>/bLastC}"
+															press="onValidateDataPagination('C','L')" class="sapUiTinyMarginBeginEnd"/>
+														<Select change="onVDPaginationSubmit('C','S')" selectedKey="{PropValidate>/pgSizeC}" forceSelection="true" width="10%">
+															<core:Item key="10" text="10"/>
+															<core:Item key="25" text="25"/>
+															<core:Item key="50" text="50"/>
+															<core:Item key="75" text="75"/>
+															<core:Item key="100" text="100"/>
+														</Select>
+													</HBox>
+												</ui:footer>
+											</ui:Table>
+										</commons:content>
+									</commons:ChartContainerContent>
+								</commons:content>
+								<commons:toolbar>
+									<OverflowToolbar height="9rem">
+										<Label text="Result Summary" design="Bold" class="titleFont"/>
+										<ToolbarSpacer/>
+										<Button type="Transparent" icon="sap-icon://full-screen" tooltip="Open Full Screen" visible="{=!${PropValidate>/fullScreenC}}"
+											press="onFullScreenVD('C','open')"/>
+										<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="Close Full Screen" visible="{PropValidate>/fullScreenC}"
+											press="onFullScreenVD('C','close')"/>
+										<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+									</OverflowToolbar>
+								</commons:toolbar>
+							</commons:ChartContainer>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

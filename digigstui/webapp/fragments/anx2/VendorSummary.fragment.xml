@@ -1,0 +1,1716 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage id="idVendorSummaryDynamicPage">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<SegmentedButton selectedKey="PRSummary" selectionChange="onSelectionChangeVenSum" width="50rem" id="id_VendorSegButtonPress">
+						<items>
+							<SegmentedButtonItem text="PR Summary" key="PRSummary"/>
+							<SegmentedButtonItem text="ANX-2 Summary" key="ANX2Summary"/>
+							<SegmentedButtonItem text="Recon Summary" key="ReconSummary"/>
+							<SegmentedButtonItem text="Recon Response" key="ReconResponse"/>
+							<SegmentedButtonItem text="Impact on RET-1" key="ImpactonRET1"/>
+						</items>
+					</SegmentedButton>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding">
+				<!--PR Summary Filter-->
+				<fb:FilterBar showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onPressVendorSummaryGO" clear="onClearFilter"
+					useToolbar="false" class="sapUiNoContentPadding" visible="true" id="PRsummFilterID">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="X" label="Tax Period" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<DatePicker id="iVenSummaryPerioed" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="handleChange" width="12rem"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" id="slVenSummaryGstin">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Vendor PAN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'VendorDetalils>/cPans'}">
+									<core:Item key="{VendorDetalils>pan}" text="{VendorDetalils>pan}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Vendor GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'VendorDetalils>/sgstins'}">
+									<core:Item key="{VendorDetalils>gstin}" text="{VendorDetalils>gstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="Data" visibleInFilterBar="true" id="idmulti1">
+							<fb:control>
+								<MultiComboBox id="slVenSummaryData" width="12rem" selectedKeys="CP" selectionChange="OnchangeDataDrop"
+									selectionFinish="OnchangeDataDropFinish">
+									<core:Item key="All" text="All"/>
+									<core:Item key="CP" text="Current Period"/>
+									<core:Item key="RCR" text="Rollover-Credit Availed"/>
+									<core:Item key="RNCR" text="Rollover-Credit Not Availed"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<!--ANX - 2 Summary Filter-->
+				<fb:FilterBar showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onPressANX2SummaryGO" clear="onClearFilter"
+					useToolbar="false" class="sapUiNoContentPadding" visible="false" id="A2SummFilterID">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="X" label="Tax Period" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<DatePicker id="iVenSummaryPerioed1" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="handleChange" width="12rem"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" id="slVenSummaryGstin1">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Vendor PAN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'VendorDetalils>/cPans'}">
+									<core:Item key="{VendorDetalils>pan}" text="{VendorDetalils>pan}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Vendor GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'VendorDetalils>/sgstins'}">
+									<core:Item key="{VendorDetalils>gstin}" text="{VendorDetalils>gstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="Data" visibleInFilterBar="false" id="idmulti21">
+							<fb:control>
+								<MultiComboBox width="12rem" selectedKeys="CP" selectionChange="OnchangeDataDrop" selectionFinish="OnchangeDataDropFinish">
+									<core:Item key="All" text="All"/>
+									<core:Item key="CP" text="Current Period"/>
+									<core:Item key="RCR" text="Rollover-Credit Availed"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<!--Recon Summary Filter-->
+				<fb:FilterBar showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onReconSummaryTabBind"
+					clear="onClearFilterRecsummVS" useToolbar="false" class="sapUiNoContentPadding" visible="false" id="RecSummFilterId">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="X" label="Tax Period" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<DatePicker id="ReconSummDateId" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="handleChangeRecSummDate" width="12rem"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" id="ReconSummGSTNId"
+									selectionChange="onSelectGSTINs">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Vendor PAN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'VendorDetalils>/'}" id="ReconSumPanId" selectionFinish="onVenRSPanChange">
+									<core:Item key="{VendorDetalils>pan}" text="{VendorDetalils>pan}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Vendor GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'VendorDetalils1>/'}" id="ReconSummGstnId" selectionFinish="onVenRSGstinChange">
+									<core:Item key="{VendorDetalils1>gstin}" text="{VendorDetalils1>gstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="Data" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="12rem" selectedKeys="CP" selectionChange="OnchangeDataDrop" selectionFinish="OnchangeDataDropFinish">
+									<core:Item key="All" text="All"/>
+									<core:Item key="CP" text="Current Period"/>
+									<core:Item key="RCR" text="Rollover-Credit Availed"/>
+									<core:Item key="RNCR" text="Rollover-Credit Not Availed"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<!--Recon Response Filter-->
+				<fb:FilterBar showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onRecRespGO" clear="onClearFilterRecRespVS"
+					useToolbar="false" class="sapUiNoContentPadding" visible="false" id="RecRespFilterId">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="X" label="Tax Period" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<DatePicker id="ReconRespDateId" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="handleChangeRecRespDate" width="12rem"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" id="ReconRespGSTNId"
+									selectionChange="onRecRespGSTIN">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Vendor PAN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'VendorDetalilsRecResp>/'}" id="ReconRespVendorPANId" selectionFinish="onVenReRsPanChange">
+									<core:Item key="{VendorDetalilsRecResp>pan}" text="{VendorDetalilsRecResp>pan}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Vendor GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'VendorDetalilsRecResp1>/'}" id="RecRespVenGSTINID" selectionFinish="onVenReRsGstinChange">
+									<core:Item key="{VendorDetalilsRecResp1>gstin}" text="{VendorDetalilsRecResp1>gstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="Data" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="12rem" selectedKeys="CP" selectionChange="OnchangeDataDrop" selectionFinish="OnchangeDataDropFinish">
+									<core:Item key="All" text="All"/>
+									<core:Item key="CP" text="Current Period"/>
+									<core:Item key="RCR" text="Rollover-Credit Availed"/>
+									<core:Item key="RNCR" text="Rollover-Credit Not Availed"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<!--RET - 1 Filter-->
+				<fb:FilterBar showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onPressVendorSummaryGO" clear="onClearFilter"
+					useToolbar="false" class="sapUiNoContentPadding" visible="false" id="RETFilterId">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="X" label="Tax Period" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<DatePicker id="RETDateId" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="handleChange" width="12rem"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" id="RETGSTNId">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Vendor PAN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'VendorDetalils>/cPans'}">
+									<core:Item key="{VendorDetalils>pan}" text="{VendorDetalils>pan}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Vendor GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'VendorDetalils>/sgstins'}">
+									<core:Item key="{VendorDetalils>gstin}" text="{VendorDetalils>gstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="Data" visibleInFilterBar="false">
+							<fb:control>
+								<MultiComboBox width="12rem" selectedKeys="CP" selectionChange="OnchangeDataDrop" selectionFinish="OnchangeDataDropFinish">
+									<core:Item key="All" text="All"/>
+									<core:Item key="CP" text="Current Period"/>
+									<core:Item key="RCR" text="Rollover-Credit Availed"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel>
+				<!--PR Summary Table-->
+				<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false" visible="true"
+					id="PRSummID">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<VBox>
+									<ui:TreeTable rows="{path:'VenSummary>/', parameters:{ arrayNames:['items'], numberOfExpandedLevels:0 }}" selectionMode="None"
+										selectionBehavior="Row" visibleRowCount="10" fixedColumnCount="1" enableSelectAll="false" id="idVendorSummaryTable1">
+										<ui:columns>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<Label text="Vendor PAN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{VenSummary>vendorPAN}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<Label text="Vendor Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{VenSummary>vendorName}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="12rem">
+												<ui:multiLabels>
+													<Label text="Vendor GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox >
+														<Text text="{VenSummary>GSTIN}"/>
+														<!--<core:Icon src="sap-icon://add" size="0.75rem" tooltip="Add to Master" class="sapUiTinyMarginBegin" visible="{Anx2>Visible}" color="#0070b1"
+															press="onPressAddtoMaster"/>-->
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<Label text="Table Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Link text="{VenSummary>tableType}" press="onPressGSTINLink"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="15rem">
+												<ui:multiLabels>
+													<Label text="Doc. Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{VenSummary>docType}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="4rem" hAlign="End">
+												<ui:multiLabels>
+													<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{VenSummary>count}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End">
+												<ui:multiLabels>
+													<Label text="Invoice Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{path : 'VenSummary>invValue', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End">
+												<ui:multiLabels>
+													<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{path : 'VenSummary>taxableValue', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End" id="idVenTableCol6">
+												<Label design="Bold" text="Total Tax" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Label text="{path : 'VenSummary>totalTaxPayable', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End" id="idVenTableCol7">
+												<HBox>
+													<Label design="Bold" text="IGST" textAlign="Center" width="100%" wrapping="true"/>
+													<core:Icon src="sap-icon://favorite" size="0.8rem" color="#346187" class="sapUiTinyMarginBegin"/>
+												</HBox>
+												<ui:template>
+													<Label text="{parts:[{path : 'VenSummary>tpIGST'}], formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End" id="idVenTableCol8">
+												<HBox>
+													<Label design="Bold" text="CGST" textAlign="Center" width="100%" wrapping="true"/>
+													<core:Icon src="sap-icon://favorite" size="0.8rem" color="#346187" class="sapUiTinyMarginBegin"/>
+												</HBox>
+												<ui:template>
+													<Label text="{path : 'VenSummary>tpCGST', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End" id="idVenTableCol9">
+												<HBox>
+													<Label design="Bold" text="SGST" textAlign="Center" width="100%" wrapping="true"/>
+													<core:Icon src="sap-icon://favorite" size="0.8rem" color="#346187" class="sapUiTinyMarginBegin"/>
+												</HBox>
+												<ui:template>
+													<Label text="{path : 'VenSummary>tpSGST', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End" id="idVenTableCol10">
+												<HBox>
+													<Label design="Bold" text="Cess" textAlign="Center" width="100%" wrapping="true"/>
+													<core:Icon src="sap-icon://favorite" size="0.8rem" color="#346187" class="sapUiTinyMarginBegin"/>
+												</HBox>
+												<ui:template>
+													<Label text="{path : 'VenSummary>tpCess', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End" id="idVenTableCol11">
+												<HBox>
+													<Label design="Bold" text="Total Credit Eligible" textAlign="Center" width="100%" wrapping="true"/>
+													<!--<core:Icon src="sap-icon://number-sign" color="#000000" size="0.8rem" class="sapUiTinyMarginBegin"/>-->
+												</HBox>
+												<ui:template>
+													<Label text="{path : 'VenSummary>totalCreditEligible', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End" id="idVenTableCol12">
+												<HBox>
+													<Label design="Bold" text="IGST " textAlign="Center" width="100%" wrapping="true"/>
+													<core:Icon src="sap-icon://number-sign" color="#000000" size="0.8rem" class="sapUiTinyMarginBegin"/>
+												</HBox>
+												<ui:template>
+													<Label text="{path : 'VenSummary>ceIGST', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End" id="idVenTableCol13">
+												<HBox>
+													<Label design="Bold" text="CGST " textAlign="Center" width="100%" wrapping="true"/>
+													<core:Icon src="sap-icon://number-sign" color="#000000" size="0.8rem" class="sapUiTinyMarginBegin"/>
+												</HBox>
+												<ui:template>
+													<Label text="{path : 'VenSummary>ceCGST', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End" id="idVenTableCol14">
+												<HBox>
+													<Label design="Bold" text="SGST" textAlign="Center" width="100%" wrapping="true"/>
+													<core:Icon src="sap-icon://number-sign" color="#000000" size="0.8rem" class="sapUiTinyMarginBegin"/>
+												</HBox>
+												<ui:template>
+													<Label text="{path : 'VenSummary>ceSGST', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem" hAlign="End" id="idVenTableCol15">
+												<HBox>
+													<Label design="Bold" text="Cess" textAlign="Center" width="100%" wrapping="true"/>
+													<core:Icon src="sap-icon://number-sign" color="#000000" size="0.8rem" class="sapUiTinyMarginBegin"/>
+												</HBox>
+												<ui:template>
+													<Label text="{path : 'VenSummary>ceCess', formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="5rem">
+												<ui:multiLabels>
+													<Label text="Remarks" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<core:Icon src="sap-icon://e-care"/>
+												</ui:template>
+											</ui:Column>
+										</ui:columns>
+									</ui:TreeTable>
+								</VBox>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar>
+							<Label text="Showing:" design="Bold" id="idshow"/>
+							<CheckBox text="Tax Payable" select="onSelectCheckBoxCol1" selected="true" id="idtaxable"/>
+							<core:Icon src="sap-icon://favorite" color="#346187" size="0.8rem" id="idicon"/>
+							<CheckBox text="Credit Eligible" select="onSelectCheckBoxCol2" selected="true" id="idcEl"/>
+							<core:Icon src="sap-icon://number-sign" size="0.8rem" id="idicon2"/>
+							<ToolbarSpacer/>
+							<MenuButton text="Online Error Correction" type="Emphasized" id="idVOnline">
+								<menu>
+									<Menu itemSelected="onMenuItemSelectAspError">
+										<items>
+											<MenuItem text="ASP (Error Count: 152)" key="asp"/>
+										</items>
+									</Menu>
+								</menu>
+							</MenuButton>
+							<MenuButton type="Emphasized" text="Download Reports" id="idvdownload1">
+								<Menu itemSelected="onMenuItemPressAnx1down">
+									<MenuItem text="Processed Records (Current Period)" key="processLineItem"/>
+									<MenuItem text="Processed record- Rollover (Credit Availed)" key="processRate"/>
+									<MenuItem text="Processed record- Rollover (Credit not Availed)" key="submitted"/>
+									<MenuItem text="Processed records-ALL" key="submitted"/>
+									<MenuItem text="Consolidated ASP Error" key="digiError"/>
+									<MenuItem text="Entity Level Summary Report" key="EntLevsureport"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Reject" text="Delete Data" press="onButtonExtractDeletePress11" id="idvreject"/>
+							<!--<Button type="Emphasized" text="Get ANX-2" press="onButtonExtractPress" visible="false" id="idvget"/>
+							<MenuButton type="Emphasized" text="Download Reports" visible="false" id="iddownload2">
+								<Menu itemSelected="onMenuItemPressAnx1down">
+									<MenuItem text="Get ANX-2 records - Current Period" key="Ganx2CP"/>
+									<MenuItem text="Get ANX-2 records - Roll Over (Credit availed)" key="Ganx2CA"/>
+								</Menu>
+							</MenuButton>
+							<MenuButton type="Emphasized" text="Actions" id="idUserResp" visible="false">
+								<Menu itemSelected="OnMenuItmPrsUserResp">
+									<MenuItem key="Acpt_A2" text="Accept A2"/>
+									<MenuItem key="AcptA2_ITCPRAvl" text="Accept A2 &amp; ITC PR Avail"/>
+									<MenuItem key="AcptA2_ITCPRTax" text="Accept A2 &amp; ITC PR Tax"/>
+									<MenuItem key="PendngA2" text="Pending A2"/>
+									<MenuItem key="RejA2" text="Reject A2"/>
+									<MenuItem key="RejA2_ITCPRAvl" text="Reject A2 &amp; ITC PR Avail"/>
+									<MenuItem key="RejA2_ITCPRTax" text="Reject A2 &amp; ITC PR Tax"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Emphasized" text="Download" press="onPrsDwnld" id="idDwnldFile" width="5rem" visible="false"/>-->
+							<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" press="onExportExcel"/>
+							<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="Download Pdf"/>
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+				<!--ANX-2 Summary Table-->
+				<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false" visible="false"
+					id="A2SummID">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<VBox>
+									<ui:TreeTable rows="{path:'VenANX2Summary>/', parameters:{ arrayNames:['items'], numberOfExpandedLevels:0 }}" selectionMode="Single"
+										selectionBehavior="Row" visibleRowCount="10" fixedColumnCount="1" enableSelectAll="false" id="idVendorSummaryTable2">
+										<ui:columns>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<Label text="Vendor PAN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{VenANX2Summary>vendorPAN}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<Label text="Vendor Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{VenANX2Summary>vendorName}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="12rem">
+												<ui:multiLabels>
+													<Label text="Vendor GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox>
+														<Text text="{VenANX2Summary>GSTIN}"/>
+														<!--<core:Icon src="sap-icon://add" size="0.75rem" tooltip="Add to Master" class="sapUiTinyMarginBegin" visible="{Anx2>Visible}" color="#0070b1"-->
+														<!--	press="onPressAddtoMaster"/>-->
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="12rem">
+												<ui:multiLabels>
+													<Label text="Table Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Link text="{VenANX2Summary>tableType}" press="onPressGSTINLink"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="">
+												<ui:multiLabels>
+													<Label text="Doc. Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{VenANX2Summary>docType}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="4rem">
+												<ui:multiLabels>
+													<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{VenANX2Summary>count}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="">
+												<ui:multiLabels>
+													<Label text="Invoice Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{parts:[{path : 'VenANX2Summary>invValue'}], formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="">
+												<ui:multiLabels>
+													<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{parts:[{path : 'VenANX2Summary>taxableValue'}], formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="">
+												<ui:multiLabels>
+													<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{parts:[{path : 'VenANX2Summary>igst'}], formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="">
+												<ui:multiLabels>
+													<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{parts:[{path : 'VenANX2Summary>cgst'}], formatter : '.formatter.amountValue'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="">
+												<ui:multiLabels>
+													<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{parts:[{path : 'VenANX2Summary>sgst'}], formatter : '.formatter.amountValue'}"/>
+													<!--	<Text text="{Anx2>SGST}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="">
+												<ui:multiLabels>
+													<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{parts:[{path : 'VenANX2Summary>cess'}], formatter : '.formatter.amountValue'}"/>
+													<!--	<Text text="{Anx2>Cess}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="5rem">
+												<ui:multiLabels>
+													<Label text="Remarks" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<core:Icon src="sap-icon://e-care"/>
+												</ui:template>
+											</ui:Column>
+										</ui:columns>
+									</ui:TreeTable>
+								</VBox>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar>
+							<!--<Label text="Showing:" design="Bold" id="idshow"/>
+							<CheckBox text="Tax Payable" select="onSelectCheckBoxCol1" selected="true" id="idtaxable"/>
+							<core:Icon src="sap-icon://favorite" color="#346187" size="0.8rem" id="idicon"/>
+							<CheckBox text="Credit Eligible" select="onSelectCheckBoxCol2" selected="true" id="idcEl"/>
+							<core:Icon src="sap-icon://number-sign" size="0.8rem" id="idicon2"/>-->
+							<ToolbarSpacer/>
+							<!--	<MenuButton text="Online Error Correction" type="Emphasized" id="idVOnline">
+								<menu>
+									<Menu itemSelected="onMenuItemSelectAspError">
+										<items>
+											<MenuItem text="ASP (Error Count: 152)" key="asp"/>
+										</items>
+									</Menu>
+								</menu>
+							</MenuButton>-->
+							<!--<MenuButton type="Emphasized" text="Download Reports" id="idvdownload12">
+								<Menu itemSelected="onMenuItemPressAnx1down">
+									<MenuItem text="Processed Records (Current Period)" key="processLineItem"/>
+									<MenuItem text="Processed record- Rollover (Credit Availed)" key="processRate"/>
+									<MenuItem text="Processed record- Rollover (Credit not Availed)" key="submitted"/>
+									<MenuItem text="Processed records-ALL" key="submitted"/>
+									<MenuItem text="Consolidated ASP Error" key="digiError"/>
+									<MenuItem text="Entity Level Summary Report" key="EntLevsureport"/>
+								</Menu>
+							</MenuButton>-->
+							<!--<Button type="Reject" text="Delete Data" press="onButtonExtractDeletePress11" id="idvreject"/>-->
+							<Button type="Emphasized" text="Get ANX-2" press="onButtonExtractPress"/>
+							<MenuButton type="Emphasized" text="Download Reports">
+								<Menu itemSelected="onMenuItemPressAnx1down">
+									<MenuItem text="Get ANX-2 records - Current Period" key="Ganx2CP"/>
+									<MenuItem text="Get ANX-2 records - Roll Over (Credit availed)" key="Ganx2CA"/>
+								</Menu>
+							</MenuButton>
+							<!--	<MenuButton type="Emphasized" text="Actions" id="idUserResp" visible="false">
+								<Menu itemSelected="OnMenuItmPrsUserResp">
+									<MenuItem key="Acpt_A2" text="Accept A2"/>
+									<MenuItem key="AcptA2_ITCPRAvl" text="Accept A2 &amp; ITC PR Avail"/>
+									<MenuItem key="AcptA2_ITCPRTax" text="Accept A2 &amp; ITC PR Tax"/>
+									<MenuItem key="PendngA2" text="Pending A2"/>
+									<MenuItem key="RejA2" text="Reject A2"/>
+									<MenuItem key="RejA2_ITCPRAvl" text="Reject A2 &amp; ITC PR Avail"/>
+									<MenuItem key="RejA2_ITCPRTax" text="Reject A2 &amp; ITC PR Tax"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Emphasized" text="Download" press="onPrsDwnld" id="idDwnldFile" width="5rem" visible="false"/>-->
+							<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" press="onExportExcel"/>
+							<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="Download Pdf"/>
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+				<!--Recon Summary Table-->
+				<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false" visible="false"
+					id="RecSummID">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<VBox>
+									<ui:TreeTable rows="{path:'onReconSummaryTabBind>/', parameters:{ arrayNames:['level2','level3'], numberOfExpandedLevels:1 }}"
+										selectionMode="None" selectionBehavior="Row" visibleRowCount="18" fixedColumnCount="1" enableSelectAll="false" id="idVendorSummaryTable3">
+										<ui:columns>
+											<ui:Column width="12rem">
+												<ui:multiLabels>
+													<Label text="Vendor PAN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{onReconSummaryTabBind>vendorPan}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="12rem">
+												<ui:multiLabels>
+													<Label text="Vendor Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{onReconSummaryTabBind>vendorName}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="5rem">
+												<ui:multiLabels>
+													<Label text="Rating" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{onReconSummaryTabBind>rating}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="12rem">
+												<ui:multiLabels>
+													<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox>
+														<Link text="{onReconSummaryTabBind>gstin}" press="onPressGSTINLink"/>
+														<core:Icon src="sap-icon://add" size="0.75rem" tooltip="Add to Master" class="sapUiTinyMarginBegin"
+															visible="{= ${onReconSummaryTabBind>gstin} !== undefined}" color="#0070b1" press="onPressAddtoMaster"/>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="6rem">
+												<ui:multiLabels>
+													<Label text="Doc. Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{onReconSummaryTabBind>docType}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="Match" class="clCheckBoxText"/>
+														<!--<Label text="ABS" textAlign="Center" width="100%" wrapping="true" design="Bold" required="true"/>-->
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%" class="sapUiTinyMarginTopBottom">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconSummaryTabBind>prMatchPer}%" class="clBlack" visible="{= ${onReconSummaryTabBind>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconSummaryTabBind>prMatchAmt'}], formatter : '.formatter.amountValue'}" class="clrBlue"/>
+															<Text text="{parts:[{path : 'onReconSummaryTabBind>anx2MatchAmt'}], formatter : '.formatter.amountValue'}"/>
+															<!--	<Text text="{Anx2>prABS}" class="clBlack" visible="{= ${Anx2>VendorPAN} !== undefined ? true:false }"/>
+															<Text text="{Anx2>prABSv}" class="clrBlue" visible="{= ${Anx2>prABSv}=== ${Anx2>anx2ABS} ? true:false }"/>
+															<Text text="{Anx2>anx2ABS}" visible="{=${Anx2>prABSv}=== ${Anx2>anx2ABS} ? true:false}"/>
+															<Text text="{Anx2>prABSv}" class="clrBlue" visible="{=${Anx2>prABSv}=== ${Anx2>anx2ABS} ? false:true}"/>
+															<Text text="{Anx2>anx2ABS}" visible="{=${Anx2>prABSv}=== ${Anx2>anx2ABS} ? false:true}"/>-->
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="Mismatches" class="clCheckBoxText"/>
+														<!--<Label text="MIS" textAlign="Center" width="100%" wrapping="true" design="Bold" required="true"/>-->
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%" class="sapUiTinyMarginTopBottom">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconSummaryTabBind>prMissMatPer}%" class="clBlack" visible="{= ${onReconSummaryTabBind>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconSummaryTabBind>prMissMatAmt'}], formatter : '.formatter.amountValue'}" class="clrBlue"/>
+															<Text text="{parts:[{path : 'onReconSummaryTabBind>anxrMisMatAmt'}], formatter : '.formatter.amountValue'}"/>
+															<!--<Text text="{Anx2>prMIS}" class="clBlack" visible="{= ${Anx2>VendorPAN} !== undefined ? true:false }"/>-->
+															<!--	<VBox visible="{= ${Anx2>VendorPAN} !== undefined ? false:true }">-->
+															<!--<Text text="{Anx2>prMISv}" class="clrBlue" visible="{= ${Anx2>prMISv}=== ${Anx2>anx2MIS} ? true:false }"/>
+															<Text text="{Anx2>anx2MIS}" visible="{=${Anx2>prMISv}=== ${Anx2>anx2MIS} ? true:false}"/>
+															<Text text="{Anx2>prMISv}" class="clrBlue" visible="{=${Anx2>prMISv}=== ${Anx2>anx2MIS} ? false:true}"/>
+															<Text text="{Anx2>anx2MIS}" visible="{=${Anx2>prMISv}=== ${Anx2>anx2MIS} ? false:true}"/>-->
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="Probable Match" class="clCheckBoxText"/>
+														<!--<Label text="POT" textAlign="Center" width="100%" wrapping="true" design="Bold" required="true"/>-->
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%" class="sapUiTinyMarginTopBottom">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconSummaryTabBind>prProbPer}%" class="clBlack" visible="{= ${onReconSummaryTabBind>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconSummaryTabBind>prProbMat'}], formatter : '.formatter.amountValue'}" class="clrBlue"/>
+															<Text text="{parts:[{path : 'onReconSummaryTabBind>anx2ProbMat'}], formatter : '.formatter.amountValue'}"/>
+															<!--<Text text="{Anx2>prPOT}" class="clBlack" visible="{= ${Anx2>VendorPAN} !== undefined ? true:false }"/>-->
+															<!--	<VBox visible="{= ${Anx2>VendorPAN} !== undefined ? false:true }">-->
+															<!--<Text text="{Anx2>prPOTv}" class="clrBlue" visible="{= ${Anx2>prPOTv}=== ${Anx2>anx2POT} ? true:false }"/>
+															<Text text="{Anx2>anx2POT}" visible="{=${Anx2>prPOTv}=== ${Anx2>anx2POT} ? true:false}"/>
+															<Text text="{Anx2>prPOTv}" class="clrBlue" visible="{=${Anx2>prPOTv}=== ${Anx2>anx2POT} ? false:true}"/>
+															<Text text="{Anx2>anx2POT}" visible="{=${Anx2>prPOTv}=== ${Anx2>anx2POT} ? false:true}"/>-->
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="Forced Match" class="clCheckBoxText"/>
+														<!--<Label text="POT" textAlign="Center" width="100%" wrapping="true" design="Bold" required="true"/>-->
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%" class="sapUiTinyMarginTopBottom">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconSummaryTabBind>prForcMatPer}%" class="clBlack" visible="{= ${onReconSummaryTabBind>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconSummaryTabBind>prForcMat'}], formatter : '.formatter.amountValue'}" class="clrBlue"/>
+															<Text text="{parts:[{path : 'onReconSummaryTabBind>anx2ForcMat'}], formatter : '.formatter.amountValue'}"/>
+															<!--<Text text="{Anx2>prPOT}" class="clBlack" visible="{= ${Anx2>VendorPAN} !== undefined ? true:false }"/>-->
+															<!--	<VBox visible="{= ${Anx2>VendorPAN} !== undefined ? false:true }">-->
+															<!--<Text text="{Anx2>prPOTv}" class="clrBlue" visible="{= ${Anx2>prPOTv}=== ${Anx2>anx2POT} ? true:false }"/>
+															<Text text="{Anx2>anx2POT}" visible="{=${Anx2>prPOTv}=== ${Anx2>anx2POT} ? true:false}"/>
+															<Text text="{Anx2>prPOTv}" class="clrBlue" visible="{=${Anx2>prPOTv}=== ${Anx2>anx2POT} ? false:true}"/>
+															<Text text="{Anx2>anx2POT}" visible="{=${Anx2>prPOTv}=== ${Anx2>anx2POT} ? false:true}"/>-->
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="11rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="Addition in ANX-2" class="clCheckBoxText"/>
+														<!--<Label text="ADDL 2A" textAlign="Center" width="100%" wrapping="true" design="Bold" required="true"/>-->
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconSummaryTabBind>addanx2Per}%" visible="{= ${onReconSummaryTabBind>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconSummaryTabBind>addAnx2'}], formatter : '.formatter.amountValue'}"/>
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="Addition in PR" class="clCheckBoxText"/>
+														<!--<Label text="ADDL 2A" textAlign="Center" width="100%" wrapping="true" design="Bold" required="true"/>-->
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconSummaryTabBind>addPrPer}%" visible="{= ${onReconSummaryTabBind>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconSummaryTabBind>addPr'}], formatter : '.formatter.amountValue'}" class="clrBlue"/>
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<Label text="Return Filing Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox alignItems="Start" justifyContent="End">
+														<Text text="{onReconSummaryTabBind>fillStatus}"/>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+										</ui:columns>
+										<ui:footer>
+											<Toolbar>
+												<Text text="Note : Values are represented as Tax Amount (Count)"/>
+												<core:Icon src="sap-icon://circle-task-2" size="0.8rem" class="sapUiSmallMarginBegin clrBlue"/>
+												<Text text="PR Data"/>
+												<core:Icon src="sap-icon://circle-task-2" size="0.8rem"/>
+												<!--color="grey"-->
+												<Text text="ANX-2 Data"/>
+												<!--<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+												<Text text="Difference exists"/>-->
+												<ToolbarSpacer/>
+											</Toolbar>
+										</ui:footer>
+									</ui:TreeTable>
+								</VBox>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar>
+							<!--	<Label text="Showing:" design="Bold" id="idshow"/>
+							<CheckBox text="Tax Payable" select="onSelectCheckBoxCol1" selected="true" id="idtaxable"/>
+							<core:Icon src="sap-icon://favorite" color="#346187" size="0.8rem" id="idicon"/>
+							<CheckBox text="Credit Eligible" select="onSelectCheckBoxCol2" selected="true" id="idcEl"/>
+							<core:Icon src="sap-icon://number-sign" size="0.8rem" id="idicon2"/>-->
+							<ToolbarSpacer/>
+							<MenuButton text="Online Error Correction" type="Emphasized">
+								<menu>
+									<Menu itemSelected="onMenuItemSelectAspError">
+										<items>
+											<MenuItem text="ASP (Error Count: 152)" key="asp"/>
+										</items>
+									</Menu>
+								</menu>
+							</MenuButton>
+							<MenuButton type="Emphasized" text="Download Reports">
+								<Menu itemSelected="onMenuItemPressAnx1down">
+									<MenuItem text="Processed Records (Current Period)" key="processLineItem"/>
+									<MenuItem text="Processed record- Rollover (Credit Availed)" key="processRate"/>
+									<MenuItem text="Processed record- Rollover (Credit not Availed)" key="submitted"/>
+									<MenuItem text="Processed records-ALL" key="submitted"/>
+									<MenuItem text="Consolidated ASP Error" key="digiError"/>
+									<MenuItem text="Entity Level Summary Report" key="EntLevsureport"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Reject" text="Delete Data" press="onButtonExtractDeletePress11"/>
+							<!--<Button type="Emphasized" text="Get ANX-2" press="onButtonExtractPress"/>
+							<MenuButton type="Emphasized" text="Download Reports">
+								<Menu itemSelected="onMenuItemPressAnx1down">
+									<MenuItem text="Get ANX-2 records - Current Period" key="Ganx2CP"/>
+									<MenuItem text="Get ANX-2 records - Roll Over (Credit availed)" key="Ganx2CA"/>
+								</Menu>
+							</MenuButton>-->
+							<MenuButton type="Emphasized" text="Actions" id="idUserResp">
+								<Menu itemSelected="OnMenuItmPrsUserResp">
+									<MenuItem key="Acpt_A2" text="Accept A2"/>
+									<MenuItem key="AcptA2_ITCPRAvl" text="Accept A2 &amp; ITC PR Avail"/>
+									<MenuItem key="AcptA2_ITCPRTax" text="Accept A2 &amp; ITC PR Tax"/>
+									<MenuItem key="PendngA2" text="Pending A2"/>
+									<MenuItem key="RejA2" text="Reject A2"/>
+									<MenuItem key="RejA2_ITCPRAvl" text="Reject A2 &amp; ITC PR Avail"/>
+									<MenuItem key="RejA2_ITCPRTax" text="Reject A2 &amp; ITC PR Tax"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Emphasized" text="Download" press="onPrsDwnld" width="5rem"/>
+							<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" press="onExportExcel"/>
+							<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="Download Pdf"/>
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+				<!--Recon Response Table-->
+				<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false" visible="false"
+					id="RecRespID">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<VBox>
+									<ui:TreeTable rows="{path:'onReconRespTabData>/', parameters:{ arrayNames:['level2','level3'], numberOfExpandedLevels:1 }}"
+										selectionMode="None" selectionBehavior="Row" visibleRowCount="13" fixedColumnCount="1" enableSelectAll="false" id="idVendorSummaryTable4">
+										<ui:columns>
+											<ui:Column width="12rem">
+												<ui:multiLabels>
+													<Label text="Vendor PAN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{onReconRespTabData>vendorPan}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="12rem">
+												<ui:multiLabels>
+													<Label text="Vendor Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{onReconRespTabData>vendorName}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="5rem">
+												<ui:multiLabels>
+													<Label text="Rating" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{onReconRespTabData>rating}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox>
+														<Link text="{onReconRespTabData>gstin}" press="onPressGSTINLink1"/>
+														<core:Icon src="sap-icon://add" size="0.75rem" tooltip="Add to Master" class="sapUiTinyMarginBegin"
+															visible="{= ${onReconRespTabData>gstin} !== undefined}" color="#0070b1" press="onPressAddtoMaster"/>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<Label text="Doc. Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{onReconRespTabData>docType}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="Accept A2 &amp; ITC A2" class="clCheckBoxText"/>
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%" class="sapUiTinyMarginTopBottom">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconRespTabData>percentageAcceptA2AndITCA2}%" class="clBlack" visible="{= ${onReconRespTabData>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>pRAcceptA2AndITCA2'}], formatter : '.formatter.amountValue'}" class="clrBlue"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>a2AcceptA2AndITCA2'}], formatter : '.formatter.amountValue'}"/>
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="Accept A2 &amp; ITC PR available" class="clCheckBoxText"/>
+														<!--<Label text="MIS" textAlign="Center" width="100%" wrapping="true" design="Bold" required="true"/>-->
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%" class="sapUiTinyMarginTopBottom">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconRespTabData>percentageAcceptA2AndITCPRavailable}%" class="clBlack" visible="{= ${onReconRespTabData>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>pRAcceptA2AndITCPRavailable'}], formatter : '.formatter.amountValue'}" class="clrBlue"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>a2AcceptA2AndITCPRavailable'}], formatter : '.formatter.amountValue'}"/>
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="Accept A2 &amp; ITC PR Tax" class="clCheckBoxText"/>
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%" class="sapUiTinyMarginTopBottom">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconRespTabData>percentageAcceptA2AndITCPRTax}%" class="clBlack" visible="{= ${onReconRespTabData>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>pRAcceptA2AndITCPRTax'}], formatter : '.formatter.amountValue'}" class="clrBlue"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>a2AcceptA2AndITCPRTax'}], formatter : '.formatter.amountValue'}"/>
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="Pending ANX2" class="clCheckBoxText"/>
+														<!--<Label text="POT" textAlign="Center" width="100%" wrapping="true" design="Bold" required="true"/>-->
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%" class="sapUiTinyMarginTopBottom">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconRespTabData>percentagePendingANX2}%" class="clBlack" visible="{= ${onReconRespTabData>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>pRPendingANX2'}], formatter : '.formatter.amountValue'}" class="clrBlue"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>a2PendingANX2'}], formatter : '.formatter.amountValue'}"/>
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="11rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="Reject ANX2" class="clCheckBoxText"/>
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconRespTabData>percentageRejectANX2}%" class="clBlack" visible="{= ${onReconRespTabData>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>pRRejectANX2'}], formatter : '.formatter.amountValue'}" class="clrBlue"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>a2RejectANX2'}], formatter : '.formatter.amountValue'}"/>
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="Reject A2 &amp; ITC PR available" class="clCheckBoxText"/>
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconRespTabData>percentageRejectA2AdITCPRavailable}%" class="clBlack" visible="{= ${onReconRespTabData>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>PRRejectA2andITCPRavailable'}], formatter : '.formatter.amountValue'}" class="clrBlue"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>A2RejectA2andITCPRavailable'}], formatter : '.formatter.amountValue'}"/>
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="Reject A2 &amp; ITC PR Tax" class="clCheckBoxText"/>
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconRespTabData>percentageRejectA2andITCPRTax}%" class="clBlack" visible="{= ${onReconRespTabData>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>pRRejectA2AndITCPRTax'}], formatter : '.formatter.amountValue'}" class="clrBlue"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>a2RejectA2AndITCPRTax'}], formatter : '.formatter.amountValue'}"/>
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="ITC PR available" class="clCheckBoxText"/>
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconRespTabData>percentageITCPRAvailable}%" class="clBlack" visible="{= ${onReconRespTabData>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>pRITCPRAvailable'}], formatter : '.formatter.amountValue'}" class="clrBlue"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>a2ITCPRAvailable'}], formatter : '.formatter.amountValue'}"/>
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="ITC PR tax" class="clCheckBoxText"/>
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconRespTabData>percentageITCPRTax}%" class="clBlack" visible="{= ${onReconRespTabData>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>pRITCPRTax'}], formatter : '.formatter.amountValue'}" class="clrBlue"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>a2ITCPRTax'}], formatter : '.formatter.amountValue'}"/>
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="Accept ANX2 of earlier tax period" class="clCheckBoxText"/>
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconRespTabData>percentageAcceptAnx2OfEarlierTaxPeriod}%" class="clBlack" visible="{= ${onReconRespTabData>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>pRAcceptAnx2OfEarlierTaxPeriod'}], formatter : '.formatter.amountValue'}" class="clrBlue"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>a2AcceptAnx2OfEarlierTaxPeriod'}], formatter : '.formatter.amountValue'}"/>
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="No Action Allowed" class="clCheckBoxText"/>
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconRespTabData>percentageNoActionAllowed}%" class="clBlack" visible="{= ${onReconRespTabData>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>pRNoActionAllowed'}], formatter : '.formatter.amountValue'}" class="clrBlue"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>a2NoActionAllowed'}], formatter : '.formatter.amountValue'}"/>
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="Provisional ITC PR available" class="clCheckBoxText"/>
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconRespTabData>percentageProvisionalITCPRAvailable}%" class="clBlack" visible="{= ${onReconRespTabData>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>provisionalITCPRAvailable'}], formatter : '.formatter.amountValue'}" class="clrBlue"/>
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="Provisional ITC PR Tax" class="clCheckBoxText"/>
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconRespTabData>percentageProvisionalITCPRTax}%" class="clBlack" visible="{= ${onReconRespTabData>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>provisionalITCPRTax'}], formatter : '.formatter.amountValue'}" class="clrBlue"/>
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="No Action (Addl A2)" class="clCheckBoxText"/>
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconRespTabData>percentageNoActionAddlA2}%" class="clBlack" visible="{= ${onReconRespTabData>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>noActionAddlA2'}], formatter : '.formatter.amountValue'}"/>
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="No Action(Reconciled)" class="clCheckBoxText"/>
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconRespTabData>percentageNoActionReconciled}%" class="clBlack" visible="{= ${onReconRespTabData>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>pRNoActionReconciled'}], formatter : '.formatter.amountValue'}" class="clrBlue"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>a2NoActionReconciled'}], formatter : '.formatter.amountValue'}"/>
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<HBox>
+														<CheckBox text="No Action(Addl PR)" class="clCheckBoxText"/>
+													</HBox>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="Start" width="100%">
+														<CheckBox/>
+														<VBox>
+															<Text text="{onReconRespTabData>percentageNoActionAddlPR}%" class="clBlack" visible="{= ${onReconRespTabData>level} === 'L1'}"/>
+															<Text text="{parts:[{path : 'onReconRespTabData>noActionAddlPR'}], formatter : '.formatter.amountValue'}" class="clrBlue"/>
+														</VBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="10rem">
+												<ui:multiLabels>
+													<Label text="Return Filing Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox alignItems="Center" justifyContent="Center">
+														<Text text="{onReconRespTabData>returnFillingStatus}"/>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+										</ui:columns>
+										<ui:footer>
+											<Toolbar>
+												<Text text="Note : * Values are represented as Tax Amount (Count)"/>
+												<core:Icon src="sap-icon://circle-task-2" color="#000000" size="0.8rem" class="sapUiSmallMarginBegin clrBlue"/>
+												<Text text="PR Data"/>
+												<core:Icon src="sap-icon://circle-task-2" color="grey" size="0.8rem"/>
+												<Text text="ANX-2 Data"/>
+												<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+												<Text text="Difference exists"/>
+												<ToolbarSpacer/>
+											</Toolbar>
+										</ui:footer>
+									</ui:TreeTable>
+								</VBox>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar>
+							<ToolbarSpacer/>
+							<MenuButton text="Online Error Correction" type="Emphasized" id="idVOnline1">
+								<menu>
+									<Menu itemSelected="onMenuItemSelectAspError">
+										<items>
+											<MenuItem text="ASP (Error Count: 152)" key="asp"/>
+										</items>
+									</Menu>
+								</menu>
+							</MenuButton>
+							<MenuButton type="Emphasized" text="Download Reports" id="idvdownload11">
+								<Menu itemSelected="onMenuItemPressAnx1down">
+									<MenuItem text="Processed Records (Current Period)" key="processLineItem"/>
+									<MenuItem text="Processed record- Rollover (Credit Availed)" key="processRate"/>
+									<MenuItem text="Processed record- Rollover (Credit not Availed)" key="submitted"/>
+									<MenuItem text="Processed records-ALL" key="submitted"/>
+									<MenuItem text="Consolidated ASP Error" key="digiError"/>
+									<MenuItem text="Entity Level Summary Report" key="EntLevsureport"/>
+								</Menu>
+							</MenuButton>
+							<!--<Button type="Emphasized" text="Get ANX-2" press="onButtonExtractPress"/>-->
+							<!--<MenuButton type="Emphasized" text="Download Reports">
+								<Menu itemSelected="onMenuItemPressAnx1down">
+									<MenuItem text="Get ANX-2 records - Current Period" key="Ganx2CP"/>
+									<MenuItem text="Get ANX-2 records - Roll Over (Credit availed)" key="Ganx2CA"/>
+								</Menu>
+							</MenuButton>-->
+							<!--<MenuButton type="Emphasized" text="Actions" id="idUserResp" visible="false">
+								<Menu itemSelected="OnMenuItmPrsUserResp">
+									<MenuItem key="Acpt_A2" text="Accept A2"/>
+									<MenuItem key="AcptA2_ITCPRAvl" text="Accept A2 &amp; ITC PR Avail"/>
+									<MenuItem key="AcptA2_ITCPRTax" text="Accept A2 &amp; ITC PR Tax"/>
+									<MenuItem key="PendngA2" text="Pending A2"/>
+									<MenuItem key="RejA2" text="Reject A2"/>
+									<MenuItem key="RejA2_ITCPRAvl" text="Reject A2 &amp; ITC PR Avail"/>
+									<MenuItem key="RejA2_ITCPRTax" text="Reject A2 &amp; ITC PR Tax"/>
+								</Menu>
+							</MenuButton>-->
+							<Button type="Reject" text="Delete Data" press="onButtonExtractDeletePress11"/>
+							<Button type="Emphasized" text="Download" press="onPrsDwnld" width="5rem"/>
+							<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" press="onExportExcel"/>
+							<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="Download Pdf"/>
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+				<!--RET-1 Table-->
+				<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false" visible="false"
+					id="Ret1ID">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<VBox>
+									<ui:TreeTable rows="{path:'Anx2>/ImpactonRET1', parameters:{ arrayNames:['items'], numberOfExpandedLevels:1 }}" selectionMode="None"
+										selectionBehavior="Row" visibleRowCount="20" fixedColumnCount="1" enableSelectAll="false" id="idVendorSummaryTable5">
+										<ui:columns>
+											<ui:Column width="12rem">
+												<ui:multiLabels>
+													<Label text="Vendor PAN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{Anx2>vendorPAN}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="12rem">
+												<ui:multiLabels>
+													<Label text="Vendor Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{Anx2>vendorName}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="">
+												<ui:multiLabels>
+													<Label text="Vendor GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{Anx2>GSTIN}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="" hAlign="Center">
+												<ui:multiLabels>
+													<Label text="Provisional Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Link text="{Anx2>provisionalCredit}" press="onPressGSTINLink"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="" hAlign="Center">
+												<ui:multiLabels>
+													<Label text="Reversal of Provisional Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{Anx2>reversalPC}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="" hAlign="Center">
+												<ui:multiLabels>
+													<Label text="Short Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{Anx2>shortCredit}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="" hAlign="Center">
+												<ui:multiLabels>
+													<Label text="Excess Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<Text text="{Anx2>excessCredit}"/>
+												</ui:template>
+											</ui:Column>
+										</ui:columns>
+									</ui:TreeTable>
+								</VBox>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar>
+							<!--<Label text="Showing:" design="Bold" id="idshow"/>
+							<CheckBox text="Tax Payable" select="onSelectCheckBoxCol1" selected="true" id="idtaxable"/>
+							<core:Icon src="sap-icon://favorite" color="#346187" size="0.8rem" id="idicon"/>
+							<CheckBox text="Credit Eligible" select="onSelectCheckBoxCol2" selected="true" id="idcEl"/>
+							<core:Icon src="sap-icon://number-sign" size="0.8rem" id="idicon2"/>
+							<ToolbarSpacer/>
+							<MenuButton text="Online Error Correction" type="Emphasized" id="idVOnline">
+								<menu>
+									<Menu itemSelected="onMenuItemSelectAspError">
+										<items>
+											<MenuItem text="ASP (Error Count: 152)" key="asp"/>
+										</items>
+									</Menu>
+								</menu>
+							</MenuButton>
+							<MenuButton type="Emphasized" text="Download Reports" id="idvdownload1">
+								<Menu itemSelected="onMenuItemPressAnx1down">
+									<MenuItem text="Processed Records (Current Period)" key="processLineItem"/>
+									<MenuItem text="Processed record- Rollover (Credit Availed)" key="processRate"/>
+									<MenuItem text="Processed record- Rollover (Credit not Availed)" key="submitted"/>
+									<MenuItem text="Processed records-ALL" key="submitted"/>
+									<MenuItem text="Consolidated ASP Error" key="digiError"/>
+									<MenuItem text="Entity Level Summary Report" key="EntLevsureport"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Reject" text="Delete Data" press="onButtonExtractDeletePress11"/>-->
+							<ToolbarSpacer/>
+							<Button type="Emphasized" text="Get ANX-2" press="onButtonExtractPress"/>
+							<MenuButton type="Emphasized" text="Download Reports">
+								<Menu itemSelected="onMenuItemPressAnx1down">
+									<MenuItem text="Get ANX-2 records - Current Period" key="Ganx2CP"/>
+									<MenuItem text="Get ANX-2 records - Roll Over (Credit availed)" key="Ganx2CA"/>
+								</Menu>
+							</MenuButton>
+							<!--<MenuButton type="Emphasized" text="Actions" id="idUserResp" visible="false">
+								<Menu itemSelected="OnMenuItmPrsUserResp">
+									<MenuItem key="Acpt_A2" text="Accept A2"/>
+									<MenuItem key="AcptA2_ITCPRAvl" text="Accept A2 &amp; ITC PR Avail"/>
+									<MenuItem key="AcptA2_ITCPRTax" text="Accept A2 &amp; ITC PR Tax"/>
+									<MenuItem key="PendngA2" text="Pending A2"/>
+									<MenuItem key="RejA2" text="Reject A2"/>
+									<MenuItem key="RejA2_ITCPRAvl" text="Reject A2 &amp; ITC PR Avail"/>
+									<MenuItem key="RejA2_ITCPRTax" text="Reject A2 &amp; ITC PR Tax"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Emphasized" text="Download" press="onPrsDwnld" id="idDwnldFile" width="5rem" visible="false"/>-->
+							<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" press="onExportExcel"/>
+							<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="Download Pdf"/>
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<Page showHeader="false" class="sapUiStdPage" visible="false" id="idVendorSummaryPage">
+		<content>
+			<layout:HorizontalLayout class="clVerticalLayoutColor">
+				<Button icon="sap-icon://nav-back" press="onNavBackVR"/>
+				<SegmentedButton selectedKey="SummaryAfterResponse" selectionChange="onSelectionChangeReconResponse1" width="40rem"
+					class="sapUiSmallMarginBegin">
+					<items>
+						<SegmentedButtonItem text="Summary After Response" key="SummaryAfterResponse"/>
+						<SegmentedButtonItem text="Summary Action Wise" key="SummaryActionWise"/>
+					</items>
+				</SegmentedButton>
+			</layout:HorizontalLayout>
+			<commons:ChartContainer id="idSummaryAfterResponseCC1" showFullScreen="true" showZoom="true" showPersonalization="false"
+				autoAdjustHeight="false" visible="true">
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:TreeTable rows="{Anx2>/reconResponse}" class="sapUiTinyMarginBegin" selectionMode="None" selectionBehavior="Row" visibleRowCount="10"
+								fixedColumnCount="2" enableSelectAll="false" fixedBottomRowCount="0">
+								<ui:Column width="11rem">
+									<ui:multiLabels>
+										<Label text=""/>
+										<Label text="Report Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<Text text="{Anx2>ReportType}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="8rem">
+									<ui:multiLabels>
+										<Label text=""/>
+										<Label text="Response" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<Text text="{Anx2>Response}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column headerSpan="7" width="10rem" hAlign="End">
+									<ui:multiLabels>
+										<Label text="As per PR" textAlign="Center" design="Bold" width="100%"/>
+										<Label text="No. of Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<Text text="{Anx2>prNoofRecords}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem" hAlign="End">
+									<ui:multiLabels>
+										<Label text="As per PR" textAlign="Center" design="Bold" width="100%"/>
+										<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<Text text="{Anx2>prTaxableValue}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem" hAlign="End">
+									<ui:multiLabels>
+										<Label text="As per PR" textAlign="Center" design="Bold" width="100%"/>
+										<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<Text text="{Anx2>prIGST}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem" hAlign="End">
+									<ui:multiLabels>
+										<Label text="As per PR" textAlign="Center" design="Bold" width="100%"/>
+										<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<Text text="{Anx2>prCGST}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem" hAlign="End">
+									<ui:multiLabels>
+										<Label text="As per PR" textAlign="Center" design="Bold" width="100%"/>
+										<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<Text text="{Anx2>prSGST}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem" hAlign="End">
+									<ui:multiLabels>
+										<Label text="As per PR" textAlign="Center" design="Bold" width="100%"/>
+										<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<Text text="{Anx2>prCess}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem" hAlign="End">
+									<ui:multiLabels>
+										<Label text="As per PR" textAlign="Center" design="Bold" width="100%"/>
+										<Label text="Invoice Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<Text text="{Anx2>prInvoiceValue}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column headerSpan="7" width="10rem" hAlign="End">
+									<ui:multiLabels>
+										<Label text="As per 2A" textAlign="Center" design="Bold" width="100%"/>
+										<Label text="No. of Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<Text text="{Anx2>2ANoofRecords}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem" hAlign="End">
+									<ui:multiLabels>
+										<Label text="As per 2A" textAlign="Center" design="Bold" width="100%"/>
+										<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<Text text="{Anx2>prTaxableValue}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem" hAlign="End">
+									<ui:multiLabels>
+										<Label text="As per 2A" textAlign="Center" design="Bold" width="100%"/>
+										<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<Text text="{Anx2>2AIGST}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem" hAlign="End">
+									<ui:multiLabels>
+										<Label text="As per 2A" textAlign="Center" design="Bold" width="100%"/>
+										<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<Text text="{Anx2>2ACGST}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem" hAlign="End">
+									<ui:multiLabels>
+										<Label text="As per 2A" textAlign="Center" design="Bold" width="100%"/>
+										<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<Text text="{Anx2>2ASGST}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem" hAlign="End">
+									<ui:multiLabels>
+										<Label text="As per 2A" textAlign="Center" design="Bold" width="100%"/>
+										<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<Text text="{Anx2>2ACess}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem" hAlign="End">
+									<ui:multiLabels>
+										<Label text="As per 2A" textAlign="Center" design="Bold" width="100%"/>
+										<Label text="Invoice Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<Text text="{Anx2>2AInvoiceValue}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column headerSpan="7" width="10rem" hAlign="End">
+									<ui:multiLabels>
+										<Label text="ITC as per responses" textAlign="Center" design="Bold" width="100%"/>
+										<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<Text text="{Anx2>itcIGST}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem" hAlign="End">
+									<ui:multiLabels>
+										<Label text="ITC as per responses" textAlign="Center" design="Bold" width="100%"/>
+										<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<Text text="{Anx2>itcCGST}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem" hAlign="End">
+									<ui:multiLabels>
+										<Label text="ITC as per responses" textAlign="Center" design="Bold" width="100%"/>
+										<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<Text text="{Anx2>itcSGST}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem" hAlign="End">
+									<ui:multiLabels>
+										<Label text="ITC as per responses" textAlign="Center" design="Bold" width="100%"/>
+										<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</ui:multiLabels>
+									<ui:template>
+										<Text text="{Anx2>itcCess}"/>
+									</ui:template>
+								</ui:Column>
+							</ui:TreeTable>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+				<commons:toolbar>
+					<OverflowToolbar>
+						<Title text="Summary After Response"/>
+						<ToolbarSpacer/>
+						<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+					</OverflowToolbar>
+				</commons:toolbar>
+			</commons:ChartContainer>
+			<commons:ChartContainer id="idSummaryActionWiseCC1" showFullScreen="true" showZoom="true" showPersonalization="false"
+				autoAdjustHeight="false" visible="false">
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:TreeTable rows="{Anx2>/ImpactonRET1}" class="sapUiTinyMarginBegin" selectionMode="None" selectionBehavior="Row" visibleRowCount="8"
+								fixedColumnCount="1" enableSelectAll="false" fixedBottomRowCount="0">
+								<ui:Column width="12rem">
+									<Label design="Bold" width="100%" text="Actions by user"/>
+									<ui:template>
+										<Text text="{Anx2>Actionsbyuser}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem">
+									<Label design="Bold" width="100%" text="Report Type"/>
+									<ui:template>
+										<Text text="{Anx2>ReportType}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem">
+									<Label design="Bold" width="100%" text="No. of Records"/>
+									<ui:template>
+										<Text text="{Anx2>NoofRecords}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem">
+									<Label design="Bold" width="100%" text="Taxable Value"/>
+									<ui:template>
+										<Text text="{Anx2>TaxableValue}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem">
+									<Label design="Bold" width="100%" text="Total Tax"/>
+									<ui:template>
+										<Text text="{Anx2>TotalTax}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem">
+									<Label design="Bold" width="100%" text="Save to GSTN"/>
+									<ui:template>
+										<Text text="{Anx2>SavetoGSTN}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem">
+									<Label design="Bold" width="100%" text="Vendor Communication"/>
+									<ui:template>
+										<Text text="{Anx2>VendorCommunication}"/>
+									</ui:template>
+								</ui:Column>
+							</ui:TreeTable>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+				<commons:toolbar>
+					<OverflowToolbar>
+						<Title text="Summary Action Wise"/>
+						<ToolbarSpacer/>
+						<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+					</OverflowToolbar>
+				</commons:toolbar>
+			</commons:ChartContainer>
+		</content>
+	</Page>
+</core:FragmentDefinition>

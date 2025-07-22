@@ -1,0 +1,25 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.onboarding.controller.Master"
+	busyIndicatorDelay="0">
+	<IconTabBar expanded="true" id="idIconTabBarMaster" select="handleIconTabBarSelect" class="sapUiNoContentPadding sapUiSmallMarginBottom"
+		backgroundDesign="Transparent" stretchContentHeight="true" selectedKey="MasterFileUpload" expandable="false">
+		<items>
+			<IconTabFilter showAll="true" count="Master" key="All" enabled="false"/>
+			<IconTabSeparator/>
+			<IconTabFilter id="itMasterFileUpload" icon="sap-icon://upload-to-cloud" text="File Upload" tooltip="File Upload" key="MasterFileUpload">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.MasterFileUpload" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter id="itProductMaster" icon="sap-icon://product" text="Product Master" tooltip="Product Master" key="ProductMaster">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.ProductMaster" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter id="itItemMaster" icon="sap-icon://activity-items" text="Item Master" tooltip="Item Master" key="ItemMaster">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.ItemMaster" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter id="itCustomerMaster" icon="sap-icon://customer" text="Customer Master" tooltip="Customer Master" key="CustomerMaster">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.CustomerMaster" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter id="itVendorMaster" icon="sap-icon://supplier" text="Vendor Master" tooltip="Vendor Master" key="VendorMaster">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.VendorMaster" type="XML"/>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</mvc:View>

@@ -1,0 +1,756 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons" xmlns:l="sap.ui.layout" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="idGetsummaryDynamic1">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button icon="sap-icon://nav-back" tooltip="Go Back to GSTN Data" type="Transparent" press="handleLinkPressGETANX2Back"
+							id="idGetPRSummaryMainNavBack" visible="false"/>
+						<Title text="GSTN Data" id="idGetPRSummaryMainTitle" class="sapUiSmallMarginBegin clTitleMarginTop"/>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<Link text="Request ID wise" press="onPressRequestIDwiseGetSummary"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding">
+				<fb:FilterBar showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" id="idfbGETANX2" search="onSearch"
+					clear="clearAdpatFilterAnx2" useToolbar="false" class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<Select items="{path:'EntityModel>/'}" change="onSelectionChange" id="idGetANX22AEntity">
+									<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>-->
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Tax Period" visibleInFilterBar="true" mandatory="">
+							<fb:control>
+								<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" id="idGetfgiTaxPeriod" change="handleChange" width="12rem"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" id="idGetfgiGSINTComboMain">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Table Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idMultiTabType">
+									<core:Item key="B2B" text="B2B - 3B "/>
+									<core:Item key="SEZWP" text="SEZWP - 3E"/>
+									<core:Item key="SEZWOP" text="SEZWOP - 3F"/>
+									<core:Item key="DXP" text="Deemed Exports - 3G"/>
+									<core:Item key="ISD" text="5 - ISD"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Document Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idMultiDoctype">
+									<core:Item key="INV" text="Invoice"/>
+									<core:Item key="DR" text="Debit Note"/>
+									<core:Item key="CR" text="Credit Note"/>
+									<core:Item key="RINV" text="Revised Invoice"/>
+									<core:Item key="RDR" text="Revised Debit Note"/>
+									<core:Item key="RCR" text="Revised Credit Note"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="Data" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<MultiComboBox width="12rem" selectedKeys="CP" selectionChange="OnchangeDataDrop" selectionFinish="OnchangeDataDropFinish" id="iddropdata1">
+									<core:Item key="All" text="All"/>
+									<core:Item key="CP" text="Current Period"/>
+									<core:Item key="RCR" text="Rollover-Credit Availed"/>
+									<core:Item key="RNCR" text="Rollover-Credit Not Availed"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<fb:FilterBar showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" id="idSDfbGETANX2" search="onSearch"
+					clear="clearAdpatFilterAnx2" useToolbar="false" class="sapUiNoContentPadding" visible="false">
+					<fb:filterGroupItems>
+						<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="true">
+							<fb:control>
+								<Select items="{path:'EntityModel>/'}" change="onSelectionChange" id="idSDGetANX22AEntity">
+									<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>-->
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker value="" displayFormat="MMM yyyy" valueFormat="MMyyyy" id="idSDGetfgiTaxPeriod" change="handleChange" width="12rem"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" id="idSDGetfgiGSINTComboMain">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Table Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idMultiTabTypIn">
+									<core:Item key="B2B" text="B2B - 3B "/>
+									<core:Item key="SEZWP" text="SEZWP - 3E"/>
+									<core:Item key="SEZWOP" text="SEZWOP - 3F"/>
+									<core:Item key="DXP" text="Deemed Exports - 3G"/>
+									<core:Item key="ISD" text="5 - ISD"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Document Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idMultiDoctypeIn">
+									<core:Item key="INV" text="Invoice"/>
+									<core:Item key="DR" text="Debit Note"/>
+									<core:Item key="CR" text="Credit Note"/>
+									<core:Item key="RINV" text="Revised Invoice"/>
+									<core:Item key="RDR" text="Revised Debit Note"/>
+									<core:Item key="RCR" text="Revised Credit Note"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="Data" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<MultiComboBox width="12rem" selectedKeys="CP" selectionChange="OnchangeDataDrop2" selectionFinish="OnchangeDataDropFinish2"
+									id="iddropdata2">
+									<core:Item key="All" text="All"/>
+									<core:Item key="CP" text="Current Period"/>
+									<core:Item key="RCR" text="Rollover-Credit Availed"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel>
+				<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false" id="idGetPREntity">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<ui:Table rowSelectionChange="onSelection" rows="{path:'Get2aProcessedData>/resp'}" selectionMode="MultiToggle" visibleRowCount="8"
+									enableSelectAll="true" fixedBottomRowCount="0" fixedColumnCount="2" id="idGetPREntityTable">
+									<ui:columns>
+										<ui:Column width="11rem">
+											<Label design="Bold" text="GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox>
+													<HBox>
+														<Text text="{Get2aProcessedData>state}" width="8rem" class="stateColor"/>
+														<!--<Text text="{Annexure1>regType}" class="stateColor fontSmall"/>-->
+													</HBox>
+													<HBox justifyContent="SpaceBetween" width="100%">
+														<Link text="{Get2aProcessedData>gstin}" press="handleLinkPressGetGSTINMain"/>
+														<core:Icon src="sap-icon://circle-task-2" size="0.8rem" class="sapUiTinyMarginBegin" tooltip="Generate OTP"
+															visible="{=${Get2aProcessedData>gstin}=== '' ?false:true}" color="{=${Get2aProcessedData>authToken}=== 'Active' ?'#00ff00':'#ff0000'}"
+															press="onPressIcon"/>
+													</HBox>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem">
+											<Label design="Bold" text="ANX - 2 Status" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox>
+													<HBox>
+														<Link text="{Get2aProcessedData>status}" press="OnpressGetStatus"/>
+													</HBox>
+													<HBox>
+														<Text text="{Get2aProcessedData>lastUpdated}" class=""/>
+													</HBox>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="" hAlign="End">
+											<Label design="Bold" text="Count" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{Get2aProcessedData>count}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="" hAlign="End">
+											<Label design="Bold" text="Taxable Value" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{parts:[{path : 'Get2aProcessedData>taxableValue'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="" hAlign="End">
+											<Label design="Bold" text="Total Input Tax" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{parts:[{path : 'Get2aProcessedData>tiTax'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="" hAlign="End">
+											<Label design="Bold" text="IGST" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{parts:[{path : 'Get2aProcessedData>IGST'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="" hAlign="End">
+											<Label design="Bold" text="CGST" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{parts:[{path : 'Get2aProcessedData>CGST'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="" hAlign="End">
+											<Label design="Bold" text="SGST" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{parts:[{path : 'Get2aProcessedData>SGST'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="" hAlign="End">
+											<Label design="Bold" text="Cess" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{parts:[{path : 'Get2aProcessedData>Cess'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="" hAlign="End">
+											<Label design="Bold" text="Invoice Value" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{parts:[{path : 'Get2aProcessedData>invValue'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<ui:footer>
+										<Toolbar>
+											<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+											<Text text="Auth Token Active"/>
+											<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+											<Text text="Auth Token Inactive"/>
+											<ToolbarSpacer/>
+										</Toolbar>
+									</ui:footer>
+								</ui:Table>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar>
+							<u:FileUploader id="ucGetFileUpload" width="25rem" name="file" fileType="xlsx,csv,xls" sameFilenameAllowed="false" sendXHR="true"
+								style="Emphasized" class="sapUiSmallMarginBegin" tooltip="Upload your file to the local server" uploadComplete="handleUploadComplete"/>
+							<Button text="Upload File" press="handleUploadPress" class="sapUiTinyMarginBegin"/>
+							<ToolbarSpacer/>
+							<Button type="Emphasized" text="Get ANX-2" press="onGetANX2"/>
+							<MenuButton text="Reports" type="Emphasized">
+								<menu>
+									<Menu itemSelected="fnBoardingMenuItemPress">
+										<items>
+											<MenuItem text="Download Report" key="DownloadReport" icon="sap-icon://download"/>
+											<MenuItem text="Online View" key="OnlineView" icon="sap-icon://create-form"/>
+										</items>
+									</Menu>
+								</menu>
+							</MenuButton>
+							<Button type="Transparent" icon="sap-icon://download" tooltip="download" press="onButtonExtractPress"/>
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+				<Panel id="idGetPRGSTIN" visible="false">
+					<l:BlockLayout background="Dashboard" class="cl_shadow" id="idGettabRet11mm" visible="true">
+						<l:BlockLayoutRow class="sapUiNoContentPadding">
+							<l:BlockLayoutCell id="id_BlCell3" width="13">
+								<Toolbar height="2.2rem" class="supplToolbar supplToolbarCol">
+									<Label text="Table 3A(ANX-2)" design="Bold" textAlign="Center" width="100%"/>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTopBottom">
+									<VBox width="3rem">
+										<Text/>
+										<Label text="Total" class="sapUiTinyMarginBegin sapUiTinyMarginTop red" design="Bold"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Label text="Taxable Value" design="Bold"/>
+										<Text text="{path : 'ANX2Header>/threeA/Total/taxableValue', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop red"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Label text="IGST" design="Bold"/>
+										<Text text="{path : 'ANX2Header>/threeA/Total/igst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop red"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Label text="CGST" design="Bold"/>
+										<Text text="{path : 'ANX2Header>/threeA/Total/cgst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop red"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Label text="SGST" design="Bold"/>
+										<Text text="{path : 'ANX2Header>/threeA/Total/sgst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop red"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Label text="CESS" design="Bold"/>
+										<Text text="{path : 'ANX2Header>/threeA/Total/cess', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop red"/>
+									</VBox>
+								</HBox>
+								<HBox class="sapUiTinyMarginTopBottom" id="oHboxGET2PR2" visible="{BlockData>/Expand}">
+									<VBox width="3rem">
+										<Label text="INV" class="sapUiTinyMarginBegin" design="Bold"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text=" {path : 'ANX2Header>/threeA/INV/taxableValue', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/INV/igst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/INV/cgst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/INV/sgst', formatter : '.formatter.amountValue'} "/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/INV/cess', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+								</HBox>
+								<HBox class="sapUiTinyMarginTopBottom" visible="{BlockData>/Expand}" id="oHboxGET2PR">
+									<VBox width="3rem">
+										<Label text="DR" class="sapUiTinyMarginBegin" design="Bold"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text=" {path : 'ANX2Header>/threeA/DR/taxableValue', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/DR/igst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/DR/cgst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/DR/sgst', formatter : '.formatter.amountValue'} "/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/DR/cess', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+								</HBox>
+								<HBox class="sapUiTinyMarginTopBottom" visible="{BlockData>/Expand}" id="oHboxGETPr">
+									<VBox width="3rem">
+										<Label text="CR" class="sapUiTinyMarginBegin" design="Bold"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text=" {path : 'ANX2Header>/threeA/CR/taxableValue', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/CR/igst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/CR/cgst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/CR/sgst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/CR/cess', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+								</HBox>
+								<HBox class="sapUiTinyMarginTopBottom" visible="{BlockData>/Expand}" id="oHboxGET2PR1">
+									<VBox width="3rem">
+										<Label text="INV-A" class="sapUiTinyMarginBegin" design="Bold"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/INVA/taxableValue', formatter : '.formatter.amountValue'} "/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/INVA/igst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/INVA/cgst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/INVA/sgst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/INVA/cess', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+								</HBox>
+								<HBox class="sapUiTinyMarginTopBottom" visible="{BlockData>/Expand}" id="oHboxGET2PRA">
+									<VBox width="3rem">
+										<Label text="DR-A" class="sapUiTinyMarginBegin" design="Bold"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text=" {path : 'ANX2Header>/threeA/DRA/taxableValue', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/DRA/igst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/DRA/cgst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/DRA/sgst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/DRA/cess', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+								</HBox>
+								<HBox class="sapUiTinyMarginTopBottom" visible="{BlockData>/Expand}" id="oHboxGET2PRR">
+									<VBox width="3rem">
+										<Label text="CR-A" class="sapUiTinyMarginBegin" design="Bold"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text=" {path : 'ANX2Header>/threeA/CRA/taxableValue', formatter : '.formatter.amountValue'} "/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/CRA/igst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/CRA/cgst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/CRA/sgst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text="{path : 'ANX2Header>/threeA/CRA/cess', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+								</HBox>
+							</l:BlockLayoutCell>
+							<l:BlockLayoutCell width="12">
+								<Toolbar height="2.2rem" class="supplToolbar supplToolbarCol">
+									<Label text="Table 5-ISD(ANX-2)" design="Bold" textAlign="Center" width="100%"/>
+									<ToolbarSpacer/>
+									<ComboBox selectedKey="EYSummary" change="onPressSelectionEYGSTN" editable="true">
+										<core:Item key="EYSummary" text="EY Summary"/>
+										<core:Item key="GSTNSummary" text="GSTN Summary"/>
+										<core:Item key="Difference" text="Difference"/>
+									</ComboBox>
+									<core:Icon id="iMore" src="sap-icon://navigation-down-arrow" tooltip="More" press="fnMoreLessPress" color="white"/>
+									<core:Icon id="iLess" src="sap-icon://navigation-up-arrow" tooltip="Less" press="fnMoreLessPress" visible="false" color="white"/>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTopBottom">
+									<VBox width="3rem">
+										<Text/>
+										<Label text="Total" class="sapUiTinyMarginBegin sapUiTinyMarginTop red" design="Bold" id="idTotal"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Label text="Taxable Value" design="Bold"/>
+										<Text text="{path : 'ANX2Header>/ISD/Total/taxableValue', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop red"
+											id="id_Beforetext"/>
+									</VBox>
+									<VBox alignItems="Center" width="20%">
+										<Label text="IGST" design="Bold"/>
+										<Text text=" {path : 'ANX2Header>/ISD/Total/igst', formatter : '.formatter.amountValue'} " class="sapUiTinyMarginTop red" id="id_TextNum"/>
+									</VBox>
+									<VBox alignItems="Center" width="20%">
+										<Label text="CGST" design="Bold"/>
+										<Text text=" {path : 'ANX2Header>/ISD/Total/cgst', formatter : '.formatter.amountValue'} " class="sapUiTinyMarginTop red"/>
+									</VBox>
+									<VBox alignItems="Center" width="20%">
+										<Label text="SGST" design="Bold"/>
+										<Text text="{path : 'ANX2Header>/ISD/Total/sgst', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop red"/>
+									</VBox>
+									<VBox alignItems="Center" width="20%">
+										<Label text="CESS" design="Bold"/>
+										<Text text="{path : 'ANX2Header>/ISD/Total/cess', formatter : '.formatter.amountValue'}" class="sapUiTinyMarginTop red"/>
+									</VBox>
+								</HBox>
+								<HBox class="sapUiTinyMarginTopBottom" id="iHboxGET23" visible="{BlockData>/Expand}">
+									<VBox width="3rem">
+										<Label text="INV" class="sapUiTinyMarginBegin" design="Bold"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text=" {path : 'ANX2Header>/ISD/INV/taxableValue', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="20%">
+										<Text text=" {path : 'ANX2Header>/ISD/INV/igst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="20%">
+										<Text text=" {path : 'ANX2Header>/ISD/INV/cgst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="20%">
+										<Text text=" {path : 'ANX2Header>/ISD/INV/sgst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="20%">
+										<Text text="{path : 'ANX2Header>/ISD/INV/cess', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+								</HBox>
+								<HBox class="sapUiTinyMarginTopBottom" id="iHboxGET2" visible="{BlockData>/Expand}">
+									<VBox width="3rem">
+										<Label text="CR" class="sapUiTinyMarginBegin" design="Bold"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text=" {path : 'ANX2Header>/ISD/CR/taxableValue', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="20%">
+										<Text text=" {path : 'ANX2Header>/ISD/CR/igst', formatter : '.formatter.amountValue'} "/>
+									</VBox>
+									<VBox alignItems="Center" width="20%">
+										<Text text=" {path : 'ANX2Header>/ISD/CR/cgst', formatter : '.formatter.amountValue'} "/>
+									</VBox>
+									<VBox alignItems="Center" width="20%">
+										<Text text=" {path : 'ANX2Header>/ISD/CR/sgst', formatter : '.formatter.amountValue'} "/>
+									</VBox>
+									<VBox alignItems="Center" width="20%">
+										<Text text="{path : 'ANX2Header>/ISD/CR/cess', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+								</HBox>
+								<HBox class="sapUiTinyMarginTopBottom" id="iHboxGET2Inv" visible="{BlockData>/Expand}">
+									<VBox width="3rem">
+										<Label text="INV-A" class="sapUiTinyMarginBegin" design="Bold"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text=" {path : 'ANX2Header>/ISD/INVA/taxableValue', formatter : '.formatter.amountValue'} "/>
+									</VBox>
+									<VBox alignItems="Center" width="20%">
+										<Text text=" {path : 'ANX2Header>/ISD/INVA/igst', formatter : '.formatter.amountValue'} "/>
+									</VBox>
+									<VBox alignItems="Center" width="20%">
+										<Text text=" {path : 'ANX2Header>/ISD/INVA/cgst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="20%">
+										<Text text="{path : 'ANX2Header>/ISD/INVA/sgst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="20%">
+										<Text text="{path : 'ANX2Header>/ISD/INVA/cess', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+								</HBox>
+								<HBox class="sapUiTinyMarginTopBottom" id="iHboxGET2CR" visible="{BlockData>/Expand}">
+									<VBox width="3rem">
+										<Label text="CR-A" class="sapUiTinyMarginBegin" design="Bold"/>
+									</VBox>
+									<VBox alignItems="Center" width="17%">
+										<Text text=" {path : 'ANX2Header>/ISD/CRA/taxableValue', formatter : '.formatter.amountValue'} "/>
+									</VBox>
+									<VBox alignItems="Center" width="20%">
+										<Text text="{path : 'ANX2Header>/ISD/CRA/igst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="20%">
+										<Text text=" {path : 'ANX2Header>/ISD/CRA/cgst', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="Center" width="20%">
+										<Text text=" {path : 'ANX2Header>/ISD/CRA/sgst', formatter : '.formatter.amountValue'} "/>
+									</VBox>
+									<VBox alignItems="Center" width="20%">
+										<Text text="{path : 'ANX2Header>/ISD/CRA/cess', formatter : '.formatter.amountValue'}"/>
+									</VBox>
+								</HBox>
+							</l:BlockLayoutCell>
+						</l:BlockLayoutRow>
+					</l:BlockLayout>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<MenuButton type="Emphasized" text="Download Report">
+							<Menu itemSelected="onMenuItemPressAnx1down">
+								<MenuItem text="Processed Records (Current Period)" key="processLineItem"/>
+								<MenuItem text="Processed Records (Rollover-Normal)" key="processRate"/>
+								<MenuItem text="Processed Records(Rollover-PC)" key="submitted"/>
+								<MenuItem text="Processed Records(All)" key="submitted"/>
+								<MenuItem text="Consolidated ASP Error" key="digiError"/>
+								<MenuItem text="Consolidated GSTN Error" key="gstnError"/>
+							</Menu>
+						</MenuButton>
+						<Button type="Ghost" id="idGET2Exp" icon="sap-icon://expand-all" tooltip="{i18n>expand}" press="expandCollapseGET2Summary"
+							class="sapUiTinyMarginEnd"/>
+						<Button type="Ghost" id="idGET2Col" icon="sap-icon://collapse-all" tooltip="{i18n>collapse}" press="expandCollapseGET2Summary"/>
+						<Button type="Transparent" icon="sap-icon://download" tooltip="download" press="onButtonExtractPress1"/>
+					</Toolbar>
+					<ui:TreeTable id="idGettabRet11m" rows="{path:'Anx2SummaryDetails>/table', parameters:{ arrayNames:['items'], numberOfExpandedLevels:0 }}"
+						selectionMode="None" enableSelectAll="false" fixedColumnCount="2" enableColumnReordering="false" visibleRowCount="6" fixedBottomRowCount="1"
+						toggleOpenState="OnOpenStateAnx2D">
+						<ui:columns>
+							<ui:Column width="12rem">
+								<Label text="Table" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Label text="{Anx2SummaryDetails>table}" design="{=${Anx2SummaryDetails>table} === 'Total'?'Bold':'Standard'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="">
+								<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Label text="{Anx2SummaryDetails>records}" design="{=${Anx2SummaryDetails>table} === 'Total' ?'Bold':'Standard'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="">
+								<Label text="Invoice value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Label text="{path : 'Anx2SummaryDetails>invoiceValue', formatter : '.formatter.amountValue'}"
+										design="{=${Anx2SummaryDetails>table}==='Total'?'Bold':'Standard'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="">
+								<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Label text="{path : 'Anx2SummaryDetails>taxableValue', formatter : '.formatter.amountValue'}"
+										design="{=${Anx2SummaryDetails>table}==='Total'?'Bold':'Standard'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="">
+								<Label text="Total Input Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Label text="{path : 'Anx2SummaryDetails>totalTax', formatter : '.formatter.amountValue'}"
+										design="{=${Anx2SummaryDetails>table}==='Total'?'Bold':'Standard'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="">
+								<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Label text="{path : 'Anx2SummaryDetails>igst', formatter : '.formatter.amountValue'}"
+										design="{=${Anx2SummaryDetails>table}==='Total'?'Bold':'Standard'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="">
+								<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Label text="{path : 'Anx2SummaryDetails>cgst', formatter : '.formatter.amountValue'}"
+										design="{=${Anx2SummaryDetails>table}==='Total'?'Bold':'Standard'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="">
+								<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Label text="{path : 'Anx2SummaryDetails>sgst', formatter : '.formatter.amountValue'}"
+										design="{=${Anx2SummaryDetails>table}==='Total'?'Bold':'Standard'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="">
+								<Label text="CESS" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Label text="{path : 'Anx2SummaryDetails>cess', formatter : '.formatter.amountValue'}"
+										design="{=${Anx2SummaryDetails>table}==='Total'?'Bold':'Standard'}"/>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+					</ui:TreeTable>
+				</Panel>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="idGetsummaryDynamic2" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button icon="sap-icon://nav-back" type="Transparent" press="onPressRequestIDwiseGetSummaryBack"/>
+						<Title text="Request ID wise" class="sapUiSmallMarginBegin clTitleMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding">
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Request ID" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<ComboBox items="{RequestIDF4>/}" id="idRWIrequestId">
+									<core:Item key="{RequestIDF4>requestId}" text="{RequestIDF4>requestId}"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Tax Period" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<DatePicker displayFormat="MMM yyyy" id="idRWItaxPeriod" valueFormat="MMyyyy" change="onChangeRWITaxPeriod" width="12rem"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Report Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="12rem" items="{path:'reconResult>/ExactMatch'}">
+									<core:Item key="{reconResult>prVendorGSTIN}" text="{reconResult>reporttype}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Initiated By" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox items="{RequestIDF4>/}" id="idRWInitiatedBy">
+									<core:Item key="{RequestIDF4>initiatedBy}" text="{RequestIDF4>initiatedBy}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Initiation" visibleInFilterBar="true">
+							<fb:control>
+								<DateTimePicker width="100%" placeholder="Enter Date &amp; Time ..."/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="Completion" visibleInFilterBar="true">
+							<fb:control>
+								<DateTimePicker width="100%" placeholder="Enter Date &amp; Time ..."/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button icon="sap-icon://filter" type="Default" tooltip="Adapt Filters" press="onPressAdaptFilters" class="sapUiTinyMarginBegin"/>
+					<Button text="Go" type="Emphasized" id="idRWISearch" press="onSearch" class="sapUiTinyMarginBegin"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false">
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table rows="{RequestID>/}" id="tabRequestID" class="sapUiTinyMarginBegin" selectionMode="None" selectionBehavior="Row" visibleRowCount="10"
+								fixedColumnCount="0" enableSelectAll="false">
+								<ui:Column width="">
+									<Label design="Bold" text="Request ID"/>
+									<ui:template>
+										<Text text="{RequestID>requestId}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="">
+									<Label design="Bold" text="No.of GSTIN"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Link text="{RequestID>gstinCount}" press="onPressGSTINRWI"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="">
+									<Label design="Bold" text="Tax Period"/>
+									<ui:template>
+										<Text text="{RequestID>taxPeriod}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="">
+									<Label design="Bold" text="Initiation"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{RequestID>initiationDateTime}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="">
+									<Label design="Bold" text="Initiated By"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{RequestID>initiatedBy}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="">
+									<Label design="Bold" text="Completion"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{RequestID>completionDateTime}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="">
+									<Label design="Bold" text="Download"/>
+									<ui:template>
+										<Button type="Transparent" icon="sap-icon://download" tooltip="Download Summary" press="onConfigExtractPress"/>
+									</ui:template>
+								</ui:Column>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+				<commons:toolbar>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+						<!--	<Button type="Transparent" icon="sap-icon://download" tooltip="Download Summary" press="onConfigExtractPress"/>-->
+						<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" press="onConfigExtractPress"/>
+						<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="Download Pdf"/>
+						<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+					</OverflowToolbar>
+				</commons:toolbar>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

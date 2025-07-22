@@ -1,0 +1,87 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog title="Bulk Recon Response Action" type="Standard" class="sapUiSizeCompact" contentWidth="55rem" contentHeight="16rem"
+		draggable="true" busyIndicatorDelay="0">
+		<VBox class="sapUiSmallMarginBegin" alignItems="Begin" justifyContent="Begin">
+			<HBox renderType="Bare" class="sapUiTinyMarginTop">
+				<VBox width="11rem">
+					<Label text="Recon Type" design="Bold" required="true"/>
+					<Select id="idBR3ReconType" selectedKey="{ForceMatch>/reconType}" enabled="false" width="100%" class="input">
+						<core:Item key="2A_PR" text="GSTR-2A/6A Vs PR"/>
+						<core:Item key="2B_PR" text="GSTR-2B Vs PR"/>
+					</Select>
+				</VBox>
+				<VBox class="sapUiSmallMarginBegin">
+					<Label text="Tax Period Base" design="Bold" required="true"/>
+					<Select id="sTaxBaseW3bLock" selectedKey="{ForceMatch>/taxBase}" width="15rem" class="input">
+						<core:Item key="PR" text="PR"/>
+						<core:Item key="{Display>/LabelRR}" text="{Display>/LabelRR}"/>
+						<core:Item key="Both" text="Both PR &amp; {Display>/LabelRR}"/>
+					</Select>
+				</VBox>
+				<VBox width="12rem" class="sapUiSmallMarginBeginEnd">
+					<Label text="From Tax Period" design="Bold" required="true"/>
+					<DatePicker id="dtFrW3bLock" displayFormat="MMM yyyy" valueFormat="yyyyMM" dateValue="{ForceMatch>/frDate}" maxDate="{ForceMatch>/maxDate}"
+						change="onBulkRespDateChange($event,'w3B')" width="100%"/>
+				</VBox>
+				<VBox width="12rem" class="sapUiSmallMarginEnd">
+					<Label text="To Tax Period" design="Bold" required="true"/>
+					<DatePicker id="dtToW3bLock" displayFormat="MMM yyyy" valueFormat="yyyyMM" dateValue="{ForceMatch>/toDate}" maxDate="{ForceMatch>/maxDate}"
+						minDate="{ForceMatch>/frDate}"/>
+				</VBox>
+			</HBox>
+			<HBox renderType="Bare" class="sapUiTinyMarginTop">
+				<VBox width="11rem">
+					<Label text="Vendor PAN" design="Bold"/>
+					<Input id="iW3bLockVenPan" value="{ForceMatch>/vendorPan}" maxLength="10" liveChange="alphaNumericCaps"/>
+				</VBox>
+				<VBox width="15rem" class="sapUiSmallMarginBegin">
+					<Label text="Vendor GSTIN" design="Bold"/>
+					<MultiInput id="iW3bLockVenGstin" change="onMultiInputChange" maxLength="15" showValueHelp="false"/>
+				</VBox>
+				<VBox width="15rem" class="sapUiSmallMarginBegin">
+					<Label text="Recipient GSTIN" design="Bold" required="true"/>
+					<MultiComboBox id="idBRF3Gstins" width="100%" items="{path:'ReconResultGstin>/'}" selectedKeys="{ForceMatch>/gstin}"
+						selectionChange="selectAll">
+						<core:Item key="{ReconResultGstin>gstin}" text="{ReconResultGstin>gstin}"/>
+					</MultiComboBox>
+				</VBox>
+			</HBox>
+			<HBox renderType="Bare" class="sapUiTinyMarginTop">
+				<VBox width="11rem">
+					<Label text="Recon Criteria" design="Bold"/>
+					<Select id="s3bRespCriteria" selectedKey="{ForceMatch>/reconCriteria}" enabled="false" width="100%" class="input">
+						<core:Item key="Regular" text="Regular"/>
+						<core:Item key="Import" text="Import"/>
+						<core:Item key="ISD" text="ISD"/>
+					</Select>
+					<Label text="Tax Period for GSTR-3B" design="Bold" required="true" class="sapUiTinyMarginTop"/>
+					<DatePicker id="TP3Bid" displayFormat="MMM yyyy" valueFormat="MMyyyy" dateValue="{ForceMatch>/taxPeriod3b}" maxDate="{ForceMatch>/maxDate}"/>
+				</VBox>
+				<VBox width="15rem" class="sapUiSmallMarginBeginEnd">
+					<Label text="Report Type" design="Bold" required="true"/>
+					<MultiComboBox id="idBR3ReptType" items="{Be3bReportType>/}" selectedKeys="{ForceMatch>/reportType}"
+						selectionChange="onRepTypeSelection($event,'Be3bReportType')" width="100%">
+						<core:Item key="{Be3bReportType>key}" text="{Be3bReportType>text}" enabled="{Be3bReportType>enable}">
+							<core:customData>
+								<core:CustomData key="listDisable" value="{Be3bReportType>select}" writeToDom="true"/>
+							</core:customData>
+						</core:Item>
+					</MultiComboBox>
+					<Label text="Mismatch Reason" design="Bold" required="true" class="sapUiTinyMarginTop"/>
+					<MultiComboBox selectedKeys="{ForceMatch>/mismatchReason}" enabled="{ForceMatch>/eMismatch}" width="100%">
+						<core:Item key="Document Date (Same Month)" text="Document Date (Same Month)"/>
+						<core:Item key="Document Date (Different Month)" text="Document Date (Different Month)"/>
+					</MultiComboBox>
+				</VBox>
+				<VBox>
+					<Label text="Response Remarks(Max 500 characters)" design="Bold"/>
+					<TextArea id="bulk3bTAid" value="{ForceMatch>/remarks}" maxLength="500" width="25rem" rows="4"/>
+				</VBox>
+			</HBox>
+		</VBox>
+		<buttons>
+			<Button text="Save" press="onBulk3BResSave"/>
+			<Button text="Cancel" press="onBulk3BClose"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

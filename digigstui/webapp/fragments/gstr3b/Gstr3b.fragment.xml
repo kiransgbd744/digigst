@@ -1,0 +1,1018 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table">
+	<f:DynamicPage id="dpGstr3b1">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<Title text="GSTR 3B" titleStyle="H3" class="tinyMarginTop"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding">
+				<fb:FilterBar showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false" class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="true">
+							<fb:control>
+								<Select items="{DropDown>/Entity}" width="100%" change="onEntityChange">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{GstinModel>/}">
+									<core:Item key="{GstinModel>key}" text="{GstinModel>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DateRangeSelection displayFormat="MMM yyyy" value="Oct 2019"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table rows="{GSTR3B>/gstr3b/}" enableColumnReordering="false" class="sapUiTinyMarginTop">
+				<ui:extension>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button type="Accept" text="Save GSTR-3B"/>
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column>
+						<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<VBox>
+								<Text text="{GSTR3B>state}" class="stateColor"/>
+								<HBox alignContent="Start" justifyContent="SpaceBetween">
+									<Link text="{GSTR3B>gstin}" emphasized="true" press="onPressGstr3bGstin"/>
+									<core:Icon src="sap-icon://circle-task-2" visible="{=${GSTR3B>state}===''?false:true}" size="0.8rem"
+										color="{=${GSTR3B>authToken}==='Active'?'#00ff00':'#ff0000'}" press="onPressGenerateOTP"/>
+								</HBox>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="Save Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox>
+								<ObjectStatus text="{GSTR3B>saveStatus}" state="{path:'{GSTR3B>saveStatus}', formatter:'.formatter.statusClr'}" active="true"/>
+								<Text text="{GSTR3B>saveTime}" class="timeStmpClr sapUiTinyMarginBegin"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<Label text="Save Error Report" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<core:Icon src="sap-icon://download" tooltip="Download" visible="{GSTR3B>saveErrorReport}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="Submit Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox>
+								<ObjectStatus text="{GSTR3B>submitStatus}" state="{path:'{GSTR3B>submitStatus}', formatter:'.formatter.statusClr'}"/>
+								<Text text="{GSTR3B>submitTime}" class="timeStmpClr sapUiTinyMarginBegin"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpGstr3bSummary" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onPressBackGstr3b"/>
+						<Title text="GSTR 3B" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding">
+				<fb:FilterBar showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false" class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="true">
+							<fb:control>
+								<Select items="{DropDown>/Entity}" width="100%" change="onEntityChange">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{GstinModel>/}">
+									<core:Item key="{GstinModel>key}" text="{GstinModel>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DateRangeSelection displayFormat="MMM yyyy" value="Oct 2019"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:TreeTable id="tabGstr3bSumm1" rows="{GSTR3B>/gstr3bSummary/}" selectionMode="None" enableSelectAll="false" fixedColumnCount="2"
+				enableColumnReordering="false" visibleRowCount="14" toggleOpenState="onToggleGstr3bSummary" visible="true"
+				class="sapUiTinyMarginTop sapUiLargeMarginBottom">
+				<ui:extension>
+					<Toolbar height="3.2rem">
+						<Label text="Showing:" design="Bold"/>
+						<CheckBox selected="{visiGSTR3B>/eyC}" text="ASP (Computed)"/>
+						<CheckBox selected="{visiGSTR3B>/eyU}" text="ASP (User Input)"/>
+						<CheckBox selected="{visiGSTR3B>/gstn}" text="GSTN"/>
+						<CheckBox selected="{visiGSTR3B>/diff}" text="Difference"/>
+						<ToolbarSpacer/>
+						<VBox>
+							<Text text=""/>
+							<HBox>
+								<Button type="Emphasized" text="Save Status" tooltip="download"/>
+								<Button type="Emphasized" text="Clear User Data" class="sapUiTinyMarginBeginEnd"/>
+								<Button type="Accept" text="Save Changes"/>
+								<Button type="Accept" text="Save to GSTN" class="sapUiTinyMarginBeginEnd"/>
+								<Button type="Emphasized" text="Submit"/>
+							</HBox>
+						</VBox>
+						<VBox>
+							<Text text="Oct 15, 2019, 16:45:26" class="timeStmpClr"/>
+							<HBox>
+								<Button type="Default" text="Generate 3B" class="sapUiTinyMarginEnd"/>
+								<Button type="Ghost" id="bExpGstr3b1" icon="sap-icon://expand-all" tooltip="Expand All" press="onPressExpandCollapseGstr3b"/>
+								<Button type="Ghost" id="bColGstr3b1" icon="sap-icon://collapse-all" tooltip="Collapse All" press="onPressExpandCollapseGstr3b"
+									class="sapUiTinyMarginBeginEnd"/>
+								<!--	<core:Icon src="sap-icon://download" tooltip="{i18n>download}" class="sapUiTinyMarginTop"/>-->
+								<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel"/>
+								<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="Download Pdf" class="sapUiTinyMarginEnd"/>
+							</HBox>
+						</VBox>
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="7rem">
+						<Label text="Table" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{GSTR3B>table}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="18rem">
+						<Label text="Type of Supply" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox>
+								<Text text="{GSTR3B>supplyType}" visible="{=!${GSTR3B>link}}"/>
+								<Link text="{GSTR3B>supplyType}" visible="{GSTR3B>link}" press="onPressSupplyType"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column headerSpan="5" hAlign="End" width="10rem" visible="{visiGSTR3B>/eyC}">
+						<ui:multiLabels>
+							<Label text="ASP (Computed)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path : 'GSTR3B>eycValue'}], formatter : '.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="10rem" visible="{visiGSTR3B>/eyC}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path : 'GSTR3B>eyIGST'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="10rem" visible="{visiGSTR3B>/eyC}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path : 'GSTR3B>eyCGST'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="10rem" visible="{visiGSTR3B>/eyC}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path : 'GSTR3B>eySGST'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiSgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem" visible="{visiGSTR3B>/eyC}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path : 'GSTR3B>eyCESS'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCess}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column headerSpan="5" hAlign="End" width="7rem" visible="{visiGSTR3B>/eyU}">
+						<ui:multiLabels>
+							<Label text="ASP (User Input)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<VBox>
+								<Text text="{GSTR3B>value}" visible="{GSTR3B>header}" class="sapUiTinyMarginEnd"/>
+								<Input value="{GSTR3B>value}" textAlign="End" editable="{GSTR3B>edit}" visible="{=!${GSTR3B>header}}"/>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem" visible="{visiGSTR3B>/eyU}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<VBox>
+								<Text text="{GSTR3B>value}" visible="{=${GSTR3B>visiIgst} &amp;&amp; ${GSTR3B>header}}" class="sapUiTinyMarginEnd"/>
+								<Input value="{GSTR3B>igst}" textAlign="End" editable="{GSTR3B>edit}" visible="{=${GSTR3B>visiIgst} &amp;&amp; !${GSTR3B>header}}"/>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem" visible="{visiGSTR3B>/eyU}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<VBox>
+								<Text text="{GSTR3B>value}" visible="{=${GSTR3B>visiCgst} &amp;&amp; ${GSTR3B>header}}" class="sapUiTinyMarginEnd"/>
+								<Input value="{GSTR3B>cgst}" textAlign="End" editable="{GSTR3B>edit}" visible="{=${GSTR3B>visiCgst} &amp;&amp; !${GSTR3B>header}}"/>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem" visible="{visiGSTR3B>/eyU}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<VBox>
+								<Text text="{GSTR3B>sgst}" visible="{=${GSTR3B>visiSgst} &amp;&amp; ${GSTR3B>header}}" class="sapUiTinyMarginEnd"/>
+								<Input value="{GSTR3B>sgst}" textAlign="End" editable="{GSTR3B>edit}" visible="{=${GSTR3B>visiSgst} &amp;&amp; !${GSTR3B>header}}"/>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem" visible="{visiGSTR3B>/eyU}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<VBox>
+								<Text text="{GSTR3B>cess}" visible="{=${GSTR3B>visiCess} &amp;&amp; ${GSTR3B>header}}" class="sapUiTinyMarginEnd"/>
+								<Input value="{GSTR3B>cess}" textAlign="End" editable="{GSTR3B>edit}" visible="{=${GSTR3B>visiCess} &amp;&amp; !${GSTR3B>header}}"/>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column headerSpan="5" hAlign="End" width="10rem" visible="{visiGSTR3B>/gstn}">
+						<ui:multiLabels>
+							<Label text="GSTN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path : 'GSTR3B>gstnValue'}], formatter : '.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="10em" visible="{visiGSTR3B>/gstn}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path : 'GSTR3B>gstnIGST'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiIgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="10rem" visible="{visiGSTR3B>/gstn}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path : 'GSTR3B>gstnCGST'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="10rem" visible="{visiGSTR3B>/gstn}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path : 'GSTR3B>gstnSGST'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiSgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem" visible="{visiGSTR3B>/gstn}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path : 'GSTR3B>gstnCESS'}], formatter : '.formatter.amountValue'}" visible="{GSTR3B>visiCess}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column headerSpan="5" hAlign="End" width="7rem" visible="{visiGSTR3B>/diff}">
+						<ui:multiLabels>
+							<Label text="Difference" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{GSTR3B>value}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem" visible="{visiGSTR3B>/diff}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{GSTR3B>igst}" visible="{GSTR3B>visiIgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem" visible="{visiGSTR3B>/diff}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{GSTR3B>cgst}" visible="{GSTR3B>visiCgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem" visible="{visiGSTR3B>/diff}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{GSTR3B>sgst}" visible="{GSTR3B>visiSgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem" visible="{visiGSTR3B>/diff}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{GSTR3B>cess}" visible="{GSTR3B>visiCess}"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:TreeTable>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpGstr3bAddItem" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackGstr3bSummary"/>
+						<Title text="GSTR 3B" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiTinyMarginTop">
+				<headerToolbar>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button type="Emphasized" text="Save Changes"/>
+					</Toolbar>
+				</headerToolbar>
+				<Table items="{GSTR3B>/unregisterPerson/}">
+					<headerToolbar>
+						<Toolbar>
+							<Title text="(a) Supplies made to Unregistered Persons" level="H2"/>
+							<ToolbarSpacer/>
+							<Button icon="sap-icon://add" press="onPressAddRecords"/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column>
+							<Label text="Place of Supply" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Taxable Value" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="IGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<ComboBox items="{GSTR3B>/pos/}" selectedKey="{GSTR3B>pos}" width="100%">
+									<core:Item key="{GSTR3B>key}" text="{GSTR3B>key} - {GSTR3B>text}"/>
+								</ComboBox>
+								<Input value="{GSTR3B>taxableValue}"/>
+								<Input value="{GSTR3B>igst}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+				<Table items="{GSTR3B>/taxablePersons/}" class="sapUiSmallMarginTopBottom">
+					<headerToolbar>
+						<OverflowToolbar>
+							<Title text="(b) Supplies made to Composition Taxable Persons" level="H2"/>
+							<ToolbarSpacer/>
+							<Button icon="sap-icon://add" press="onPressAddRecords"/>
+						</OverflowToolbar>
+					</headerToolbar>
+					<columns>
+						<Column>
+							<Label text="Place of Supply" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Taxable Value" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="IGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<ComboBox items="{GSTR3B>/pos/}" selectedKey="{GSTR3B>pos}" width="100%">
+									<core:Item key="{GSTR3B>key}" text="{GSTR3B>key} - {GSTR3B>text}"/>
+								</ComboBox>
+								<Input value="{GSTR3B>taxableValue}"/>
+								<Input value="{GSTR3B>igst}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+				<Table items="{GSTR3B>/uinHolders/}">
+					<headerToolbar>
+						<OverflowToolbar>
+							<Title text="(c) Supplies made to UIN holders" level="H2"/>
+							<ToolbarSpacer/>
+							<Button icon="sap-icon://add" press="onPressAddRecords"/>
+						</OverflowToolbar>
+					</headerToolbar>
+					<columns>
+						<Column>
+							<Label text="Place of Supply" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Taxable Value" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="IGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<ComboBox items="{GSTR3B>/pos/}" selectedKey="{GSTR3B>pos}" width="100%">
+									<core:Item key="{GSTR3B>key}" text="{GSTR3B>key} - {GSTR3B>text}"/>
+								</ComboBox>
+								<Input value="{GSTR3B>taxableValue}"/>
+								<Input value="{GSTR3B>igst}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<!--jakeer-->
+	<f:DynamicPage id="dpGstr3b1AddItem" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackGstr3bTax"/>
+						<Title text="GSTR 3B" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiTinyMarginTop">
+				<headerToolbar>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button type="Emphasized" text="Edit" press="OnpressEditgstr3b"/>
+						<Button type="Emphasized" text="Save Changes" press="OnpressSavegstr3b"/>
+					</Toolbar>
+				</headerToolbar>
+				<Table items="{GSTR3B>/unregisterPerson2/}">
+					<headerToolbar>
+						<Toolbar>
+							<Title text="Tax on Outward and Reverse Charge Inward Supplies" level="H2"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column width="4rem">
+							<Label text="Table" design="Bold" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Type of Supply" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Taxable Value" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="IGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="CGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<!--	<ComboBox items="{GSTR3B>/pos/}" selectedKey="{GSTR3B>pos}" width="100%">
+									<core:Item key="{GSTR3B>key}" text="{GSTR3B>key} - {GSTR3B>text}"/>
+								</ComboBox>-->
+								<Text text="{GSTR3B>tableno}"/>
+								<Text text="{GSTR3B>supplytype}"/>
+								<VBox>
+									<Text text="{GSTR3B>taxableValue}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>taxableValue}" editable="{GSTR3B>edittax}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>igst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>igst}" editable="{GSTR3B>editigst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>taxableValue}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>cgst}" editable="{GSTR3B>editcgst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>sgst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>sgst}" editable="{GSTR3B>editsgst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>cess}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>cess}" editable="{GSTR3B>editcess}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpGstr3bAddItemInterst" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackGstr3bInterest"/>
+						<Title text="GSTR 3B" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiTinyMarginTop">
+				<headerToolbar>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button type="Emphasized" text="Edit" press="OnpressSavegstr3bInterest"/>
+						<Button type="Emphasized" text="Save Changes" press="OnpressSavegstr3bInterest"/>
+					</Toolbar>
+				</headerToolbar>
+				<Table items="{GSTR3B>/InterstPayable/}">
+					<headerToolbar>
+						<Toolbar>
+							<Title text="Interest &amp; Late Fee Payable" level="H2"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column width="4rem">
+							<Label text="Table" design="Bold" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Type of Supply" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Taxable Value" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="IGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="CGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{GSTR3B>tableno}"/>
+								<Text text="{GSTR3B>supplytype}"/>
+								<VBox>
+									<Text text="{GSTR3B>taxableValue}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>taxableValue}" editable="{GSTR3B>edittax}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>igst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>igst}" editable="{GSTR3B>editigst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>cgst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>cgst}" editable="{GSTR3B>editcgst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>sgst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>sgst}" editable="{GSTR3B>editsgst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>cess}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>cess}" editable="{GSTR3B>editcess}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpGstr3bAddItemITCAV" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackGstr3bITCAv"/>
+						<Title text="GSTR 3B" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiTinyMarginTop">
+				<headerToolbar>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button type="Emphasized" text="Edit" press="OnpressEditgstr3bITCAv"/>
+						<Button type="Emphasized" text="Save Changes" press="OnpressSavegstr3bITCAv"/>
+					</Toolbar>
+				</headerToolbar>
+				<Table items="{GSTR3B>/ITCAvailable/}">
+					<headerToolbar>
+						<Toolbar>
+							<Title text="ITC Avalilabe (Whether in full or part)" level="H2"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column width="4rem">
+							<Label text="Table" design="Bold" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Type of Supply" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Taxable Value" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="IGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="CGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{GSTR3B>tableno}"/>
+								<Text text="{GSTR3B>supplytype}"/>
+								<VBox>
+									<Text text="{GSTR3B>taxableValue}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>taxableValue}" editable="{GSTR3B>edittax}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>igst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>igst}" editable="{GSTR3B>editigst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>cgst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>cgst}" editable="{GSTR3B>editcgst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>sgst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>sgst}" editable="{GSTR3B>editsgst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>cess}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>cess}" editable="{GSTR3B>editcess}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpGstr3bAddItemITCR" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackGstr3bITCR"/>
+						<Title text="GSTR 3B" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiTinyMarginTop">
+				<headerToolbar>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button type="Emphasized" text="Edit" press="OnpressEditgstr3bITCR"/>
+						<Button type="Emphasized" text="Save Changes" press="OnpressSavegstr3bITCR"/>
+					</Toolbar>
+				</headerToolbar>
+				<Table items="{GSTR3B>/ITCReverse/}">
+					<headerToolbar>
+						<Toolbar>
+							<Title text="ITC Reversed" level="H2"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column width="4rem">
+							<Label text="Table" design="Bold" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Type of Supply" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Taxable Value" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="IGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="CGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{GSTR3B>tableno}"/>
+								<Text text="{GSTR3B>supplytype}"/>
+								<VBox>
+									<Text text="{GSTR3B>taxableValue}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>taxableValue}" editable="{GSTR3B>edittax}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>igst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>igst}" editable="{GSTR3B>editigst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>cgst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>cgst}" editable="{GSTR3B>editcgst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>sgst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>sgst}" editable="{GSTR3B>editsgst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>cess}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>cess}" editable="{GSTR3B>editcess}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpGstr3bAddItemINITC" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackGstr3bInITC"/>
+						<Title text="GSTR 3B" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiTinyMarginTop">
+				<headerToolbar>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button type="Emphasized" text="Edit" press="OnpressEditgstr3bINITC"/>
+						<Button type="Emphasized" text="Save Changes" press="OnpressSavegstr3bINITC"/>
+					</Toolbar>
+				</headerToolbar>
+				<Table items="{GSTR3B>/InEligITC/}">
+					<headerToolbar>
+						<Toolbar>
+							<Title text="Ineligible ITC" level="H2"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column width="4rem">
+							<Label text="Table" design="Bold" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Type of Supply" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Taxable Value" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="IGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="CGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{GSTR3B>tableno}"/>
+								<Text text="{GSTR3B>supplytype}"/>
+								<VBox>
+									<Text text="{GSTR3B>taxableValue}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>taxableValue}" editable="{GSTR3B>edittax}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>igst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>igst}" editable="{GSTR3B>editigst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>cgst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>cgst}" editable="{GSTR3B>editcgst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>sgst}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>sgst}" editable="{GSTR3B>editsgst}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+								<VBox>
+									<Text text="{GSTR3B>cess}" visible="{=!${GSTR3B>Taxvisble}}"/>
+									<Input value="{GSTR3B>cess}" editable="{GSTR3B>editcess}" visible="{GSTR3B>Taxvisble}"/>
+								</VBox>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpGstr3bAddItemITCAR" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackGstr3bSummary"/>
+						<Title text="GSTR 3B" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiTinyMarginTop">
+				<headerToolbar>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button type="Emphasized" text="Edit" press="OnpressEditgstr3b"/>
+						<Button type="Emphasized" text="Save Changes" press="OnpressSavegstr3b"/>
+					</Toolbar>
+				</headerToolbar>
+				<Table items="{GSTR3B>/ITCAvailable/}">
+					<headerToolbar>
+						<Toolbar>
+							<Title text="ITC Avalilabe (Whether in full or part)" level="H2"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column width="4rem">
+							<Label text="Table" design="Bold" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Type of Supply" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="Taxable Value" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="IGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="CGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+						<Column>
+							<Label text="SGST" design="Bold" width="100%" textAlign="Center"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{GSTR3B>tableno}"/>
+								<Text text="{GSTR3B>supplytype}"/>
+								<Input value="{GSTR3B>taxableValue}" editable="{GSTR3B>edittax}"/>
+								<Input value="{GSTR3B>igst}" editable="{GSTR3B>editigst}"/>
+								<Input value="{GSTR3B>cgst}" editable="{GSTR3B>editcgst}"/>
+								<Input value="{GSTR3B>sgst}" editable="{GSTR3B>editsgst}"/>
+								<Input value="{GSTR3B>cess}" editable="{GSTR3B>editcess}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpNilNonExempt" visible="false">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onBackGstr3bNil"/>
+						<Title text="GSTR 3B" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Table items="{GSTR3B>/exemptNilNon/}" class="sapUiTinyMarginTop">
+				<headerToolbar>
+					<Toolbar>
+						<Title text="Exempt, Nil &amp; Non-GST Inward Supplies" level="H2"/>
+						<ToolbarSpacer/>
+						<Button type="Emphasized" text="Save Changes"/>
+					</Toolbar>
+				</headerToolbar>
+				<columns>
+					<Column>
+						<Label text="Nature of Supplies" design="Bold" width="100%" textAlign="Center"/>
+					</Column>
+					<Column>
+						<Label text="Inter-State Supplies" design="Bold" width="100%" textAlign="Center"/>
+					</Column>
+					<Column>
+						<Label text="Intra-State Supplies" design="Bold" width="100%" textAlign="Center"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<Text text="{GSTR3B>supplies}"/>
+							<Input value="{GSTR3B>interState}"/>
+							<Input value="{GSTR3B>intraState}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

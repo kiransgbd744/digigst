@@ -1,0 +1,64 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage >
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Label text="Entity :" class="sapUiTinyMarginTop" design="Bold"/>
+						<Select items="{entity>/resp}" change="onSelectionChangeEntity" width="12rem" id="idEntityERPMapping" class="sapUiTinyMarginBegin">
+							<core:Item key="{entity>entityId}" text="{entity>entityName}"/>
+						</Select>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<Button type="Emphasized" icon="sap-icon://save" text="Submit" id="idERPMappingSubmit" press="onSubmit" enabled="false"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<ui:Table id="idERPMappingTab" rows="{GstinDetail>/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10"
+					fixedRowCount="0" fixedColumnCount="0" enableSelectAll="true">
+					<ui:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<Button icon="sap-icon://download" press="onExportExcel" enabled="false"/>
+							<Button type="Accept" icon="sap-icon://edit" tooltip="Edit rows" id="idERPMappingEditRows" press="onEditRows"/>
+							<Button type="Reject" icon="sap-icon://delete" tooltip="Delete rows" id="idERPMappingDeleteRows" press="onDeleteRows"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="4rem" headerSpan="1" class="columnLine">
+							<ui:multiLabels>
+								<Label text="S.No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{GstinDetail>sno}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem" headerSpan="1" class="columnLine">
+							<ui:multiLabels>
+								<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{GstinDetail>supplierGstin}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="15rem" headerSpan="1" class="columnLine">
+							<ui:multiLabels>
+								<Label text="ERP ID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<MultiComboBox items="{stubData>/ErpDetails}">
+									<core:ListItem key="{stubData>systemid}" text="{stubData>systemid}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

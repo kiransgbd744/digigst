@@ -1,0 +1,81 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:ui="sap.ui.table">
+	<Dialog id="dAdapt" title="Inward E-Invoice Status" type="Message" class="sapUiSizeCompact">
+		<buttons>
+			<Button id="bCancel" text="Cancel" type="Default" class="buttoncolorSec" press="onCloseInwardStatus('C')"/>
+			<Button id="bApply" text="Initiate" type="Default" class="buttoncolorSec" press="onCloseInwardStatus('I')"/>
+		</buttons>
+		<ui:Table rows="{EInvInwardSummary>/}" enableColumnReordering="false" selectionMode="None">
+			<ui:columns>
+				<ui:Column width="10rem">
+					<Label text="GSTIN" design="Bold"/>
+					<ui:template>
+						<Text text="{EInvInwardSummary>gstin}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column>
+					<Label text="All" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<CheckBox text="{EInvInwardSummary>status}" selected="{EInvInwardSummary>flagAll}" select="onCheckedStatus($event,'all')"/>
+							<ObjectStatus text="{EInvInwardSummary>overallTimeStamp}" class="sapUiMediumMarginBegin"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column>
+					<Label text="B2B" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<CheckBox text="{EInvInwardSummary>b2bStatus}" selected="{EInvInwardSummary>flagB2B}" select="onCheckedStatus($event,'b2b')"/>
+							<ObjectStatus text="{EInvInwardSummary>b2bTimeStamp}" class="sapUiMediumMarginBegin"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column>
+					<Label text="SEZWP" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<CheckBox text="{EInvInwardSummary>sezwpStatus}" selected="{EInvInwardSummary>flagSEZWP}" select="onCheckedStatus($event,'sezwp')"/>
+							<ObjectStatus text="{EInvInwardSummary>sezwpTimeStamp}" class="sapUiMediumMarginBegin"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column>
+					<Label text="SEZWOP" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<CheckBox text="{EInvInwardSummary>sezwopStatus}" selected="{EInvInwardSummary>flagSEZWOP}" select="onCheckedStatus($event,'sezwop')"/>
+							<ObjectStatus text="{EInvInwardSummary>sezwopTimeStamp}" class="sapUiMediumMarginBegin"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column>
+					<Label text="DXP" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<CheckBox text="{EInvInwardSummary>dexpStatus}" selected="{EInvInwardSummary>flagDXP}" select="onCheckedStatus($event,'dexp')"/>
+							<ObjectStatus text="{EInvInwardSummary>dexpTimeStamp}" class="sapUiMediumMarginBegin"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column>
+					<Label text="EXPWP" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<CheckBox text="{EInvInwardSummary>expwpStatus}" selected="{EInvInwardSummary>flagEXPWP}" select="onCheckedStatus($event,'expwp')"/>
+							<ObjectStatus text="{EInvInwardSummary>expwpTimeStamp}" class="sapUiMediumMarginBegin"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column>
+					<Label text="EXPWOP" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<CheckBox text="{EInvInwardSummary>expwopStatus}" selected="{EInvInwardSummary>flagEXPWOP}" select="onCheckedStatus($event,'expwop')"/>
+							<ObjectStatus text="{EInvInwardSummary>expwopTimeStamp}" class="sapUiMediumMarginBegin"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+	</Dialog>
+</core:FragmentDefinition>

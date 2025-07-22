@@ -1,0 +1,201 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<ui:Table id="tabReclaim" rows="{ReclaimDet>/}" selectionMode="None" class="sapUiTinyMarginTop sapUiTinyMarginBeginEnd" visible="false">
+		<ui:extension>
+			<Toolbar height="4rem">
+				<VBox>
+					<Label text="From Date"/>
+					<DatePicker id="dtReclaimFr" displayFormat="MMM dd, yyyy" valueFormat="dd-MM-yyyy" change="onChangeReclaimDate"/>
+				</VBox>
+				<VBox>
+					<Label text="To Date"/>
+					<DatePicker id="dtReclaimTo" displayFormat="MMM dd, yyyy" valueFormat="dd-MM-yyyy"/>
+				</VBox>
+				<VBox>
+					<Label/>
+					<Button text="Filter" press="onPressReclaimDetail" class="buttoncolor"/>
+				</VBox>
+				<ToolbarSpacer/>
+				<Button text="Excel Download" icon="sap-icon://excel-attachment" tooltip="Download details in Excel" iconFirst="false"
+					press="onExcelDownloadReclaim" class="buttoncolorSec"/>
+				<Button text="PDF Download" icon="sap-icon://pdf-attachment" tooltip="Download details in PDF" iconFirst="false"
+					press="onPdfDownloadReclaim" class="buttoncolorSec"/>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="4rem">
+				<Label text="Sr. No." textAlign="Center" design="Bold" width="100%"/>
+				<ui:template>
+					<Text text="{ReclaimDet>srNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="7rem">
+				<Label text="Date" textAlign="Center" design="Bold" width="100%"/>
+				<ui:template>
+					<Text text="{ReclaimDet>itcTransDate}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="10rem">
+				<Label text="Reference No." textAlign="Center" design="Bold" width="100%"/>
+				<ui:template>
+					<Text text="{ReclaimDet>refNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="6rem">
+				<Label text="Tax Period" textAlign="Center" design="Bold" width="100%"/>
+				<ui:template>
+					<Text text="{ReclaimDet>taxPeriod}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<Label text="Description" textAlign="Center" design="Bold" width="100%"/>
+				<ui:template>
+					<Text text="{ReclaimDet>desc}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" headerSpan="4" width="8rem">
+				<ui:multiLabels>
+					<Label text="ITC Claimed (Table 4A(5)) (All Other ITC)" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Integrated Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'ReclaimDet>table4a5Igst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Central Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'ReclaimDet>table4a5Cgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="State/UT Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'ReclaimDet>table4a5Sgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'ReclaimDet>table4a5Cess',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" headerSpan="4" width="8rem">
+				<ui:multiLabels>
+					<Label text="ITC Reversal (Table 4B(2)) Eligible to Re-claim" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Integrated Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'ReclaimDet>table4b2Igst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Central Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'ReclaimDet>table4b2Cgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="State/UT Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'ReclaimDet>table4b2Sgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'ReclaimDet>table4b2Cess',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" headerSpan="4" width="8rem">
+				<ui:multiLabels>
+					<Label text="ITC Reclaimed (Table 4D(1))" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Integrated Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'ReclaimDet>table4d1Igst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Central Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'ReclaimDet>table4d1Cgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="State/UT Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'ReclaimDet>table4d1Sgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'ReclaimDet>table4d1Cess',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" headerSpan="4" width="8rem">
+				<ui:multiLabels>
+					<Label text="Closing Balance (Opening Balance + Reversal (4B(2)) - Reclaimed (4D(1)))" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Integrated Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'ReclaimDet>clsBalIgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Central Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'ReclaimDet>clsBalCgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="State/UT Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'ReclaimDet>clsBalSgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'ReclaimDet>clsBalCess',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+	</ui:Table>
+</core:FragmentDefinition>

@@ -1,0 +1,138 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table">
+	<f:DynamicPage id="dpCParty">
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding">
+				<fb:FilterBar id="fbCounterParty" showGoOnFB="false" showClearOnFB="false" width="90%" showFilterConfiguration="false" search="onSearch"
+					clear="onClearFilter" useToolbar="false" class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="false">
+							<fb:control>
+								<Select id="cpEntity" items="{EntityModel>/}" change="onCPEntityChange" width="100%" visible="false">
+									<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="cpGstin" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dtCounterParty" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" id="fbStatusHboxcp" width="10%">
+					<Button id="bCpFilter" icon="sap-icon://filter" type="Default" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilter"
+						class="sapUiTinyMarginBegin"/>
+					<Button id="bCpClear" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd" press="onCpClear"/>
+					<Button id="bCpGo" text="{i18n>go}" type="Emphasized" press="onSearch"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel>
+				<ui:Table id="tabCParty" rows="{CounterPartyInfo>/resp/gstinDet}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="9">
+					<ui:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<Button type="Emphasized" text="Get ANX-1"/>
+							<MenuButton type="Emphasized" text="Download Report">
+								<Menu itemSelected="onMenuItemPress">
+									<MenuItem text="Counter Party Response" key="cpResponse"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Emphasized" text="Download" press="onMessageInformationDialogPress"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="16rem">
+							<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<VBox>
+									<HBox>
+										<Text text="{CounterPartyInfo>stateName}" width="8rem" class="stateColor"/>
+										<!--<Text text="{getCounterPartyInfo>gstin}" class="stateColor fontSmall"/>-->
+									</HBox>
+									<HBox alignContent="Start" justifyContent="SpaceBetween">
+										<Link text="{CounterPartyInfo>gstin}" emphasized="true" press="onPressAnx1Summary">
+											<dependents>
+												<Text text="CounterParty"/>
+											</dependents>
+										</Link>
+										<core:Icon src="sap-icon://circle-task-2" visible="{=${CounterPartyInfo>state}===''?false:true}" size="0.8rem"
+											color="{=${CounterPartyInfo>authTokenStatus}==='A'?'#00ff00':'#ff0000'}"/>
+									</HBox>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column>
+							<Label text="Get ANX-1 Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<VBox>
+									<Text text="{path:'CounterPartyInfo>lastAnnx1FetchStatus', formatter:'.formatter.status'}"/>
+									<Text text="{CounterPartyInfo>lastAnnx1FetchDate}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Not Saved" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{CounterPartyInfo>notSavedTotal}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Saved To GSTN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{CounterPartyInfo>savedToGstnTotal}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Accepted" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{CounterPartyInfo>accepted}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Rejected" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{CounterPartyInfo>rejected}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Pending" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{CounterPartyInfo>pending}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Unlock" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{CounterPartyInfo>unlock}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="No Action" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{CounterPartyInfo>noAction}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+					<ui:footer>
+						<HBox>
+							<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+							<Text text="Auth Token Active" class="sapUiTinyMarginBegin"/>
+							<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem" class="sapUiSmallMarginBegin"/>
+							<Text text="Auth Token Inactive" class="sapUiTinyMarginBegin"/>
+						</HBox>
+					</ui:footer>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

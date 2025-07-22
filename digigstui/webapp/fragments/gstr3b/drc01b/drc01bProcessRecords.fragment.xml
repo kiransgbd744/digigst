@@ -1,0 +1,202 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table">
+	<f:DynamicPage id="dpGstr2Avs3BProcessRecord" class="sapUiNoContentPadding sapUiNoMargin" visible="true">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="DRC01B" titleStyle="H3"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar id="fbProcessRecord2A" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idPGstinDRC" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin'}" selectionChange="selectAll">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="idFromtaxPeriodDRC" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Ref ID" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox id="idDifferenceDRC" width="100%">
+									<core:Item key="Ref ID Generated" text="Ref ID Generated"/>
+									<core:Item key="No Ref ID" text="No Ref ID"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" id="fbProcessHbox" width="10%">
+					<!--<Button id="bProcessFilter2A" icon="sap-icon://filter" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilter" enabled="false"/>-->
+					<Button id="bProcessClear2A" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onPressClear"/>
+					<Button id="bProcessGo2A" text="Filter" class="buttoncolor" press="onSearch"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table id="idDRC01BTable" rows="{path:'ProessData>/resp/drcDetails/'}" selectionMode="MultiToggle" visibleRowCount="8"
+				fixedColumnCount="1" rowSelectionChange="onRowSelectionChange" class="sapUiSmallMarginTop">
+				<ui:extension>
+					<OverflowToolbar >
+						<ToolbarSpacer/>
+						<!--<Button class="buttoncolorSec" text="Edit Reason" press="OnEditReason" enabled="{= ${userPermission>/appPermission/P4}}"/>-->
+						<!--<Button class="buttoncolorSec" text="Save Reason" press="OnSaveReason" enabled="{= ${userPermission>/appPermission/P4}}"/>-->
+						<Button class="buttoncolorSec" text="Fetch DRC01B" press="onFetchDRC01" enabled="{= ${userPermission>/appPermission/P4}}"/>
+						<Button class="buttoncolorSec" text="Pay Differential (via DRC03)" press="onPayDiffrential"
+							enabled="{= ${userPermission>/appPermission/P4}}"/>
+						<Button class="buttoncolorSec" text="Save PartB to GSTN" press="onFileDRC01PartB" enabled="{= ${userPermission>/appPermission/P4}}"/>
+						<Button class="buttoncolorSec" text="File DRC01B PartB" press="onSignFile('EVC')" enabled="{= ${userPermission>/appPermission/P4}}"/>
+						<Button class="buttoncolorSec" text="Download Report" press="onDownloadReport" enabled="{= ${userPermission>/appPermission/P4}}"/>
+						<!--<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="{i18n>downExcel}" press="onExportExcel('P')" enabled="false"/>-->
+						<!--<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="{i18n>downPdf}" class="sapUiTinyMarginEnd" enabled="false"/>-->
+					</OverflowToolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="13rem">
+						<Label text="{i18n>gstin}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<VBox>
+								<HBox>
+									<Text text="{ProessData>stateName}" width="8rem" class="stateColor"/>
+									<Text text="{=${ProessData>regType}==='REGULAR'?'':${ProessData>regType}}" class="stateColor fontSmall"/>
+								</HBox>
+								<HBox alignContent="Start" justifyContent="SpaceBetween">
+									<Link text="{ProessData>gstin}" emphasized="true" press="onPressGstr2ASummary"/>
+									<core:Icon src="sap-icon://circle-task-2" size="0.8rem" tooltip="{ProessData>authStatus}"
+										color="{=${ProessData>authStatus}==='I'?'#ff0000' : '#00ff00'}" press="onActivateAuthToken(${ProessData>gstin},${ProessData>authStatus})"/>
+								</HBox>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column headerSpan="3" width="">
+						<ui:multiLabels>
+							<Label text="DRC01B Part A" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Ref ID" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<HBox alignContent="Start">
+								<Text text="{path:'ProessData>refid', formatter:'.formatter.amountValue'}"/>
+								<core:Icon src="sap-icon://sys-enter-2" class="sapUiSmallMarginBeginEnd" visible="{=${ProessData>refid}==='No Ref ID'?true:false}"
+									size="0.8rem" color="#00ff00"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="">
+						<ui:multiLabels>
+							<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Difference (1 vs 3B)" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<!--<Link text="{path:'ProessData>diffAmtDetails/ttl', formatter:'.formatter.amountValue'}"-->
+							<!--	press="onPressDiffLink($event,${ProessData>diffAmtDetails})"/>-->
+							<ObjectStatus text="{path:'ProessData>diffAmtDetails/ttl', formatter:'.formatter.amountValue'}" active="false"
+								press="onPressDiffLink($event,${ProessData>diffAmtDetails})"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="">
+						<ui:multiLabels>
+							<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Status" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<VBox width="100%">
+								<ObjectStatus text="{ProessData>getCallStatus}" active="{=${ProessData>getCallStatus}!=='NOT_INITIATED'?true:false}"
+									state="{path:'ProessData>getCallStatus', formatter:'.formatter.statusClr'}" press="onPressSaveStatus1($event,'P')"/>
+								<Text text="{ProessData>getCallTime}" class="timeStmpClr"/>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<!--<ui:Column headerSpan="4" width="11rem">-->
+					<!--	<ui:multiLabels>-->
+					<!--		<Label text="DRC01B Part B" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--		<Label text="Reason Code" textAlign="Center" width="100%" design="Bold"/>-->
+					<!--	</ui:multiLabels>-->
+					<!--	<ui:template>-->
+							<!--selectionChange="selectAll"-->
+					<!--		<MultiComboBox width="100%" items="{Reason>/resp/reasons/}" selectedKeys="{ProessData>reasonUsr}" editable="{ProessData>edit}">-->
+					<!--			<core:Item key="{Reason>reasonCode}" text="{Reason>reasonCode}"/>-->
+					<!--		</MultiComboBox>-->
+					<!--	</ui:template>-->
+					<!--</ui:Column>-->
+					<!--<ui:Column width="25rem">-->
+					<!--	<ui:multiLabels>-->
+					<!--		<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+					<!--		<Label text="Reason Description" textAlign="Center" width="100%" design="Bold"/>-->
+					<!--	</ui:multiLabels>-->
+					<!--	<ui:template>-->
+					<!--		<HBox width="100%">-->
+					<!--			<MultiComboBox width="24rem" items="{Reason>/resp/reasons/}" editable="false" selectedKeys="{ProessData>reasonUsr}"-->
+					<!--				selectionChange="selectAll">-->
+					<!--				<core:Item key="{Reason>reasonCode}" text="{Reason>reasonCode} : {Reason>reasonDesc}" tooltip="{Reason>reasonCode} : {Reason>reasonDesc}"/>-->
+					<!--			</MultiComboBox>-->
+					<!--		</HBox>-->
+					<!--	</ui:template>-->
+					<!--</ui:Column>-->
+					<ui:Column width="" headerSpan="2" hAlign="Center">
+						<ui:multiLabels>
+							<Label text="DRC01B Part B" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Reason for Difference" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Button type="Transparent" press="onPressReasonDiff(${ProessData>reasonUsr},${ProessData>gstin},${ProessData>refid})"
+								icon="sap-icon://sys-add" tooltip="Reason for Difference"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="" hAlign="Center">
+						<ui:multiLabels>
+							<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Differential amount paid " textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Button type="Transparent" press="onPressAddDiff(${ProessData>differentialDetails},${ProessData>gstin},${ProessData>refid})"
+								icon="sap-icon://sys-add" tooltip="Add Differential amount"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="">
+						<ui:multiLabels>
+							<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Save Status" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<VBox width="100%">
+								<ObjectStatus text="{ProessData>saveStatus}" active="{=${ProessData>saveStatus}!=='NOT INITIATED'?true:false}"
+									state="{path:'ProessData>saveStatus', formatter:'.formatter.statusClr'}" press="onPressSaveStatus(${ProessData>gstin})"/>
+								<Text text="{ProessData>saveStatusTime}" class="timeStmpClr"/>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="">
+						<ui:multiLabels>
+							<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="Filing Status" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<VBox width="100%">
+								<ObjectStatus text="{ProessData>filingStatus}" active="{=${ProessData>filingStatus}!=='NOT INITIATED'?true:false}"
+									state="{path:'ProessData>filingStatus', formatter:'.formatter.statusClr'}" press="onPressFilingStatus(${ProessData>gstin})"/>
+								<Text text="{ProessData>filingStatusTime}" class="timeStmpClr"/>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+				<ui:footer>
+					<HBox>
+						<core:Icon src="sap-icon://circle-task-2" ariaLabelledBy="txtActive" color="#00ff00" size="0.8rem"/>
+						<Text id="txtActive" text="Auth Token Active" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+						<core:Icon src="sap-icon://circle-task-2" ariaLabelledBy="txtInactive" color="red" size="0.8rem"/>
+						<Text id="txtInactive" text="Auth Token Inactive" class="sapUiTinyMarginBegin"/>
+					</HBox>
+				</ui:footer>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

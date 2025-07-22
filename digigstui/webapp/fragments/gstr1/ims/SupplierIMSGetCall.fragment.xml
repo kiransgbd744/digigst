@@ -1,0 +1,364 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table"
+	xmlns:commons="sap.suite.ui.commons" xmlns:u="sap.ui.unified">
+	<f:DynamicPage visible="{=${ViewProperty>/btnSegment}==='IMSGetCall'}" class="clDataStatusAPI">
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox items="{path:'DataPermission>/respData/dataSecurity/gstin'}" selectedKeys="{FilterModel>/getGstins}" showSelectAll="true">
+									<core:Item key="{DataPermission>value}" text="{DataPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Financial Year" visibleInFilterBar="true">
+							<fb:control>
+								<Select items="{oFyModel>/finYears}" selectedKey="{FilterModel>/getTaxPeriod}" width="100%">
+									<core:Item key="{oFyModel>fy}" text="{oFyModel>fy}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" press="onClearSuppImsGetCall" class="sapUiTinyMarginEnd buttoncolorSec"/>
+					<Button text="Filter" class="buttoncolor" press="onSearchSuppImsGetCall"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer id="idGetSuppIms" showFullScreen="false" autoAdjustHeight="false">
+				<commons:toolbar>
+					<OverflowToolbar>
+						<VBox alignItems="Center">
+							<Label text="Get call frequency Opted via Admin portal:"/>
+							<HBox justifyContent="SpaceBetween" width="100%">
+								<Label text="Automated: {path:'CallFrequencyOpted>/getCallFreqOpted/auto',formatter:'._formatFreqCall'}" class="sapUiSmallMarginEnd"/>
+								<Label text="Manual: {path:'CallFrequencyOpted>/getCallFreqOpted/manual',formatter:'._formatFreqCall'}"/>
+							</HBox>
+						</VBox>
+						<VBox alignItems="Center" class="sapUiMediumMarginBegin sapUiContentPadding">
+							<Label text="No of Tax periods for get call:"/>
+							<HBox justifyContent="SpaceBetween" width="100%">
+								<Label text="Automated: T-{CallFrequencyOpted>/noOfTaxPeriodsForGetCall/auto}" class="sapUiSmallMarginEnd"/>
+								<Label text="Manual: T-{CallFrequencyOpted>/noOfTaxPeriodsForGetCall/manual}"/>
+							</HBox>
+						</VBox>
+						<ToolbarSpacer/>
+						<Button text="Get Supplier IMS Records" press="onPressGetSupplierIMS" class="buttoncolorSec"
+							visible="{=${ViewProperty>/btnSubSegment}==='summary'}"/>
+						<MenuButton text="Download Reports" class="buttoncolorSec" visible="{=${ViewProperty>/btnSubSegment}==='summary'}">
+							<Menu itemSelected="onDownloadGetCallReport(${$parameters>/item/mProperties/key})">
+								<MenuItem key="tableData" text="Table Data" press="onDownloadImsSummaryTabData"/>
+								<MenuItem text="Consildated Report - Action wise">
+									<MenuItem key="All" text="ALL"/>
+									<MenuItem key="A" text="Accepted"/>
+									<MenuItem key="R" text="Rejected"/>
+									<MenuItem key="P" text="Pending"/>
+									<MenuItem key="N" text="No Action"/>
+									<MenuItem key="NE" text="Not Eligible" visible="false"/>
+								</MenuItem>
+								<MenuItem key="gstr3bLiability" text="GSTR-3B Liability Report" visible="false"/>
+							</Menu>
+						</MenuButton>
+						<Button type="Transparent" icon="sap-icon://full-screen" press="onFullScreenGetCall('O')" tooltip="{i18n>openFullScreen}"
+							visible="{=!${ViewProperty>/getIMSFullScreen}}"/>
+						<Button type="Transparent" icon="sap-icon://exit-full-screen" press="onFullScreenGetCall('C')" tooltip="{i18n>closeFullScreen}"
+							visible="{ViewProperty>/getIMSFullScreen}"/>
+						<commons:ChartContainerToolbarPlaceholder/>
+					</OverflowToolbar>
+				</commons:toolbar>
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<Panel>
+								<ui:Table id="tabImsGetCall" rows="{SupplierImsGetCall>/}" selectionMode="MultiToggle" fixedColumnCount="1" enableColumnReordering="false"
+									visibleRowCount="{ViewProperty>/getImsCallRows}" visible="{=${ViewProperty>/btnSubSegment}==='summary'}"
+									rowSelectionChange="onRowSelectionIms">
+									<ui:columns>
+										<ui:Column width="15rem">
+											<Label text="GSTIN" textAlign="Center" width="100%" design="Bold"/>
+											<ui:template>
+												<VBox width="100%">
+													<HBox>
+														<Text text="{SupplierImsGetCall>stateName}" class="stateColor" width="9rem"/>
+														<Text text="{=${SupplierImsGetCall>registrationType}==='REGULAR'?'':${SupplierImsGetCall>registrationType}}" class="stateColor fontSmall"/>
+													</HBox>
+													<HBox alignContent="Start" justifyContent="SpaceBetween">
+														<Label text="{SupplierImsGetCall>gstin}" design="Bold" textAlign="Center" width="100%"/>
+														<core:Icon src="sap-icon://circle-task-2" size="0.8rem" visible="{=${SupplierImsGetCall>authStatus}===''?false:true}"
+															tooltip="{=${SupplierImsGetCall>authStatus}==='A'?'Active':'Inactive'}" color="{=${SupplierImsGetCall>authStatus}==='A'?'#00ff00':'red'}"
+															press="onPressGenerateOTP" class="sapUiTinyMarginBegin"/>
+													</HBox>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="15rem">
+											<CheckBox text="April" selected="{ImsProperty>/apr}" select="onSelectColMonth($event,'apr')" class="boldCheckBoxText"/>
+											<ui:template>
+												<VBox alignItems="Center" width="100%">
+													<HBox>
+														<CheckBox selected="{SupplierImsGetCall>aprCheck}" select="onSelectMonth('apr')"/>
+														<ObjectStatus text="{SupplierImsGetCall>aprStatus}" class="sapUiTinyMarginTop"
+															state="{path:'SupplierImsGetCall>aprStatus',formatter:'.statusClr'}"/>
+													</HBox>
+													<Text text="{SupplierImsGetCall>aprInitiatedOn}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="15rem">
+											<CheckBox text="May" selected="{ImsProperty>/may}" select="onSelectColMonth($event,'may')" class="boldCheckBoxText"/>
+											<ui:template>
+												<VBox alignItems="Center" width="100%">
+													<HBox>
+														<CheckBox selected="{SupplierImsGetCall>mayCheck}" select="onSelectMonth('may')"/>
+														<ObjectStatus text="{SupplierImsGetCall>mayStatus}" class="sapUiTinyMarginTop"
+															state="{path:'SupplierImsGetCall>mayStatus',formatter:'.statusClr'}"/>
+													</HBox>
+													<Text text="{SupplierImsGetCall>mayInitiatedOn}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="15rem">
+											<CheckBox text="June" selected="{ImsProperty>/june}" select="onSelectColMonth($event,'june')" class="boldCheckBoxText"/>
+											<ui:template>
+												<VBox alignItems="Center" width="100%">
+													<HBox>
+														<CheckBox selected="{SupplierImsGetCall>juneCheck}" select="onSelectMonth('june')"/>
+														<ObjectStatus text="{SupplierImsGetCall>juneStatus}" class="sapUiTinyMarginTop"
+															state="{path:'SupplierImsGetCall>juneStatus',formatter:'.statusClr'}"/>
+													</HBox>
+													<Text text="{SupplierImsGetCall>juneInitiatedOn}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="15rem">
+											<CheckBox text="July" selected="{ImsProperty>/july}" select="onSelectColMonth($event,'july')" class="boldCheckBoxText"/>
+											<ui:template>
+												<VBox alignItems="Center" width="100%">
+													<HBox>
+														<CheckBox selected="{SupplierImsGetCall>julyCheck}" select="onSelectMonth('july')"/>
+														<ObjectStatus text="{SupplierImsGetCall>julyStatus}" class="sapUiTinyMarginTop"
+															state="{path:'SupplierImsGetCall>julyStatus',formatter:'.statusClr'}"/>
+													</HBox>
+													<Text text="{SupplierImsGetCall>julyInitiatedOn}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="15rem">
+											<CheckBox text="August" selected="{ImsProperty>/aug}" select="onSelectColMonth($event,'aug')" class="boldCheckBoxText"/>
+											<ui:template>
+												<VBox alignItems="Center" width="100%">
+													<HBox>
+														<CheckBox selected="{SupplierImsGetCall>augCheck}" select="onSelectMonth('aug')"/>
+														<ObjectStatus text="{SupplierImsGetCall>augStatus}" class="sapUiTinyMarginTop"
+															state="{path:'SupplierImsGetCall>augStatus',formatter:'.statusClr'}"/>
+													</HBox>
+													<Text text="{SupplierImsGetCall>augInitiatedOn}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="15rem">
+											<CheckBox text="September" selected="{ImsProperty>/sep}" select="onSelectColMonth($event,'sep')" class="boldCheckBoxText"/>
+											<ui:template>
+												<VBox alignItems="Center" width="100%">
+													<HBox>
+														<CheckBox selected="{SupplierImsGetCall>sepCheck}" select="onSelectMonth('sep')"/>
+														<ObjectStatus text="{SupplierImsGetCall>sepStatus}" class="sapUiTinyMarginTop"
+															state="{path:'SupplierImsGetCall>sepStatus',formatter:'.statusClr'}"/>
+													</HBox>
+													<Text text="{SupplierImsGetCall>sepInitiatedOn}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="15rem">
+											<CheckBox text="October" selected="{ImsProperty>/oct}" select="onSelectColMonth($event,'oct')" class="boldCheckBoxText"/>
+											<ui:template>
+												<VBox alignItems="Center" width="100%">
+													<HBox>
+														<CheckBox selected="{SupplierImsGetCall>octCheck}" select="onSelectMonth('oct')"/>
+														<ObjectStatus text="{SupplierImsGetCall>octStatus}" class="sapUiTinyMarginTop"
+															state="{path:'SupplierImsGetCall>octStatus',formatter:'.statusClr'}"/>
+													</HBox>
+													<Text text="{SupplierImsGetCall>octInitiatedOn}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="15rem">
+											<CheckBox text="November" selected="{ImsProperty>/nov}" select="onSelectColMonth($event,'nov')" class="boldCheckBoxText"/>
+											<ui:template>
+												<VBox alignItems="Center" width="100%">
+													<HBox>
+														<CheckBox selected="{SupplierImsGetCall>novCheck}" select="onSelectMonth('nov')"/>
+														<ObjectStatus text="{SupplierImsGetCall>novStatus}" class="sapUiTinyMarginTop"
+															state="{path:'SupplierImsGetCall>novStatus',formatter:'.statusClr'}"/>
+													</HBox>
+													<Text text="{SupplierImsGetCall>novInitiatedOn}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="15rem">
+											<CheckBox text="December" selected="{ImsProperty>/dec}" select="onSelectColMonth($event,'dec')" class="boldCheckBoxText"/>
+											<ui:template>
+												<VBox alignItems="Center" width="100%">
+													<HBox>
+														<CheckBox selected="{SupplierImsGetCall>decCheck}" select="onSelectMonth('dec')"/>
+														<ObjectStatus text="{SupplierImsGetCall>decStatus}" class="sapUiTinyMarginTop"
+															state="{path:'SupplierImsGetCall>decStatus',formatter:'.statusClr'}"/>
+													</HBox>
+													<Text text="{SupplierImsGetCall>decInitiatedOn}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="15rem">
+											<CheckBox text="January" selected="{ImsProperty>/jan}" select="onSelectColMonth($event,'jan')" class="boldCheckBoxText"/>
+											<ui:template>
+												<VBox alignItems="Center" width="100%">
+													<HBox>
+														<CheckBox selected="{SupplierImsGetCall>janCheck}" select="onSelectMonth('jan')"/>
+														<ObjectStatus text="{SupplierImsGetCall>janStatus}" class="sapUiTinyMarginTop"
+															state="{path:'SupplierImsGetCall>janStatus',formatter:'.statusClr'}"/>
+													</HBox>
+													<Text text="{SupplierImsGetCall>janInitiatedOn}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="15rem">
+											<CheckBox text="February" selected="{ImsProperty>/feb}" select="onSelectColMonth($event,'feb')" class="boldCheckBoxText"/>
+											<ui:template>
+												<VBox alignItems="Center" width="100%">
+													<HBox>
+														<CheckBox selected="{SupplierImsGetCall>febCheck}" select="onSelectMonth('feb')"/>
+														<ObjectStatus text="{SupplierImsGetCall>febStatus}" class="sapUiTinyMarginTop"
+															state="{path:'SupplierImsGetCall>febStatus',formatter:'.statusClr'}"/>
+													</HBox>
+													<Text text="{SupplierImsGetCall>febInitiatedOn}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="15rem">
+											<CheckBox text="March" selected="{ImsProperty>/mar}" select="onSelectColMonth($event,'mar')" class="boldCheckBoxText"/>
+											<ui:template>
+												<VBox alignItems="Center" width="100%">
+													<HBox>
+														<CheckBox selected="{SupplierImsGetCall>marCheck}" select="onSelectMonth('mar')"/>
+														<ObjectStatus text="{SupplierImsGetCall>marStatus}" class="sapUiTinyMarginTop"
+															state="{path:'SupplierImsGetCall>marStatus',formatter:'.statusClr'}"/>
+													</HBox>
+													<Text text="{SupplierImsGetCall>marInitiatedOn}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<ui:footer>
+										<HBox>
+											<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+											<Text text="Auth Token Active" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+											<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+											<Text text="Auth Token Inactive" class="sapUiTinyMarginBegin"/>
+										</HBox>
+									</ui:footer>
+								</ui:Table>
+								<ui:Table rows="{SupplierImsGetCall>/}" selectionMode="None" fixedColumnCount="1" visibleRowCount="{ViewProperty>/getImsCallRows}"
+									enableColumnReordering="false" visible="{=${ViewProperty>/btnSubSegment}==='details'}">
+									<ui:columns>
+										<ui:Column width="15rem">
+											<Label text="GSTIN" textAlign="Center" width="100%" design="Bold"/>
+											<ui:template>
+												<VBox width="100%">
+													<HBox>
+														<Text text="{SupplierImsGetCall>stateName}" class="stateColor" width="9rem"/>
+														<Text text="{=${SupplierImsGetCall>registrationType}==='REGULAR'?'':${SupplierImsGetCall>registrationType}}" class="stateColor fontSmall"/>
+													</HBox>
+													<HBox alignContent="Start" justifyContent="SpaceBetween">
+														<Label text="{SupplierImsGetCall>gstin}" design="Bold" textAlign="Center" width="100%"/>
+														<core:Icon src="sap-icon://circle-task-2" size="0.8rem" visible="{=${SupplierImsGetCall>authStatus}===''?false:true}"
+															tooltip="{=${SupplierImsGetCall>authStatus}==='A'?'Active':'Inactive'}" color="{=${SupplierImsGetCall>authStatus}==='A'?'#00ff00':'red'}"
+															press="onPressGenerateOTP" class="sapUiTinyMarginBegin"/>
+													</HBox>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="18rem">
+											<Label text="April" textAlign="Center" design="Bold" wrapping="true" width="100%"/>
+											<ui:template>
+												<core:HTML content="{path:'SupplierImsGetCall>aprSection', formatter:'._formatSection'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="18rem">
+											<Label text="May" textAlign="Center" design="Bold" wrapping="true" width="100%"/>
+											<ui:template>
+												<core:HTML content="{path:'SupplierImsGetCall>maySection', formatter:'._formatSection'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="18rem">
+											<Label text="June" textAlign="Center" design="Bold" wrapping="true" width="100%"/>
+											<ui:template>
+												<core:HTML content="{path:'SupplierImsGetCall>juneSection', formatter:'._formatSection'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="18rem">
+											<Label text="July" textAlign="Center" design="Bold" wrapping="true" width="100%"/>
+											<ui:template>
+												<core:HTML content="{path:'SupplierImsGetCall>julySection', formatter:'._formatSection'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="18rem">
+											<Label text="August" textAlign="Center" design="Bold" wrapping="true" width="100%"/>
+											<ui:template>
+												<core:HTML content="{path:'SupplierImsGetCall>augSection', formatter:'._formatSection'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="18rem">
+											<Label text="September" textAlign="Center" design="Bold" wrapping="true" width="100%"/>
+											<ui:template>
+												<core:HTML content="{path:'SupplierImsGetCall>sepSection', formatter:'._formatSection'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="18rem">
+											<Label text="October" textAlign="Center" design="Bold" wrapping="true" width="100%"/>
+											<ui:template>
+												<core:HTML content="{path:'SupplierImsGetCall>octSection', formatter:'._formatSection'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="18rem">
+											<Label text="November" textAlign="Center" design="Bold" wrapping="true" width="100%"/>
+											<ui:template>
+												<core:HTML content="{path:'SupplierImsGetCall>novSection', formatter:'._formatSection'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="18rem">
+											<Label text="December" textAlign="Center" design="Bold" wrapping="true" width="100%"/>
+											<ui:template>
+												<core:HTML content="{path:'SupplierImsGetCall>decSection', formatter:'._formatSection'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="18rem">
+											<Label text="January" textAlign="Center" design="Bold" wrapping="true" width="100%"/>
+											<ui:template>
+												<core:HTML content="{path:'SupplierImsGetCall>janSection', formatter:'._formatSection'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="18rem">
+											<Label text="February" textAlign="Center" design="Bold" wrapping="true" width="100%"/>
+											<ui:template>
+												<core:HTML content="{path:'SupplierImsGetCall>febSection', formatter:'._formatSection'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="18rem">
+											<Label text="March" textAlign="Center" design="Bold" wrapping="true" width="100%"/>
+											<ui:template>
+												<core:HTML content="{path:'SupplierImsGetCall>marSection', formatter:'._formatSection'}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+							</Panel>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

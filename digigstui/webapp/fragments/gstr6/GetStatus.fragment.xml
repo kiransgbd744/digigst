@@ -1,0 +1,78 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table"
+	xmlns:layout="sap.ui.layout">
+	<Dialog type="Message" class="sapUiSizeCompact" showHeader="false">
+		<beginButton>
+			<Button text="Close" press="onCloseProcStatusDialog"/>
+		</beginButton>
+		<!--<Bar>-->
+		<!--<contentMiddle>-->
+		<!--	<Title text="GET GSTR-6 Last Call Status" visible="true" id="idgettitle"/>-->
+		<!--	<Title text="GET GSTR-6 Last Success Status" visible="false" id="idGetSucessTitle"/>-->
+		<!--</contentMiddle>-->
+		<!--</Bar>-->
+		<layout:Grid defaultSpan="L2 M2 S12" vSpacing="0" class="sapUiTinyMarginTop">
+			<layout:content>
+				<VBox>
+					<Label text="GSTIN" required="false"/>
+					<Input id="idinputGstin" width="13rem"/>
+					<!--<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" id="id_TaxProcess"/>-->
+				</VBox>
+			</layout:content>
+		</layout:Grid>
+		<Toolbar>
+			<!--<CheckBox text="Select All" selected="{showing>/check}" select="onSelectAllCheckpro"/>-->
+			<ToolbarSpacer/>
+			<!--<Button text="Download Reports" type="Emphasized" press="onPressProcessSumBtn"/>-->
+			<!--<Button text="GET GSTR-6" type="Emphasized" press="onPressGetBtn"/>-->
+			<Button text="Refresh" type="Emphasized" press="onPressRefreshBtnPopup"/>
+			<!--<SegmentedButton id="idProcessStatusBtn" selectedKey="LCS" selectionChange="onChangeSegmentProcessStatus" class="sapUiSmallMarginEnd">-->
+			<!--	<items>-->
+			<!--		<SegmentedButtonItem text="Last Call Status" key="LCS" width="10rem"/>-->
+			<!--		<SegmentedButtonItem text="Last Success Status" key="LSS" width="10rem"/>-->
+			<!--	</items>-->
+			<!--</SegmentedButton>-->
+		</Toolbar>
+		<ui:Table id="idgetStatusPopup" rows="{path:'Gstr6GetStatusIng>/resp/'}" selectionMode="Multi" selectionBehavior="Row" visibleRowCount="10"
+			class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop cl_popupCheck" fixedColumnCount="1" rowSelectionChange="onRowSelectionChange"
+			width="30rem">
+			<ui:extension></ui:extension>
+			<ui:columns>
+				<ui:Column hAlign="Left">
+					<HBox>
+						<Label text="Tax Period" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<!--<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiTinyMarginBegin" color="#5496cd"/>-->
+					</HBox>
+					<ui:template>
+						<HBox>
+							<!--<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" value="{Gstr6GetStatusIng>taxPeriod}" id="id_TaxProcess" editable="false"/>-->
+							<Text text="{Gstr6GetStatusIng>taxPeriod}"/>
+							<!--<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiTinyMarginBegin" color="#5496cd"/>-->
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Left">
+					<HBox>
+						<!--<CheckBox text="" enabled="true" selected="{showing>/b2bFlag}" select="onSelectAllCheckHeader($event,'b2bFlag')"/>-->
+						<Label text="Get GSTR1 Status" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+						<!--<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary" class="sapUiTinyMarginTop sapUiTinyMarginBegin"-->
+						<!--	color="#5496cd"/>-->
+					</HBox>
+					<ui:template>
+						<HBox>
+							<!--<CheckBox text="" selected="{Gstr6AsumSucess1>b2bFlag}"/>-->
+							<VBox>
+								<HBox>
+									<ObjectStatus text="{Gstr6GetStatusIng>status}" class="sapUiTinyMarginTop sapUiLargeMarginEnd"
+										state="{= ${Gstr6GetStatusIng>status} ==='Success' ?'Success':'Error'}"/>
+									<!--<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary"-->
+									<!--	visible="{= ${Gstr6AsumSucess>b2bStatus} ==='Failed' ?false:true}" class="sapUiTinyMarginBegin" color="#5496cd"/>-->
+								</HBox>
+								<Text text="{Gstr6GetStatusIng>timeStamp}"/>
+							</VBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+	</Dialog>
+</core:FragmentDefinition>

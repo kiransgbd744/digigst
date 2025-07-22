@@ -1,0 +1,121 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:commons="sap.suite.ui.commons">
+	<Page showHeader="false" visible="true">
+		<content>
+			<SplitApp id="splitcheking" initialDetail="detail" initialMaster="master" orientationChange="onOrientationChange">
+				<detailPages>
+					<Page showHeader="false" class="sapUiStdPage">
+						<content>
+							<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false">
+								<commons:content>
+									<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+										<commons:content>
+											<ui:Table rows="{path:'APPPerm>/resp'}" class="sapUiTinyMarginBegin" selectionMode="None" selectionBehavior="Row" visibleRowCount="15"
+												fixedColumnCount="0" enableSelectAll="false">
+												<ui:Column hAlign="Center" width="4rem">
+													<Label design="Bold" text="SNO"/>
+													<ui:template>
+														<Text text="{APPPerm>sno}"/>
+													</ui:template>
+												</ui:Column>
+												<ui:Column hAlign="Center" width="6rem">
+													<Label design="Bold" text="Applicable"/>
+													<ui:template>
+														<CheckBox selected="{APPPerm>applicaple}"/>
+													</ui:template>
+												</ui:Column>
+												<ui:Column hAlign="Center" width="10rem">
+													<Label design="Bold" text="Permission Code"/>
+													<ui:template>
+														<HBox alignItems="Center" justifyContent="Center">
+															<Text text="{APPPerm>permCode}"/>
+														</HBox>
+													</ui:template>
+												</ui:Column>
+												<ui:Column hAlign="Left" width="">
+													<Label design="Bold" text="Permission Description"/>
+													<ui:template>
+														<Text text="{APPPerm>permDesc}"/>
+													</ui:template>
+												</ui:Column>
+												<ui:Column hAlign="Left" width="" filterProperty="category">
+													<Label design="Bold" text="Category"/>
+													<ui:template>
+														<Text text="{APPPerm>category}"/>
+													</ui:template>
+												</ui:Column>
+											</ui:Table>
+										</commons:content>
+									</commons:ChartContainerContent >
+								</commons:content>
+								<commons:toolbar>
+									<OverflowToolbar>
+										<HBox>
+											<Label text="Profile :" class="sapUiTinyMarginTop sapUiTinyMarginBegin" design="Bold"/>
+											<ComboBox change="onSelectionChangeEntity" id="idProfileCB" width="25rem" items="{Profile>/resp/}" class="sapUiTinyMarginBegin">
+												<core:Item key="{Profile>id}" text="{Profile>profileName}"/>
+											</ComboBox>
+											<Button type="Emphasized" text="Apply" press="onApply" id="idAppPermApply" class="sapUiTinyMarginBeginEnd" enabled="true"/>
+											<!--<Label text="Group of Permission :" class="sapUiTinyMarginTop sapUiTinyMarginBegin" design="Bold"/>
+											<Select change="onSelectionChangeEntity" width="12rem" class="sapUiTinyMarginBegin">
+												<core:Item key="ANX-1" text="ANX-1"/>
+												<core:Item key="RET-1" text="RET-1"/>
+												<core:Item key="Ebabel" text="Ebabel"/>
+											</Select>-->
+											<Label text="View Selected :" class="sapUiTinyMarginTop sapUiTinyMarginBegin" design="Bold"/>
+											<CheckBox select="onSelectCheckBox"/>
+											<!--<Select change="onSelectionChangeEntity" width="12rem" class="sapUiTinyMarginBegin">
+												<core:Item key="All" text="All"/>
+												<core:Item key="Selected" text="Selected"/>
+												<core:Item key="Not Selected" text="Not Selected"/>
+											</Select>-->
+										</HBox>
+										<ToolbarSpacer/>
+										<Button type="Emphasized" icon="sap-icon://save" text="Submit" press="onSubmit" id="idAppPermSubmit" enabled="true"/>
+										<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+									</OverflowToolbar>
+								</commons:toolbar>
+							</commons:ChartContainer>
+						</content>
+					</Page>
+				</detailPages>
+				<masterPages>
+					<Page showHeader="false">
+						<content>
+							<Toolbar height="4rem" class="clVerticalLayoutColor">
+								<VBox class="">
+									<Label text="Entity" class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+									<Select items="{entityAppPer>/resp/}" change="onSelectionChangeEntity" width="15rem" id="idEntityAppPermission1"
+										class="sapUiTinyMarginBegin">
+										<core:Item key="{entityAppPer>entityId}" text="{entityAppPer>entityName}"/>
+									</Select>
+									<!--<Select items="{entityUser>/resp}" change="onSelectionChangeEntity" width="12rem" id="idEntityAppPermission1" class="sapUiTinyMarginBegin">
+										<core:Item key="{entityUser>entityId}" text="{entityUser>entityName}"/>
+									</Select>-->
+								</VBox>
+							</Toolbar>
+							<List mode="SingleSelectMaster" id="idInitiateReconList" headerText="List of GSTIN" items="{AppPermission>/}"
+								selectionChange="onSelectionChangeList" updateFinished="onUpdateFinished">
+								<headerToolbar>
+									<OverflowToolbar>
+										<content>
+											<Title text="List of Users" level="H3"/>
+											<ToolbarSpacer/>
+										</content>
+									</OverflowToolbar>
+								</headerToolbar>
+								<CustomListItem>
+									<VBox class="sapUiSmallMarginBegin sapUiTinyMarginTopBottom">
+										<Label text="{AppPermission>userName}"/>
+										<Label text="{AppPermission>email}"/>
+									</VBox>
+								</CustomListItem>
+							</List>
+						</content>
+					</Page>
+				</masterPages>
+			</SplitApp>
+		</content>
+	</Page>
+</core:FragmentDefinition>

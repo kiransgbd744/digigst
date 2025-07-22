@@ -1,0 +1,19 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" core:require="{util: 'com/ey/digigst/util/Formatter'}">
+	<Dialog title="Difference" type="Message" contentWidth="22rem" class="sapUiSizeCompact cl_saveHeader">
+		<buttons>
+			<Button text="Close" press="onCloseViewDifference"/>
+		</buttons>
+		<HBox justifyContent="SpaceBetween" class="sapUiTinyMarginTop">
+			<Label text="Records count as per GSTN" design="Bold"/>
+			<Text text="{path:'Difference>/gstnTotal',formatter:'util.numberFormat'}" textAlign="End"/>
+		</HBox>
+		<HBox justifyContent="SpaceBetween" class="sapUiTinyMarginTop">
+			<Label text="Records count as per DigiGST" design="Bold"/>
+			<Text text="{path:'Difference>/aspTotal',formatter:'util.numberFormat'}" textAlign="End"/>
+		</HBox>
+		<HBox justifyContent="SpaceBetween" class="sapUiTinyMarginTopBottom">
+			<Label text="Difference" design="Bold"/>
+			<Text text="{path:'Difference>/diffTotal',formatter:'util.numberFormat'}" textAlign="End"/>
+		</HBox>
+	</Dialog>
+</core:FragmentDefinition>

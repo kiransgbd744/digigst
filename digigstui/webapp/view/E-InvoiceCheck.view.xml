@@ -1,0 +1,573 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.E-InvoiceCheck"
+	xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:commons="sap.suite.ui.commons" xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table"
+	xmlns:fm="sap.ui.layout.form" busyIndicatorDelay="0">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Validated Data" titleStyle="H3" class="tinyMarginTop"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<l:BlockLayout class="cl_Contentpading">
+				<l:BlockLayoutRow accentCells="Accent1">
+					<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+						<Panel class="sapUiNoContentPadding">
+							<Toolbar class="cl_borderBOTTOM">
+								<ToolbarSpacer></ToolbarSpacer>
+								<Label text="Basic Detail" design="Bold" class="titleFont"/>
+								<ToolbarSpacer></ToolbarSpacer>
+							</Toolbar>
+							<HBox class="sapUiTinyMarginTop"></HBox>
+							<ui:Table rows="{ConsolidatedData>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+								class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+								<ui:columns>
+									<ui:Column hAlign="Center">
+										<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{ConsolidatedData>gstin}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<Label text="Invoice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{ConsolidatedData>invoices}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</Panel>
+					</l:BlockLayoutCell>
+					<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+						<Panel class="sapUiNoContentPadding">
+							<Toolbar class="cl_borderBOTTOM">
+								<ToolbarSpacer></ToolbarSpacer>
+								<Label text="Parties Involved" design="Bold" class="titleFont"/>
+								<ToolbarSpacer></ToolbarSpacer>
+							</Toolbar>
+							<HBox class="sapUiTinyMarginTop"></HBox>
+							<ui:Table rows="{ConsolidatedData>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+								class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+								<ui:columns>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>gstin}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Invoice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>invoices}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Match%" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>match}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</Panel>
+					</l:BlockLayoutCell>
+					<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+						<Panel class="sapUiNoContentPadding">
+							<Toolbar class="cl_borderBOTTOM">
+								<ToolbarSpacer></ToolbarSpacer>
+								<Label text="Exports Details" design="Bold" class="titleFont"/>
+								<ToolbarSpacer></ToolbarSpacer>
+							</Toolbar>
+							<HBox class="sapUiTinyMarginTop"></HBox>
+							<ui:Table rows="{ConsolidatedData>/panStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+								class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+								<ui:columns>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="PAN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchPANTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>gstin}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Invoice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchPANTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>invoices}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Match%" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchPANTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>match}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</Panel>
+					</l:BlockLayoutCell>
+					<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+						<Panel class="sapUiNoContentPadding">
+							<Toolbar class="cl_borderBOTTOM">
+								<ToolbarSpacer></ToolbarSpacer>
+								<Label text="Line Item &amp; value details" design="Bold" class="titleFont"/>
+								<ToolbarSpacer></ToolbarSpacer>
+							</Toolbar>
+							<HBox class="sapUiTinyMarginTop"></HBox>
+							<ui:Table rows="{ConsolidatedData>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+								class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+								<ui:columns>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>gstin}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Invoice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>invoices}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Match%" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>match}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</Panel>
+					</l:BlockLayoutCell>
+				</l:BlockLayoutRow>
+				<l:BlockLayoutRow accentCells="Accent1">
+					<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+						<Panel class="sapUiNoContentPadding">
+							<Toolbar class="cl_borderBOTTOM">
+								<ToolbarSpacer></ToolbarSpacer>
+								<Label text="TCS / TDS (Income-Tax)" design="Bold" class="titleFont"/>
+								<ToolbarSpacer></ToolbarSpacer>
+							</Toolbar>
+							<HBox class="sapUiTinyMarginTop"></HBox>
+							<ui:Table rows="{ConsolidatedData>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+								class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+								<ui:columns>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>gstin}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Invoice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>invoices}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Match%" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>match}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</Panel>
+					</l:BlockLayoutCell>
+					<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+						<Panel class="sapUiNoContentPadding">
+							<Toolbar class="cl_borderBOTTOM">
+								<ToolbarSpacer></ToolbarSpacer>
+								<Label text="Other details" design="Bold" class="titleFont"/>
+								<ToolbarSpacer></ToolbarSpacer>
+							</Toolbar>
+							<HBox class="sapUiTinyMarginTop"></HBox>
+							<ui:Table rows="{ConsolidatedData>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+								class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+								<ui:columns>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>gstin}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Invoice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>invoices}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Match%" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>match}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</Panel>
+					</l:BlockLayoutCell>
+					<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+						<Panel class="sapUiNoContentPadding">
+							<Toolbar class="cl_borderBOTTOM">
+								<ToolbarSpacer></ToolbarSpacer>
+								<Label text="Order Reference details" design="Bold" class="titleFont"/>
+								<ToolbarSpacer></ToolbarSpacer>
+							</Toolbar>
+							<HBox class="sapUiTinyMarginTop"></HBox>
+							<ui:Table rows="{ConsolidatedData>/panStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+								class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+								<ui:columns>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="PAN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchPANTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>gstin}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Invoice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchPANTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>invoices}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Match%" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchPANTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>match}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</Panel>
+					</l:BlockLayoutCell>
+					<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+						<Panel class="sapUiNoContentPadding">
+							<Toolbar class="cl_borderBOTTOM">
+								<ToolbarSpacer></ToolbarSpacer>
+								<Label text="User Defined fields" design="Bold" class="titleFont"/>
+								<ToolbarSpacer></ToolbarSpacer>
+							</Toolbar>
+							<HBox class="sapUiTinyMarginTop"></HBox>
+							<ui:Table rows="{ConsolidatedData>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+								class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+								<ui:columns>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>gstin}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Invoice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>invoices}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Match%" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>match}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</Panel>
+					</l:BlockLayoutCell>
+				</l:BlockLayoutRow>
+				<l:BlockLayoutRow accentCells="Accent1">
+					<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+						<Panel class="sapUiNoContentPadding">
+							<Toolbar class="cl_borderBOTTOM">
+								<ToolbarSpacer></ToolbarSpacer>
+								<Label text="Org. heirarchy" design="Bold" class="titleFont"/>
+								<ToolbarSpacer></ToolbarSpacer>
+							</Toolbar>
+							<HBox class="sapUiTinyMarginTop"></HBox>
+							<ui:Table rows="{ConsolidatedData>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+								class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+								<ui:columns>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>gstin}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Invoice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>invoices}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Match%" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>match}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</Panel>
+					</l:BlockLayoutCell>
+					<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+						<Panel class="sapUiNoContentPadding">
+							<Toolbar class="cl_borderBOTTOM">
+								<ToolbarSpacer></ToolbarSpacer>
+								<Label text="GL Details" design="Bold" class="titleFont"/>
+								<ToolbarSpacer></ToolbarSpacer>
+							</Toolbar>
+							<HBox class="sapUiTinyMarginTop"></HBox>
+							<ui:Table rows="{ConsolidatedData>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+								class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+								<ui:columns>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>gstin}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Invoice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>invoices}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Match%" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>match}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</Panel>
+					</l:BlockLayoutCell>
+					<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+						<Panel class="sapUiNoContentPadding">
+							<Toolbar class="cl_borderBOTTOM">
+								<ToolbarSpacer></ToolbarSpacer>
+								<Label text="EINV, EWB, GST Return responses" design="Bold" class="titleFont"/>
+								<ToolbarSpacer></ToolbarSpacer>
+							</Toolbar>
+							<HBox class="sapUiTinyMarginTop"></HBox>
+							<ui:Table rows="{ConsolidatedData>/panStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+								class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+								<ui:columns>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="PAN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchPANTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>gstin}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Invoice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchPANTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>invoices}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Match%" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchPANTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>match}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</Panel>
+					</l:BlockLayoutCell>
+					<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+						<Panel class="sapUiNoContentPadding">
+							<Toolbar class="cl_borderBOTTOM">
+								<ToolbarSpacer></ToolbarSpacer>
+								<Label text="DigiGST Specific fields" design="Bold" class="titleFont"/>
+								<ToolbarSpacer></ToolbarSpacer>
+							</Toolbar>
+							<HBox class="sapUiTinyMarginTop"></HBox>
+							<ui:Table rows="{ConsolidatedData>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+								class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+								<ui:columns>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>gstin}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Invoice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>invoices}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<VBox>
+											<Label text="Match%" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Input placeholder="fliter columun" liveChange="onSearchGstinTab1"/>
+										</VBox>
+										<ui:template>
+											<Text text="{ConsolidatedData>match}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</Panel>
+					</l:BlockLayoutCell>
+				</l:BlockLayoutRow>
+			</l:BlockLayout>
+		</f:content>
+	</f:DynamicPage>
+	<!--<f:DynamicPage id="dpGstr9Gstin" class="sapUiSizeCompact cl_dpScroll" showFooter="true">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<Toolbar class='Toolbarmargin'>
+						<Title text="E-invoice Check" titleStyle="H3" class="tinyMarginTop"/>
+					</Toolbar>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<VBox>
+				<Toolbar class="toolbar2 ">
+					<Label design="Bold" text="Last Saved as: DDMMYYYY | HH:MM:SS"/>
+					<Input placeholder="Search Data Field" width="25%"/>
+					<ToolbarSpacer/>
+					<Button text="Save changes" class="sapUiTinyMarginBeginEnd" press="onPressClear9"/>
+					<Button text="Select all" type="Emphasized" press="EntityTabBind"/>
+					<Button text="Deselect all" type="Emphasized" press="EntityTabBind"/>
+					<MenuButton type="Emphasized" text="Selection applicable to" enabled="{userPermission>/appPermission/P99}">
+						<Menu itemSelected="onMenuItemPressAnx1down">
+							<MenuItem text="GSTR1 processed records" key="processLineItem"/>
+							<MenuItem text="GSTR3B processed records" key="processRate"/>
+							<MenuItem text="Invoice Management records" key="submitted"/>
+						</Menu>
+					</MenuButton>
+				</Toolbar>
+				<Toolbar height="2.3rem" class="toolbar2 sapUiSmallMarginBottom">
+					<Button type="Transparent" press="fnMenuItemPress" id="idOutward" text="Basic Detail" class="sapUiTinyMarginBegin btnClr2"></Button>
+					<Button type="Transparent" press="fnMenuItemPress" id="idInward" text="Parties Involved" class="sapUiTinyMarginBegin btnClr2"></Button>
+					<Button type="Transparent" press="fnMenuItemPress" id="idTaxPaid" text="Exports Details" class="sapUiTinyMarginBegin btnClr2"></Button>
+					<Button type="Transparent" press="fnMenuItemPress" id="idPYTransaction" text="Line Item &amp; value details"
+						class="sapUiTinyMarginBegin btnClr2"></Button>
+					<Button type="Transparent" press="fnMenuItemPress" id="idDiffTax" text="TCS / TDS (Income-Tax)" class="sapUiTinyMarginBegin btnClr2"></Button>
+					<Button type="Transparent" press="fnMenuItemPress" id="idDemandRef" text="Other details" class="sapUiTinyMarginBegin btnClr2"></Button>
+					<Button type="Transparent" press="fnMenuItemPress" id="idComp" text="Order Reference details" class="sapUiTinyMarginBegin btnClr2"></Button>
+					<Button type="Transparent" press="fnMenuItemPress" id="idHSN" text="User Defined fields" class="sapUiTinyMarginBegin btnClr2"></Button>
+					<Button type="Transparent" press="fnMenuItemPress" id="idDiffTax1" text="Org. heirarchy" class="sapUiTinyMarginBegin btnClr2"></Button>
+					<Button type="Transparent" press="fnMenuItemPress" id="idDemandRef1" text="GL Details" class="sapUiTinyMarginBegin btnClr2"></Button>
+					<Button type="Transparent" press="fnMenuItemPress" id="idComp1" text="EINV, EWB, GST Return responses" class="sapUiTinyMarginBegin btnClr2"></Button>
+					<Button type="Transparent" press="fnMenuItemPress" id="idHSN1" text="DigiGST Specific fields" class="sapUiTinyMarginBegin btnClr2"></Button>
+				</Toolbar>
+				<ui:Table rows="{InvoiceCheck>/einvoice}" class="sapUiSizeCompact" selectionMode="None" visibleRowCount="15">
+					<ui:columns>
+						<ui:Column hAlign="Center" width="10rem">
+							<CheckBox text="Select All" selected="true"/>
+							<ui:template>
+								<CheckBox selected="{InvoiceCheck>prTotalTax}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="20rem">
+							<Label text="HSN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{InvoiceCheck>reportType}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:Table>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>-->
+</mvc:View>

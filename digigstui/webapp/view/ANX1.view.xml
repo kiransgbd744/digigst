@@ -1,0 +1,21 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.ANX1"
+	xmlns:html="http://www.w3.org/1999/xhtml" displayBlock="true" id="vAnx1">
+	<IconTabBar id="itbAnx1" select="handleIconTabBarSelect" expanded="true" class="sapUiNoContentPadding" backgroundDesign="Transparent"
+		stretchContentHeight="true" selectedKey="process" expandable="false">
+		<items>
+			<IconTabFilter text="{i18n>processRecord}" key="process" class="sapUiNoMargin">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.anx1.ProcessRecord" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="{i18n>cpResponse}" key="CounterParty" class="sapUiNoMargin">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.anx1.CounterParty" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="{i18n>taxRecon}" key="recon">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.anx1.TaxRecon" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="{i18n>receiptSummary}" key="summary">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.anx1.RecptSummary" type="XML"/>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+	<core:Fragment fragmentName="com.ey.digigst.fragments.anx1.Summary" type="XML"/>
+</mvc:View>

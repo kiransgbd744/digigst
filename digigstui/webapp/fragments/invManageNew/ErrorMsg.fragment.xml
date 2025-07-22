@@ -1,0 +1,25 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m">
+	<Dialog id="dSaveStatus" title="Saved with Error/Information" type="Message" contentWidth="50rem" class="sapUiSizeCompact" draggable="true">
+		<beginButton>
+			<Button text="{i18n>ok}" class="buttoncolorSec" press="onCloseErrorMsg"/>
+		</beginButton>
+		<Table items="{ErrorMsg>/}">
+			<columns>
+				<Column width="7rem">
+					<Label text="Error Code" design="Bold" textAlign="Center" width="100%"/>
+				</Column>
+				<Column>
+					<Label text="Description" design="Bold" textAlign="Center" width="100%"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<Text text="{ErrorMsg>errorCode}"/>
+						<Text text="{ErrorMsg>errorDesc}"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</Dialog>
+</core:FragmentDefinition>

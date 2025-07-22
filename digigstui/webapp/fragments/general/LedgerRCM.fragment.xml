@@ -1,0 +1,204 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<ui:Table id="tabRcmLedger" rows="{RcmLedger>/}" selectionMode="None" class="sapUiTinyMarginTop sapUiTinyMarginBeginEnd"
+		visible="{=${ViewProperty>/table}==='rcmLedger'}">
+		<ui:extension>
+			<Toolbar height="4rem">
+				<VBox>
+					<Label text="From Date"/>
+					<DatePicker id="dtFrRcm" displayFormat="MMM dd, yyyy" valueFormat="dd-MM-yyyy" dateValue="{ViewProperty>/frRcm}"
+						maxDate="{ViewProperty>/maxDate}" change="onDateChange($event,'rcm')"/>
+				</VBox>
+				<VBox>
+					<Label text="To Date"/>
+					<DatePicker id="dtToRcm" displayFormat="MMM dd, yyyy" valueFormat="dd-MM-yyyy" dateValue="{ViewProperty>/toRcm}"
+						maxDate="{ViewProperty>/maxDate}" minDate="{ViewProperty>/frRcm}"/>
+				</VBox>
+				<VBox>
+					<Label/>
+					<Button text="Filter" press="onRcmLedgerDetail" class="buttoncolor"/>
+				</VBox>
+				<ToolbarSpacer/>
+				<Button icon="sap-icon://excel-attachment" iconFirst="false" text="Excel Download" tooltip="Download details in Excel"
+					press="onExcelDownloadRCM" class="buttoncolorSec"/>
+				<Button icon="sap-icon://pdf-attachment" iconFirst="false" text="PDF Download" tooltip="Download details in PDF"
+					press="onPdfDownloadReclaim" class="buttoncolorSec"/>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="4rem">
+				<Label text="Sr. No." textAlign="Center" design="Bold" width="100%"/>
+				<ui:template>
+					<Text text="{RcmLedger>srNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="7rem">
+				<Label text="Date" textAlign="Center" design="Bold" width="100%"/>
+				<ui:template>
+					<Text text="{RcmLedger>trandt}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="10rem">
+				<Label text="Reference No." textAlign="Center" design="Bold" width="100%"/>
+				<ui:template>
+					<Text text="{RcmLedger>refNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="6rem">
+				<Label text="Tax Period" textAlign="Center" design="Bold" width="100%"/>
+				<ui:template>
+					<Text text="{RcmLedger>rtnprd}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<Label text="Description" textAlign="Center" design="Bold" width="100%"/>
+				<ui:template>
+					<Text text="{RcmLedger>desc}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" headerSpan="4" width="8rem">
+				<ui:multiLabels>
+					<Label text="A.IMPS (itc4a2)" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Integrated Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'RcmLedger>table4a2Igst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Central Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'RcmLedger>table4a2Cgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="State/UT Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'RcmLedger>table4a2Sgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'RcmLedger>table4a2Cess',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" headerSpan="4" width="8rem">
+				<ui:multiLabels>
+					<Label text="B.RCM-ITC (itc4a3)" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Integrated Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'RcmLedger>table4a3Igst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Central Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'RcmLedger>table4a3Cgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="State/UT Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'RcmLedger>table4a3Sgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'RcmLedger>table4a3Cess',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" headerSpan="4" width="8rem">
+				<ui:multiLabels>
+					<Label text="C.RCM - Liability(inwardsup_3_1d)" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Integrated Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'RcmLedger>table31dIgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Central Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'RcmLedger>table31dCgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="State/UT Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'RcmLedger>table31dSgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'RcmLedger>table31dCess',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" headerSpan="4" width="8rem">
+				<ui:multiLabels>
+					<Label text="Closing Balance (Opening Balance + A + B - C)" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Integrated Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'RcmLedger>clsBalIgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Central Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'RcmLedger>clsBalCgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="State/UT Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'RcmLedger>clsBalSgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'RcmLedger>clsBalCess',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+	</ui:Table>
+</core:FragmentDefinition>

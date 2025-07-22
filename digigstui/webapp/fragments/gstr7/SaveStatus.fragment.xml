@@ -1,0 +1,109 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.ui.layout.form">
+	<Dialog id="dSaveStatus" title="Save Status" type="Message" draggable="true" contentWidth="60%" class="sapUiSizeCompact">
+		<customHeader>
+            <Toolbar>
+                <ToolbarSpacer/>
+                <Label text="Save Status" />
+                <ToolbarSpacer/>
+                <Button icon="sap-icon://refresh" press="onPressStatusGo" tooltip="Refresh" class="buttoncolorSec"/>
+            </Toolbar>
+        </customHeader>
+		<beginButton>
+			<Button text="OK" press="onCloseSaveStatus"/>
+		</beginButton>
+		<f:Form editable="true" class="sapUiSizeCompact">
+			<f:layout>
+				<f:ResponsiveGridLayout columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="true"/>
+			</f:layout>
+			<f:formContainers>
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement>
+							<f:label>
+								<Label text="{i18n>gstin}" design="Bold"/>
+							</f:label>
+							<f:fields>
+								<Select id="slGstinSaveStats" items="{path:'TDSGstin>/'}">
+									<core:Item key="{TDSGstin>value}" text="{TDSGstin>value}"/>
+								</Select>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement>
+							<f:label>
+								<Label text="{i18n>taxPeriod}" design="Bold"/>
+							</f:label>
+							<f:fields>
+								<DatePicker id="dtSaveStats" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement >
+							<HBox>
+								<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadConsGstnErrors($event,'gstr7GstnError','')" class="sapUiTinyMarginTop"/>
+								<Link text="Consolidated GSTN Error (ASP Format)" class="sapUiTinyMarginBegin" press="onDownloadConsGstnErrors($event,'gstr7GstnError','')"/>
+								<Button type="Emphasized" text="Filter" press="onPressStatusGo" class="sapUiMediumMarginBegin buttoncolorSec"/>
+							</HBox>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+		<ScrollContainer horizontal="false" vertical="true" height="25rem">
+			<Table id="idTableSave" items="{SaveStatus>/}" sticky="ColumnHeaders" noDataText="No Products" class="sapUiNoContentPadding">
+				<columns >
+					<Column hAlign="Center" width="8rem">
+						<Label text="{i18n>date}" design="Bold"/>
+					</Column>
+					<Column hAlign="Center" width="7rem">
+						<Label text="{i18n>time}" design="Bold"/>
+					</Column>
+					<Column width="8rem" visible="false">
+						<Label text="{i18n>action}" design="Bold"/>
+					</Column>
+					<Column width="20rem">
+						<HBox justifyContent="Center" width="100%">
+							<Label text="{i18n>refId}" design="Bold"/>
+						</HBox>
+					</Column>
+					<Column hAlign="Center" width="7rem">
+						<Label text="{i18n>status}" design="Bold"/>
+					</Column>
+					<Column hAlign="End" width="6rem">
+						<Label text="{i18n>error} {i18n>count}" design="Bold"/>
+					</Column>
+					<Column hAlign="Center" width="12rem" visible="true">
+						<Label text="{i18n>gstnPortalMsg}" design="Bold"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem vAlign="Middle">
+						<cells>
+							<Text text="{path:'SaveStatus>date', formatter:'.formatter.dateFormat'}" wrapping="false"/>
+							<Text text="{SaveStatus>time}" wrapping="false"/>
+							<Text text="{SaveStatus>action}"/>
+							<Text text="{SaveStatus>refId}"/>
+							<HBox justifyContent="Center">
+								<Text text="{SaveStatus>status}" visible="{=${SaveStatus>status}!=='PE'?true:false}"/>
+								<Link text="{SaveStatus>status}" visible="{=${SaveStatus>status}==='PE'?true:false}"
+									press="onPressStatusLink(${SaveStatus>refId})"/>
+							</HBox>
+							<Text text="{SaveStatus>errorCount}"/>
+							<HBox justifyContent="Center" width="100%"
+								visible="{=(!${SaveStatus>status}||${SaveStatus>status}==='P'||${SaveStatus>errorCount}==='0')?false:true}">
+								<!--<core:Icon src="sap-icon://download" tooltip="{i18n>aspErrorRpt}" size="0.9rem" color="#0070b1"-->
+								<!--	press="onDownloadConsGstnErrors($event,'aspError',${SaveStatus>refId})" visible="{=${SaveStatus>status}==='ER'?false:true}"/>-->
+								<Label text="" width="0.9rem" visible="{=${SaveStatus>status}==='ER'?true:false}"/>
+								<core:Icon src="sap-icon://download" tooltip="{i18n>gstnErrorRpt}" size="0.9rem" color="#0070b1" class="sapUiSmallMarginBegin"
+									press="onDownloadConsGstnErrors($event,'gstr7Refid',${SaveStatus>refId})"/>
+							</HBox>
+							<Text text="{SaveStatus>message}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</ScrollContainer>
+	</Dialog>
+</core:FragmentDefinition>

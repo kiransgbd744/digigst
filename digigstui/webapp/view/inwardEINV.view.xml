@@ -1,0 +1,31 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.inwardEINV"
+	xmlns:l="sap.ui.layout" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table"
+	busyIndicatorDelay="0">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<FlexBox>
+						<Title text="Inward E-Invoices" class="TitleColor"/>
+					</FlexBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<IconTabBar id="itbInward" backgroundDesign="Transparent" expandable="false" expanded="true" selectedKey="getInward"
+				stretchContentHeight="true" select="onSelectEInvTabBar" class="sapUiNoContentPadding sapUiNoMargin">
+				<items>
+					<IconTabFilter text="Get Inward E-Invoices" tooltip="Get Inward E-Invoices" key="getInward" class="sapUiSmallMarginEnd">
+						<mvc:XMLView id="getInward" viewName="com.ey.digigst.view.imGetInwardEINV"/>
+					</IconTabFilter>
+					<IconTabFilter text="Inward E-Invoice Management" tooltip="Inward E-Invoice Management" key="manageInward">
+						<mvc:XMLView id="manageInward" viewName="com.ey.digigst.view.imInwardEINVManage"/>
+					</IconTabFilter>
+					<IconTabFilter text="JSON Download" tooltip="JSON Download" key="jsonDownload">
+						<mvc:XMLView viewName="com.ey.digigst.view.imInwardJSON"/>
+					</IconTabFilter>
+				</items>
+			</IconTabBar>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

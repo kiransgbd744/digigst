@@ -1,0 +1,51 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog title="Difference between IMS and GSTR-1 &amp; 1A" class="sapUiSizeCompact">
+		<buttons>
+			<Button text="Close" press="onCloseImsSummGstn"/>
+		</buttons>
+		<VBox width="64rem">
+			<Table items="{ImsSummaryDiff>/}">
+				<columns>
+					<Column width="8rem">
+						<Label text="Outward" design="Bold" textAlign="Center" width="100%"/>
+					</Column>
+					<Column hAlign="End" width="7rem">
+						<Label text="Count" design="Bold"/>
+					</Column>
+					<Column hAlign="End" width="8rem">
+						<Label text="Taxable Value" design="Bold"/>
+					</Column>
+					<Column hAlign="End" width="8rem">
+						<Label text="Total Tax" design="Bold"/>
+					</Column>
+					<Column hAlign="End" width="8rem">
+						<Label text="IGST" design="Bold"/>
+					</Column>
+					<Column hAlign="End" width="8rem">
+						<Label text="CGST" design="Bold"/>
+					</Column>
+					<Column hAlign="End" width="8rem">
+						<Label text="SGST" design="Bold"/>
+					</Column>
+					<Column hAlign="End" width="7rem">
+						<Label text="Cess" design="Bold"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem vAlign="Middle">
+						<cells>
+							<Text text="{path:'ImsSummaryDiff>section'}"/>
+							<Text text="{path:'ImsSummaryDiff>count'}"/>
+							<Text text="{path:'ImsSummaryDiff>taxableValue', formatter:'.formatter.amountValue'}"/>
+							<Text text="{path:'ImsSummaryDiff>totalTax', formatter:'.formatter.amountValue'}"/>
+							<Text text="{path:'ImsSummaryDiff>igst', formatter:'.formatter.amountValue'}"/>
+							<Text text="{path:'ImsSummaryDiff>cgst', formatter:'.formatter.amountValue'}"/>
+							<Text text="{path:'ImsSummaryDiff>sgst', formatter:'.formatter.amountValue'}"/>
+							<Text text="{path:'ImsSummaryDiff>cess', formatter:'.formatter.amountValue'}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</VBox>
+	</Dialog>
+</core:FragmentDefinition>

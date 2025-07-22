@@ -1,0 +1,70 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:ui="sap.ui.table">
+	<ui:Table id="idgstr9Tab" rows="{path:'ComplienceHistory>/resp/'}" selectionMode="Multi" selectionBehavior="Row" visibleRowCount="20"
+		fixedColumnCount="1" rowSelectionChange="onRowSelectionChange2A" visible="false">
+		<ui:extension>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<MenuButton class="buttoncolorSec" text="Download Report">
+					<Menu itemSelected="onPressDownloadReport">
+						<MenuItem text="Summary Level" key="SL"/>
+						<MenuItem text="Transaction Level" key="TL"/>
+					</Menu>
+				</MenuButton>
+				<Button type="Emphasized" text="Email" press="onPressEmail" enabled="{= ${userPermission>/appPermission/P99}}" visible="false"/>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column hAlign="Left" width="15rem">
+				<HBox>
+					<Label text="Entity Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<Link text="{ComplienceHistory>entityName}" press="handleLinkPressGetGSTINMain1"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left">
+				<HBox>
+					<Label text="Filing Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus
+							icon="{parts:[{path:'ComplienceHistory>filingStatusCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLIcon'}"
+							text="{parts:[{path:'ComplienceHistory>filingStatusCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus'}"
+							state="{parts:[{path:'ComplienceHistory>filingStatusCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus1'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<!--<ui:Column hAlign="Left">
+				<HBox>
+					<Label text="Ack. No." textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<Text text="{ComplienceHistory>ackNo}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left">
+				<HBox>
+					<Label text="Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<Text text="{ComplienceHistory>date}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Left">
+				<HBox>
+					<Label text="Time" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<Text text="{ComplienceHistory>time}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>-->
+		</ui:columns>
+	</ui:Table>
+</core:FragmentDefinition>

@@ -1,0 +1,131 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons" xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:l="sap.ui.layout">
+	<f:DynamicPage class="cewbheight" id="idCEWB">
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" id="dpNewHeader" pinnable="false">
+				<fb:FilterBar id="idfbIWInvManageNew" showGoOnFB="false" showFilterConfiguration="false" useToolbar="false" visible="true" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="CEWB No" visibleInFilterBar="true">
+							<fb:control>
+								<Input id="idCEWBNo"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="CEWB From Date" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="iIWFromDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="CEWB To Date" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="iIWToDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Previous CEWB No" visibleInFilterBar="true">
+							<fb:control>
+								<Input id="idIWDocNo"/>
+							</fb:control>
+						</fb:FilterGroupItem>-->
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Previous CEWB No" visibleInFilterBar="true">
+							<fb:control>
+								<Input id="idPCEWBNo"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slGstin" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin'}" selectionChange="selectAll">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<!--<Button icon="sap-icon://filter" class="sapUiTinyMarginEnd" tooltip="Adapt Filters" press="onPressAdaptFilter"/>-->
+					<Button type="Ghost" text="Clear" class="sapUiTinyMarginEnd buttoncolorSec" press="onPressClear" visible="true"/>
+					<Button class="buttoncolor" press="onPressGo" text="Filter"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table rows="{CEWB>/resp}" id="idCEWBtab" selectionMode="MultiToggle" visibleRowCount="12" visible="true" class="">
+				<ui:extension>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button class="buttoncolorSec" text="Regenerate" press="onpressBulkupdate" enabled="false"/>
+						<Button class="buttoncolorSec" text="Print" press="onPressDownloadPdf" enabled="{= ${userPermission>/appPermission/P99}}"/>
+						<Button class="buttoncolorSec" text="Download Report" press="onPressDownloadReport" enabled="true"/>
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="12rem">
+						<Label text="CEWB Status" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Link text="{CEWB>CEWBStatus}" emphasized="true"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="CEWB No" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{CEWB>CEWBNo}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="10rem">
+						<Label text="Previous CEWB No" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{CEWB>PreviousCEWBNo}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem">
+						<Label text="CEWB Timestamp" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{CEWB>CEWBTimestamp}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="12rem">
+						<Label text="Vehicle No" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{CEWB>vehicleNo}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="10rem">
+						<Label text="No. of EWBs" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Link text="{CEWB>noofEWB}" press="onPressEWB($event,${CEWB>sno})"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="13rem">
+						<Label text="Transport Mode" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{CEWB>tansportMode}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="12rem">
+						<Label text="GSTIN" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{CEWB>GSTIN}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="12rem">
+						<Label text="Error Point" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{CEWB>errorPoint}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="12rem">
+						<Label text="Error Code" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{CEWB>errorCode}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="12rem">
+						<Label text="Error Description" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{CEWB>errorDesc}"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

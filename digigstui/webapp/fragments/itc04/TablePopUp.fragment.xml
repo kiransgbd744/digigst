@@ -1,0 +1,113 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:fb="sap.ui.comp.filterbar">
+	<Dialog title="{TablePopup>/headerName}" type="Message" class="sapUiSizeCompact" xmlns:ui="sap.ui.table" xmlns:form="sap.ui.layout.form">
+		<ui:TreeTable rows="{ path : 'ITC04Popup>/resp', parameters : { countMode: 'Inline', numberOfExpandedLevels: 1 } }" selectionMode="None"
+			selectionBehavior="Row" visibleRowCount="8" id="idtableAMV1">
+			<ui:extension>
+				<Toolbar>
+					<Label text="{TablePopup>/tableName}" design="Bold" class="sapUiSmallMarginBegin titleFont"/>
+					<ToolbarSpacer/>
+					<!--<Button type="Emphasized" icon="sap-icon://add" enabled="false" press="onPressAddProduct"/>-->
+					<Button type="Reject" text="Delete Data" enabled="false" visible="true" press="onPressDeleteProduct"/>
+					<Button type="Emphasized" text="Download Report" enabled="true" visible="true" press="onPressPopupDownloadReport"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column width="13rem">
+					<ui:multiLabels>
+						<Label text="Type" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{ITC04Popup>type}"/>
+						<!--<Text text="" />-->
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<ui:multiLabels>
+						<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{ITC04Popup>count}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<ui:multiLabels>
+						<Label text="Quantity" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{ITC04Popup>quantity}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem" visible="{TablePopup>/tableFlag}">
+					<ui:multiLabels>
+						<Label text="Losses Quantity" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{ITC04Popup>lossesQuantity}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<ui:multiLabels>
+						<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{path:'ITC04Popup>taxableValue',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<ui:multiLabels>
+						<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{path:'ITC04Popup>igst',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<ui:multiLabels>
+						<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{path:'ITC04Popup>cgst',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<ui:multiLabels>
+						<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{path:'ITC04Popup>sgst',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<ui:multiLabels>
+						<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{path:'ITC04Popup>cess',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<ui:multiLabels>
+						<Label text="State Cess" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{path:'ITC04Popup>stateCess',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<ui:multiLabels>
+						<Label text="Total Value" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{path:'ITC04Popup>totalValue',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:TreeTable>
+		<!--<beginButton>-->
+		<!--	<Button text="Generate" id="bTableApply" type="Default" press="onPressTableClose"/>-->
+		<!--</beginButton>-->
+		<endButton>
+			<Button text="Close" type="Default" press="onPressTableClose"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,99 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" xmlns:l="sap.ui.layout" xmlns:commons="sap.suite.ui.commons">
+	<Dialog id="dSaveStatus" title="Progress Bar" type="Message" contentWidth="80%" class="sapUiSizeCompact" draggable="true">
+		<buttons>
+			<!--<Button text="Submit" type="Emphasized" press="onsubmitRFA"/>-->
+			<Button text="Cancel" class="buttoncolorSec" press="onCloseRPA"/>
+		</buttons>
+		<!--<f:DynamicPage id="RequestProgress" class="cl_dpScroll" visible="true" showFooter="false">-->
+		<!--<f:title>-->
+		<!--	<f:DynamicPageTitle>-->
+		<!--		<f:heading>-->
+		<!--			<HBox>-->
+		<!--				<Title text="Progress Bar" titleStyle="H3" class="tinyMarginTop"/>-->
+		<!--			</HBox>-->
+		<!--		</f:heading>-->
+		<!--	</f:DynamicPageTitle>-->
+		<!--</f:title>-->
+		<!--<f:content>-->
+		<HBox width="100%" alignItems="SpaceAround" justifyContent="SpaceAround" class="sapUiSmallMarginBottom">
+			<VBox alignItems="Center" justifyContent="Center" width="12%" class="actionColor sapUiSmallMarginEnd">
+				<Toolbar>
+					<ToolbarSpacer/>
+					<Label text="Data Processing" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+					<ToolbarSpacer/>
+				</Toolbar>
+				<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+					<ToolbarSpacer/>
+					<VBox alignItems="Center" justifyContent="Center">
+						<Label text="2022-03-19T10:00:40" class=" " design="Bold"/>
+						<core:Icon src="sap-icon://message-success" color="green" width="25%"/>
+					</VBox>
+					<ToolbarSpacer/>
+				</Toolbar>
+			</VBox>
+			<VBox alignItems="Center" justifyContent="Center" width="12%" class="actionColor sapUiSmallMarginEnd">
+				<Toolbar>
+					<ToolbarSpacer/>
+					<Label text="Recon EINV vs GSTR-1" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+					<ToolbarSpacer/>
+				</Toolbar>
+				<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+					<ToolbarSpacer/>
+					<VBox alignItems="Center" justifyContent="Center">
+						<Label text="2022-03-19T10:00:40" class=" " design="Bold"/>
+						<core:Icon src="sap-icon://message-success" color="green" width="25%"/>
+					</VBox>
+					<ToolbarSpacer/>
+				</Toolbar>
+			</VBox>
+			<VBox alignItems="Center" justifyContent="Center" width="12%" class="actionColor sapUiSmallMarginEnd">
+				<Toolbar>
+					<ToolbarSpacer/>
+					<Label text="Approval Status" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+					<ToolbarSpacer/>
+				</Toolbar>
+				<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+					<ToolbarSpacer/>
+					<VBox alignItems="Center" justifyContent="Center">
+						<Label text="save approved,sign &amp; file pending" class=" " design="Bold"/>
+						<core:Icon src="sap-icon://message-success" color="green" width="25%"/>
+					</VBox>
+					<ToolbarSpacer/>
+				</Toolbar>
+			</VBox>
+			<VBox alignItems="Center" justifyContent="Center" width="12%" class="actionColor sapUiSmallMarginEnd">
+				<Toolbar >
+					<ToolbarSpacer/>
+					<Label text="Save to GSTN" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+					<ToolbarSpacer/>
+				</Toolbar>
+				<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+					<ToolbarSpacer/>
+					<VBox alignItems="Center" justifyContent="Center">
+						<Label text="2022-03-19T10:00:40" class=" " design="Bold"/>
+						<core:Icon src="sap-icon://decline" color="red" width="25%"/>
+					</VBox>
+					<ToolbarSpacer/>
+				</Toolbar>
+			</VBox>
+			<VBox alignItems="Center" justifyContent="Center" width="12%" class=" actionColor sapUiSmallMarginEnd">
+				<Toolbar>
+					<ToolbarSpacer/>
+					<Label text="Sign &amp; File" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+					<ToolbarSpacer/>
+				</Toolbar>
+				<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+					<ToolbarSpacer/>
+					<VBox alignItems="Center" justifyContent="Center">
+						<Label text="2022-03-19T10:00:40" class=" " design="Bold"/>
+						<core:Icon src="sap-icon://decline" color="red" width="25%"/>
+					</VBox>
+					<ToolbarSpacer/>
+				</Toolbar>
+			</VBox>
+		</HBox>
+		<!--</f:content>-->
+		<!--</f:DynamicPage>-->
+	</Dialog>
+</core:FragmentDefinition>

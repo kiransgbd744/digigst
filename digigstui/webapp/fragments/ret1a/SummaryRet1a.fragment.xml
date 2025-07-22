@@ -1,0 +1,888 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage id="dpRet1aSummary" class="cl_dpScroll" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" tooltip="{i18n>back}" class="sapUiTinyMarginEnd" press="onPressBack"/>
+						<Title text="{i18n>ret1a}" titleStyle="H3"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader>
+				<fb:FilterBar id="fbSummaryRet1a" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>entity}" visibleInFilterBar="true">-->
+						<!--	<fb:control>-->
+						<!--		<Select id="slRet1aEntity" items="{EntityModel>/}" change="onEntityChange" width="100%">-->
+						<!--			<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>-->
+						<!--		</Select>-->
+						<!--	</fb:control>-->
+						<!--</fb:FilterGroupItem>-->
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slRet1aGstin" items="{userPermission>/respData/dataSecurity/gstin}">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>taxPeriod}" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dRet1aSummary" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" width="10%" class="clMain">
+					<Button id="bSummaryClear" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd" press="onPressClear"/>
+					<Button id="bSummaryGo" text="{i18n>go}" type="Emphasized" press="onSearch"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiNoContentPadding sapUiTinyMarginTop sapUiTinyMarginBeginEnd">
+				<Toolbar>
+					<Label text="{i18n>fileNilReturn}" design="Bold"/>
+					<Button type="Emphasized" text="Yes" press="onPressNilReturn"/>
+					<ToolbarSpacer/>
+					<Label text="{i18n>showing}:" design="Bold"/>
+					<CheckBox selected="{VisiProp>/computed}" text="{i18n>asp} ({i18n>computed})" editable="{=!${VisiProp>/compChk}}" select="onSelectCheckBox"/>
+					<CheckBox selected="{VisiProp>/usrInput}" text="{i18n>asp} ({i18n>usrInput})" editable="{=!${VisiProp>/userChk}}" select="onSelectCheckBox"/>
+					<CheckBox selected="{VisiProp>/gstn}" text="{i18n>gstn}" editable="{=!${VisiProp>/gstnChk}}" select="onSelectCheckBox"/>
+					<CheckBox selected="{VisiProp>/diff}" text="{i18n>difference}" editable="{=!${VisiProp>/diffChk}}" select="onSelectCheckBox"/>
+				</Toolbar>
+				<ui:TreeTable id="tabAspValues" rows="{SummaryRet1a>/aspValues}" selectionMode="None" fixedColumnCount="2" visibleRowCount="8"
+					toggleOpenState="onPressToggle" enableColumnReordering="false">
+					<ui:extension>
+						<Toolbar height="3.2rem">
+							<VBox>
+								<Label text="Form View"/>
+								<Select width="8rem">
+									<core:Item text="Full"/>
+									<core:Item text="User Input"/>
+								</Select>
+							</VBox>
+							<VBox>
+								<Label text="{i18n>table}"/>
+								<Select width="5rem" change="onChangeSelect">
+									<core:Item key="" text="All"/>
+									<core:Item key="3A" text="3A"/>
+									<core:Item key="3B" text="3B"/>
+									<core:Item key="3C" text="3C"/>
+									<core:Item key="3D" text="3D"/>
+									<core:Item key="3E" text="3E"/>
+									<core:Item key="4A" text="4A"/>
+									<core:Item key="4B" text="4B"/>
+									<core:Item key="4C" text="4C"/>
+									<core:Item key="4D" text="4D"/>
+									<core:Item key="4E" text="4E"/>
+								</Select>
+							</VBox>
+							<VBox>
+								<Label/>
+								<HBox>
+									<Button id="bExpand" icon="sap-icon://expand-all" tooltip="{i18n>expand}" press="onPressExpandCollapse" class="sapUiTinyMarginEnd"/>
+									<Button id="bCollapse" icon="sap-icon://collapse-all" tooltip="{i18n>collapse}" press="onPressExpandCollapse"/>
+								</HBox>
+							</VBox>
+							<ToolbarSpacer/>
+							<VBox>
+								<Label/>
+								<HBox>
+									<Button type="Reject" text="{i18n>clearUserData}" press="onPressClearData" enabled="false" class="sapUiTinyMarginEnd"/>
+									<!--<Button type="Emphasized" text=" Edit" tooltip=" Edit" press=" onPressEditgstr3b"/>-->
+									<Button type="Accept" text="{i18n>saveChange}" press="onPressSavChangetgstr3b" enabled="false"/>
+								</HBox>
+							</VBox>
+							<VBox>
+								<Text text="Jun 06, 2019, 16:06:26" class="timeStmpClr"/>
+								<Button type="Emphasized" text="{i18n>requestApproval}" press="onRequestApproval" enabled="false"/>
+							</VBox>
+							<VBox>
+								<Text text="Jun 06, 2019, 16:06:26" class="timeStmpClr"/>
+								<Button type="Accept" text="{i18n>saveGstn}" press="onPressSaveGstn" enabled="false"/>
+							</VBox>
+							<VBox>
+								<Label/>
+								<HBox>
+									<Button type="Emphasized" text="{i18n>saveStatus}" press="onPressSaveStatus" enabled="false"/>
+									<Button type="Emphasized" text="{i18n>submit}" press="onPressSubmit" class="sapUiTinyMarginBeginEnd" enabled="false"/>
+									<Button type="Emphasized" text="{i18n>signFile}" press="onPressSignNFile" enabled="false"/>
+								</HBox>
+							</VBox>
+							<VBox>
+								<Text text="Oct 15, 2019, 16:45:26" class="timeStmpClr"/>
+								<Button text="{i18n>generateRet1a}" press="onGenerateRet1a" enabled="false"/>
+							</VBox>
+							<VBox>
+								<Text text="Jun 06, 2019, 16:06:26" class="timeStmpClr"/>
+								<Button type="Ghost" id="bSummUpdate" text="{i18n>updataGstnData}" icon="sap-icon://refresh" press="onPressUpdateGstn" enabled="false"/>
+							</VBox>
+							<VBox>
+								<Label/>
+								<HBox>
+									<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="{i18n>downExcel}" press="onExportExcel" enabled="false"/>
+									<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="{i18n>downPdf}" press="onExportPdf" enabled="false"/>
+								</HBox>
+							</VBox>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="6rem">
+							<Label text="{i18n>table}" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{path:'SummaryRet1a>tableSection', formatter:'.aspValueFormat'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="18rem" autoResizable="true">
+							<Label text="{i18n>typeOfSupply}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox>
+									<Link text="{path:'SummaryRet1a>supplyType', formatter:'.formatDocType'}" visible="{SummaryRet1a>link}" press="onPressAspValues"/>
+									<Text text="{path:'SummaryRet1a>supplyType', formatter:'.formatDocType'}" visible="{=!${SummaryRet1a>link}}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="5" hAlign="End" minWidth="150" visible="{VisiProp>/computed}">
+							<ui:multiLabels>
+								<Label text="{i18n>asp} ({i18n>computed})" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<Label text="{i18n>value}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{path:'SummaryRet1a>aspValue', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/computed}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>igst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{path:'SummaryRet1a>aspIgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/computed}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{path:'SummaryRet1a>aspCgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/computed}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>sgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{path:'SummaryRet1a>aspSgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/computed}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{path:'SummaryRet1a>aspCess', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="5" hAlign="End" minWidth="150" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label text="{i18n>asp} ({i18n>usrInput})" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<Label text="{i18n>value}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrValue}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>igst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrIgst}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrCgst}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>sgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrSgst}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{path:'SummaryRet1a>usrCess', formatter:'.formatter.amountValue'}" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="5" hAlign="End" minWidth="150" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label text="{i18n>gstn}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<Label text="{i18n>value}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{path:'SummaryRet1a>gstnValue', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>igst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{path:'SummaryRet1a>gstnIgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{path:'SummaryRet1a>gstnCgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>sgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{path:'SummaryRet1a>gstnSgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{path:'SummaryRet1a>gstnCess', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="5" hAlign="End" minWidth="150" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label text="{i18n>diff}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<Label text="{i18n>value}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{path:'SummaryRet1a>diffValue', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>igst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{path:'SummaryRet1a>diffIgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{path:'SummaryRet1a>diffCgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>sgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{path:'SummaryRet1a>diffSgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{path:'SummaryRet1a>diffCess', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+				<ui:TreeTable id="tabInterest" rows="{SummaryRet1a>/lateFee}" selectionMode="None" fixedColumnCount="2" visibleRowCount="1"
+					toggleOpenState="onPressToggle" enableColumnReordering="false" class="sapUiSmallMarginTop">
+					<ui:columns>
+						<ui:Column width="6rem">
+							<Label text="{i18n>interestLateFee}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryRet1a>table}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="18rem">
+							<Label text="{i18n>description}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox>
+									<Link text="{path:'SummaryRet1a>desc', formatter:'.formatDocType'}" visible="{SummaryRet1a>link}" press="onPressLateFee"/>
+									<Text text="{path:'SummaryRet1a>desc', formatter:'.formatDocType'}" visible="{=!${SummaryRet1a>link}}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="6" hAlign="End" minWidth="150" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label text="{i18n>asp} ({i18n>usrInput})" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<Label text="{i18n>igstInterest}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrIgst}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cgstInterest}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrCgst}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>sgstInterest}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrSgst}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cessInterest}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrCess}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cgstLateFee}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrLateFeeCgst}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>sgstLateFee}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrLateFeeSgst}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="6" hAlign="End" minWidth="150" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label text="{i18n>gstn}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<Label text="{i18n>igstInterest}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>gstnIgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="10em" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cgstInterest}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>gstnCgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>sgstInterest}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>gstnSgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cessInterest}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>gstnCess', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cgstLateFee}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>gstnLateFeeCgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>sgstLateFee}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>gstnLateFeeSgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="6" hAlign="End" minWidth="150" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label text="{i18n>diff}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<Label text="{i18n>igstInterest}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>diffIgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="10em" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cgstInterest}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>diffCgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>sgstInterest}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>diffSgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cessInterest}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>diffCess', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cgstLateFee}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>diffLateFeeCgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>sgstLateFee}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>diffLateFeeSgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+				<ui:TreeTable id="tabTaxPayment" rows="{SummaryRet1a>/taxPayment}" selectionMode="None" fixedColumnCount="2" visibleRowCount="1"
+					toggleOpenState="onPressToggle" enableColumnReordering="false" class="sapUiSmallMarginTop">
+					<ui:columns>
+						<ui:Column width="6rem">
+							<Label text="{i18n>paymentOfTax}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryRet1a>table}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="18rem">
+							<Label text="{i18n>description}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox>
+									<Link text="{path:'SummaryRet1a>desc', formatter:'.formatDocType'}" visible="{SummaryRet1a>link}" press="onPressTaxPayment"/>
+									<Text text="{path:'SummaryRet1a>desc', formatter:'.formatDocType'}" visible="{=!${SummaryRet1a>link}}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="13" hAlign="End" width="12rem" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label text="{i18n>asp} ({i18n>usrInput})" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<Label text="{i18n>taxPayableRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrPayable}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>taxPayableOtherRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrOtherPayable}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>taxPaidRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrPaid}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>taxPaidOtherRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrOtherPaid}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>adjLiabilityRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrLiability}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>adjLiabilityOtherRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrOtherLiability}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>itcPaidIgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrItcPaidIgst}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>itcPaidCgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrItcPaidCgst}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>itcPaidSgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrItcPaidSgst}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>itcPaidCess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrItcPaidCess}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cashPaidTax}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrCashPaidTax}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cashPaidInterest}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrCashPaidInterest}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/usrInput}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cashPaidLateFee}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{SummaryRet1a>usrCashPaidLateFee}" textAlign="End" editable="{SummaryRet1a>edit}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="13" hAlign="End" width="12rem" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label text="{i18n>gstn}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<Label text="{i18n>taxPayableRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>gstnPayable', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>taxPayableOtherRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>gstnOtherPayable', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>taxPaidRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>gstnPaid', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>taxPaidOtherRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>gstnOtherPaid', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>adjLiabilityRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>gstnLiability', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>adjLiabilityOtherRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>gstnOtherLiability', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>itcPaidIgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>gstnItcPaidIgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>itcPaidCgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>gstnItcPaidCgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>itcPaidSgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>gstnItcPaidSgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>itcPaidCess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>gstnItcPaidCess', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cashPaidTax}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>gstnCashPaidTax', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cashPaidInterest}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>gstnCashPaidInterest', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/gstn}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cashPaidLateFee}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>gstnCashPaidLateFee', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="13" hAlign="End" width="12rem" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label text="{i18n>diff}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<Label text="{i18n>taxPayableRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>diffPayable', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>taxPayableOtherRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>diffOtherPayable', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>taxPaidRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>diffPaid', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>taxPaidOtherRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>diffOtherPaid', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>adjLiabilityRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>diffLiability', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>adjLiabilityOtherRc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>diffOtherLiability', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>itcPaidIgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>diffItcPaidIgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>itcPaidCgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>diffItcPaidCgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>itcPaidSgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>diffItcPaidSgst', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>itcPaidCess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>diffItcPaidCess', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cashPaidTax}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>diffCashPaidTax', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cashPaidInterest}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>diffCashPaidInterest', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="13rem" visible="{VisiProp>/diff}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="{i18n>cashPaidLateFee}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Label text="{path:'SummaryRet1a>diffCashPaidLateFee', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

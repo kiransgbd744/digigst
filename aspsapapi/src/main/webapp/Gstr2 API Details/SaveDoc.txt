@@ -1,0 +1,81 @@
+URL : /saveGstr2Doc.do
+Service : POST
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+Request Payload :
+
+{
+    "req": [{   
+                "sourceIdentifier":"Test Src Id",
+                "sourceFileName":"Test Src File",
+                "division":"Test Division",
+                "subDivision":"Test Sub Division",
+                "profitCentre1":"Test Profit Center1",
+                "profitCentre2":"Test Profit Center2",
+                "plantCode":"Test Plant Code",
+                "returnPeriod": "012019",  
+                "custGstin":"33ABOPS9546G1Z3",
+                "docType": "INV",
+                "docNo": "PR-TEST8", 
+                "docDate": "2017-01-16",
+                "originalDocNo": "123",
+                "originalDocDate": "2019-01-16",    
+                "crDrPreGst":false,
+                "crDrReason":"Y",
+                "supplierGstin": "27CVPMH0481G1Z1",
+                "origSupplierGstin":"27CVPMH0481G2Z1",
+                "custOrSuppName":"Test Company 01 Pvt Ltd",
+                "custOrSuppCode":"0101",
+                "pos":"29",
+                "shipPortCode": "Test Ship Port Code",
+                "billOfEntryNo":"11",
+                "billOfEntryDate":"2019-03-04",
+                "cifValue":"1",
+                "customDuty":"22",
+                "reverseCharge":"Y",
+                "accountVoucherNo":"2222",
+                "accountVoucherDate":"2019-01-18",
+                "userDefinedField1":"Test User Defined Field1",
+                "userDefinedField2":"Test User Defined Field2",
+                "userDefinedField3":"Test User Defined Field3",
+                "ecomCustGSTIN": "33ABOPS9546G1ZD",
+                "lineItems": [{
+                                "itemNo": 1,
+                                "hsnsacCode": "49011010",
+                                "glAccountCode":"11111",
+                                "productCode":"123",
+                                "itemDesc":"Notebook",
+                                "itemType": "I",
+                                "itemUqc": "PCS",
+                                "itemQty": 12,
+                                "supplyType":"NIL",
+                                "taxableVal":10.00,
+                                "igstRate":5.5,
+                                "sgstRate":2.5,
+                                "cgstRate":3.5,
+                                "igstAmt": 10.00,
+                                "cgstAmt": 12.00,
+                                "sgstAmt": 13.00,
+                                "cessRateSpecific":14.40,
+                                "cessAmtSpecfic":15.40,
+                                "cessRateAdvalorem":16.00,
+                                "cessAmtAdvalorem":17.00,
+                                "lineItemAmt":20.45,
+                                "eligibilityInd":"1",
+                                "commonSupplyInd":"1",
+                                "availableIgst":"15.25",
+                                "availableCgst":"14.25",
+                                "availableSgst":"35.25",
+                                "availableCess":"10.96",
+                                "itcReversalId":"1",
+                                "paymentVoucherNum":"1",
+                                "paymentDate":"2019-01-01",
+                                "contractNo":"1",
+                                "contractDate":"2019-01-01",
+                                "contractValue":"12.35"
+                              }
+                            ]
+                }]
+}

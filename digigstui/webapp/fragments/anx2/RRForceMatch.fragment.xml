@@ -1,0 +1,61 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m">
+	<Dialog type="Message" class="sapUiSizeCompact" contentWidth="100%" contentHeight="30%" showHeader="false">
+		<Toolbar>
+			<!--<ToolbarSpacer/>-->
+			<Button type="Emphasized" text="Force Match" press="onFragForceMatch"/>
+			<ToolbarSpacer/>
+			<core:Icon src="sap-icon://decline" size="2rem" press="onCloseDialogFM"/>
+		</Toolbar>
+		<Toolbar visible="false" id="hboxID">
+			<ToolbarSpacer/>
+			<Button type="Emphasized" text="Accept A2" tooltip="Claim ITC as per A2 (Accept A2)" press="onPressFragForceMatch"/>
+			<Button type="Emphasized" text="Accept A2 &amp; ITC PR Avail" tooltip="Claim ITC as per PR (Accept A2)" press="onPressFragForceMatch"/>
+			<Button type="Emphasized" text="Accept A2 &amp; ITC PR Tax" tooltip="Defer ITC (Pending A2)" press="onPressFragForceMatch"/>
+			<Button type="Emphasized" text="Pending A2" tooltip="Reject A2 &amp; PR" press="onPressFragForceMatch"/>
+			<Button type="Emphasized" text="Reject A2" tooltip="Reject A2 only" press="onPressFragForceMatch"/>
+			<Button type="Emphasized" text="Reject A2 &amp; ITC PR Avail" tooltip="Reject A2 &amp; Claim Provisional PR" press="onPressFragForceMatch"/>
+		</Toolbar>
+		<HBox>
+			<Table id="idTab1AdnlEnt" items="{ path: 'oForceMModelArry>/'}">
+				<columns>
+					<Column width="6em">
+						<Text text="S.no"/>
+					</Column>
+					<Column width="7rem">
+						<Text text="Supplier GSTIN"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<Text text="{oForceMModelArry>sno}"/>
+							<Text text="{oForceMModelArry>supplierGstin}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+			<Table id="idTab2AdnlEnt" items="{ path: 'oForceMModelArry1>/'}">
+				<columns>
+					<Column width="6em">
+						<Text text="S.no"/>
+					</Column>
+					<Column width="7rem">
+						<Text text="Supplier GSTIN"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<Text text="{oForceMModelArry1>sno}" wrapping="false"/>
+							<Text text="{oForceMModelArry1>supplierGstin}" wrapping="false"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</HBox>
+		<!--	<buttons>
+			<Button id="btnEdit" text="Submit" press="onPressSubmit"/>-->
+		<!--<Button id="btnClose" text="Close" press="onCloseDialogFM"/>-->
+		<!--</buttons>-->
+	</Dialog>
+</core:FragmentDefinition>

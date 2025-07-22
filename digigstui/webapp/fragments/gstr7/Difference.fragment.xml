@@ -1,0 +1,55 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m">
+	<Dialog id="dDifference" title="{i18n>diffHeader}" type="Message" draggable="true" contentWidth="65%" class="sapUiSizeCompact">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="{i18n>diffHeader}" design="Bold"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<beginButton>
+			<Button text="{i18n>close}" class="buttoncolorSec" press="onCloseDifferenceDialog"/>
+		</beginButton>
+		<Toolbar>
+			<Label id="ifDiffGSTIN" design="Bold"/>
+			<ToolbarSpacer/>
+			<ObjectStatus id="tDiffUpdate" state="Warning"/>
+			<Button class="buttoncolorSec" id="bDiffUpdate" text="{i18n>updataGstnData}" enabled="{= ${userPermission>/appPermission/P6}}"
+				press="onUpdateGstnData($event,'D')"/>
+		</Toolbar>
+		<Table items="{path:'Difference>/', sorter:{path:'section'}}">
+			<columns>
+				<Column width="10rem">
+					<Label text="{i18n>section}" design="Bold" textAlign="Center" width="100%"/>
+				</Column>
+				<Column width="5rem" hAlign="End">
+					<Label text="{i18n>count}" design="Bold" textAlign="Center" width="100%"/>
+				</Column>
+				<Column width="7rem" hAlign="End">
+					<Label text="Total Amount" design="Bold" textAlign="Center" width="100%"/>
+				</Column>
+				<Column width="7rem" hAlign="End">
+					<Label text="{i18n>igst}" design="Bold" textAlign="Center" width="100%"/>
+				</Column>
+				<Column width="7rem" hAlign="End">
+					<Label text="{i18n>cgst}" design="Bold" textAlign="Center" width="100%"/>
+				</Column>
+				<Column width="7rem" hAlign="End">
+					<Label text="{i18n>sgst}" design="Bold" textAlign="Center" width="100%"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<Text text="{path:'Difference>section', formatter:'.sectionFormat'}"/>
+						<Text text="{path:'Difference>diffCount'}"/>
+						<Text text="{path:'Difference>diffTotalAmount', formatter:'.formatter.amountValue'}"/>
+						<Text text="{path:'Difference>diffIgst', formatter:'.formatter.amountValue'}"/>
+						<Text text="{path:'Difference>diffCgst', formatter:'.formatter.amountValue'}"/>
+						<Text text="{path:'Difference>diffSgst', formatter:'.formatter.amountValue'}"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</Dialog>
+</core:FragmentDefinition>

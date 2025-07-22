@@ -1,0 +1,166 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:ui="sap.ui.table" xmlns:layout="sap.ui.layout">
+	<Dialog id="dGetDetails" title="{i18n>gstr1detail}" type="Message" draggable="true" contentWidth="80%" class="sapUiSizeCompact">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="{i18n>gstr1detail}" design="Bold"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<content>
+			<ui:Table enableSelectAll="false" fixedColumnCount="1">
+				<ui:extension>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button class="buttoncolorSec" text="{i18n>getDetails}" enabled="false"/>
+						<Button class="buttoncolorSec" text="{i18n>downReport}" enabled="false"/>
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="12rem">
+						<Label text="{i18n>gstin}" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text=""/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="{i18n>gstr1_b2b}" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text=""/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="{i18n>gstr1_b2ba}" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text=""/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="{i18n>gstr1_b2cl}" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text=""/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="{i18n>gstr1_b2cla}" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text=""/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="{i18n>gstr1_b2cs}" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text=""/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="{i18n>gstr1_b2csa}" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text=""/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="{i18n>gstr1_cdnr}" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text=""/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="{i18n>gstr1_cdnra}" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text=""/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="{i18n>gstr1_cdnur}" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text=""/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="{i18n>gstr1_cdnura}" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text=""/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="{i18n>gstr1_exp}" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text=""/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="{i18n>gstr1_expa}" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text=""/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="{i18n>gstr1_nilNon}" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text=""/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="{i18n>gstr1_hsn}" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text=""/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="{i18n>gstr1_docSeries}" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text=""/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="{i18n>gstr1_atTxpd}" tooltip="{i18n>gstr1_atTxpd}" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text=""/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="{i18n>gstr1_ataTxpda}" tooltip="{i18n>gstr1_ataTxpda}" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text=""/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+			<!--<layout:VerticalLayout>-->
+			<!--	<layout:Grid defaultSpan="L12 M12 S12" class="sapUiTinyMarginTop">-->
+			<!--		<layout:content>-->
+			<!--			<CheckBox selected="{CheckStats>/select}" text="{i18n>selectAll}" partiallySelected="{CheckStats>/partial}" select="onSelectTriState"/>-->
+			<!--		</layout:content>-->
+			<!--	</layout:Grid>-->
+			<!--	<layout:Grid defaultSpan="L2 M2 S12">-->
+			<!--		<layout:content>-->
+			<!--			<CheckBox text="{i18n>gstr1_b2b}" selected="{CheckStats>/b2b}" select="onSelectDetailCheckBox"/>-->
+			<!--			<CheckBox text="{i18n>gstr1_b2ba}" selected="{CheckStats>/b2ba}" select="onSelectDetailCheckBox"/>-->
+			<!--			<CheckBox text="{i18n>gstr1_b2cl}" selected="{CheckStats>/b2cl}" select="onSelectDetailCheckBox"/>-->
+			<!--			<CheckBox text="{i18n>gstr1_b2cla}" selected="{CheckStats>/b2cla}" select="onSelectDetailCheckBox"/>-->
+			<!--			<CheckBox text="{i18n>gstr1_b2cs}" selected="{CheckStats>/b2cs}" select="onSelectDetailCheckBox"/>-->
+			<!--			<CheckBox text="{i18n>gstr1_b2csa}" selected="{CheckStats>/b2csa}" select="onSelectDetailCheckBox"/>-->
+			<!--			<CheckBox text="{i18n>gstr1_cdnr}" selected="{CheckStats>/cdnr}" select="onSelectDetailCheckBox"/>-->
+			<!--			<CheckBox text="{i18n>gstr1_cdnra}" selected="{CheckStats>/cdnra}" select="onSelectDetailCheckBox"/>-->
+			<!--			<CheckBox text="{i18n>gstr1_cdnur}" selected="{CheckStats>/cdnur}" select="onSelectDetailCheckBox"/>-->
+			<!--			<CheckBox text="{i18n>gstr1_cdnura}" selected="{CheckStats>/cdnura}" select="onSelectDetailCheckBox"/>-->
+			<!--			<CheckBox text="{i18n>gstr1_exp}" selected="{CheckStats>/exp}" select="onSelectDetailCheckBox"/>-->
+			<!--			<CheckBox text="{i18n>gstr1_expa}" selected="{CheckStats>/expa}" select="onSelectDetailCheckBox"/>-->
+			<!--			<CheckBox text="{i18n>gstr1_nilNon}" selected="{CheckStats>/nilNon}" select="onSelectDetailCheckBox"/>-->
+			<!--			<CheckBox text="{i18n>gstr1_hsn}" selected="{CheckStats>/hsn}" select="onSelectDetailCheckBox"/>-->
+			<!--			<CheckBox text="{i18n>gstr1_docSeries}" selected="{CheckStats>/docSeries}" select="onSelectDetailCheckBox"/>-->
+			<!--			<CheckBox text="{i18n>gstr1_atTxpd}" selected="{CheckStats>/atTxpd}" select="onSelectDetailCheckBox" wrapping="true"/>-->
+			<!--			<CheckBox text="{i18n>gstr1_ataTxpda}" selected="{CheckStats>/ataTxpda}" select="onSelectDetailCheckBox" wrapping="true"/>-->
+			<!--		</layout:content>-->
+			<!--	</layout:Grid>-->
+			<!--</layout:VerticalLayout>-->
+		</content>
+		<beginButton>
+			<Button class="buttoncolorSec" text="{i18n>ok}" press="onCloseGetDetails('ok')" enabled="false"/>
+		</beginButton>
+		<endButton>
+			<Button class="buttoncolorSec" text="{i18n>close}" press="onCloseGetDetails('close')"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

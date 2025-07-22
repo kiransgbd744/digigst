@@ -1,0 +1,46 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog title="Set Frequency" class="sapUiSizeCompact">
+		<VBox class="sapUiSmallMargin">
+			<!-- Frequency Selection -->
+			<Label text="Frequency"/>
+			<RadioButtonGroup columns="3" selectedIndex="0">
+				<buttons>
+					<RadioButton text="Daily"/>
+					<RadioButton text="Weekly"/>
+					<RadioButton text="Monthly"/>
+				</buttons>
+			</RadioButtonGroup>
+			<!-- Repeat Interval -->
+			<HBox class="sapUiSmallMarginTop">
+				<Label text="Repeat every" class="sapUiTinyMarginTop"/>
+				<Input value="1" width="50px" type="Number" class="sapUiTinyMarginBegin"/>
+				<Label text="day" class="sapUiTinyMarginBegin sapUiTinyMarginTop"/>
+			</HBox>
+			<!-- Start Date and End Date -->
+			<HBox class="sapUiSmallMarginTop">
+				<VBox>
+					<Label text="Start Date"/>
+					<DatePicker placeholder="DD/MM/YYYY"/>
+				</VBox>
+				<VBox class="sapUiTinyMarginBegin">
+					<Label text="End Date"/>
+					<DatePicker placeholder="DD/MM/YYYY"/>
+				</VBox>
+			</HBox>
+			<!-- Time Selection -->
+			<HBox class="sapUiSmallMarginTop">
+				<VBox>
+					<Label text="Time"/>
+					<TimePicker id="TP4" valueFormat="hh:mm a" displayFormat="hh:mm a" change="handleChange" maskMode="On" placeholder="Enter time"/>
+				</VBox>
+			</HBox>
+		</VBox>
+		<!-- Footer Buttons -->
+		<endButton>
+			<Button text="Cancel" class="buttoncolorSec" press="onCancelPress"/>
+		</endButton>
+		<beginButton>
+			<Button text="Set" class="buttoncolorSec" press="onSetPress"/>
+		</beginButton>
+	</Dialog>
+</core:FragmentDefinition>

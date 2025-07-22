@@ -1,0 +1,289 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" xmlns:l="sap.ui.layout" xmlns:commons="sap.suite.ui.commons">
+	<Panel class="sapFDynamicPageAlignContent" width="auto" height="500px">
+		<ui:Table id="idTaxPaidTab" rows="{path:'oGSTR9Model>/TaxPaid'}"
+			selectionMode="None" enableSelectAll="false" fixedColumnCount="2" enableColumnReordering="false" >
+			<ui:extension>
+				<Toolbar>
+					<HBox justifyContent="Start">
+						<Label text="Showing:" design="Bold" class="sapUiTinyMarginTop"/>
+						<CheckBox select="showingCheck" selected="true" text="DigiGST (Processed Data)" id="TaxDigiProID" class="sapUiTinyMarginEnd"/>
+						<CheckBox select="showingCheck" selected="true" text="DigiGST (GSTR1 and 3B)" id="TaxDigi3BID" class="sapUiTinyMarginEnd"/>
+						<CheckBox select="showingCheck" selected="true" text="GST Portal(Calculated)" id="TaxGSTID" class="sapUiTinyMarginEnd"/>
+						<CheckBox select="showingCheck" selected="true" text="User Edit" id="TaxUserID" class="sapUiTinyMarginEnd"/>
+						<CheckBox select="showingCheck" selected="true" text="GSTN(Available)" id="TaxGSTNAvaiID" class="sapUiTinyMarginEnd"/>
+						<CheckBox select="showingCheck" selected="true" text="Difference" id="TaxDiffID" class="sapUiTinyMarginEnd"/>
+					</HBox>
+					<ToolbarSpacer/>
+					<Button type="Emphasized" text="Edit User Input Data" press="onEdit" class="sapUiTinyMarginEnd" enabled="{= ${userPermission>/appPermission/P4}}"/>
+					<Button type="Accept" text="Save Changes" press="onPressSaveChanges" class="sapUiTinyMarginEnd"
+							enabled="{= ${userPermission>/appPermission/P4}}"/>
+					<Button type="Emphasized" text="Clear User Input Data" class="sapUiTinyMarginEnd" press="onClearUserData"
+							enabled="{= ${userPermission>/appPermission/P4}}"/>
+					<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" press="onExportExcel" />
+					<Button type="Transparent" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="{=!${PrProperty>/summaryFullScreen}}"
+							press="onGstr2FullScreen('openSummary')"/>
+					<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="{PrProperty>/summaryFullScreen}"
+							press="onGstr2FullScreen('closeSummary')"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column width="4rem">
+					<Label text="Section" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<Label wrapping="true" text="{oGSTR9Model>Section}"	design="Bold" visible="{= ${oGSTR9Model>Section} === '9' ? true :  false}"/>
+							<Text text="{oGSTR9Model>Section}"  visible="{= ${oGSTR9Model>Section} === '9' ? false :  true}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="Nature of Supplies" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox>
+							<Label wrapping="true" text="{oGSTR9Model>Supply}"	design="Bold" visible="{= ${oGSTR9Model>Section} === '9' ? true :  false}"/>
+							<Text text="{oGSTR9Model>Supply}"  visible="{= ${oGSTR9Model>Section} === '9' ? false :  true}"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column headerSpan="6"  width="8rem" >
+					<ui:multiLabels>
+						<Label text="As per DigiGST Processed Data" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" class="sapUiTinyMarginEnd"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column  width="8rem" >
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Paid Through Cash" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="8rem" >
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Paid Through ITC-IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column  width="8rem" >
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Paid Through ITC-CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" visible="{GSTR3B>visiCgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column  width="8rem" >
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Paid Through ITC-SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" visible="{GSTR3B>visiSgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column  width="8rem" >
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Paid Through ITC-Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" visible="{GSTR3B>visiCess}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column headerSpan="6"  width="8rem" >
+					<ui:multiLabels>
+						<Label text="As per Get GSTR1 and 3B calls" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" class="sapUiTinyMarginEnd"/>
+						<!--<Text text="{parts:[{path : 'LinkTabGSTN1>computedTaxableVal'},{path : 'LinkTabGSTN1>supplyType'}], formatter : '.formatter.amountValue1'}"/>-->
+					</ui:template>
+				</ui:Column>
+				<ui:Column  width="8rem" >
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Paid Through Cash" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column  width="8rem" >
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Paid Through ITC-IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column  width="8rem" >
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Paid Through ITC-CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" visible="{GSTR3B>visiCgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column  width="8rem" >
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Paid Through ITC-SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" visible="{GSTR3B>visiSgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column  width="8rem" >
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Paid Through ITC-Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" visible="{GSTR3B>visiCess}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column headerSpan="6"  width="8rem" >
+					<ui:multiLabels>
+						<Label text="As per GSTN Computed" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" class="sapUiTinyMarginEnd"/>
+						<!--<Text text="{parts:[{path : 'LinkTabGSTN1>computedTaxableVal'},{path : 'LinkTabGSTN1>supplyType'}], formatter : '.formatter.amountValue1'}"/>-->
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="8rem" >
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Paid Through Cash" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column  width="8rem" >
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Paid Through ITC-IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column  width="8rem" >
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Paid Through ITC-CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" visible="{GSTR3B>visiCgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column  width="8rem" >
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Paid Through ITC-SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" visible="{GSTR3B>visiSgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column  width="8rem" >
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Paid Through ITC-Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" visible="{GSTR3B>visiCess}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column headerSpan="1"  width="8rem" >
+					<ui:multiLabels>
+						<Label text="As per DigiGST User Edited" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Input value="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" textAlign="End" 
+								change="TaxableValueChange" maxLength="19" enabled="{= ${oGSTR9Model>Section} === '9' ? false :  true}"></Input>
+					</ui:template>
+				</ui:Column>
+				<ui:Column headerSpan="5"  width="8rem">
+					<ui:multiLabels>
+						<Label text="As available at GSTN Portal" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column  width="8rem" >
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Paid Through Cash" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column  width="8em" >
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Paid Through ITC-IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" visible="{GSTR3B>visiIgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column  width="8rem" >
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Paid Through ITC-CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" visible="{GSTR3B>visiCgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="8rem" >
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Paid Through ITC-SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" visible="{GSTR3B>visiSgst}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column  width="8rem" >
+					<ui:multiLabels>
+						<Label/>
+						<Label text="Paid Through ITC-Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}" visible="{GSTR3B>visiCess}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column headerSpan="1"  width="8rem" >
+					<ui:multiLabels>
+						<Label text="Difference (User Edited - GSTN Portal)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{parts:[{path : 'oGSTR9Model>Section'},{path : 'oGSTR9Model>TaxValue'}], formatter : '.formatter.amountValue3'}"/>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+	</Panel>
+</core:FragmentDefinition>

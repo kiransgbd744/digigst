@@ -1,0 +1,61 @@
+<mvc:View controllerName="com.ey.digigst.controller.GrpLComplianceHistory" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:commons="sap.suite.ui.commons" busyIndicatorDelay="0">
+	<f:DynamicPage id="idDPComplianceHistory">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<FlexBox>
+						<Title text="Compliance History" class="TitleColor"/>
+						<DatePicker id="idDATE" visible="false"/>
+					</FlexBox>
+				</f:heading>
+				<f:actions>
+					<SegmentedButton id="sbComplianceHistory" selectedKey="GSTR1" selectionChange="onChangeSegment" class="sapUiTinyMarginBegin"
+						enabled="{=!!${GroupPermission>/G1}}">
+						<items>
+							<SegmentedButtonItem text="GSTR-1" key="GSTR1"/>
+							<SegmentedButtonItem text="GSTR-1A" key="GSTR1A"/>
+							<SegmentedButtonItem text="GSTR-3B" key="GSTR3B"/>
+							<SegmentedButtonItem text="GSTR-6" key="GSTR6"/>
+							<SegmentedButtonItem text="GSTR-7" key="GSTR7"/>
+							<SegmentedButtonItem text="ITC-04" key="ITC04"/>
+							<SegmentedButtonItem text="GSTR-9" key="GSTR9"/>
+						</items>
+					</SegmentedButton>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header >
+			<f:DynamicPageHeader class="sapUiNoContentPadding" id="dpNewHeader" pinnable="false" visible="{=!!${GroupPermission>/G1}}">
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Entity Name" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slGet2aProcessGstinNew" items="{GrpEntity>/}" selectionChange="selectAll">
+									<core:Item key="{GrpEntity>entityId}" text="{GrpEntity>entityName}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Financial Year" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<Select width="100%" id="dtFinYearGstrNew" items="{oFyModel>/finYears}" forceSelection="true">
+									<core:Item key="{oFyModel>fy}" text="{oFyModel>fy}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button press="onPressGo" text="Filter" enabled="{=!!${GroupPermission>/G1}}" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiTinyMarginTop" visible="{=!!${GroupPermission>/G1}}">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.GLcomplianceHistory.gstr1" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.GLcomplianceHistory.itc04" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.GLcomplianceHistory.gstr9" type="XML"/>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

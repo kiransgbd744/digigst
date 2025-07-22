@@ -1,0 +1,211 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" controllerName="com.ey.digigst.controller.GstnRecords" core:require="{util:'com/ey/digigst/util/Formatter'}"
+	busyIndicatorDelay="0">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<Title text="GSTN Saved/Submitted Records" titleStyle="H3" class="tinyMarginTop"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onGoSummary" clear="onClearMainFilter"
+					useToolbar="false" class="sapUiNoContentPadding" width="90%">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Supplier GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox items="{DataPermission>/respData/dataSecurity/gstin}" selectedKey="{FilterModel>/gstin}">
+									<core:Item key="{DataPermission>value}" text="{DataPermission>value}"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Return Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="taxPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy" value="{FilterModel>/ReturnPeriod}"
+									maxDate="{FilterModel>/maxDate}" change="onChangeTaxPeriod"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Table Type" visibleInFilterBar="true">
+							<fb:control>
+								<Select selectedKey="{FilterModel>/tableType}">
+									<core:Item key="B2B" text="B2B"/>
+									<core:Item key="B2BA" text="B2BA"/>
+									<core:Item key="CDNR" text="CDNR"/>
+									<core:Item key="CDNRA" text="CDNRA"/>
+									<core:Item key="EXP" text="EXP"/>
+									<core:Item key="EXPA" text="EXPA"/>
+									<core:Item key="CDNUR" text="CDNUR"/>
+									<core:Item key="CDNURA" text="CDNURA"/>
+									<core:Item key="B2CL" text="B2CL"/>
+									<core:Item key="B2CLA" text="B2CLA"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Supply Type" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox selectedKey="{FilterModel>/supplyType}">
+									<core:Item key="TAX" text="TAX"/>
+									<core:Item key="SEZWOP" text="SEZWOP"/>
+									<core:Item key="SEZWP" text="SEZWP"/>
+									<core:Item key="DXP" text="DXP"/>
+									<core:Item key="EXPT" text="EXPT"/>
+									<core:Item key="EXPWT" text="EXPWT"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Document Type" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox selectedKey="{FilterModel>/docType}">
+									<core:Item key="INV" text="INV - Invoice"/>
+									<core:Item key="CR" text="CR - Credit Note"/>
+									<core:Item key="DR" text="DR - Debit Note"/>
+									<core:Item key="RNV" text="RNV - Revised Invoice"/>
+									<core:Item key="RCR" text="RCR - Revised Credit Note"/>
+									<core:Item key="RDR" text="RDR - Revised Debit Note"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="Document No" visibleInFilterBar="true">
+							<fb:control>
+								<MultiInput id="iDocNo" tokens="{FilterModel>/docNums}" maxLength="1600" showSuggestion="false" showValueHelp="false"
+									tokenUpdate="onTokenUpdate">
+									<tokens>
+										<Token key="{FilterModel>key}" text="{FilterModel>text}"/>
+									</tokens>
+								</MultiInput>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="Document Date" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="docDate" displayFormat="dd-MM-yyyy" valueFormat="dd-MM-yyyy" value="{FilterModel>/docDate}" placeholder="DD-MM-YYYY"
+									maxDate="{FilterModel>/maxDate}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="H" label="Recipient GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<Input value="{FilterModel>/RecipientGstin}" maxLength="16"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="Clear" press="onClear" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+					<Button text="Filter" press="onSearch" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table rows="{GstinRecords>/}" enableColumnReordering="false" selectionMode="None" visibleRowCount="15">
+				<ui:columns>
+					<ui:Column width="10rem">
+						<Label text="Supplier GSTIN" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{GstinRecords>supplierGstin}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Return Period" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{GstinRecords>returnPeriod}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="6rem">
+						<Label text="Table Type" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{GstinRecords>tableType}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="Document Type" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{GstinRecords>docType}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="Supply Type" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{GstinRecords>supplyType}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="Document No" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{GstinRecords>docNo}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="Document Date" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{GstinRecords>docDate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="Recipient GSTIN" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{GstinRecords>recipientGstin}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="3rem">
+						<Label text="POS" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{GstinRecords>pos}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="Taxable Value" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{path:'GstinRecords>taxableValue',formatter:'util.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="IGST Amount" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{path:'GstinRecords>igstAmount',formatter:'util.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="CGST Amount" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{path:'GstinRecords>cgstAmount',formatter:'util.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="SGST/UTGST Amount" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{path:'GstinRecords>sgstAmount',formatter:'util.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="Cess Amount" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{path:'GstinRecords>cessAmount',formatter:'util.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="Invoice Value" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{path:'GstinRecords>invoiceValue',formatter:'util.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+				<ui:footer>
+					<HBox justifyContent="Center">
+						<Button type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" enabled="{Property>/bFirst}" class="sapUiTinyMarginBeginEnd"
+							press="onPaginationEInv('F')"/>
+						<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="{Property>/bPrev}"
+							press="onPaginationEInv('P')"/>
+						<Input type="Number" textAlign="End" value="{Property>/pageNo}" enabled="{Property>/ePageNo}" width="4rem" class="sapUiTinyMarginBegin"
+							submit="onSubmitPaginationEInv"/>
+						<Text text="/ {Property>/pgTotal}" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+						<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="{Property>/bNext}"
+							press="onPaginationEInv('N')"/>
+						<Button type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" enabled="{Property>/bLast}" class="sapUiTinyMarginBeginEnd"
+							press="onPaginationEInv('L')"/>
+					</HBox>
+				</ui:footer>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

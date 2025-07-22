@@ -1,0 +1,402 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.InvManageNew"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" busyIndicatorDelay="0">
+	<f:DynamicPage id="idDPPRInvManageinv2">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<FlexBox>
+						<Button id="bNewManageBack" icon="sap-icon://nav-back" press="onPressBack" tooltip="Back" visible="false"
+							class="sapUiSmallMarginEnd buttoncolorSec"/>
+						<Title text="Invoice Management" class="TitleColor"/>
+						<DatePicker id="idDATE" visible="false"/>
+					</FlexBox>
+				</f:heading>
+				<f:actions>
+					<SegmentedButton id="sbNewManageOI" selectedKey="Outward" selectionChange="onChangeSegment" class="sapUiTinyMarginBegin">
+						<items>
+							<SegmentedButtonItem text="Outward" key="Outward" width="6rem" enabled="{= ${userPermission>/appPermission/P1}}"/>
+							<SegmentedButtonItem text="Inward" key="Inward" width="6rem"
+								enabled="{= (${userPermission>/appPermission/P1} || ${userPermission>/appPermission/P28})}"/>
+						</items>
+					</SegmentedButton>
+					<HBox id="idTabLayoutAction" visible="false">
+						<Button text="Edit" press="onPressEditFormLayout" class="sapUiTinyMarginBegin buttoncolorSec" enabled="{buttonVis>/dataEditable}"/>
+						<Button text="Cancel" press="onPressCancelFormLayout" class="sapUiTinyMarginBegin buttoncolorSec"
+							enabled="{= ${userPermission>/appPermission/P28}}"/>
+						<Button text="Save Changes" press="onSaveOutwardInvoice" class="sapUiTinyMarginBegin buttoncolorSec" enabled="{buttonVis>/dataEditable}"/>
+						<Button enabled="{= ${userPermission>/appPermission/P28}}" text="Audit Trail" press="onChangeTrail"
+							class="sapUiTinyMarginBegin buttoncolorSec"/>
+						<Button id="bMessageLayout" icon="sap-icon://message-popup" text="0" tooltip="Errors With Description" press="handleErrorMessages"
+							class="sapUiTinyMarginBegin buttoncolorSec"/>
+					</HBox>
+					<SegmentedButton id="sbNewManageLayout" selectedKey="TableLayout" selectionChange="onChangeSegmentLayout"
+						class="sapUiTinyMarginBegin sapUiTinyMarginEnd" enabled="true" visible="false">
+						<items>
+							<SegmentedButtonItem text="Table Layout" key="TableLayout" width="8rem" enabled="true"/>
+							<SegmentedButtonItem text="Tab Layout" key="TabLayout" width="8rem" enabled="true"/>
+						</items>
+					</SegmentedButton>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header >
+			<f:DynamicPageHeader class="sapUiNoContentPadding" id="dpNewHeader" pinnable="false">
+				<fb:FilterBar id="idfbInvManageNew" showGoOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Criteria" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="slCriteria" selectedKey="{filter>/req/criteria}" forceSelection="true" change="onSelectCriteria">
+									<core:Item key="recDate" text="Data Received Date"/>
+									<core:Item key="docDate" text="Document Date"/>
+									<core:Item key="taxPeriod" text="Tax Period"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="From Date" visibleInFilterBar="true"
+							visible="{=!${invManage>/DatePeriod/Period}}">
+							<fb:control>
+								<DatePicker id="iFromDate" value="{filter>/req/receivFromDate}" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd"
+									change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="To Date" visibleInFilterBar="true"
+							visible="{=!${invManage>/DatePeriod/Period}}">
+							<fb:control>
+								<DatePicker id="iToDate" value="{filter>/req/receivToDate}" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="From Period" visibleInFilterBar="true"
+							visible="{invManage>/DatePeriod/Period}">
+							<fb:control>
+								<DatePicker id="iFromPeriod" value="{filter>/req/returnFromDate}" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="To Period" visibleInFilterBar="true"
+							visible="{invManage>/DatePeriod/Period}">
+							<fb:control>
+								<DatePicker id="iToPeriod" value="{filter>/req/returnToDate}" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="H" label="Transaction Type" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="slTransactionType" selectedKey="{filter>/req/transType}" items="{path:'DropDown>/TransactionType'}" width="100%"
+									change="onChangeTransType">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" selectedKeys="{filter>/req/dataSecAttrs/GSTIN}"
+									id="idfgiInvMGSINT" selectionChange="selectAll">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="Counter Party GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox id="slCpAction" selectedKey="{filter>/req/counterPartyGstin}" items="{path:'DropDown>/CounterPartyGSTIN'}" width="100%"
+									change="onChangeValue">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="I" label="Document Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slDocType" selectedKeys="{filter>/req/docType}" items="{path:'DropDown>/docTypeEWB'}" width="100%" change="onChangeValue">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="J" label="Document Number" visibleInFilterBar="true">
+							<fb:control>
+								<MultiInput id="iDocNo" change="onMultiInputChange" showValueHelp="false"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="K" label="GST Returns Status" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slGSTReturnsStatus" selectedKeys="{filter>/req/gstReturnsStatus}" enabled="{filter>/req/gstFlag}"
+									items="{path:'DropDown>/GSTReturnsStatus'}" width="100%" change="onChangeValue">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="BA" label="E-Invoice Status" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slEINVStatus" selectedKeys="{filter>/req/einvStatus}" items="{path:'DropDown>/EINVStatus'}" width="100%"
+									change="onChangeValue">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="L" label="EWB Status" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slEWBStatus" selectedKeys="{filter>/req/ewbStatus}" items="{path:'DropDown>/EWBStatus'}" width="100%"
+									change="onChangeValue">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="M" label="EWB Error Point" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slEWBErrorPoint" selectedKeys="{filter>/req/ewbErrorPoint}" items="{path:'DropDown>/EWBErrorPoint'}" width="100%"
+									change="onChangeValue">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="N" label="EWB Number" visibleInFilterBar="true">
+							<fb:control>
+								<Input id="idEWBNo" value="{filter>/req/ewbNo}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="O" label="EWB Valid upto" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="idEWBDate" value="{filter>/req/ewbValidUpto}" displayFormat="dd/MM/yyyy" valueFormat="yyyy-MM-dd" change="onDateChange"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="P" label="EWB Available for Cancellation" visibleInFilterBar="true"
+							visible="false">
+							<fb:control>
+								<MultiComboBox id="slEWBCancellation" selectedKeys="{filter>/req/ewbCancellation}" items="{path:'DropDown>/EWBCancellation'}" width="100%"
+									change="onChangeValue">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="Q" label="Sub-Supply Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slSubSupplyType" selectedKeys="{filter>/req/subSupplyType}" items="{path:'DropDown>/subSupplyType'}" width="100%"
+									change="onChangeValue">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="R" label="Supply Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slSupplyType" selectedKeys="{filter>/req/supplyType}" items="{path:'DropDown>/supplyType'}" width="100%"
+									selectionChange="selectAll">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="S" label="Posting Date" visibleInFilterBar="true" visible="false">
+							<fb:control>
+								<DatePicker id="idPostingDate" value="{filter>/req/postingDate}" displayFormat="dd/MM/yyyy" valueFormat="yyyy-MM-dd" change="onDateChange"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="T" label="Transporter ID" visibleInFilterBar="true">
+							<fb:control>
+								<Input id="idTransporterID" value="{filter>/req/transporterID}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="TA" label="File ID" visibleInFilterBar="true">
+							<fb:control>
+								<Input id="idfileId" value="{filter>/req/fileId}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="TB" label="IRN Number" visibleInFilterBar="true">
+							<fb:control>
+								<Input id="idirnId" value="{filter>/req/irnNum}" maxLength="64"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="U" label="Status " visibleInFilterBar="true" visible="false">
+							<fb:control>
+								<ComboBox selectedKey="{filter>/req/processingStatus}" id="idStatus">
+									<core:Item key="B" text="Both"/>
+									<core:Item key="P" text="Process"/>
+									<core:Item key="E" text="Error"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="V" label="Return Type" visibleInFilterBar="true" visible="true">
+							<fb:control>
+								<ComboBox selectedKey="GSTR1" id="idType">
+									<core:Item key="GSTR1" text="GSTR-1"/>
+									<core:Item key="GSTR1A" text="GSTR-1A"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="W" label="Reverse Charge Flag" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="rcFlag" selectedKeys="{filter>/req/reverseCharge}" selectionChange="selectAll">
+									<core:Item key="all" text="All"/>
+									<core:Item key="Y" text="Yes"/>
+									<core:Item key="N" text="No"/>
+									<core:Item key="L" text="L"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<!--
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="M" label="Applicability " visibleInFilterBar="false">
+							<fb:control>
+								<MultiComboBox>
+									<core:Item key="einvoice" text="E-Invoice"/>
+									<core:Item key="ewbparta" text="EWB Part-A"/>
+									<core:Item key="ewbpartb" text="EWB Part-B"/>
+									<core:Item key="gstreturns" text="GST Returns"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="N" label="From EACK Date" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="idFromEACKDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" change="onDateChange"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="O" label="To EACK Date" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="idToEACKDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" change="onDateChange"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						-->
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<fb:FilterBar id="idfbIWInvManageNew" showGoOnFB="false" showFilterConfiguration="false" useToolbar="false" visible="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Criteria" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="slIWCriteria" forceSelection="true" change="onSelectCriteriaIW">
+									<core:Item key="recDate" text="Data Received Date"/>
+									<core:Item key="docDate" text="Document Date"/>
+									<core:Item key="taxPeriod" text="Tax Period"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="From Date" visibleInFilterBar="true"
+							visible="{=!${invManage>/DatePeriod/inPeriod}}">
+							<fb:control>
+								<DatePicker id="iIWFromDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="To Date" visibleInFilterBar="true"
+							visible="{=!${invManage>/DatePeriod/inPeriod}}">
+							<fb:control>
+								<DatePicker id="iIWToDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="From Period" visibleInFilterBar="true"
+							visible="{invManage>/DatePeriod/inPeriod}">
+							<fb:control>
+								<DatePicker id="iIWFromPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="To Period" visibleInFilterBar="true"
+							visible="{invManage>/DatePeriod/inPeriod}">
+							<fb:control>
+								<DatePicker id="iIWToPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="H" label="GST Return" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idIWGSTReturn" width="100%" selectedKey="GSTR2" change="onChangeGSTReturn">
+									<core:Item key="GSTR2" text="GSTR-2"/>
+									<core:Item key="GSTR6" text="GSTR-6"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'InwardGSTIN>/'}" id="idfgiIWInvMGSINT" selectionChange="selectAll">
+									<core:Item key="{InwardGSTIN>value}" text="{InwardGSTIN>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="Counter Party GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox id="slIWCpAction" items="{path:'DropDown>/CounterPartyGSTIN'}" width="100%" change="onChangeValue">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="I" label="Document Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slIWDocType" items="{path:'DropDown>/docTypeINV'}" width="100%" change="onChangeValue">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="J" label="Document Number" visibleInFilterBar="true">
+							<fb:control>
+								<MultiInput id="idIWDocNo" change="onMultiInputChange" showValueHelp="false"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="K" label="GST Returns Status" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slIWGSTReturnsStatus" items="{path:'DropDown>/GSTReturnsStatus'}" width="100%" change="onChangeValue">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}" enabled="{DropDown>enabled}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="R" label="Supply Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slIWSupplyType" items="{path:'DropDown>/supplyTypeIW'}" width="100%" change="onChangeValue">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="S" label="Posting Date" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="idIWPostingDate" displayFormat="dd/MM/yyyy" valueFormat="yyyy-MM-dd" change="onDateChange"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="T" label="Supplier GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<Input id="idSGNo" maxLength="15"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="U" label="Accounting Voucher No." visibleInFilterBar="true">
+							<fb:control>
+								<!--<Input id="idAVNNo"/>-->
+								<MultiInput id="idAVNNo" change="onMultiInputChange" showValueHelp="false"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button icon="sap-icon://filter" class="sapUiTinyMarginEnd buttoncolorSec" tooltip="Adapt Filters" press="onPressAdaptFilter"/>
+					<Button text="Clear" class="sapUiTinyMarginEnd buttoncolorSec" press="onPressClear" visible="true"/>
+					<Button text="Filter" class="buttoncolor" press="onPressGo"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiTinyMarginTop">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.invManageNew.invOutward" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.invManageNew.invInward" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.invManageNew.EditInvoice" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.invManageNew.EditInward" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.invManageNew.tabLayout" type="XML"/>
+			</Panel>
+		</f:content>
+		<!--<f:footer>
+			<OverflowToolbar class="cl_ToolbarColor" height="3rem">
+				<ToolbarSpacer/>
+				<Label text="© 2021 | All Rights Reserved. Content within this application is confidential and meant for EY staff and EY clients only."
+					class="logoText"/>
+				<ToolbarSpacer/>
+			</OverflowToolbar>
+		</f:footer>-->
+	</f:DynamicPage>
+	<f:DynamicPage id="idDPPRInvManageinv3" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<FlexBox>
+						<Button type="Transparent" id="bNewManage3Back" icon="sap-icon://nav-back" press="onPressAuditTrailBack" tooltip="Back"
+							class="sapUiSmallMarginEnd buttoncolorSec"/>
+						<Title text="Audit Trail" class="TitleColor"/>
+					</FlexBox>
+				</f:heading>
+				<f:actions></f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiTinyMarginTop">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.invManageNew.AuditTrail" type="XML"/>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

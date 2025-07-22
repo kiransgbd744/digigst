@@ -1,0 +1,649 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage id="idDynmcPageGstr2B">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading design="Bold">
+					<Title text="GSTR-2B" titleStyle="H3"/>
+				</f:heading>
+				<f:actions>
+					<SegmentedButton selectedKey="{Display>/sbGstr2B}" select="onSelectSbGstr2b">
+						<items>
+							<SegmentedButtonItem key="getGstr2b" text="Get GSTR-2B" width=""/>
+							<SegmentedButtonItem key="generate2b" text="Generate GSTR-2B" width="" visible="{=!!${GroupPermission>/GR1}}"/>
+							<SegmentedButtonItem key="linkAmount" text="Link Amount" visible="false"/>
+						</items>
+					</SegmentedButton>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false" class="sapUiNoContentPadding">
+				<fb:FilterBar id="idGstr1fltrBar" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onRRConsoldGO"
+					clear="onClearFilterConslM" useToolbar="false" class="sapUiNoContentPadding" width="25%" visible="{=${Display>/sbGstr2B}==='getGstr2b'}">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="GSTIN" visibleInFilterBar="false">
+							<fb:control>
+								<MultiComboBox id="id2BGstins" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" selectionChange="selectAll">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Financial Year" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<Select width="100%" id="dtFinYearGstr123" forceSelection="true" items="{oFyModel2B>/finYears}">
+									<core:Item key="{oFyModel2B>fy}" text="{oFyModel2B>fy}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%" visible="{=${Display>/sbGstr2B}==='getGstr2b'}">
+					<Button id="bSgsrt1" text="Filter" press="_getGstr2b" class="sapUiTinyMarginBegin buttoncolor"/>
+				</HBox>
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onRRConsoldGO" clear="onClearFilterConslM"
+					useToolbar="false" class="sapUiNoContentPadding" width="25%" visible="{=${Display>/sbGstr2B}==='generate2b'}">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Financial Year" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<Select id="sGenerate2bFY" forceSelection="true" items="{oFyModel2B>/finYears}" change="onSelectFyGenerate2b" width="100%">
+									<core:Item key="{oFyModel2B>fy}" text="{oFyModel2B>fy}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" width="10%" visible="{=${Display>/sbGstr2B}==='generate2b'}" class="clMain">
+					<Button text="Filter" press="onFilterGenerate2B" class="buttoncolor"/>
+				</HBox>
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onRRConsoldGO" clear="onClearFilterConslM"
+					useToolbar="false" class="sapUiNoContentPadding" width="25%" visible="{=${Display>/sbGstr2B}==='linkAmount'}">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Financial Year" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<Select id="sLinkAmt2bFY" forceSelection="true" items="{oFyModel2B>/finYears}" change="onSelectFyLinkAmt" width="100%">
+									<core:Item key="{oFyModel2B>fy}" text="{oFyModel2B>fy}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" width="10%" visible="{=${Display>/sbGstr2B}==='linkAmount'}" class="clMain">
+					<Button text="Filter" press="onFilter2bLinkAmt" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel height="100%" class="sapUiNoContentPadding">
+				<commons:ChartContainer id="G2B" showFullScreen="false" showZoom="true" showPersonalization="false" autoAdjustHeight="false"
+					visible="{=${Display>/sbGstr2B}==='getGstr2b'}">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<ui:Table id="gstr2BTabid" rows="{path:'GSTR2BTable>/', sorter: {path: 'gstin',descending:false}}" selectionMode="MultiToggle"
+									selectionBehavior="Row" visibleRowCount="8" enableSelectAll="true" rowSelectionChange="onSelectionGstr2B" enableColumnReordering="false"
+									class="sapUiSizeCompact cl_popupCheck">
+									<ui:columns>
+										<ui:Column width="12rem" headerSpan="1">
+											<Label text="GSTIN" textAlign="Center" width="100%" design="Bold"/>
+											<ui:template>
+												<VBox width="100%">
+													<Text text="{GSTR2BTable>stateName}" class="stateColor" width="8rem"/>
+													<HBox alignContent="Start" justifyContent="SpaceBetween">
+														<Link text="{GSTR2BTable>gstin}"/>
+														<core:Icon src="sap-icon://circle-task-2" size="0.8rem" tooltip="{=${GSTR2BTable}==='I'?'Inactive':'Active'}" class="sapUiTinyMarginBegin">
+															<core:customData>
+																<core:CustomData key="authToken" value="{=!${GSTR2BTable>authStatus}?'':${GSTR2BTable>authStatus}}" writeToDom="true"/>
+															</core:customData>
+														</core:Icon>
+													</HBox>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="14rem">
+											<Label text="2B Status" textAlign="Center" width="100%" design="Bold"/>
+											<ui:template>
+												<Text text="{GSTR2BTable>status2B}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="13rem">
+											<CheckBox text="April" selected="{2BProperty>/April}" select="onAprilCheckBox"/>
+											<ui:template>
+												<VBox tooltip="{GSTR2BTable>AprilerrorMsg}">
+													<HBox>
+														<CheckBox selected="{GSTR2BTable>AprilCheck}" select="onAprilCheckBox($event,'single')" visible="{= ${GSTR2BTable>statusAprl} !==undefined}"/>
+														<ObjectStatus state="{path:'GSTR2BTable>statusAprl', formatter:'.formatter.Gstr2BStatus'}" text="{GSTR2BTable>statusAprl}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<core:Icon src="sap-icon://download" class="sapUiTinyMarginTop sapUiTinyMarginBegin" press="onDownloadApril"
+															visible="{= (${GSTR2BTable>downloadbleFlagAprl} ===true &amp;&amp; ${userPermission>/appPermission/P8})}"/>
+													</HBox>
+													<Text text="{GSTR2BTable>initiatedOnApril}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="13rem">
+											<CheckBox text="May" selected="{2BProperty>/May}" select="onMayCheckBox"/>
+											<ui:template>
+												<VBox tooltip="{GSTR2BTable>MayterrorMsg}">
+													<HBox>
+														<CheckBox selected="{GSTR2BTable>MayCheck}" select="onMayCheckBox($event,'single')" visible="{= ${GSTR2BTable>statusMay} !==undefined}"/>
+														<ObjectStatus state="{path:'GSTR2BTable>statusMay', formatter:'.formatter.Gstr2BStatus'}" text="{GSTR2BTable>statusMay}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<core:Icon src="sap-icon://download" class="sapUiTinyMarginTop sapUiTinyMarginBegin" press="onDownloadMay"
+															visible="{= (${GSTR2BTable>downloadbleFlagMay} ===true &amp;&amp; ${userPermission>/appPermission/P8})}"/>
+													</HBox>
+													<Text text="{GSTR2BTable>initiatedOnMay}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="13rem">
+											<CheckBox text="June" selected="{2BProperty>/June}" select="onJuneCheckBox"/>
+											<ui:template>
+												<VBox tooltip="{GSTR2BTable>JuneerrorMsg}">
+													<HBox>
+														<CheckBox selected="{GSTR2BTable>JuneCheck}" select="onJuneCheckBox($event,'single')" visible="{= ${GSTR2BTable>statusJune} !==undefined}"/>
+														<ObjectStatus state="{path:'GSTR2BTable>statusJune', formatter:'.formatter.Gstr2BStatus'}" text="{GSTR2BTable>statusJune}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<core:Icon src="sap-icon://download" class="sapUiTinyMarginTop sapUiTinyMarginBegin" press="onDownloadJune"
+															visible="{= (${GSTR2BTable>downloadbleFlagJune} ===true &amp;&amp; ${userPermission>/appPermission/P8})}"/>
+													</HBox>
+													<Text text="{GSTR2BTable>initiatedOnJune}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="13rem">
+											<CheckBox text="July" selected="{2BProperty>/July}" select="onJulyCheckBox"/>
+											<ui:template>
+												<VBox tooltip="{GSTR2BTable>JulyerrorMsg}">
+													<HBox>
+														<CheckBox selected="{GSTR2BTable>JulyCheck}" select="onJulyCheckBox($event,'single')" visible="{= ${GSTR2BTable>statusJuly} !==undefined}"/>
+														<ObjectStatus state="{path:'GSTR2BTable>statusJuly', formatter:'.formatter.Gstr2BStatus'}" text="{GSTR2BTable>statusJuly}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<core:Icon src="sap-icon://download" class="sapUiTinyMarginTop sapUiTinyMarginBegin" press="onDownloadJuly"
+															visible="{= (${GSTR2BTable>downloadbleFlagJuly} ===true &amp;&amp; ${userPermission>/appPermission/P8})}"/>
+													</HBox>
+													<Text text="{GSTR2BTable>initiatedOnJuly}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="13rem">
+											<CheckBox text="August " selected="{2BProperty>/Aug}" select="onAugCheckBox"/>
+											<ui:template>
+												<VBox tooltip="{GSTR2BTable>AugerrorMsg}">
+													<HBox>
+														<CheckBox selected="{GSTR2BTable>AugCheck}" select="onAugCheckBox($event,'single')" visible="{= ${GSTR2BTable>statusAug} !==undefined}"/>
+														<ObjectStatus state="{path:'GSTR2BTable>statusAug', formatter:'.formatter.Gstr2BStatus'}" text="{GSTR2BTable>statusAug}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<core:Icon src="sap-icon://download" class="sapUiTinyMarginTop sapUiTinyMarginBegin" press="onDownloadAug"
+															visible="{= (${GSTR2BTable>downloadbleFlagAug} ===true &amp;&amp; ${userPermission>/appPermission/P8})}"/>
+													</HBox>
+													<Text text="{GSTR2BTable>initiatedOnAug}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="13rem">
+											<CheckBox text="September" selected="{2BProperty>/Sep}" select="onSepCheckBox"/>
+											<ui:template>
+												<VBox tooltip="{GSTR2BTable>SepterrorMsg}">
+													<HBox>
+														<CheckBox selected="{GSTR2BTable>SepCheck}" select="onSepCheckBox($event,'single')" visible="{= ${GSTR2BTable>statusSept} !==undefined}"/>
+														<ObjectStatus state="{path:'GSTR2BTable>statusSept', formatter:'.formatter.Gstr2BStatus'}" text="{GSTR2BTable>statusSept}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<core:Icon src="sap-icon://download" class="sapUiTinyMarginTop sapUiTinyMarginBegin" press="onDownloadSep"
+															visible="{= (${GSTR2BTable>downloadbleFlagSept} ===true &amp;&amp; ${userPermission>/appPermission/P8})}"/>
+													</HBox>
+													<Text text="{GSTR2BTable>initiatedOnSept}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="13rem">
+											<CheckBox text="October" selected="{2BProperty>/Oct}" select="onOctCheckBox"/>
+											<ui:template>
+												<VBox tooltip="{GSTR2BTable>OcterrorMsg}">
+													<HBox>
+														<CheckBox selected="{GSTR2BTable>OctCheck}" select="onOctCheckBox($event,'single')" visible="{= ${GSTR2BTable>statusOct} !==undefined}"/>
+														<ObjectStatus state="{path:'GSTR2BTable>statusOct', formatter:'.formatter.Gstr2BStatus'}" text="{GSTR2BTable>statusOct}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<core:Icon src="sap-icon://download" class="sapUiTinyMarginTop sapUiTinyMarginBegin" press="onDownloadOct"
+															visible="{= (${GSTR2BTable>downloadbleFlagOct} ===true &amp;&amp; ${userPermission>/appPermission/P8})}"/>
+													</HBox>
+													<Text text="{GSTR2BTable>initiatedOnOct}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="13rem">
+											<CheckBox text="November" selected="{2BProperty>/Nov}" select="onNovCheckBox"/>
+											<ui:template>
+												<VBox tooltip="{GSTR2BTable>NoverrorMsg}">
+													<HBox>
+														<CheckBox selected="{GSTR2BTable>NovCheck}" select="onNovCheckBox($event,'single')" visible="{= ${GSTR2BTable>statusNov} !==undefined}"/>
+														<ObjectStatus state="{path:'GSTR2BTable>statusNov', formatter:'.formatter.Gstr2BStatus'}" text="{GSTR2BTable>statusNov}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<core:Icon src="sap-icon://download" class="sapUiTinyMarginTop sapUiTinyMarginBegin" press="onDownloadNov"
+															visible="{= (${GSTR2BTable>downloadbleFlagNov} ===true &amp;&amp; ${userPermission>/appPermission/P8})}"/>
+													</HBox>
+													<Text text="{GSTR2BTable>initiatedOnNov}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="13rem">
+											<CheckBox text="December" selected="{2BProperty>/Dec}" select="onDecCheckBox"/>
+											<ui:template>
+												<VBox tooltip="{GSTR2BTable>DecterrorMsg}">
+													<HBox>
+														<CheckBox selected="{GSTR2BTable>DecCheck}" select="onDecCheckBox($event,'single')" visible="{= ${GSTR2BTable>statusDec} !==undefined}"/>
+														<ObjectStatus state="{path:'GSTR2BTable>statusDec', formatter:'.formatter.Gstr2BStatus'}" text="{GSTR2BTable>statusDec}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<core:Icon src="sap-icon://download" class="sapUiTinyMarginTop sapUiTinyMarginBegin" press="onDownloadDec"
+															visible="{= (${GSTR2BTable>downloadbleFlagDec} ===true &amp;&amp; ${userPermission>/appPermission/P8})}"/>
+													</HBox>
+													<Text text="{GSTR2BTable>initiatedOnDec}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="13rem">
+											<CheckBox text="January" selected="{2BProperty>/Jan}" select="onJanCheckBox"/>
+											<ui:template>
+												<VBox tooltip="{GSTR2BTable>JanerrorMsg}">
+													<HBox>
+														<CheckBox selected="{GSTR2BTable>JanCheck}" select="onJanCheckBox($event,'single')" visible="{= ${GSTR2BTable>statusJan} !==undefined}"/>
+														<ObjectStatus state="{path:'GSTR2BTable>statusJan', formatter:'.formatter.Gstr2BStatus'}" text="{GSTR2BTable>statusJan}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<core:Icon src="sap-icon://download" class="sapUiTinyMarginTop sapUiTinyMarginBegin" press="onDownloadJan"
+															visible="{= (${GSTR2BTable>downloadbleFlagJan} ===true &amp;&amp; ${userPermission>/appPermission/P8})}"/>
+													</HBox>
+													<Text text="{GSTR2BTable>initiatedOnJan}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="13rem">
+											<CheckBox text="February" selected="{2BProperty>/Feb}" select="onFebCheckBox"/>
+											<ui:template>
+												<VBox tooltip="{GSTR2BTable>FeberrorMsg}">
+													<HBox>
+														<CheckBox selected="{GSTR2BTable>FebCheck}" select="onFebCheckBox($event,'single')" visible="{= ${GSTR2BTable>statusFeb} !==undefined}"/>
+														<ObjectStatus state="{path:'GSTR2BTable>statusFeb', formatter:'.formatter.Gstr2BStatus'}" text="{GSTR2BTable>statusFeb}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<core:Icon src="sap-icon://download" class="sapUiTinyMarginTop sapUiTinyMarginBegin" press="onDownloadFeb"
+															visible="{= (${GSTR2BTable>downloadbleFlagFeb} ===true &amp;&amp; ${userPermission>/appPermission/P8})}"/>
+													</HBox>
+													<Text text="{GSTR2BTable>initiatedOnFeb}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="13rem">
+											<CheckBox text="March" selected="{2BProperty>/Mar}" select="onMarCheckBox"/>
+											<ui:template>
+												<VBox tooltip="{GSTR2BTable>MarerrorMsg}">
+													<HBox>
+														<CheckBox selected="{GSTR2BTable>MarCheck}" select="onMarCheckBox($event,'single')" visible="{= ${GSTR2BTable>statusMar} !==undefined}"/>
+														<ObjectStatus state="{path:'GSTR2BTable>statusMar', formatter:'.formatter.Gstr2BStatus'}" text="{GSTR2BTable>statusMar}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<core:Icon src="sap-icon://download" class="sapUiTinyMarginTop sapUiTinyMarginBegin" press="onDownloadMar"
+															visible="{= (${GSTR2BTable>downloadbleFlagMar} ===true &amp;&amp; ${userPermission>/appPermission/P8})}"/>
+													</HBox>
+													<Text text="{GSTR2BTable>initiatedOnMar}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<ui:footer>
+										<HBox>
+											<core:Icon src="sap-icon://circle-task-2" color="#00ff00" ariaLabelledBy="Text" size="0.8rem"/>
+											<Text text="{i18n>authActive}" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+											<core:Icon src="sap-icon://circle-task-2" color="red" ariaLabelledBy="Text" size="0.8rem"/>
+											<Text text="{i18n>authInactive}" class="sapUiTinyMarginBegin"/>
+										</HBox>
+									</ui:footer>
+								</ui:Table>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar>
+							<Button tooltip="Download Table Data" text="Download Table Data" press="onDwnldTablData" class="sapUiTinyMarginBegin buttoncolorSec"
+								enabled="{= ${userPermission>/appPermission/P8}}"/>
+							<ToolbarSpacer/>
+							<Button text="Initiate Get GSTR 2B" press="onInitiateGstr2B" class="sapUiTinyMarginBegin buttoncolorSec"
+								enabled="{= ${userPermission>/appPermission/P8}}"/>
+							<Button text="Request Status" press="onGstr2BRequestStatus" class="sapUiTinyMarginBegin buttoncolorSec"
+								enabled="{= ${userPermission>/appPermission/P8}}"/>
+							<MenuButton class="buttoncolorSec" text="Download Reports" enabled="{= ${userPermission>/appPermission/P8}}">
+								<Menu itemSelected="onMenuItemPressGSTR2B">
+									<MenuItem key="ALL" text="GSTR-2B(Complete Data)"/>
+									<MenuItem key="ITC" text="GSTR-2B(Available ITC Data)"/>
+									<MenuItem key="NITC" text="GSTR-2B(Non Available ITC Data)"/>
+									<MenuItem key="REJ" text="GSTR 2B (Rejected ITC Data)"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Transparent" id="openbut2B" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" press="onGstr2BFullScreen('open')"/>
+							<Button type="Transparent" id="closebut2B" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="false"
+								press="onGstr2BFullScreen('close')"/>
+							<commons:ChartContainerToolbarPlaceholder/>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+				<commons:ChartContainer id="genGstr3b" showFullScreen="false" showZoom="true" showPersonalization="false" autoAdjustHeight="false"
+					visible="{=${Display>/sbGstr2B}==='generate2b'}">
+					<commons:content>
+						<commons:ChartContainerContent>
+							<commons:content>
+								<Panel>
+									<ui:Table id="tabGenerate2B" rows="{GenerateGstr2B>/}" rowSelectionChange="onGen2bRowSelectionChange" enableColumnReordering="false"
+										visibleRowCount="8" class="sapUiSizeCompact">
+										<ui:columns>
+											<ui:Column width="12rem">
+												<Label text="GSTIN"/>
+												<ui:template>
+													<HBox alignContent="Center" direction="Column" justifyContent="SpaceBetween">
+														<Text text="{GenerateGstr2B>stateName}" class="stateColor" width="8rem"/>
+														<HBox alignContent="Start" justifyContent="SpaceBetween">
+															<Link text="{GenerateGstr2B>gstin}"/>
+															<core:Icon src="sap-icon://circle-task-2" size="0.8rem" tooltip="{=${GenerateGstr2B>authStatus}==='I'?'Inactive':'Active'}"
+																class="sapUiTinyMarginBegin">
+																<core:customData>
+																	<core:CustomData key="authToken" value="{=!${GenerateGstr2B>authStatus}?'':${GenerateGstr2B>authStatus}}" writeToDom="true"/>
+																</core:customData>
+															</core:Icon>
+														</HBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="13.5rem">
+												<CheckBox text="April" selected="{GenGstr2bCheck>/aprSelect}" enabled="{GenGstr2bCheck>/aprEnable}" select="onSelectGen2bCols($event,'04')"/>
+												<ui:template>
+													<VBox tooltip="{GenerateGstr2B>aprErrorMsg}">
+														<HBox alignItems="Center" justifyContent="Center">
+															<CheckBox selected="{GenerateGstr2B>aprCheck}"
+																visible="{=!!${GenerateGstr2B>aprReportStatus}&amp;&amp;${GenGstr2bCheck>/aprEnable}&amp;&amp;!!${GenerateGstr2B>aprIsReGenerate2b}}"/>
+															<ObjectStatus text="{GenerateGstr2B>aprReportStatus}" state="{path:'GenerateGstr2B>aprReportStatus',formatter:'.formatter.Gstr2BStatus'}"/>
+														</HBox>
+														<Text text="{GenerateGstr2B>aprInitiatedOn}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="13.5rem">
+												<CheckBox text="May" selected="{GenGstr2bCheck>/maySelect}" enabled="{GenGstr2bCheck>/mayEnable}" select="onSelectGen2bCols($event,'05')"/>
+												<ui:template>
+													<VBox tooltip="{GenerateGstr2B>mayErrorMsg}">
+														<HBox alignItems="Center" justifyContent="Center">
+															<CheckBox selected="{GenerateGstr2B>mayCheck}"
+																visible="{=!!${GenerateGstr2B>mayReportStatus}&amp;&amp;${GenGstr2bCheck>/mayEnable}&amp;&amp;!!${GenerateGstr2B>mayIsReGenerate2b}}"/>
+															<ObjectStatus text="{GenerateGstr2B>mayReportStatus}" state="{path:'GenerateGstr2B>mayReportStatus',formatter:'.formatter.Gstr2BStatus'}"/>
+														</HBox>
+														<Text text="{GenerateGstr2B>mayInitiatedOn}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="13.5rem">
+												<CheckBox text="June" selected="{GenGstr2bCheck>/junSelect}" enabled="{GenGstr2bCheck>/junEnable}" select="onSelectGen2bCols($event,'06')"/>
+												<ui:template>
+													<VBox tooltip="{GenerateGstr2B>junErrorMsg}">
+														<HBox alignItems="Center" justifyContent="Center">
+															<CheckBox selected="{GenerateGstr2B>junCheck}"
+																visible="{=!!${GenerateGstr2B>junReportStatus}&amp;&amp;${GenGstr2bCheck>/junEnable}&amp;&amp;!!${GenerateGstr2B>junIsReGenerate2b}}"/>
+															<ObjectStatus text="{GenerateGstr2B>junReportStatus}" state="{path:'GenerateGstr2B>junReportStatus',formatter:'.formatter.Gstr2BStatus'}"/>
+														</HBox>
+														<Text text="{GenerateGstr2B>junInitiatedOn}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="13.5rem">
+												<CheckBox text="July" selected="{GenGstr2bCheck>/julSelect}" enabled="{GenGstr2bCheck>/julEnable}" select="onSelectGen2bCols($event,'07')"/>
+												<ui:template>
+													<VBox tooltip="{GenerateGstr2B>julErrorMsg}">
+														<HBox alignItems="Center" justifyContent="Center">
+															<CheckBox selected="{GenerateGstr2B>julCheck}"
+																visible="{=!!${GenerateGstr2B>julReportStatus}&amp;&amp;${GenGstr2bCheck>/julEnable}&amp;&amp;!!${GenerateGstr2B>julIsReGenerate2b}}"/>
+															<ObjectStatus text="{GenerateGstr2B>julReportStatus}" state="{path:'GenerateGstr2B>julReportStatus',formatter:'.formatter.Gstr2BStatus'}"/>
+														</HBox>
+														<Text text="{GenerateGstr2B>julInitiatedOn}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="13.5rem">
+												<CheckBox text="August" selected="{GenGstr2bCheck>/augSelect}" enabled="{GenGstr2bCheck>/augEnable}" select="onSelectGen2bCols($event,'08')"/>
+												<ui:template>
+													<VBox tooltip="{GenerateGstr2B>augErrorMsg}">
+														<HBox alignItems="Center" justifyContent="Center">
+															<CheckBox selected="{GenerateGstr2B>augCheck}"
+																visible="{=!!${GenerateGstr2B>augReportStatus}&amp;&amp;${GenGstr2bCheck>/augEnable}&amp;&amp;!!${GenerateGstr2B>augIsReGenerate2b}}"/>
+															<ObjectStatus text="{GenerateGstr2B>augReportStatus}" state="{path:'GenerateGstr2B>augReportStatus',formatter:'.formatter.Gstr2BStatus'}"/>
+														</HBox>
+														<Text text="{GenerateGstr2B>augInitiatedOn}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="13.5rem">
+												<CheckBox text="September" selected="{GenGstr2bCheck>/sepSelect}" enabled="{GenGstr2bCheck>/sepEnable}"
+													select="onSelectGen2bCols($event,'09')"/>
+												<ui:template>
+													<VBox tooltip="{GenerateGstr2B>sepErrorMsg}">
+														<HBox alignItems="Center" justifyContent="Center">
+															<CheckBox selected="{GenerateGstr2B>sepCheck}"
+																visible="{=!!${GenerateGstr2B>sepReportStatus}&amp;&amp;${GenGstr2bCheck>/sepEnable}&amp;&amp;!!${GenerateGstr2B>sepIsReGenerate2b}}"/>
+															<ObjectStatus text="{GenerateGstr2B>sepReportStatus}" state="{path:'GenerateGstr2B>sepReportStatus',formatter:'.formatter.Gstr2BStatus'}"/>
+														</HBox>
+														<Text text="{GenerateGstr2B>sepInitiatedOn}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="13.5rem">
+												<CheckBox text="October" selected="{GenGstr2bCheck>/octSelect}" enabled="{GenGstr2bCheck>/octEnable}"
+													select="onSelectGen2bCols($event,'10')"/>
+												<ui:template>
+													<VBox tooltip="{GenerateGstr2B>octErrorMsg}">
+														<HBox alignItems="Center" justifyContent="Center">
+															<CheckBox selected="{GenerateGstr2B>octCheck}"
+																visible="{=!!${GenerateGstr2B>octReportStatus}&amp;&amp;${GenGstr2bCheck>/octEnable}&amp;&amp;!!${GenerateGstr2B>octIsReGenerate2b}}"/>
+															<ObjectStatus text="{GenerateGstr2B>octReportStatus}" state="{path:'GenerateGstr2B>octReportStatus',formatter:'.formatter.Gstr2BStatus'}"/>
+														</HBox>
+														<Text text="{GenerateGstr2B>octInitiatedOn}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="13.5rem">
+												<CheckBox text="November" selected="{GenGstr2bCheck>/novSelect}" enabled="{GenGstr2bCheck>/novEnable}"
+													select="onSelectGen2bCols($event,'11')"/>
+												<ui:template>
+													<VBox tooltip="{GenerateGstr2B>novErrorMsg}">
+														<HBox alignItems="Center" justifyContent="Center">
+															<CheckBox selected="{GenerateGstr2B>novCheck}"
+																visible="{=!!${GenerateGstr2B>novReportStatus}&amp;&amp;${GenGstr2bCheck>/novEnable}&amp;&amp;!!${GenerateGstr2B>novIsReGenerate2b}}"/>
+															<ObjectStatus text="{GenerateGstr2B>novReportStatus}" state="{path:'GenerateGstr2B>novReportStatus',formatter:'.formatter.Gstr2BStatus'}"/>
+														</HBox>
+														<Text text="{GenerateGstr2B>novInitiatedOn}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="13.5rem">
+												<CheckBox text="December" selected="{GenGstr2bCheck>/decSelect}" enabled="{GenGstr2bCheck>/decEnable}"
+													select="onSelectGen2bCols($event,'12')"/>
+												<ui:template>
+													<VBox tooltip="{GenerateGstr2B>decErrorMsg}">
+														<HBox alignItems="Center" justifyContent="Center">
+															<CheckBox selected="{GenerateGstr2B>decCheck}"
+																visible="{=!!${GenerateGstr2B>decReportStatus}&amp;&amp;${GenGstr2bCheck>/decEnable}&amp;&amp;!!${GenerateGstr2B>decIsReGenerate2b}}"/>
+															<ObjectStatus text="{GenerateGstr2B>decReportStatus}" state="{path:'GenerateGstr2B>decReportStatus',formatter:'.formatter.Gstr2BStatus'}"/>
+														</HBox>
+														<Text text="{GenerateGstr2B>decInitiatedOn}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="13.5rem">
+												<CheckBox text="January" selected="{GenGstr2bCheck>/janSelect}" enabled="{GenGstr2bCheck>/janEnable}"
+													select="onSelectGen2bCols($event,'01')"/>
+												<ui:template>
+													<VBox tooltip="{GenerateGstr2B>janErrorMsg}">
+														<HBox alignItems="Center" justifyContent="Center">
+															<CheckBox selected="{GenerateGstr2B>janCheck}"
+																visible="{=!!${GenerateGstr2B>janReportStatus}&amp;&amp;${GenGstr2bCheck>/janEnable}&amp;&amp;!!${GenerateGstr2B>janIsReGenerate2b}}"/>
+															<ObjectStatus text="{GenerateGstr2B>janReportStatus}" state="{path:'GenerateGstr2B>janReportStatus',formatter:'.formatter.Gstr2BStatus'}"/>
+														</HBox>
+														<Text text="{GenerateGstr2B>janInitiatedOn}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="13.5rem">
+												<CheckBox text="February" selected="{GenGstr2bCheck>/febSelect}" enabled="{GenGstr2bCheck>/febEnable}"
+													select="onSelectGen2bCols($event,'02')"/>
+												<ui:template>
+													<VBox tooltip="{GenerateGstr2B>febErrorMsg}">
+														<HBox alignItems="Center" justifyContent="Center">
+															<CheckBox selected="{GenerateGstr2B>febCheck}"
+																visible="{=!!${GenerateGstr2B>febReportStatus}&amp;&amp;${GenGstr2bCheck>/febEnable}&amp;&amp;!!${GenerateGstr2B>febIsReGenerate2b}}"/>
+															<ObjectStatus text="{GenerateGstr2B>febReportStatus}" state="{path:'GenerateGstr2B>febReportStatus',formatter:'.formatter.Gstr2BStatus'}"/>
+														</HBox>
+														<Text text="{GenerateGstr2B>febInitiatedOn}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="13.5rem">
+												<CheckBox text="March" selected="{GenGstr2bCheck>/marSelect}" enabled="{GenGstr2bCheck>/marEnable}" select="onSelectGen2bCols($event,'03')"/>
+												<ui:template>
+													<VBox tooltip="{GenerateGstr2B>marErrorMsg}">
+														<HBox alignItems="Center" justifyContent="Center">
+															<CheckBox selected="{GenerateGstr2B>marCheck}"
+																visible="{=!!${GenerateGstr2B>marReportStatus}&amp;&amp;${GenGstr2bCheck>/marEnable}&amp;&amp;!!${GenerateGstr2B>marIsReGenerate2b}}"/>
+															<ObjectStatus text="{GenerateGstr2B>marReportStatus}" state="{path:'GenerateGstr2B>marReportStatus',formatter:'.formatter.Gstr2BStatus'}"/>
+														</HBox>
+														<Text text="{GenerateGstr2B>marInitiatedOn}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+										</ui:columns>
+										<ui:footer>
+											<HBox>
+												<core:Icon src="sap-icon://circle-task-2" color="#00ff00" ariaLabelledBy="Text" size="0.8rem"/>
+												<Text text="{i18n>authActive}" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+												<core:Icon src="sap-icon://circle-task-2" color="red" ariaLabelledBy="Text" size="0.8rem"/>
+												<Text text="{i18n>authInactive}" class="sapUiTinyMarginBegin"/>
+											</HBox>
+										</ui:footer>
+									</ui:Table>
+									<VBox>
+										<Label design="Bold" text="Note:"/>
+										<Label design="Bold" class="sapUiSmallMarginBegin"
+											text="1. Once Generate GSTR-2B request is success then initiate 'Get GSTR-2B' request to fetch transaction level GSTR-2B data from GSTN."/>
+									</VBox>
+								</Panel>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar>
+							<!--<Button text="Download Table Data" tooltip="Download Table Data" press="onDownloadGenerate2B" class="sapUiTinyMarginBegin buttoncolorSec"/>-->
+							<ToolbarSpacer/>
+							<Button text="Generate GSTR-2B" press="onGenerateGstr2B" class="sapUiTinyMarginBegin buttoncolorSec"/>
+							<Button type="Transparent" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" press="onGenGstr2bFullScreen('O')"/>
+							<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" press="onGenGstr2bFullScreen('C')"
+								visible="false"/>
+							<commons:ChartContainerToolbarPlaceholder/>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.Gstr2BLinkAmount" type="XML"/>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="idRequestStatus2B" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button icon="sap-icon://nav-back" type="Transparent" press="onPress2Brequest"/>
+						<Title text="Request Status" class="sapUiSmallMarginBegin clTitleMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" visible="false"></f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false">
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table rows="{path:'ReqWiseData2B>/resp/requestDetails', sorter: {path: 'reqId',descending:true}}" class="sapUiTinyMarginBegin"
+								selectionMode="None" selectionBehavior="Row" visibleRowCount="18" fixedColumnCount="0" enableSelectAll="false">
+								<ui:Column>
+									<Label design="Bold" text="Request ID"/>
+									<ui:template>
+										<Text text="{ReqWiseData2B>reqId}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="">
+									<Label design="Bold" text="No. of GSTIN"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Link text="{ReqWiseData2B>gstinCount}" press="gstr2BGstin"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<!--<ui:Column hAlign="Center" width="">-->
+								<!--	<Label design="Bold" text="Tax Period Count"/>-->
+								<!--	<ui:template>-->
+								<!--		<HBox alignItems="Center" justifyContent="Center">-->
+								<!--			<Link text="{ReqWiseData2B>taxPeriodCount}" press="gstr2BTaxPeriod"/>-->
+								<!--		</HBox>-->
+								<!--	</ui:template>-->
+								<!--</ui:Column>-->
+								<ui:Column hAlign="Center" width="">
+									<Label design="Bold" text="Report Type/Action Type"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{path:'ReqWiseData2B>reportType', formatter:'.formatter.Gstr2BAction'}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="">
+									<Label design="Bold" text="Date of Initiation"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{ReqWiseData2B>completedOn}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="">
+									<Label design="Bold" text="Date of Completion"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{ReqWiseData2B>completedOn}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="">
+									<Label design="Bold" text="Download"/>
+									<ui:template>
+										<HBox alignItems="Start" justifyContent="Center">
+											<Button text="Report Download" press="onConfigExtractPress2B" visible="{=(${ReqWiseData2B>status}==='REPORT_GENERATED' || ${ReqWiseData2B>status}==='Report Generated')}" class="sapUiSmallMarginEnd"/>
+											<!--<core:Icon src="sap-icon://download" tooltip="Download" press="onConfigExtractPress2B" size="0.75rem" class="sapUiTinyMarginBegin"-->
+											<!--	visible="{=${ReqWiseData2B>status}==='Report Generated'}"></core:Icon>-->
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="">
+									<Label design="Bold" text="Status"/>
+									<ui:template>
+										<Text text="{ReqWiseData2B>status}"/>
+										<!--<Link text="{ReqWiseData2A>image}" press="onPressImage"/>-->
+									</ui:template>
+								</ui:Column>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+				<commons:toolbar>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+						<Button type="Emphasized" text="Refresh" press="onRefreshRequestIDwise2B"/>
+						<Button type="Transparent" icon="sap-icon://download" tooltip="Download Summary" press="onDownloadSummary" visible="false"/>
+						<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+					</OverflowToolbar>
+				</commons:toolbar>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

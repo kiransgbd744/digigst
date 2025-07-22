@@ -1,0 +1,498 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.f" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table"
+	xmlns:u="sap.ui.unified" xmlns:fb="sap.ui.comp.filterbar" xmlns:html="http://www.w3.org/1999/xhtml">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Return Filing Status"/>
+				</f:heading>
+				<f:actions>
+					<SegmentedButton id="sbManagevendor" selectedKey="vendor" selectionChange="onChangeSegmentReturn" class="sapUiTinyMargin" visible="false">
+						<items>
+							<SegmentedButtonItem text="Counter Party Filling Status" key="vendor" width="12rem"/>
+							<SegmentedButtonItem text="My File Status" key="customer" width="12rem"/>
+							<SegmentedButtonItem text="Search" key="search" width="7rem" visible="false"/>
+						</items>
+					</SegmentedButton>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" id="idheaderVendor" visible="false" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onMyFileStGo" clear="onClearFilterMyFile"
+					id="idfilterbarvend1" visible="false" useToolbar="false" class="sapUiNoContentPadding" filterContainerWidth="12rem" width="90%">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="false" mandatory="true">
+							<fb:control>
+								<Select id="idRetFilnEnty" forceSelection="true" change="onSelectChange" items="{EntityList>/resp/entities}" width="8rem">
+									<core:Item key="{EntityList>id}" text="{EntityList>entityName}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="Return Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dtRetFSts" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="u" label="Financial Year" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<Select width="100%" id="finYearID" forceSelection="true" items="{oFyModel>/finYears}">
+									<core:Item key="{oFyModel>fy}" text="{oFyModel>fy}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="GSTIN" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<MultiComboBox id="idRetFStGSTN" width="100%" items="{gstins>/}" selectionChange="selectAll">
+									<core:Item key="{gstins>gstin}" text="{gstins>gstin}"/>
+								</MultiComboBox>
+								<!--<MultiComboBox id="idRetFStGSTN" items="{RetFilnStGSTNList>/resp/gstins}" width="100%">
+									<core:Item key="{RetFilnStGSTNList>gstin}" text="{RetFilnStGSTNList>gstin}"/>
+								</MultiComboBox>-->
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Return Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idMyFileRetTyp">
+									<core:Item key="GSTR1" text="GSTR-1"/>
+									<core:Item key="GSTR3B" text="GSTR-3B"/>
+									<core:Item key="GSTR4" text="GSTR-4"/>
+									<core:Item key="GSTR6" text="GSTR-6"/>
+									<core:Item key="GSTR7" text="GSTR-7"/>
+									<core:Item key="GSTR9" text="GSTR-9"/>
+									<core:Item key="ITC04" text="ITC-04"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<fb:FilterBar showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onSearchGo" clear="onClearFilter"
+					id="idfilterbarvend2" useToolbar="false" class="sapUiNoContentPadding" filterContainerWidth="12rem" visible="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="GSTIN" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<Input id="idSerchGstin" valueState="Information" valueStateText="Maximum 10 GSTINs allowed with comma (,) separted"
+									placeholder="Enter GSTIN" change="onVenRFSearch"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="Return Period" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<DatePicker id="dtSRetPrd" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Return Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idcombotreturn">
+									<!--	<core:Item key="SAP_POC_Sandbox 1" text="All"/>
+									<core:Item key="SAP_POC_Sandbox 3" text="RET-1"/>
+									<core:Item key="SAP_POC_Sandbox 2" text="RET-1A"/>-->
+									<core:Item key="GSTR1" text="GSTR-1"/>
+									<core:Item key="GSTR3B" text="GSTR-3B"/>
+									<core:Item key="GSTR6" text="GSTR-6"/>
+									<!--<core:Item key="SAP_POC_Sandbox 2" text="GSTR-6"/>-->
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onClearFilterMyFile"/>
+					<Button text="Filter" press="onMyFileStGo" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel>
+				<l:BlockLayout background="Dashboard">
+					<l:BlockLayoutRow class="sapUiNoContentPadding sapUiTinyMarginBottom">
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Daily API call limit" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ApiLimit>/limit}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="API calls used" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ApiLimit>/usage}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="API calls remaining" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ApiLimit>/remainingCnt}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+				<Label text="Please select File for Counter Party Filling Status :" design="Bold" id="idlabel" visible="true"/>
+				<ui:Table id="vendorReturnId" rows="{CPFilingStable>/resp/det}" selectionMode="None" visible="true">
+					<ui:extension>
+						<Toolbar>
+							<RadioButtonGroup id="filingFrequencyGroup" columns="2" select="onRadioSelect">
+								<buttons>
+									<RadioButton text="With Filing Frequency" selected="true"/>
+									<RadioButton text="Without Filing Frequency"/>
+								</buttons>
+							</RadioButtonGroup>
+							<u:FileUploader id="cpFileUpld" name="file" fileType="xlsx,csv,xls" sameFilenameAllowed="false" sendXHR="true" style="Emphasized"
+								width="30rem" uploadComplete="onCPUploadComplete" class="buttoncolorSec" enabled="{= ${userPermission>/appPermission/P10}}"/>
+							<Button id="btnUpload2" text="Upload" press="onCPUpload" class="sapUiTinyMarginBegin buttoncolor"
+								enabled="{= ${userPermission>/appPermission/P10}}"/>
+							<ToolbarSpacer/>
+							<Button class="buttoncolorSec" text="Refresh" press="onCPRefresh"/>
+							<Button class="buttoncolorSec" text="Download Template" press="onCpExcelDwnld" enabled="{= ${userPermission>/appPermission/P10}}"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column hAlign="Center" width="9rem">
+							<ui:multiLabels>
+								<Label text="S.No" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CPFilingStable>SrNumber}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="RequestID" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CPFilingStable>requestId}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Uploaded By" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CPFilingStable>uploadedBy}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Date" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CPFilingStable>dateOfUpload}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Number of GSTIN" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CPFilingStable>noOfGstins}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CPFilingStable>status}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Download" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<core:Icon src="sap-icon://download" size="0.75rem" press="onCPFileDownload" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"
+									visible="{= (${CPFilingStable>status} === 'GENERATED' &amp;&amp; ${userPermission>/appPermission/P10} &amp;&amp; ${CPFilingStable>uploadedBy} !== 'API')}"/>
+								<!--visible="{= ${CPFilingStable>status} === 'GENERATED' }" -->
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+					<ui:footer>
+						<Toolbar>
+							<Text text="Note: 3 API calls per GSTIN will be consumed for 'With Filing Frequency' and 2 API calls per GSTIN will be consumed for 'Without Filing Frequency'."/>
+						</Toolbar>
+					</ui:footer>
+				</ui:Table>
+				<!--################################################ My File Status Table ###########################################-->
+				<ui:Table rows="{RetFStGSTNTable>/resp/filingStatus}" id="idFileStatus" class="sapUiTinyMarginBeginEnd" selectionMode="None"
+					selectionBehavior="Row" visibleRowCount="10" fixedRowCount="0" fixedColumnCount="0" enableSelectAll="true" visible="false">
+					<ui:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<Button class="buttoncolorSec" text="Refresh" press="onMyFileRefresh"/>
+							<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" press="onMyFileStExcelDwnld"
+								enabled="{= ${userPermission>/appPermission/P10}}"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="S.No" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{RetFStGSTNTable>vrfSrNo}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="GSTIN" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{RetFStGSTNTable>gstin}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Return Type" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{RetFStGSTNTable>retType}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Return Period" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{RetFStGSTNTable>retPeriod}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Due Date" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{RetFStGSTNTable>Duedate}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Filing Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{RetFStGSTNTable>filingDate}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="ARN No." textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{RetFStGSTNTable>arnNo}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{RetFStGSTNTable>status}"/>
+							</ui:template>
+						</ui:Column>
+						<!--	<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Download" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<core:Icon src="sap-icon://download" size="0.75rem" press="onDownloadCatalog" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"/>
+							</ui:template>
+						</ui:Column>-->
+					</ui:columns>
+				</ui:Table>
+				<!--################################################ Vendor Return Search Table ###########################################-->
+				<ui:Table rows="{RetSearchTable>/resp/filingStatus}" id="idblocklayoutreturn" class="sapUiTinyMarginBeginEnd" selectionMode="None"
+					selectionBehavior="Row" visibleRowCount="10" fixedRowCount="0" fixedColumnCount="0" enableSelectAll="true" visible="false">
+					<ui:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" press="onVRFSExcel"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="S.No" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{RetSearchTable>myFileSrNum}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="GSTIN" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{RetSearchTable>gstin}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Return Type" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{RetSearchTable>retType}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Return Period" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{RetSearchTable>retPeriod}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Due Date" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{RetSearchTable>Duedate}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Filing Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{RetSearchTable>filingDate}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="ARN No." textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{RetSearchTable>arnNo}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{RetSearchTable>status}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:Table>
+				<!--	<Toolbar visible="false" id="idToolbarSearch">
+					<Input id="idpanvendot" placeholder="Enter GSTIN" width="25rem"></Input>
+					<Button text="Search" press="onSearchReturn" type="Emphasized" class="sapUiSmallMarginBegin"/>
+					<ToolbarSpacer/>
+					<Label text="06AAACN0757G1ZA" design="Bold"/>
+				</Toolbar>
+				<l:BlockLayout background="Dashboard" visible="false" id="idblocklayoutreturn">
+					<l:BlockLayoutRow class="sapUiNoContentPadding">
+						<l:BlockLayoutCell width="8" class="clBlockLayout1">
+							<Toolbar class="colorToolbar sapUiTinyMarginBottom">
+								<Label text="GSTIN Details" design="Bold" class="titleFont"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<l:Grid defaultSpan="L6" hSpacing="2" vSpacing="2" class="sapUiMediumMarginTop">
+								<VBox>
+									<Text text="GSTIN/UIN" class="sapUiTinyMarginBegin"/>
+									<Label text="06AAACN0757G1ZA" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox>
+									<Text text="Constitution of Business" class="sapUiTinyMarginBegin"/>
+									<Label text="Drug dealership" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox>
+									<Text text="Centre Jurisdiction" class="sapUiTinyMarginBegin"/>
+									<Label text="India" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox>
+									<Text text="Taxpayer Type" class="sapUiTinyMarginBegin"/>
+									<Label text="Irresponsible" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox>
+									<Text text="Legal Name of Business" class="sapUiTinyMarginBegin"/>
+									<Label text="This is a legal business" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox>
+									<Text text="Trade Name" class="sapUiTinyMarginBegin"/>
+									<Label text="METRO CASH &amp; CARRY INDIA PRIVATE LIMITED" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox>
+									<Label text="Nature of Business Activity" class="sapUiTinyMarginBegin" design="Bold"/>
+									<Text text="METRO CASH &amp; CARRY INDIA PRIVATE LIMITED" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Building Name" class="sapUiTinyMarginBegin" design="Bold"/>
+									<Text text="METRO CASH AND CARRY INDIA PVT LTD" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Street" class="sapUiTinyMarginBegin" design="Bold"/>
+									<Text text="SUBRAMANYANAGAR" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Location" class="sapUiTinyMarginBegin" design="Bold"/>
+									<Text text="SUBRAMANYANAGAR" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Door Number" class="sapUiTinyMarginBegin" design="Bold"/>
+									<Text text="26 3" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="State" class="sapUiTinyMarginBegin" design="Bold"/>
+									<Text text="SUBRAMANYANAGAR" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Floor Number" class="sapUiTinyMarginBegin" design="Bold"/>
+									<Text text="SUBRAMANYANAGAR" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Label text="Pincode" class="sapUiTinyMarginBegin" design="Bold"/>
+									<Text text="560037" class="sapUiTinyMarginBegin"/>
+								</VBox>
+								<VBox>
+									<Text text="Date of Registration" class="sapUiTinyMarginBegin"/>
+									<Label text="10/04/1990" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox>
+									<Text text="State Jurisdiction" class="sapUiTinyMarginBegin"/>
+									<Label text="Kerala" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox>
+									<Text text="Date of Cancellation" class="sapUiTinyMarginBegin"/>
+									<Label text="DD/MM/YYYY" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox>
+									<Text text="GSTN Status" class="sapUiTinyMarginBegin"/>
+									<Label text="Working Fine" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox>
+									<Text text="GSTN Status Code" class="sapUiTinyMarginBegin"/>
+									<Label text="AOK001" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox>
+									<Text text="Error Code" class="sapUiTinyMarginBegin"/>
+									<Label text="ERR123" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+								<VBox>
+									<Text text="Error Message" class="sapUiTinyMarginBegin"/>
+									<Label text="Test" class="sapUiTinyMarginBegin" design="Bold"/>
+								</VBox>
+							</l:Grid>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>-->
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

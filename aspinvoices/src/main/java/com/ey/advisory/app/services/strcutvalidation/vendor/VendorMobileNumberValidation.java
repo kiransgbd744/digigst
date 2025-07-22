@@ -1,0 +1,56 @@
+package com.ey.advisory.app.services.strcutvalidation.vendor;
+
+import static com.ey.advisory.common.GSTConstants.APP_VALIDATION;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import com.ey.advisory.app.services.strcutvalidation.outward.ValidationRule;
+import com.ey.advisory.common.GSTConstants;
+import com.ey.advisory.common.ProcessingResult;
+import com.ey.advisory.common.TransDocProcessingResultLoc;
+import com.ey.advisory.common.eyfileutils.tabular.TabularDataLayout;
+
+public class VendorMobileNumberValidation implements ValidationRule {
+
+	@Override
+	public List<ProcessingResult> isValid(int idx, Object obj, Object[] row,
+			TabularDataLayout layout) {
+		List<ProcessingResult> errors = new ArrayList<>();
+		if (obj != null) {
+			String phoneNum = obj.toString();
+			if (!phoneNum.matches("-?\\d+(\\.\\d+)?([E-e]-?\\d+)?")) {
+				Set<String> errorLocations = new HashSet<>();
+				errorLocations.add(GSTConstants.MOBILENUMBER);
+				TransDocProcessingResultLoc location = new TransDocProcessingResultLoc(
+						null, errorLocations.toArray());
+				errors.add(new ProcessingResult(APP_VALIDATION, "ER1633",
+						"Invalid mobile number.", location));
+				return errors;
+			}
+
+			else {
+				BigDecimal mobileDecimalFormat = BigDecimal.ZERO;
+				String mobileDecimalFormatStr = (String.valueOf(obj)).trim();
+				mobileDecimalFormat = new BigDecimal(mobileDecimalFormatStr);
+				String mobileNo = String
+						.valueOf(mobileDecimalFormat.longValue());
+				if (mobileNo.length() > 10) {
+					Set<String> errorLocations = new HashSet<>();
+					errorLocations.add(GSTConstants.MOBILENUMBER);
+					TransDocProcessingResultLoc location = new TransDocProcessingResultLoc(
+							null, errorLocations.toArray());
+					errors.add(new ProcessingResult(APP_VALIDATION, "ER1633",
+							"Invalid mobile number.", location));
+					return errors;
+				}
+			}
+
+		}
+		return errors;
+	}
+
+}

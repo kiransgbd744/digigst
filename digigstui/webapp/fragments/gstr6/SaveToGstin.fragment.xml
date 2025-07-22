@@ -1,0 +1,48 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:f="sap.ui.layout.form">
+	<Dialog title="Save GSTR-6" type="Message" class="sapUiSizeCompact cl_saveHeader" xmlns:fb="sap.ui.comp.filterbar">
+		<content>
+			<layout:VerticalLayout>
+				<layout:Grid defaultSpan="L3 M3 S12" vSpacing="0" class="sapUiTinyMarginTop">
+					<layout:content>
+						<VBox>
+							<Label text="Tax Period" required="false"/>
+							<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" id="id_TaxProcessGstr6" editable="false" width="12rem"/>
+						</VBox>
+						<VBox visible="{=!${visiSummPopup>/P}}" class="sapUiSmallMarginBegin">
+							<Label text="GSTIN" required="false"/>
+							<Select id="idGetfgiGSINTMain2GSTR6" width="100%" items="{Gstin>/}">
+								<core:Item key="{Gstin>value}" text="{Gstin>value}"/>
+							</Select>
+						</VBox>
+					</layout:content>
+				</layout:Grid>
+				<layout:Grid defaultSpan="L4 M4 S12" vSpacing="0" class="sapUiTinyMarginTop">
+					<layout:content>
+						<Text text="Table 3 (B2B)" class="sapUiTinyMarginTop"/>
+						<Text text="Table 6A (B2BA)" class="sapUiTinyMarginTop"/>
+						<Text text="Table 6B (CDN)" class="sapUiTinyMarginTop"/>
+						<Text text="Table 6C (CDNA)" class="sapUiTinyMarginTop"/>
+						<Text text="Table 5 (Distribution-INV)" class="sapUiTinyMarginTop"/>
+						<Text text="Table 8 (Distribution-CR)" class="sapUiTinyMarginTop"/>
+						<Text text="Table 9 (Re-Distribution-INV)" class="sapUiTinyMarginTop"/>
+						<Text text="Table 9 (Re-Distribution-CR)" class="sapUiTinyMarginTop"/>
+					</layout:content>
+				</layout:Grid>
+				<layout:Grid defaultSpan="L12 M12 S12" vSpacing="0" class="sapUiMediumMarginTop">
+					<layout:content>
+						<Label text="Cross ITC Details:" design="Bold"/>
+						<RadioButtonGroup columns="2" id="idRadioBtnSavegstr6" selectedIndex="0" select="onRadioBtnselect">
+							<RadioButton text="As per DigiGST Computed" class="sapUiSmallMarginEnd"/>
+							<RadioButton text="As per User Edited"/>
+						</RadioButtonGroup>
+					</layout:content>
+				</layout:Grid>
+			</layout:VerticalLayout>
+		</content>
+		<buttons>
+			<Button text="Reset" press="onSaveGstr6ABtnDialog('R')"/>
+			<Button text="Save" press="onSaveGstr6ABtnDialog('S')"/>
+			<Button text="Cancel" press="onSaveGstr6ABtnDialogC"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,95 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" core:require="{util: 'com/ey/digigst/util/Formatter'}">
+	<f:DynamicPage id="dpGstin" fitContent="true" class="ReconResponce">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" class="sapUiTinyMarginEnd" tooltip="{i18>back}" press="onPressBackToEntity"/>
+						<Title text="GL Process Sumamry" class="TitleColor dpTitlePadding"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox id="idsGstin" width="100%" items="{path:'DataPermission>/respData/dataSecurity/gstin'}" >
+									<core:Item key="{DataPermission>value}" text="{DataPermission>value}"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="From Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="idSFromtaxPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="To Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="idSTotaxPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Transaction Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox items="" showSelectAll="true">
+									<core:Item key="" text=""/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" press="onPressClear" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+					<Button text="Filter" class="buttoncolor" press="onSearch"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table rows="{GLProcessGstin>/}">
+				<ui:extension>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button text="Initiate GL Recon" press="" class="buttoncolorSec"/>
+						<Button text="Download Reports" press="" class="buttoncolorSec"/>
+						<Button text="Request ID Wise" press="onRequestIdWise('G')" class="buttoncolorSec"/>
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column>
+						<Label text="GL Code" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{GLProcessGstin>glCode}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="GL Description" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{GLProcessGstin>glDescription}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="Type of GL" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{GLProcessGstin>glType}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="Count of Records" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{GLProcessGstin>countRecords}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="Amount" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{path:'GLProcessGstin>amount', formatter:'util.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

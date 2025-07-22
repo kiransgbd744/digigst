@@ -1,0 +1,553 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.f" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table"
+	xmlns:u="sap.ui.unified" xmlns:fb="sap.ui.comp.filterbar" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Auto Recon Summary" titleStyle="H3" class="tinyMarginTop"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Date Range" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idDateRange2A" class="input" forceSelection="true" change="onDateRangeChange">
+									<core:Item key="Tax Period" text="Tax Period"/>
+									<core:Item key="Recon Date" text="Recon Date"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Criteria" visibleInFilterBar="true" visible="{Display>/TAX}">
+							<fb:control>
+								<Select id="idCriteria" class="input" selectedKey="PRtaxperiod" forceSelection="true" change="onChangeCriteria">
+									<core:Item key="PRtaxperiod" text="PR tax period"/>
+									<core:Item key="2Ataxperiod" text="2A tax period"/>
+									<core:Item key="2APRtaxperiod" text="Both PR &amp; 2A tax period"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Recon From Date" visibleInFilterBar="true" id="vBox1ID2A"
+							visible="{Display>/DOC}">
+							<fb:control>
+								<DatePicker displayFormat="dd MMM yyyy" id="idInitiateReconPeriod2A" valueFormat="ddMMyyyy" class="input" change="onFromDateChange"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Recon To Date" visibleInFilterBar="true" id="vBox1ID2A1"
+							visible="{Display>/DOC}">
+							<fb:control>
+								<DatePicker displayFormat="dd MMM yyyy" id="idInitiateReconPeriod12A" valueFormat="ddMMyyyy" class="input"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="PR Tax Period From " visibleInFilterBar="true" id="vBox2ID2A"
+							visible="{Display>/TAX}">
+							<fb:control>
+								<DatePicker displayFormat="MMM yyyy" id="idInitiateReconPeriodTax2A" valueFormat="MMyyyy" class="input " change="onFromTaxPeriodChange"
+									editable="{Display>/PR}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="PR Tax Period To" visibleInFilterBar="true" id="vBox2ID2A1"
+							visible="{Display>/TAX}">
+							<fb:control>
+								<DatePicker displayFormat="MMM yyyy" id="idInitiateReconPeriodTax12A" valueFormat="MMyyyy" class="input" editable="{Display>/PR}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="H" label="2A Tax Period From" visibleInFilterBar="true" id="vBox2ID2A2"
+							visible="{Display>/TAX}">
+							<fb:control>
+								<DatePicker displayFormat="MMM yyyy" id="idInitiateReconPeriodTax2A1" valueFormat="MMyyyy" class="input" change="onFromTaxPeriodChange2A"
+								editable="{Display>/A2}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="I" label="2A Tax Period To" visibleInFilterBar="true" id="vBox2ID2A3"
+							visible="{Display>/TAX}">
+							<fb:control>
+								<DatePicker displayFormat="MMM yyyy" id="idInitiateReconPeriodTax12A1" valueFormat="MMyyyy" class="input" editable="{Display>/A2}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<!--<Button text="{i18n>clear}" class="sapUiTinyMarginBeginEnd" press="onPressClear2B"/>-->
+					<Button text="Filter" press="onPressGoForGSTIN2A" class="input sapUiTinyMarginBegin buttoncolor"/>
+					<Button text="Report Download" type="Emphasized" press="onRepDownload" class="input sapUiTinyMarginBegin buttoncolorSec"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<SplitApp id="splitchekingARS" initialDetail="detail" initialMaster="master" orientationChange="onOrientationChange">
+				<detailPages>
+					<Page showHeader="false" class="sapUiTinyMarginBegin">
+						<content>
+							<VBox class="sapUiTinyMarginBegin" height="150%">
+								<commons:ChartContainer showFullScreen="false" id="oninreconTab1" autoAdjustHeight="false">
+									<commons:content>
+										<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+											<commons:content>
+												<ui:TreeTable rows="{path:'InitiateRecon2A>/'}" id="idintable2A1" selectionMode="None" selectionBehavior="Row" fixedColumnCount="2"
+													enableSelectAll="false" class="sapUiTinyMarginBottom" visibleRowCount="11">
+													<ui:Column width="15rem">
+														<ui:multiLabels>
+															<Label text="" design="Bold"/>
+															<Label text="Report Category" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox>
+																<Label text="{InitiateRecon2A>reportCategory}"
+																	design="{=${InitiateRecon2A>reportCategory} === 'Auto Locked Records' ? 'Bold' : ${InitiateRecon2A>reportCategory} === 'Unlocked Records' ? 'Bold' : ${InitiateRecon2A>reportCategory} === 'GRAND TOTAL' ? 'Bold' : 'Standard'}"/>
+																<core:Icon color="#1C4C98" src="sap-icon://message-information" press="press" class="sapUiTinyMarginBegin" id="popId"
+																	visible="{=${InitiateRecon2A>reportCategory} === 'Force Match/3B Response' ? true : false}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Left">
+														<ui:multiLabels>
+															<Label text="" design="Bold"/>
+															<Label text="Report Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+														</ui:multiLabels>
+														<ui:template>
+															<Text text="{InitiateRecon2A>reportType}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column headerSpan="7" hAlign="End" width="10rem">
+														<ui:multiLabels>
+															<Label text="Purchase Register" design="Bold" textAlign="Center" width="100%"/>
+															<Label text="Count of Transactions" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{InitiateRecon2A>prCount}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<ui:multiLabels>
+															<Label text="" design="Bold" textAlign="Center"/>
+															<HBox alignItems="Start" justifyContent="Center">
+																<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</HBox>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{parts:[{path : 'InitiateRecon2A>prTotalTax'}], formatter : '.formatter.amountValue'}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="6rem">
+														<ui:multiLabels>
+															<Label text="" design="Bold" textAlign="Center"/>
+															<HBox alignItems="Start" justifyContent="Center">
+																<Label text="Tax %" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</HBox>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{InitiateRecon2A>prTotalTaxPer}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<ui:multiLabels>
+															<Label text="" design="Bold" textAlign="Center"/>
+															<HBox alignItems="Start" justifyContent="Center">
+																<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</HBox>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{parts:[{path : 'InitiateRecon2A>prIgst'}], formatter : '.formatter.amountValue'}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<ui:multiLabels>
+															<Label text="" design="Bold" textAlign="Center"/>
+															<HBox alignItems="Start" justifyContent="Center">
+																<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</HBox>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{parts:[{path : 'InitiateRecon2A>prCgst'}], formatter : '.formatter.amountValue'}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<ui:multiLabels>
+															<Label text="" design="Bold" textAlign="Center"/>
+															<HBox alignItems="Start" justifyContent="Center">
+																<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</HBox>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{parts:[{path : 'InitiateRecon2A>prSgst'}], formatter : '.formatter.amountValue'}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<ui:multiLabels>
+															<Label text="" design="Bold" textAlign="Center"/>
+															<HBox alignItems="Start" justifyContent="Center">
+																<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</HBox>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{parts:[{path : 'InitiateRecon2A>prCess'}], formatter : '.formatter.amountValue'}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column headerSpan="6" hAlign="Center" width="10rem">
+														<ui:multiLabels>
+															<Label text="GSTR-2A" textAlign="Center" width="100%" design="Bold"/>
+															<Label text="Count of Transactions" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{InitiateRecon2A>a2Count}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column headerSpan="6" hAlign="Center" width="8rem">
+														<ui:multiLabels>
+															<Label text="" textAlign="Center" width="100%" design="Bold"/>
+															<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{parts:[{path : 'InitiateRecon2A>a2TotalTax'}], formatter : '.formatter.amountValue'}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="6rem">
+														<ui:multiLabels>
+															<Label text="" design="Bold"/>
+															<Label text="Tax %" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{InitiateRecon2A>a2TotalTaxPer}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<ui:multiLabels>
+															<Label text="" width="100%" design="Bold"/>
+															<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{parts:[{path : 'InitiateRecon2A>a2Igst'}], formatter : '.formatter.amountValue'}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<ui:multiLabels>
+															<Label text="" textAlign="Center" width="100%" design="Bold"/>
+															<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{parts:[{path : 'InitiateRecon2A>a2Cgst'}], formatter : '.formatter.amountValue'}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<ui:multiLabels>
+															<Label text="" textAlign="Center" width="100%" design="Bold"/>
+															<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold" tooltip="Rectified"/>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{parts:[{path : 'InitiateRecon2A>a2Sgst'}], formatter : '.formatter.amountValue'}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column width="8rem" hAlign="End">
+														<ui:multiLabels>
+															<Label text="" design="Bold"/>
+															<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+														</ui:multiLabels>
+														<ui:template>
+															<Text text="{parts:[{path : 'InitiateRecon2A>a2Cess'}], formatter : '.formatter.amountValue'}"/>
+														</ui:template>
+													</ui:Column>
+												</ui:TreeTable>
+											</commons:content>
+										</commons:ChartContainerContent >
+									</commons:content>
+									<commons:toolbar>
+										<OverflowToolbar height="3rem" class="supplToolbarInAnx2 supplToolbarColInAnx2">
+											<HBox>
+												<Label text="Recon Summary" design="Bold" textAlign="Center" class="fontSize sapUiTinyMarginBegin"/>
+												<Label id="ARStimeId" class="Fontstyle sapUiTinyMarginBegin sapUiTinyMarginTop"/>
+											</HBox>
+											<ToolbarSpacer/>
+											<Button icon="sap-icon://expand-all" press="onExpandFirstLevel1" tooltip="Expand All"/>
+											<Button icon="sap-icon://collapse-all" press="onCollapseAll1" tooltip="Collapse All"/>
+											<Button type="Transparent" id="openbut" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="true"
+												press="onIntiateReconFullScreen('open')"/>
+											<Button type="Transparent" id="closebut" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="false"
+												press="onIntiateReconFullScreen('close')"/>
+											<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+										</OverflowToolbar>
+									</commons:toolbar>
+								</commons:ChartContainer>
+								<commons:ChartContainer showFullScreen="false" id="onincrementTab1" autoAdjustHeight="false">
+									<commons:content>
+										<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+											<commons:content>
+												<ui:TreeTable rows="{path:'incrementalData>/'}" id="idintable2A" selectionMode="None" selectionBehavior="Row" fixedColumnCount="1"
+													enableSelectAll="false" visibleRowCount="4">
+													<!--<ui:extension>-->
+													<!--	<Toolbar height="3rem" class="supplToolbarInAnx2 supplToolbarColInAnx2">-->
+													<!--		<HBox>-->
+													<!--			<Label text="Incremental Data Summary" design="Bold" textAlign="Center" class="fontSize sapUiTinyMarginBegin"/>-->
+													<!--			<Label id="IncTimeId" class="Fontstyle sapUiTinyMarginBegin sapUiTinyMarginTop"/>-->
+													<!--		</HBox>-->
+													<!--	</Toolbar>-->
+													<!--</ui:extension>-->
+													<ui:Column width="25rem">
+														<ui:multiLabels>
+															<Label text="" design="Bold"/>
+															<Label text="Data Category" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox>
+																<Text text="{parts:[{path : 'incrementalData>reportCategory'}], formatter : '.formatter.IncData'}"/>
+																<core:Icon color="#1C4C98" src="sap-icon://message-information" press="pressIncrement" class="sapUiTinyMarginBegin"
+																	visible="{=${incrementalData>reportCategory} !== 'Total' ? true : false}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column headerSpan="7" hAlign="End" width="10rem">
+														<ui:multiLabels>
+															<Label text="Purchase Register" design="Bold" textAlign="Center" width="100%"/>
+															<Label text="Count of Transactions" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{incrementalData>prCount}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<ui:multiLabels>
+															<Label text="" design="Bold" textAlign="Center"/>
+															<HBox alignItems="Start" justifyContent="Center">
+																<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</HBox>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{parts:[{path : 'incrementalData>prTotalTax'}], formatter : '.formatter.amountValue'}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="6rem">
+														<ui:multiLabels>
+															<Label text="" design="Bold" textAlign="Center"/>
+															<HBox alignItems="Start" justifyContent="Center">
+																<Label text="Tax %" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</HBox>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{incrementalData>prTotalTaxPer}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<ui:multiLabels>
+															<Label text="" design="Bold" textAlign="Center"/>
+															<HBox alignItems="Start" justifyContent="Center">
+																<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</HBox>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{parts:[{path : 'incrementalData>prIgst'}], formatter : '.formatter.amountValue'}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<ui:multiLabels>
+															<Label text="" design="Bold" textAlign="Center"/>
+															<HBox alignItems="Start" justifyContent="Center">
+																<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</HBox>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{parts:[{path : 'incrementalData>prCgst'}], formatter : '.formatter.amountValue'}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<ui:multiLabels>
+															<Label text="" design="Bold" textAlign="Center"/>
+															<HBox alignItems="Start" justifyContent="Center">
+																<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</HBox>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{parts:[{path : 'incrementalData>prSgst'}], formatter : '.formatter.amountValue'}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<ui:multiLabels>
+															<Label text="" design="Bold" textAlign="Center"/>
+															<HBox alignItems="Start" justifyContent="Center">
+																<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															</HBox>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{parts:[{path : 'incrementalData>prCess'}], formatter : '.formatter.amountValue'}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column headerSpan="6" hAlign="End" width="10rem">
+														<ui:multiLabels>
+															<Label text="GSTR-2A" textAlign="Center" width="100%" design="Bold"/>
+															<Label text="Count of Transactions" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{incrementalData>a2Count}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column headerSpan="6" hAlign="End" width="8rem">
+														<ui:multiLabels>
+															<Label text="" textAlign="Center" width="100%" design="Bold"/>
+															<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{parts:[{path : 'incrementalData>a2TotalTax'}], formatter : '.formatter.amountValue'}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="End" width="8rem">
+														<ui:multiLabels>
+															<Label text="" design="Bold"/>
+															<Label text="Tax %" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{incrementalData>a2TotalTaxPer}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="End" width="8rem">
+														<ui:multiLabels>
+															<Label text="" width="100%" design="Bold"/>
+															<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{parts:[{path : 'incrementalData>a2Igst'}], formatter : '.formatter.amountValue'}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="End" width="8rem">
+														<ui:multiLabels>
+															<Label text="" textAlign="Center" width="100%" design="Bold"/>
+															<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{parts:[{path : 'incrementalData>a2Cgst'}], formatter : '.formatter.amountValue'}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="End" width="8rem">
+														<ui:multiLabels>
+															<Label text="" textAlign="Center" width="100%" design="Bold"/>
+															<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold" tooltip="Rectified"/>
+														</ui:multiLabels>
+														<ui:template>
+															<HBox alignItems="Start" justifyContent="End">
+																<Text text="{parts:[{path : 'incrementalData>a2Sgst'}], formatter : '.formatter.amountValue'}"/>
+															</HBox>
+														</ui:template>
+													</ui:Column>
+													<ui:Column width="8rem" hAlign="End">
+														<ui:multiLabels>
+															<Label text="" design="Bold"/>
+															<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+														</ui:multiLabels>
+														<ui:template>
+															<Text text="{parts:[{path : 'incrementalData>a2Cess'}], formatter : '.formatter.amountValue'}"/>
+														</ui:template>
+													</ui:Column>
+												</ui:TreeTable>
+											</commons:content>
+										</commons:ChartContainerContent >
+									</commons:content>
+									<commons:toolbar>
+										<OverflowToolbar height="3rem" class="supplToolbarInAnx2 supplToolbarColInAnx2">
+											<HBox>
+												<Label text="Incremental Data Summary" design="Bold" textAlign="Center" class="fontSize sapUiTinyMarginBegin"/>
+												<Label id="IncTimeId" class="Fontstyle sapUiTinyMarginBegin sapUiTinyMarginTop"/>
+											</HBox>
+											<ToolbarSpacer/>
+											<!--<Button icon="sap-icon://expand-all" press="onExpandFirstLevel1" tooltip="Expand All"/>-->
+											<!--<Button icon="sap-icon://collapse-all" press="onCollapseAll1" tooltip="Collapse All"/>-->
+											<Button type="Transparent" id="openbutIn" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="true"
+												press="onIncrementDataFullScreen('open')"/>
+											<Button type="Transparent" id="closebutIn" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="false"
+												press="onIncrementDataFullScreen('close')"/>
+											<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+										</OverflowToolbar>
+									</commons:toolbar>
+								</commons:ChartContainer>
+							</VBox>
+						</content>
+					</Page>
+				</detailPages>
+				<masterPages>
+					<Page showHeader="false">
+						<content>
+							<VBox height="40%">
+								<SearchField id="searchId" liveChange="onSearchGstins1" width="100%"/>
+								<List mode="MultiSelect" id="idInitiateReconList2A" headerText="List of GSTIN" items="{GSTIN2A>/}" selectionChange="onSelectionChange1"
+									updateFinished="updatefinished">
+									<headerToolbar>
+										<OverflowToolbar>
+											<content>
+												<CheckBox id="checkboxID" selected="true" select="onSelectallGSTIN"/>
+												<Title text="List of GSTIN" level="H2"/>
+												<ToolbarSpacer/>
+											</content>
+										</OverflowToolbar>
+									</headerToolbar>
+									<CustomListItem>
+										<HBox justifyContent="SpaceBetween">
+											<VBox class="sapUiTinyMarginBegin sapUiTinyMarginTopBottom">
+												<Label text="{GSTIN2A>state}"/>
+												<Link text="{GSTIN2A>gstin}" press="handlePress"/>
+												<Label text="{GSTIN2A>statusdate}"/>
+											</VBox>
+											<VBox class="sapUiTinyMarginBegin sapUiTinyMarginTopBottom sapUiTinyMarginEnd">
+												<Label text="{=${GSTIN2A>gstinIdentifier}==='REGULAR'?'':${GSTIN2A>gstinIdentifier}}"/>
+												<Label text="{GSTIN2A>status}"/>
+											</VBox>
+										</HBox>
+									</CustomListItem>
+								</List>
+							</VBox>
+						</content>
+					</Page>
+				</masterPages>
+			</SplitApp>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

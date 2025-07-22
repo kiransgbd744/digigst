@@ -1,0 +1,209 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage >
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Label text="Entity :" class="sapUiTinyMarginTop" design="Bold" visible="true"/>
+						<Select items="{entity>/resp}" change="onSelectionChange" id="idEntityInOut" showSecondaryValues="true" width="15rem"
+							class="sapUiTinyMarginBegin">
+							<core:ListItem key="{entity>entityId}" text="{entity>entityName}"/>
+						</Select>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<Button type="Accept" icon="sap-icon://edit" tooltip="Edit rows" id="idConfigIW" press="onEditInputOutput"/>
+					<Button type="Emphasized" icon="sap-icon://save" text="Submit" enabled="{Property>/subEntity}" id="idSubmitInputOutput"
+						press="onSubmitInputOutput"/>
+					<Button type="Ghost" icon="sap-icon://reset" text="Reset" press="onResetConfig('Entity')"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<VBox>
+				<Panel expandable="true" expanded="true" headerText="Outward" width="auto">
+					<VBox class="sapUiSmallMarginBegin">
+						<List items="{Outward>/resp}">
+							<CustomListItem>
+								<VBox visible="{=${Outward>keyType}!== 'SR'}">
+									<Label text="{Outward>sno}. {Outward>ques}" design="Bold" class="sapUiTinyMarginTop"/>
+									<Label text="{Outward>note}" visible="{Outward>noteflag}" class="red"/>
+									<RadioButtonGroup columns="5" enabled="{Outward>edit}" selectedIndex="{Outward>selected}" buttons="{Outward>items/}" width="100%"
+										class="sapUiTinyMarginBottom" select="onSelectRBO(${Outward>ques},${Outward>selected},${Outward>id},${Outward>quesCode})"
+										visible="{=${Outward>keyType}=== 'R'}">
+										<buttons>
+											<RadioButton text="{Outward>answerDesc}"/>
+										</buttons>
+									</RadioButtonGroup>
+									<Input width="15rem" change="onChangesOutward(${Outward>id})" enabled="{Outward>edit}" value="{Outward>answerDesc}" type="Number"
+										visible="{=${Outward>keyType}=== 'T'}" class="sapUiTinyMarginBottom sapUiSmallMarginBegin"/>
+									<DatePicker width="15rem" change="onChangesOutward(${Outward>id})" enabled="{Outward>edit}" value="{Outward>answerDesc}"
+										valueFormat="MMyyyy" displayFormat="MMyyyy" visible="{=${Outward>keyType}=== 'D'}" class="sapUiTinyMarginBottom sapUiSmallMarginBegin"/>
+									<HBox visible="{=${Outward>keyType}=== 'M'}" class="sapUiTinyMarginBottom sapUiSmallMarginBegin">
+										<CheckBox select="onChangesOutward(${Outward>id})" text="NON" selected="{Outward>items/A}" enabled="{Outward>edit}"/>
+										<CheckBox select="onChangesOutward(${Outward>id})" text="NIL" selected="{Outward>items/B}" enabled="{Outward>edit}"
+											class="sapUiTinyMarginBegin"/>
+										<CheckBox select="onChangesOutward(${Outward>id})" text="Exempt" selected="{Outward>items/C}" enabled="{Outward>edit}"
+											class="sapUiTinyMarginBegin"/>
+									</HBox>
+									<HBox visible="{=${Outward>keyType}=== 'M7'}" class="sapUiTinyMarginBottom sapUiSmallMarginBegin">
+										<CheckBox select="onChangesOutward(${Outward>id})" text="INV – Invoice / BOS – Bill of Supply" enabled="{Outward>edit}"
+											selected="{Outward>items/A}"/>
+										<CheckBox select="onChangesOutward(${Outward>id})" text="CR – Credit Note" selected="{Outward>items/B}" enabled="{Outward>edit}"
+											class="sapUiTinyMarginBegin"/>
+										<CheckBox select="onChangesOutward(${Outward>id})" text="DR – Debit Note" selected="{Outward>items/C}" enabled="{Outward>edit}"
+											class="sapUiTinyMarginBegin"/>
+										<!--<CheckBox text="INV – Invoice" selected="{Outward>items/A}"/>-->
+										<!--<CheckBox text="CR – Credit Note" selected="{Outward>items/B}" class="sapUiTinyMarginBegin"/>-->
+										<!--<CheckBox text="DR – Debit Note" selected="{Outward>items/C}" class="sapUiTinyMarginBegin"/>-->
+										<!--<CheckBox text="BOS – Bill of Supply" selected="{Outward>items/D}" class="sapUiTinyMarginBegin"/>-->
+										<!--<CheckBox text="RNV – Revised Invoice" selected="{Outward>items/E}" class="sapUiTinyMarginBegin"/>-->
+										<!--<CheckBox text="RCR – Revised Credit Note" selected="{Outward>items/F}" class="sapUiTinyMarginBegin"/>-->
+										<!--<CheckBox text="RDR – Revised Debit Note" selected="{Outward>items/G}" class="sapUiTinyMarginBegin"/>-->
+									</HBox>
+								</VBox>
+								<VBox visible="{=${Outward>keyType}=== 'SR'}" class="sapUiLargeMarginBegin">
+									<VBox visible="{Outward>oSRVisible}">
+										<Label text="{Outward>sno}. {Outward>ques}" design="Bold" class="sapUiTinyMarginTop blue"/>
+										<HBox>
+											<RadioButtonGroup enabled="{Outward>edit}" columns="5" selectedIndex="{Outward>selected}" buttons="{Outward>items/}" width="100%"
+												class="sapUiTinyMarginBottom" select="onSelectRBO(${Outward>ques},${Outward>selected},${Outward>id},${Outward>quesCode})">
+												<buttons>
+													<RadioButton text="{Outward>answerDesc}"/>
+												</buttons>
+											</RadioButtonGroup>
+											<Input width="10rem" change="onChangesOutward(${Outward>id})" enabled="{Outward>edit}"
+												visible="{=(${Outward>quesCode}=== 'O31' &amp;&amp; ${Outward>ques}=== 'Invoice Series to be computed by DigiGST , basis below options' &amp;&amp; ${Display>/OQ31})}"
+												class="sapUiTinyMarginBottom sapUiSmallMarginBegin" value="{Outward>answerDesc}"/>
+										</HBox>
+									</VBox>
+								</VBox>
+							</CustomListItem>
+						</List>
+					</VBox>
+				</Panel>
+				<Panel expandable="true" expanded="false" headerText="Inward" width="auto">
+					<VBox class="sapUiSmallMarginBegin">
+						<List items="{Inward>/resp}">
+							<CustomListItem>
+								<VBox visible="{=${Inward>keyType}!== 'SR'}">
+									<Label text="{Inward>sno}. {Inward>ques}" design="Bold" class="sapUiTinyMarginTop"/>
+									<RadioButtonGroup columns="4" enabled="{Inward>edit}" selectedIndex="{Inward>selected}" buttons="{Inward>items/}" width="100%"
+										class="sapUiTinyMarginBottom" select="onSelectRBI(${Inward>ques},${Inward>selected},${Inward>id})"
+										visible="{=(${Inward>keyType}=== 'R' || ${Inward>keyType}=== 'RT')}">
+										<buttons>
+											<RadioButton text="{Inward>answerDesc}"/>
+										</buttons>
+									</RadioButtonGroup>
+									<Input width="15rem" change="onChangesInward" enabled="{Inward>edit}" value="{Inward>answerDesc}" type="Number"
+										visible="{=${Inward>keyType}=== 'T'}" class="sapUiTinyMarginBottom sapUiSmallMarginBegin"/>
+									<Input width="15rem" change="onChangesInward" enabled="{Inward>edit}" value="{Inward>answerDesc}" type="Number"
+										visible="{=${Inward>keyType}=== 'RT'}" class="sapUiTinyMarginBottom sapUiSmallMarginBegin"/>
+									<DatePicker width="15rem" change="onChangesInward" enabled="{Inward>edit}" value="{Inward>answerDesc}" valueFormat="MMyyyy"
+										displayFormat="MMyyyy" visible="{=${Inward>keyType}=== 'D'}" class="sapUiTinyMarginBottom sapUiSmallMarginBegin"/>
+									<Table items="{Inward>items/}" visible="{=${Inward>keyType}=== 'TB'}" width="70%">
+										<columns>
+											<Column width="">
+												<Text text="Report Type"/>
+											</Column>
+											<Column minScreenWidth="Tablet" demandPopin="true" width="">
+												<Text text="ASP Suggested"/>
+											</Column>
+											<Column minScreenWidth="Desktop" demandPopin="true" width="">
+												<Text text="Client Option"/>
+											</Column>
+										</columns>
+										<items>
+											<ColumnListItem>
+												<cells>
+													<Text text="{Inward>reportType}"/>
+													<Text text="{Inward>aspSuggested}"/>
+													<ComboBox items="{Inward>items/}" change="onChangesInwardI14(${Inward>id})" enabled="{Inward>edit}" selectedKey="{Inward>answerDesc}"
+														width="100%">
+														<core:ListItem key="{Inward>answerCode}" text="{Inward>answerDesc}"/>
+													</ComboBox>
+												</cells>
+											</ColumnListItem>
+										</items>
+									</Table>
+								</VBox>
+								<VBox visible="{=${Inward>keyType}=== 'SR'}" class="sapUiLargeMarginBegin">
+									<VBox visible="{Inward>oSRVisible}">
+										<Label text="{Inward>sno}. {Inward>ques}" design="Bold" class="sapUiTinyMarginTop blue"/>
+										<HBox>
+											<RadioButtonGroup columns="5" enabled="{Inward>edit}" selectedIndex="{Inward>selected}" buttons="{Inward>items/}" width="100%"
+												class="sapUiTinyMarginBottom" select="onSelectRBI(${Inward>ques},${Inward>selected},${Inward>id},${Inward>quesCode})">
+												<buttons>
+													<RadioButton text="{Inward>answerDesc}"/>
+												</buttons>
+											</RadioButtonGroup>
+											<Label text="{Inward>get2AHour}" class="sapUiTinyMarginTop" visible="{=${Inward>ques}=== 'Auto Get call frequency:'}"></Label>
+											<!--<HBox visible="{=${Inward>keyType}=== 'SR'}">-->
+											<Input width="10rem" change="onChangesInward" enabled="{Inward>edit}"
+												visible="{=(${Inward>quesCode}=== 'I26' &amp;&amp; ${Inward>ques}=== 'Select GetCall Frequency?' &amp;&amp; ${Display>/Q31} )}"
+												class="sapUiTinyMarginBottom sapUiSmallMarginBegin" value="{Inward>answerDesc}"/>
+											<Input width="10rem" change="onChangesInward" enabled="{Inward>edit}"
+												visible="{=(${Inward>quesCode}=== 'I50' &amp;&amp; ${Inward>questIdFlag}=== true &amp;&amp; ${Display>/Q51} )}"
+												class="sapUiTinyMarginBottom sapUiSmallMarginBegin" value="{Inward>answerDesc}"/>
+											<Input width="10rem" change="onChangesInward" enabled="{Inward>edit}"
+												visible="{=(${Inward>quesCode}=== 'I36' &amp;&amp; ${Inward>ques}=== '6A get call frequency?' &amp;&amp; ${Display>/Q36} )}"
+												class="sapUiTinyMarginBottom sapUiSmallMarginBegin" value="{Inward>answerDesc}"/>
+											<HBox visible="{=${Inward>ques}=== 'Select Timestamp?'}">
+												<Label text="Hours" class="sapUiTinyMarginTop sapUiTinyMarginEnd"/>
+												<Select width="5rem" change="onChangesInward" enabled="{Inward>edit}" selectedKey="{Inward>get2AHour}" class="sapUiTinyMarginEnd">
+													<core:Item key="00" text="00"/>
+													<core:Item key="01" text="01"/>
+													<core:Item key="02" text="02"/>
+													<core:Item key="03" text="03"/>
+													<core:Item key="04" text="04"/>
+													<core:Item key="05" text="05"/>
+													<core:Item key="06" text="06"/>
+													<core:Item key="07" text="07"/>
+													<core:Item key="08" text="08"/>
+													<core:Item key="09" text="09"/>
+													<core:Item key="10" text="10"/>
+													<core:Item key="11" text="11"/>
+													<core:Item key="12" text="12"/>
+													<core:Item key="13" text="13"/>
+													<core:Item key="14" text="14"/>
+													<core:Item key="15" text="15"/>
+													<core:Item key="16" text="16"/>
+													<core:Item key="17" text="17"/>
+													<core:Item key="18" text="18"/>
+													<core:Item key="19" text="19"/>
+													<core:Item key="20" text="20"/>
+													<core:Item key="21" text="21"/>
+													<core:Item key="22" text="22"/>
+													<core:Item key="23" text="23"/>
+												</Select>
+											</HBox>
+											<HBox visible="{=${Inward>ques}=== 'Select Timestamp?'}">
+												<Label text="Minutes" class="sapUiTinyMarginTop"/>
+												<Select width="5rem" change="onChangesInward" enabled="{Inward>edit}" selectedKey="{Inward>get2Amin}" class="sapUiTinyMarginBegin">
+													<core:Item key="00" text="00"/>
+													<core:Item key="15" text="15"/>
+													<core:Item key="30" text="30"/>
+													<core:Item key="45" text="45"/>
+												</Select>
+											</HBox>
+										</HBox>
+									</VBox>
+								</VBox>
+								<!--<VBox visible="{=${Inward>keyType}=== 'ST'}" class="sapUiLargeMarginBegin">-->
+								<!--	<VBox visible="{Inward>oSRVisible}">-->
+								<!--		<Label text="{Inward>sno}. {Inward>ques}" design="Bold" class="sapUiTinyMarginTop blue"/>-->
+								<!--		<HBox>-->
+								<!--			<Label text="{Inward>get2AHour}"></Label>-->
+								<!--		</HBox>-->
+								<!--	</VBox>-->
+								<!--</VBox>-->
+							</CustomListItem>
+						</List>
+					</VBox>
+				</Panel>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

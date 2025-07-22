@@ -1,0 +1,431 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:ui="sap.ui.table">
+	<ui:TreeTable visible="true" id="tabProcessPR" rows="{path:'PRProcessModel>/'}"  selectionMode="Single" selectionBehavior="Row" visibleRowCount="10"
+		enableSelectAll="false" fixedColumnCount="1" rowSelectionChange="onPRRowSelectChange">
+		<ui:extension>
+			<Toolbar>
+				<Title id="txtRecordsPR" level="H3"/>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="9rem">
+				<Label text="View" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>sno}"/>
+				</ui:template>
+			</ui:Column>
+		
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="Source Identifier" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>sourceIdentifier}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="Source FileName" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>sourceFileName}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="GL Account Code" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>glAccountCode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="6rem">
+				<Label text="Division" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>division}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<Label text="SubDivision" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>subDivision}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="9rem">
+				<Label text="ProfitCenter1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>profitCentre1}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="9rem">
+				<Label text="ProfitCenter2" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>profitCentre2}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<Label text="PlantCode" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<HBox>
+						<Text text="{PRProcessModel>plantCode}"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem">
+				<Label text="ReturnPeriod" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+						<Text text="{path:'PRProcessModel>returnPeriod',formatter:'.formatter._periodFormat'}"/>
+					
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="11rem">
+				<Label text="RecipientGSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>supplierGstin}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="9rem">
+				<Label text="DocumentType" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>docType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="9rem">
+				<Label text="SupplyType" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>supplyType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="9rem">
+				<Label text="DocumentNumber" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>docNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="9rem">
+				<Label text="DocumentDate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+						<Text text="{path:'PRProcessModel>docDate', formatter:'.formatter._dateFormat'}"/>
+				
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="OriginalDocumentNumber" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>originalDocNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="OrginalDocumentDate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+						<Text text="{path:'PRProcessModel>originalDocDate', formatter:'.formatter._dateFormat'}"/>
+				
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="CRDRPreGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>crDrPreGst}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="LineNumber" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>ErrorGSTN}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="SupplierGSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>supplierGstin}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="OriginalSupplierGSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>origSupplierGstin}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="SupplierName" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>custOrSuppName}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="SupplierCode" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>custOrSuppCode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="POS" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>pos}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="PortCode" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>productCode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="BillofEntry" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>billOfEntryNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="BillofEntryDate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>billOfEntryDate}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="CAFvalue" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>cifValue}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="Custom" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>customDuty}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="HSNorSAC" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>hsnsacCode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="ItemCode" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>itemNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="ItemDescription" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>itemDesc}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="CategoryofItem" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>itemType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="UnitofMeasurement" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>itemUqc}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="Quantity" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>itemQty}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="TaxableValue" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>taxableVal}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="IntegratedTaxRate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>ErrorGSTN}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="IntegratedTaxAmount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>ErrorGSTN}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="CentalTaxRate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>cgstRate}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="CentralTaxAmount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>cgstAmt}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="StateUITaxRate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>sgstRate}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="StateUITaxAmount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>sgstAmt}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="CessRateAdvalorem" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>cessRateAdvalorem}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="CessAmountAdvalorem" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>cessAmtAdvalorem}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="CessRateSpecific" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>cessRateSpecific}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="CessAmountSpecific" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>cessAmtSpecfic}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="InvoiceValue" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>ErrorGSTN}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="ReverseChargeFlag" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>reverseCharge}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="EligibleIndicator" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>eligibilityInd}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="CommonSupply" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>ErrorGST}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="CommonSupplyIndicator" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>commonSupplyInd}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="AvailableIGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>availableIgst}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="AvailableCGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>availableCgst}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="AvailableSGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>availableSgst}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="AvailableCESS" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>availableCess}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="ITCReversalIdentifier" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>itcReversalId}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="ReasonforCreditDebitNote" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>crDrReason}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="PurchaseVoucherNumber" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>accountVoucherNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="PurchaseVoucherDate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+						<Text text="{path:'PRProcessModel>accountVoucherDate', formatter:'.formatter._dateFormat'}"/>
+
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="PaymentVoucherNumber" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>paymentVoucherNum}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="PurchaseVoucherDate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>ErrorGSTN}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="PaymentDate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>paymentDate}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="ContactNumber" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>contractNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="ContactDate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>contractDate}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="UserDefinedField1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>userDefinedField1}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="10rem">
+				<Label text="UserDefinedfield2" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>userDefinedField2}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="12rem">
+				<Label text="UserDefinedfield3" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{PRProcessModel>userDefinedField3}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+		<ui:footer>
+			<Toolbar width="100%">
+				<ToolbarSpacer/>
+				<Button id="btnPrevPR" type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="Previous" enabled="false" press="onPressPagination"/>
+				<Input id="inPageNoPR" type="Number" textAlign="End" width="4rem" submit="onSubmitPagination" enabled="false"/>
+				<Text id="txtPageNoPR" text="/"/>
+				<Button id="btnNextPR" type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="Next" enabled="false" press="onPressPagination"/>
+				<ToolbarSpacer/>
+			</Toolbar>
+		</ui:footer>
+	</ui:TreeTable>
+</core:FragmentDefinition>

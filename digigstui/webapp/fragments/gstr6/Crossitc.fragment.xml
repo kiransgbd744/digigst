@@ -1,0 +1,292 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:u="sap.ui.unified" xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage id="idGetCrossitc">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Cross ITC"/>
+				</f:heading>
+				<f:actions>
+					<!--<Link text="Request ID wise" press="onPressRequestIDwiseGetSummary"/>-->
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false" id="id_filterDetailitc">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idGetitcGstin" width="100%" items="{allISDGstin>/}" selectionTextChange="selectAll">
+									<core:Item key="{allISDGstin>value}" text="{allISDGstin>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Tax Period" visibleInFilterBar="true" mandatory="false">
+							<fb:control>
+								<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" id="idTaxPerioditc" change="handleChange" width="12rem"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="Filter" press="onPressGoGstr6DetrProcess" class="sapUiTinyMarginBegin buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel>
+				<commons:ChartContainer id="idGetPREntityitc">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<ui:Table id="tabitcFragment" rows="{ProcessedRecord>/}" selectionMode="MultiToggle" fixedColumnCount="1" visibleRowCount="9">
+									<ui:extension></ui:extension>
+									<ui:columns>
+										<ui:Column width="12rem">
+											<Label text="ISD GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<VBox>
+													<!--<Label text="{ProcessedRecord>isdGstin}"/>-->
+													<HBox>
+														<Text text="{ProcessedRecord>state}" width="8rem" class="stateColor"/>
+														<Text text="{ProcessedRecord>regType}" class="stateColor fontSmall"/>
+													</HBox>
+													<HBox alignContent="Start" justifyContent="SpaceBetween">
+														<Link text="{ProcessedRecord>isdGstin}" press="handleLinkDetrminationGstin"/>
+														<core:Icon src="sap-icon://circle-task-2" size="0.8rem" class="sapUiSmallMarginBegin" tooltip="{ProcessedRecord>authToken}"
+															visible="{=${ProcessedRecord>gstin}=== '' ?false:true}" color="{=${ProcessedRecord>authToken}=== 'Active' ?'#00ff00':'#ff0000'}"
+															press="onActivateAuthToken(${ProcessedRecord>gstin},${ProcessedRecord>authToken})"/>
+													</HBox>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem">
+											<Label text="DigiGST Compute Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<VBox>
+													<HBox>
+														<Text text="{ProcessedRecord>status}"/>
+													</HBox>
+													<!--<HBox>
+														<Label text="{ProcessedRecord>turnoverDigiTimestamp}" design="{=!${ProcessedRecord>gstin}?'Bold':'Standard'}"/>
+													</HBox>-->
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" headerSpan="8" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text="As Per DigiGST Computed" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="IGST used as IGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{path:'ProcessedRecord>digigstIgstigst',formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="SGST used as IGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{path:'ProcessedRecord>digigstSgstigst',formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="CGST used as IGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{path:'ProcessedRecord>digigstCgstigst',formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="SGST used as SGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{path:'ProcessedRecord>digigstSgstSgst',formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="IGST used as SGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{path:'ProcessedRecord>digigstIgstSgst',formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="CGST used as CGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{path:'ProcessedRecord>digigstCgstCgst',formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="IGST used as CGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{path:'ProcessedRecord>digigstIgstCgst',formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="Cess used as Cess" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{path:'ProcessedRecord>digigstCesscess',formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" headerSpan="8" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text="As Per User Edited" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="IGST used as IGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<HBox justifyContent="End" width="100%">
+													<Text text="{path:'ProcessedRecord>userIgstigst',formatter:'.formatter.amountValue'}" visible="{=!${ProcessedRecord>edit}}"/>
+													<Input value="{ProcessedRecord>userIgstigst}" change="TaxableValueChange" textAlign="End" visible="{ProcessedRecord>edit}"/>
+												</HBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="SGST used as IGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<HBox justifyContent="End" width="100%">
+													<Text text="{path:'ProcessedRecord>userSgstigst',formatter:'.formatter.amountValue'}" visible="{=!${ProcessedRecord>edit}}"/>
+													<Input value="{ProcessedRecord>userSgstigst}" change="TaxableValueChange" textAlign="End" visible="{ProcessedRecord>edit}"/>
+												</HBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="CGST used as IGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<HBox justifyContent="End" width="100%">
+													<Text text="{path:'ProcessedRecord>userCgstigst',formatter:'.formatter.amountValue'}" visible="{=!${ProcessedRecord>edit}}"/>
+													<Input value="{ProcessedRecord>userCgstigst}" change="TaxableValueChange" textAlign="End" visible="{ProcessedRecord>edit}"/>
+												</HBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="SGST used as SGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<HBox justifyContent="End" width="100%">
+													<Text text="{path:'ProcessedRecord>userSgstSgst',formatter:'.formatter.amountValue'}" visible="{=!${ProcessedRecord>edit}}"/>
+													<Input value="{ProcessedRecord>userSgstSgst}" change="TaxableValueChange" textAlign="End" visible="{ProcessedRecord>edit}"/>
+												</HBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="IGST used as SGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<HBox justifyContent="End" width="100%">
+													<Text text="{path:'ProcessedRecord>userIgstSgst',formatter:'.formatter.amountValue'}" visible="{=!${ProcessedRecord>edit}}"/>
+													<Input value="{ProcessedRecord>userIgstSgst}" change="TaxableValueChange" textAlign="End" visible="{ProcessedRecord>edit}"/>
+												</HBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="CGST used as CGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<HBox justifyContent="End" width="100%">
+													<Text text="{path:'ProcessedRecord>userCgstCgst',formatter:'.formatter.amountValue'}" visible="{=!${ProcessedRecord>edit}}"/>
+													<Input value="{ProcessedRecord>userCgstCgst}" change="TaxableValueChange" textAlign="End" visible="{ProcessedRecord>edit}"/>
+												</HBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="IGST used as CGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<HBox justifyContent="End" width="100%">
+													<Text text="{path:'ProcessedRecord>userIgstCgst',formatter:'.formatter.amountValue'}" visible="{=!${ProcessedRecord>edit}}"/>
+													<Input value="{ProcessedRecord>userIgstCgst}" change="TaxableValueChange" textAlign="End" visible="{ProcessedRecord>edit}"/>
+												</HBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="Cess used as Cess" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<HBox justifyContent="End" width="100%">
+													<Text text="{path:'ProcessedRecord>userCesscess',formatter:'.formatter.amountValue'}" visible="{=!${ProcessedRecord>edit}}"/>
+													<Input value="{ProcessedRecord>userCesscess}" change="TaxableValueChange" textAlign="End" visible="{ProcessedRecord>edit}"/>
+												</HBox>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<ui:footer>
+										<Toolbar>
+											<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+											<Text text="Auth Token Active"/>
+											<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+											<Text text="Auth Token Inactive"/>
+											<ToolbarSpacer/>
+										</Toolbar>
+									</ui:footer>
+									<!--<ui:footer>-->
+									<!--	<ObjectStatus text="{i18n>noteGstr1Outward}" state="Error"/>-->
+									<!--</ui:footer>-->
+								</ui:Table>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar >
+							<ToolbarSpacer/>
+							<VBox class="sapUiTinyMarginEnd">
+								<Text text=""/>
+								<HBox>
+									<Button class="buttoncolorSec" text="Edit User Data" enabled="{= ${userPermission>/appPermission/P5}}" press="OnEditUserData"/>
+								</HBox>
+							</VBox>
+							<VBox class="sapUiTinyMarginEnd">
+								<Text text=""/>
+								<HBox>
+									<Button class="buttoncolorSec" text="Save Changes" enabled="{= ${userPermission>/appPermission/P5}}" press="onPressSaveChanges"/>
+								</HBox>
+							</VBox>
+							<VBox class="sapUiTinyMarginEnd">
+								<Text text=""/>
+								<HBox>
+									<Button class="buttoncolorSec" text="Download Report" enabled="false" press="onCopy1($event,'P')"/>
+									<!--{= ${userPermission>/appPermission/P5}}-->
+								</HBox>
+							</VBox>
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

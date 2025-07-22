@@ -1,0 +1,265 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.TaskInbox"
+	xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table" xmlns:l="sap.ui.layout" xmlns:commons="sap.suite.ui.commons"
+	busyIndicatorDelay="0">
+	<f:DynamicPage id="dpGstr3b1" showFooter="true">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<Title text="Task Inbox" titleStyle="H3" class="tinyMarginTop"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="GSTINEntityID" width="100%" items="{Checkergstn>/checkerGstins}" selectionChange="selectAll">
+									<core:Item key="{Checkergstn>gstin}" text="{Checkergstn>gstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Criteria" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idDateType" class="input" forceSelection="true" change="onDateTypeChange">
+									<core:Item key="Document Date" text="Request Date"/>
+									<core:Item key="Tax Perioid" text="Tax Period"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G2" id="RequestDateFr" visible="true" groupTitle="Basic" name="A" label="Request Date From"
+							visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker displayFormat="dd MMM yyyy" id="RequestDateFrom" valueFormat="yyyy-MM-dd" change="dateDynamicValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G2" id="RequestDateToFilt" visible="true" groupTitle="Basic" name="B" label="Request Date To"
+							visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker displayFormat="dd MMM yyyy" id="RequestDateTo" valueFormat="yyyy-MM-dd" change="dateDynamicValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G2" id="TaxperiodFr" groupTitle="Basic" visible="false" name="C" label="Tax Period From"
+							visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker displayFormat="MMM yyyy" id="RequestTaxPeriodFrom" valueFormat="MMyyyy" change="dateDynamicValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G2" id="TaxperiodTo" groupTitle="Basic" visible="false" name="D" label="Tax Period To"
+							visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker displayFormat="MMM yyyy" id="RequestTaxPeriodTo" valueFormat="MMyyyy" change="dateDynamicValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G2" id="returntype" groupTitle="Basic" name="E" label="Return Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="returnty" width="100%" selectionChange="selectAll">
+									<core:Item key="GSTR1" text="GSTR-1"/>
+									<core:Item key="GSTR3B" text="GSTR-3B"/>
+									<core:Item key="GSTR6" text="GSTR-6"/>
+									<core:Item key="GSTR7" text="GSTR-7"/>
+									<core:Item key="ITC04" text="ITC04"/>
+									<core:Item key="GSTR9" text="GSTR-9"/>
+								</MultiComboBox>
+								<!--<Select id="returnty" class="input" forceSelection="false" change="onDateTypeChange">-->
+								<!--	<core:Item key="GSTR1" text="GSTR-1"/>-->
+								<!--	<core:Item key="GSTR3B" text="GSTR-3B"/>-->
+								<!--	<core:Item key="GSTR6" text="GSTR-6"/>-->
+								<!--	<core:Item key="GSTR7" text="GSTR-7"/>-->
+								<!--	<core:Item key="ITC04" text="ITC04"/>-->
+								<!--	<core:Item key="GSTR9" text="GSTR-9"/>-->
+								<!--</Select>-->
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button icon="sap-icon://filter" type="Default" tooltip="Adapt Filters" press="onPressGSTR1AdaptFilters"/>
+					<Button text="{i18n>clear}" class="sapUiTinyMarginBeginEnd" press="onPressClear3B"/>
+					<Button text="Filter" class="buttoncolor" press="onSearchTaskInbox"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<VBox>
+				<l:BlockLayout background="Dashboard">
+					<l:BlockLayoutRow class="sapUiNoContentPadding sapUiTinyMarginBottom">
+						<l:BlockLayoutCell class="clBlockLayout1" width="2" binding="{TaskTabSumarry>/}">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Total no. of Requests" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{TaskTabSumarry>totalRequests}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2" binding="{TaskTabSumarry>/}">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Requests approved" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{TaskTabSumarry>totalApproved}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2" binding="{TaskTabSumarry>/}">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Requests rejected" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{TaskTabSumarry>totalRejected}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2" binding="{TaskTabSumarry>/}">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Requests pending" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{TaskTabSumarry>totalPending}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+				<Panel>
+					<ui:Table rows="{RequestCheckerStatus>/}" enableColumnReordering="false" class="sapUiTinyMarginTop" visibleRowCount="8" id="RequestTabId"
+						width="120%">
+						<ui:extension>
+							<Toolbar height="3.2rem">
+								<ToolbarSpacer/>
+								<Button class="buttoncolorSec" text="Report Download" press="" class="sapUiTinyMarginEnd"/>
+								<Button class="buttoncolorSec" text="Submit" press="onSubmit" class="sapUiTinyMarginEnd"/>
+								<Button class="buttoncolorSec" text="Revert Back Approval" press="onRevertApproval" class="sapUiTinyMarginEnd"/>
+							</Toolbar>
+						</ui:extension>
+						<ui:columns>
+							<!--<ui:Column width="10%" hAlign="Center">-->
+							<!--	<Label text="Sr.No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+							<!--	<ui:template>-->
+							<!--		<VBox>-->
+							<!--			<Text text="{GSTR3B>srno}" class="stateColor"/>-->
+							<!--		</VBox>-->
+							<!--	</ui:template>-->
+							<!--</ui:Column>-->
+							<ui:Column hAlign="Center" width="15%">
+								<Label text="Request ID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<VBox>
+										<Text text="{RequestCheckerStatus>requestId}"/>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="25%">
+								<Label text="Request Date &amp; Time" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Text text="{RequestCheckerStatus>requestDateTime}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="25%">
+								<Label text="Requested by" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Text text="{RequestCheckerStatus>reqBy}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="20%">
+								<Label text="Comments from Maker" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<core:Icon src="sap-icon://message-information" tooltip="{RequestCheckerStatus>commMakers}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="25%">
+								<Label text="Task Description" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Text text="{RequestCheckerStatus>taskDesc}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="20%">
+								<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Text text="{RequestCheckerStatus>gstin}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="15%">
+								<Label text="Tax Period" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<!--<Text text="{RequestCheckerStatus>taxPeriod}"/>-->
+									<!--<Text text="{path:'RequestCheckerStatus>taxPeriod', formatter:'.formatter.month'}"/>-->
+									<Text text="{path:'RequestCheckerStatus>taxPeriod', formatter:'.formatter.month1'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="15%">
+								<Label text="Return Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Text text="{RequestCheckerStatus>retType}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="20%">
+								<Label text="Action" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<ComboBox width="100%" selectedKey="{RequestCheckerStatus>action}">
+										<core:Item key="Approved" text="Approved"/>
+										<core:Item key="Rejected" text="Rejected"/>
+										<core:Item key="Pending" text="Pending"/>
+									</ComboBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="30%">
+								<Label text="Comments" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<TextArea width="75%" value="{RequestCheckerStatus>commChecker}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="15%">
+								<Label text="Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Text text="{RequestCheckerStatus>status}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="25%">
+								<Label text="Action Taken By" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Text text="{RequestCheckerStatus>actionTakenBy}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="20%">
+								<Label text="Action Date &amp; Time" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Text text="{RequestCheckerStatus>actionDateTime}"/>
+								</ui:template>
+							</ui:Column>
+							<!--<ui:Column hAlign="Center" width="15%">-->
+							<!--	<Label text="Return Summary" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+							<!--	<ui:template>-->
+							<!--		<core:Icon src="sap-icon://download"/>-->
+							<!--	</ui:template>-->
+							<!--</ui:Column>-->
+							<ui:Column hAlign="Center" width="20%">
+								<Label text="Revert Back Action" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Text text="{RequestCheckerStatus>revertBackAction}"/>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+					</ui:Table>
+				</Panel>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

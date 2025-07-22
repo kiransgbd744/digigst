@@ -1,0 +1,14 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.ui.layout.form">
+	<Dialog title="Delete DigiGST Data" type="Message" draggable="true" contentWidth="25rem" class="sapUiSizeCompact">
+		<CheckBox text="Select All the tables to delete" selected="{DialogProperty>/all}" partiallySelected="{DialogProperty>/partial}"
+			select="onSelectAllDeleteData" class="boldCheckBoxText"/>
+		<HBox class="sapUiTinyMarginTop">
+			<CheckBox text="TDS" selected="{DialogProperty>/tds}" select="onSelectTable('tds')" width="5rem"/>
+			<CheckBox text="TDSA" selected="{DialogProperty>/tdsa}" select="onSelectTable('tdsa')"/>
+		</HBox>
+		<buttons>
+			<Button text="Cancel" press="onCloseDeleteData('C')"/>
+			<Button text="Delete" press="onCloseDeleteData('D')"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

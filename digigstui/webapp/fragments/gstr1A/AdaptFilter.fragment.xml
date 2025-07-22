@@ -1,0 +1,162 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:fb="sap.ui.comp.filterbar">
+	<Dialog id="dAdapt" title="Adapt Filters" type="Message" class="sapUiSizeCompact">
+		<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" filterContainerWidth="12rem" useToolbar="false"
+			hSpacing="0" vSpacing="0">
+			<fb:filterGroupItems>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Date Range" visibleInFilterBar="true" visible="false">
+					<fb:control>
+						<DateRangeSelection width="" id="idDateRange"/>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="AA" label="Doc From Date" visibleInFilterBar="true"
+					visible="{FilterEnabled>/enabled}">
+					<fb:control>
+						<DatePicker id="idocFromDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" change="onChangeDateValue"/>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="AB" label="Doc To Date" visibleInFilterBar="true"
+					visible="{FilterEnabled>/enabled}">
+					<fb:control>
+						<DatePicker id="idocToDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd"/>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="AC" label="EInvoice Generated" visibleInFilterBar="true"
+					visible="false">
+					<fb:control>
+						<MultiComboBox id="iEINVGenerated" selectionChange="selectAll">
+							<core:Item key="All" text="All"/>
+							<core:Item key="Yes" text="Yes"/>
+							<core:Item key="No" text="No"/>
+						</MultiComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="AD" label="EWB Generated" visibleInFilterBar="true"
+					visible="false">
+					<fb:control>
+						<MultiComboBox id="iEWBGenerated" selectionChange="selectAll">
+							<core:Item key="All" text="All"/>
+							<core:Item key="Yes" text="Yes"/>
+							<core:Item key="No" text="No"/>
+						</MultiComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>profitCentre}" visibleInFilterBar="true"
+					visible="{userPermission>/respData/dataSecurity/items/profitCenter}">
+					<fb:control>
+						<MultiComboBox id="slProfitCtr" items="{userPermission>/respData/dataSecurity/profitCenter}">
+							<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+						</MultiComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>plantCode}" visibleInFilterBar="true"
+					visible="{userPermission>/respData/dataSecurity/items/plant}">
+					<fb:control>
+						<MultiComboBox id="slPlant" items="{userPermission>/respData/dataSecurity/plant}">
+							<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+						</MultiComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="{i18n>division}" visibleInFilterBar="true"
+					visible="{userPermission>/respData/dataSecurity/items/division}">
+					<fb:control>
+						<MultiComboBox id="slDivision" items="{userPermission>/respData/dataSecurity/division}">
+							<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+						</MultiComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="{i18n>location}" visibleInFilterBar="true"
+					visible="{userPermission>/respData/dataSecurity/items/location}">
+					<fb:control>
+						<MultiComboBox id="slLocation" items="{userPermission>/respData/dataSecurity/location}">
+							<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+						</MultiComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="{i18n>salesOrg}" visibleInFilterBar="true"
+					visible="{userPermission>/respData/dataSecurity/items/salesOrg}">
+					<fb:control>
+						<MultiComboBox id="slSalesOrg" items="{userPermission>/respData/dataSecurity/salesOrg}">
+							<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+						</MultiComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="{i18n>purcOrg}" visibleInFilterBar="true"-->
+				<!--	visible="{userPermission>/respData/dataSecurity/items/purchOrg}">-->
+				<!--	<fb:control>-->
+				<!--		<MultiComboBox id="slPurcOrg" items="{userPermission>/respData/dataSecurity/purchOrg}">-->
+				<!--			<core:Item key="{userPermission>value}" text="{userPermission>value}"/>-->
+				<!--		</MultiComboBox>-->
+				<!--	</fb:control>-->
+				<!--</fb:FilterGroupItem>-->
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="H" label="{i18n>distrChannel}" visibleInFilterBar="true"
+					visible="{userPermission>/respData/dataSecurity/items/distChannel}">
+					<fb:control>
+						<MultiComboBox id="slDistrChannel" items="{userPermission>/respData/dataSecurity/distChannel}">
+							<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+						</MultiComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="I" label="{i18n>userAccess1}" visibleInFilterBar="true"
+					visible="{userPermission>/respData/dataSecurity/items/userAccess1}">
+					<fb:control>
+						<MultiComboBox id="slUserAccess1" items="{userPermission>/respData/dataSecurity/userAccess1}">
+							<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+						</MultiComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="J" label="{i18n>userAccess2}" visibleInFilterBar="true"
+					visible="{userPermission>/respData/dataSecurity/items/userAccess2}">
+					<fb:control>
+						<MultiComboBox id="slUserAccess2" items="{userPermission>/respData/dataSecurity/userAccess2}">
+							<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+						</MultiComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="K" label="{i18n>userAccess3}" visibleInFilterBar="true"
+					visible="{userPermission>/respData/dataSecurity/items/userAccess3}">
+					<fb:control>
+						<MultiComboBox id="slUserAccess3" items="{userPermission>/respData/dataSecurity/userAccess3}">
+							<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+						</MultiComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="L" label="{i18n>userAccess4}" visibleInFilterBar="true"
+					visible="{userPermission>/respData/dataSecurity/items/userAccess4}">
+					<fb:control>
+						<MultiComboBox id="slUserAccess4" items="{userPermission>/respData/dataSecurity/userAccess4}">
+							<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+						</MultiComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="M" label="{i18n>userAccess5}" visibleInFilterBar="true"
+					visible="{userPermission>/respData/dataSecurity/items/userAccess5}">
+					<fb:control>
+						<MultiComboBox id="slUserAccess5" items="{userPermission>/respData/dataSecurity/userAccess5}">
+							<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+						</MultiComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="N" label="{i18n>userAccess6}" visibleInFilterBar="true"
+					visible="{userPermission>/respData/dataSecurity/items/userAccess6}">
+					<fb:control>
+						<MultiComboBox id="slUserAccess6" items="{userPermission>/respData/dataSecurity/userAccess6}">
+							<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+						</MultiComboBox>
+					</fb:control>
+				</fb:FilterGroupItem>
+			</fb:filterGroupItems>
+		</fb:FilterBar>
+		<buttons>
+			<Button id="bApply" text="Apply" class="buttoncolorSec" type="Default" press="onPressFilterClose"/>
+			<!--<Button text="Clear" type="Default" press="onPressFilterClose"/>-->
+			<Button text="{i18n>clear}"  class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onPressClear('A','')"/>
+			<Button id="bCancel" text="Cancel" class="buttoncolorSec" type="Default" press="onPressFilterClose"/>
+		</buttons>
+		<!--<beginButton>-->
+		<!--	<Button id="bApply" text="Apply" type="Default" press="onPressFilterClose"/>-->
+		<!--</beginButton>-->
+		<!--<endButton>-->
+		<!--	<Button id="bCancel" text="Cancel" type="Default" press="onPressFilterClose"/>-->
+		<!--</endButton>-->
+	</Dialog>
+</core:FragmentDefinition>

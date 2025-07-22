@@ -1,0 +1,124 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" core:require="{util: 'com/ey/digigst/util/Formatter'}">
+	<f:DynamicPage id="dpEntity" fitContent="true" class="ReconResponce">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="GL Process Sumamry" class="TitleColor dpTitlePadding"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idPGstin" width="100%" selectedKeys="{psfilter>/gstins}" items="{path:'DataPermission>/respData/dataSecurity/gstin'}"
+									showSelectAll="true">
+									<core:Item key="{DataPermission>value}" text="{DataPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="From Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="idPFromtaxPeriod" value="{psfilter>/taxPeriodFrom}" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="To Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="idPTotaxPeriod" value="{psfilter>/taxPeriodTo}" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Transaction Type" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox selectedKey="{psfilter>/transType}" showSelectAll="true">
+									<core:Item key="O" text="Outward"/>
+									<core:Item key="I" text="Inward"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" press="onPressClearGLPS" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+					<Button text="Filter" class="buttoncolor" press="onSearchGLPS"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table rows="{GLProcessEntity>/}" id="idTabGLPS">
+				<ui:extension>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button text="Initiate GL Recon" press="onInitiateMatching" class="buttoncolorSec"/>
+						<!--<Button text="Download Reports" press="onDownloadGLPS" class="buttoncolorSec"/>-->
+						<MenuButton text="Download Reports" class="buttoncolorSec" tooltip="Download Reports">
+							<Menu>
+								<MenuItem text="Table data" key="R1" press="onDownloadGLPS"/>
+								<MenuItem text="GL Processed Records (Transactional)" key="R2" press="onDownloadGLPRTrans"/>
+							</Menu>
+						</MenuButton>
+						<Button text="Request ID Wise" press="onRequestIdWise('E')" class="buttoncolorSec"/>
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column>
+						<Label text="GSTIN" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Link text="{GLProcessEntity>gstin}" emphasized="true" press="onPressSummaryGstinLink"/>
+							<VBox>
+								<HBox>
+									<Text text="{GLProcessEntity>state}" width="8rem" class="stateColor"/>
+									<Text text="{=${GLProcessEntity>regType}==='REGULAR'?'':${GLProcessEntity>regType}}" class="stateColor fontSmall"/>
+								</HBox>
+								<HBox alignContent="Start" justifyContent="SpaceBetween">
+									<Link text="{GLProcessEntity>gstin}" emphasized="true" press="onPressSummaryGstinLink"/>
+									<core:Icon src="sap-icon://circle-task-2" visible="{=${GLProcessEntity>state}===''?false:true}" size="0.8rem"
+										tooltip="{GLProcessEntity>authToken}" color="{=${GLProcessEntity>authToken}==='Active'?'#00ff00':'#ff0000'}"
+										press="onActivateAuthToken(${GLProcessEntity>gstin},${GLProcessEntity>authToken})"/>
+								</HBox>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="Count of Records" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{GLProcessEntity>count}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="Assessable Amount" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{path:'GLProcessEntity>assessableAmt', formatter:'util.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="IGST" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{path:'GLProcessEntity>igst', formatter:'util.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="SGST" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{path:'GLProcessEntity>sgst', formatter:'util.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="CGST" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{path:'GLProcessEntity>cgst', formatter:'util.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="Cess" design="Bold" textAlign="Center" width="100%"/>
+						<ui:template>
+							<Text text="{path:'GLProcessEntity>cess', formatter:'util.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

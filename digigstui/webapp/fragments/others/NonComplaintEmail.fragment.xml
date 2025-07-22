@@ -1,0 +1,129 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table">
+	<Dialog title="Email Communication" class="sapUiSizeCompact" contentWidth="1000rem">
+		<HBox>
+			<VBox width="70%">
+				<ui:Table id="idtablerefundEmail" rows="{emailCommPopupData>/resp/}" selectionMode="MultiToggle" selectionBehavior="Row"
+					visibleRowCount="100" fixedColumnCount="1" rowSelectionChange="onSelectChange" visible="true"
+					class="sapUiTinyMarginTop sapUiTinyMarginBeginEnd">
+					<ui:extension>
+						<Toolbar>
+							<Button type="Emphasized" text="Refresh" width="7rem" press="onRefrshEmailDD"/>
+							<!--<Button type="Emphasized" text="Reset" width="7rem" press="onReset"/>-->
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column hAlign="Center">
+							<VBox>
+								<Label text="Vendor GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ComboBox id="idVenGSTNEmail" showSecondaryValues="true"
+									items="{ path: 'emailCommPopupData>/resp', sorter: { path: 'vendorGstin',descending:false } }" selectionChange="onFilterEmail">
+									<core:ListItem key="{emailCommPopupData>vendorGstin}" text="{emailCommPopupData>vendorGstin}"
+										additionalText="{mailCommPopupData>vendorGstin}"/>
+								</ComboBox>
+								<!--<ComboBox items="{emailCommPopupData>/resp/}" selectionChange="onFilterEmail" id="idVenGSTNEmail">
+									<core:Item key="{emailCommPopupData>vendorGstin}" text="{emailCommPopupData>vendorGstin}"/>
+								</ComboBox>-->
+							</VBox>
+							<ui:template>
+								<Text text="{emailCommPopupData>vendorGstin}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<VBox>
+								<Label text="Vendor Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ComboBox id="idVenNameEmail" showSecondaryValues="true" items="{ path: 'emailCommPopupData>/resp', sorter: { path: 'vendorName' } }"
+									selectionChange="onFilterEmail">
+									<core:ListItem key="{emailCommPopupData>vendorName}" text="{emailCommPopupData>vendorName}" additionalText="{mailCommPopupData>vendorName}"/>
+								</ComboBox>
+								<!--<ComboBox items="{emailCommPopupData>/resp/}" selectionChange="onFilterEmail" id="idVenNameEmail">
+									<core:Item key="{emailCommPopupData>vendorName}" text="{emailCommPopupData>vendorName}"/>
+								</ComboBox>-->
+							</VBox>
+							<ui:template>
+								<Text text="{emailCommPopupData>vendorName}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<Label text="Return Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{emailCommPopupData>returnType}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<Label text="Vendor Primary Email ID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{emailCommPopupData>vendPrimEmailId}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column >
+							<Label text="Vendor Secondary Email ID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<MultiComboBox items="{venSecEmailsCombo>/}" width="100%" selectionChange="selectAll" selectionFinish="onEntityChange">
+									<core:ListItem key="{venSecEmailsCombo>emailId}" text="{venSecEmailsCombo>emailId}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column >
+							<Label text="Recipient Email ID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<MultiComboBox items="{venRecpntEmailsCombo>/}" width="100%" selectionChange="selectAll" selectionFinish="onEntityChange1">
+									<core:ListItem key="{venRecpntEmailsCombo>emailId}" text="{venRecpntEmailsCombo>emailId}"/>
+								</MultiComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<VBox>
+								<Label text="Email Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ComboBox items="{venSecEmailsCombo23>/}" selectionChange="onFilterEmail" id="linkEntityID55">
+									<core:Item key="{venSecEmailsCombo23>emailStatus}" text="{venSecEmailsCombo23>emailStatus}"/>
+								</ComboBox>
+							</VBox>
+							<ui:template>
+								<Text text="{parts:[{path:'emailCommPopupData>emailStatus'},{path:'emailCommPopupData>updatedOn'}], formatter : '.formatter.emailstatus'}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+					<ui:footer>
+						<HBox width="100%" justifyContent="Center">
+							<Button id="btnFirstVCF" type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" class="sapUiTinyMarginBeginEnd"
+								enabled="false" press="onPressPaginationVCF"/>
+							<Button id="btnPrevVCF" type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="false"
+								press="onPressPaginationVCF"/>
+							<Input id="inPageNoVCF" type="Number" textAlign="End" width="4rem" submit="onSubmitPaginationVCF" enabled="false"
+								class="sapUiTinyMarginBegin" value="0"/>
+							<Text id="txtPageNoVCF" text="/ 0" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+							<Button id="btnNextVCF" type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="false"
+								press="onPressPaginationVCF"/>
+							<Button id="btnLastVCF" type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" class="sapUiTinyMarginBeginEnd"
+								enabled="false" press="onPressPaginationVCF"/>
+						</HBox>
+						<!--	<Toolbar width="100%">
+							<ToolbarSpacer/>
+							<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="Previous" enabled="false" press="onPressPagination"/>
+							<Input type="Number" value="1" textAlign="End" width="4rem" submit="onSubmitPagination" enabled="false"/>
+							<Text text="/ 1"/>
+							<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="Next" enabled="false" press="onPressPagination"/>
+							<ToolbarSpacer/>
+						</Toolbar>-->
+					</ui:footer>
+				</ui:Table>
+			</VBox>
+			<VBox class="sapUiSmallMarginTop sapUiSmallMarginBottom">
+				<Label id="idEmailpopupTo" text="To: Primary Vendor Email ID and Selected Vendor Email ID" width="100%" wrapping="false" design="Bold"
+					class="sapUiSmallMarginTop"/>
+				<Label id="idEmailpopupFrom" text="CC: Selected Recipient Email ID" width="100%" wrapping="false" design="Bold"/>
+				<Label id="subjectId" width="100%" wrapping="false" design="Bold" class="sapUiSmallMarginTop"/>
+				<TextArea id="textId" width="30rem" rows="18" height="13rem" editable="false"/>
+				<TextArea id="textId1" width="30rem" rows="18" height="11rem" editable="false"/>
+			</VBox>
+			<Label/>
+		</HBox>
+		<beginButton>
+			<Button text="Send" type="Emphasized" press="onPreEmailOtpSend"/>
+		</beginButton>
+		<endButton>
+			<Button text="Close" type="Emphasized" press="onCloseEmailOtp"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,47 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar">
+	<f:DynamicPage visible="{=${ViewProperty>/btnSegment}==='IMSSummary'}" class="clDataStatusAPI">
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onGoSummary" clear="onClearMainFilter"
+					useToolbar="false" class="sapUiNoContentPadding" width="90%">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>gstin}" visibleInFilterBar="true"
+							visible="{=${ViewProperty>/imsSummary}==='entity'}">
+							<fb:control>
+								<MultiComboBox items="{userPermission>/respData/dataSecurity/gstin}" id="idGstinEntityLev" selectionChange="selectAll" width="100%">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>tableType}" visibleInFilterBar="true"
+							visible="{=${ViewProperty>/imsSummary}==='entity'}">
+							<fb:control>
+								<MultiComboBox items="{DropDown>/get2aTableType1}" id="idTableType" selectionChange="selectAll">
+									<core:Item key="{DropDown>text}" text="{DropDown>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>gstin}" visibleInFilterBar="true"
+							visible="{=${ViewProperty>/imsSummary}==='gstn'}">
+							<fb:control>
+								<Select id="idGstinGstinLev" items="{path:'DataPermission>/respData/dataSecurity/gstin'}">
+									<core:Item key="{DataPermission>value}" text="{DataPermission>value}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onClearMainFilter"/>
+					<Button text="Filter" press="onGoSummary" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapFDynamicPageAlignContent">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.IMS.IMSEntityLevel" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.IMS.IMSGstnLevel" type="XML"/>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

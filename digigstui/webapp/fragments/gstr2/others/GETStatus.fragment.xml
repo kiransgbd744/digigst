@@ -1,0 +1,278 @@
+<core:FragmentDefinition  xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt">
+	<f:DynamicPage id="IdDPGSTRStatus" headerExpanded="{/headerExpanded}">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+				
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader>
+				<f:content>
+					<fb:FilterBar showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false" class="sapUiNoContentPadding">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="GSTIN" visibleInFilterBar="true">
+								<fb:control>
+									<Select forceSelection="true" change="onSelectChange" items="{ path: 'DropDown>/criteria' }">
+										<core:Item key="{}" text="{}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Financial Year" visibleInFilterBar="true">
+								<fb:control>
+									<Select forceSelection="true" change="onSelectChangeYear" items="{ path: 'DropDown>/criteria' }">
+										<core:Item key="{}" text="{}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<ui:Table id="idGetstatus" rowSelectionChange="onSelection" rows="{extractmodel>/req}" selectionMode="None" selectionBehavior="Row"
+					visibleRowCount="10" fixedRowCount="1" fixedColumnCount="3" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<Button type="Emphasized" text="Get GSTR-2A" press="onButtonExtractPress"/>
+							<Button type="Emphasized" text="Conslidated 2A Report" press="onConfigExtractPress"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="4rem">
+							<CheckBox select="onSelectionGetstatus" selected=""/>
+							
+							<ui:template>
+								<CheckBox selected="{extractmodel>bollen}" select="OnselectRow"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="4rem">
+							<Label text="S.NO"/>
+							<ui:template>
+								<Text text="{extractmodel>sno}" width="50%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="13rem">
+							<Label text="GSTIN" width="100%"/>
+							<ui:template>
+								<Text text="{extractmodel>gstin}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<CheckBox text="April" textAlign="Left" width="100%" select="onAprialSelect" selected="" id="april"/>
+					
+							<ui:template>
+								<VBox>
+									<HBox>
+										<CheckBox selected="{extractmodel>bollen1}" id="idcheapril" visible="{extractmodel>visible1}"/>
+										<ObjectNumber number="{extractmodel>aprilstatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'extractmodel>aprilstatus'}], formatter : '.formatter.color'}"/>
+										<core:Icon src="sap-icon://download" size="1rem" tooltip="Download Report" visible="{extractmodel>downvis1}"
+											class="sapUiMediumMarginBegin sapUiTinyMarginTop"/>
+									</HBox>
+									<HBox>
+										<Text text="{extractmodel>ProductId}" class="sapUiMediumMarginBegin"/>
+									</HBox>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<CheckBox text="May" textAlign="Center" width="100%" select="onMayselect" selected="" id="may"/>
+							<ui:template>
+								<VBox>
+									<HBox>
+										<CheckBox selected="{extractmodel>bollen2}" visible="{extractmodel>visible2}"/>
+										<ObjectNumber number="{extractmodel>maystatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'extractmodel>maystatus'}], formatter : '.formatter.color'}"/>
+										<core:Icon src="sap-icon://download" size="1rem" visible="{extractmodel>downvis2}" tooltip="Download Report"
+											class="sapUiMediumMarginBegin sapUiTinyMarginTop"/>
+									</HBox>
+									<HBox>
+										<Text text="{extractmodel>mayId}" class="sapUiMediumMarginBegin"/>
+									</HBox>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<CheckBox text="June" textAlign="Center" width="100%" select="onJuneSelect" selected="" id="june"/>
+							<ui:template>
+								<VBox>
+									<HBox>
+										<CheckBox selected="{extractmodel>bollen3}" visible="{extractmodel>visible3}"/>
+										<ObjectNumber number="{extractmodel>junestatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'extractmodel>junestatus'}], formatter : '.formatter.color'}"/>
+										<core:Icon src="sap-icon://download" size="1rem" visible="{extractmodel>downvis3}" tooltip="Download Report"
+											class="sapUiMediumMarginBegin sapUiTinyMarginTop"/>
+									</HBox>
+									<HBox>
+										<Text text="{extractmodel>ProductId}" class="sapUiMediumMarginBegin"/>
+									</HBox>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<CheckBox text="July" textAlign="Center" select="onJulySelect" selected="" width="100%" id="july"/>
+							<ui:template>
+								<VBox>
+									<HBox>
+										<CheckBox selected="{extractmodel>bollen4}" visible="{extractmodel>visible4}"/>
+										<ObjectNumber number="{extractmodel>julystatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'extractmodel>julystatus'}], formatter : '.formatter.color'}"/>
+										<core:Icon src="sap-icon://download" size="1rem" tooltip="Download Report" visible="{extractmodel>downvis4}"
+											class="sapUiMediumMarginBegin sapUiTinyMarginTop"/>
+									</HBox>
+									<HBox>
+										<Text text="{extractmodel>ProductId}" class="sapUiMediumMarginBegin"/>
+									</HBox>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<CheckBox text="August" textAlign="Center" select="onAugustSelect" selected="" width="100%" id="aug"/>
+							<ui:template>
+								<VBox>
+									<HBox>
+										<CheckBox selected="{extractmodel>bollen5}" visible="{extractmodel>visible5}"/>
+										<ObjectNumber number="{extractmodel>augstatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'extractmodel>augstatus'}], formatter : '.formatter.color'}"/>
+										<core:Icon src="sap-icon://download" size="1rem" visible="{extractmodel>downvis5}" tooltip="Download Report"
+											class="sapUiMediumMarginBegin sapUiTinyMarginTop"/>
+									</HBox>
+									<HBox>
+										<Text text="{extractmodel>ProductId}" class="sapUiMediumMarginBegin"/>
+									</HBox>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<CheckBox text="September" textAlign="Center" select="onSeptemberSelect" selected="" width="100%" id="sep"/>
+							<ui:template>
+								<VBox>
+									<HBox>
+										<CheckBox selected="{extractmodel>bollen6}" visible="{extractmodel>visible6}"/>
+										<ObjectNumber number="{extractmodel>sepstatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'extractmodel>sepstatus'}], formatter : '.formatter.color'}"/>
+										<core:Icon src="sap-icon://download" size="1rem" tooltip="Download Report" visible="{extractmodel>downvis6}"
+											class="sapUiMediumMarginBegin sapUiTinyMarginTop"/>
+									</HBox>
+									<HBox>
+										<Text text="{extractmodel>ProductId}" class="sapUiMediumMarginBegin"/>
+									</HBox>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<CheckBox text="October" textAlign="Center" select="onOctoberSelect" selected="" width="100%" id="oct"/>
+							<ui:template>
+								<VBox>
+									<HBox>
+										<CheckBox selected="{extractmodel>bollen7}" visible="{extractmodel>visible7}"/>
+										<ObjectNumber number="{extractmodel>octstatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'extractmodel>octstatus'}], formatter : '.formatter.color'}"/>
+										<core:Icon src="sap-icon://download" size="1rem" visible="{extractmodel>downvis7}" tooltip="Download Report"
+											class="sapUiMediumMarginBegin sapUiTinyMarginTop"/>
+									</HBox>
+									<HBox>
+										<Text text="{extractmodel>ProductId}" class="sapUiMediumMarginBegin"/>
+									</HBox>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<CheckBox text="November" textAlign="Center" select="onNovemberSelecte" selected="" width="100%" id="nov"/>
+							<ui:template>
+								<VBox>
+									<HBox>
+										<CheckBox selected="{extractmodel>bollen8}" visible="{extractmodel>visible8}"/>
+										<ObjectNumber number="{extractmodel>novstatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'extractmodel>novstatus'}], formatter : '.formatter.color'}"/>
+										<core:Icon src="sap-icon://download" size="1rem" visible="{extractmodel>downvis8}" tooltip="Download Report"
+											class="sapUiMediumMarginBegin sapUiTinyMarginTop"/>
+									</HBox>
+									<HBox>
+										<Text text="{extractmodel>ProductId}" class="sapUiMediumMarginBegin"/>
+									</HBox>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<CheckBox text="December" textAlign="Center" select="onDecemberSelect" selected="" width="100%" id="dec"/>
+							<ui:template>
+								<VBox>
+									<HBox>
+										<CheckBox selected="{extractmodel>bollen9}" visible="{extractmodel>visible9}"/>
+										<ObjectNumber number="{extractmodel>decstatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'extractmodel>decstatus'}], formatter : '.formatter.color'}"/>
+										<core:Icon src="sap-icon://download" size="1rem" tooltip="Download Report" visible="{extractmodel>downvis9}"
+											class="sapUiMediumMarginBegin sapUiTinyMarginTop"/>
+									</HBox>
+									<HBox>
+										<Text text="{extractmodel>ProductId}" class="sapUiMediumMarginBegin"/>
+									</HBox>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<CheckBox text="January" textAlign="Center" select="onjanSelect" selected="" width="100%" id="jan"/>
+							<ui:template>
+								<VBox>
+									<HBox>
+										<CheckBox selected="{extractmodel>bollen10}" visible="{extractmodel>visible10}"/>
+										<ObjectNumber number="{extractmodel>janstatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'extractmodel>janstatus'}], formatter : '.formatter.color'}"/>
+										<core:Icon src="sap-icon://download" size="1rem" tooltip="Download Report" visible="{extractmodel>downvis10}"
+											class="sapUiMediumMarginBegin sapUiTinyMarginTop"/>
+									</HBox>
+										<HBox>
+										<Text text="{extractmodel>ProductId}" class="sapUiMediumMarginBegin"/>
+									</HBox>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<CheckBox text="February" textAlign="Center" select="onfebSelect" selected="" width="100%" id="feb"/>
+							<ui:template>
+								<VBox>
+									<HBox>
+										<CheckBox selected="{extractmodel>bollen11}" visible="{extractmodel>visible11}"/>
+										<ObjectNumber number="{extractmodel>febstatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'extractmodel>febstatus'}], formatter : '.formatter.color'}"/>
+										<core:Icon src="sap-icon://download" size="1rem" tooltip="Download Report" visible="{extractmodel>downvis11}"
+											class="sapUiMediumMarginBegin sapUiTinyMarginTop"/>
+									</HBox>
+									<HBox>
+										<Text text="{extractmodel>ProductId}" class="sapUiMediumMarginBegin"/>
+									</HBox>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<CheckBox text="March" textAlign="Center" select="onmarchSelect" selected="" width="100%" id="march"/>
+							<ui:template>
+								<VBox>
+									<HBox>
+										<CheckBox selected="{extractmodel>bollen12}" visible="{extractmodel>visible12}"/>
+										<ObjectNumber number="{extractmodel>marchstatus}" class="sapUiTinyMarginTop"
+											state="{parts:[{path : 'extractmodel>marchstatus'}], formatter : '.formatter.color'}"/>
+										<core:Icon src="sap-icon://download" size="1rem" tooltip="Download Report" visible="{extractmodel>downvis8}"
+											class="sapUiMediumMarginBegin sapUiTinyMarginTop"/>
+									</HBox>
+									<HBox>
+										<Text text="{extractmodel>ProductId}" class="sapUiMediumMarginBegin"/>
+									</HBox>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

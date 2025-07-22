@@ -1,0 +1,229 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<Panel>
+		<ui:TreeTable id="tabStatusTotal" rows="{path:'Summary>/', parameters:{ arrayNames:['items'], numberOfExpandedLevels:1 }}"
+			selectionMode="None" selectionBehavior="Row" visibleRowCount="5" fixedColumnCount="4" enableSelectAll="false" visible="false"
+			class="sapUiTinyMarginBottom">
+			<ui:extension>
+				<Toolbar>
+					<Title text="Aggregate" titleStyle="H4"/>
+					<ToolbarSpacer/>
+					<Button type="Reject" id="bTotDelele" text="{i18n>deleteData}" press="onPressSummaryDelete" enabled="false"/>
+					<Button type="Ghost" id="bTotExpApi" icon="sap-icon://expand-all" tooltip="{i18n>expand}" press="onPressExpandCollapse"/>
+					<Button type="Ghost" id="bTotColApi" icon="sap-icon://collapse-all" tooltip="{i18n>collapse}" press="onPressExpandCollapse"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:rowSettingsTemplate>
+				<ui:RowSettings highlight="{=${Summary>date}==='Total'?'Information':(${Summary>flag}===0?'Warning':'None')}"/>
+			</ui:rowSettingsTemplate>
+			<ui:columns>
+				<ui:Column width="9rem">
+					<Label text="{i18n>date}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<ObjectAttribute text="{path:'Summary>date'}" visible="{=${Summary>flag}===0?true:false}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<Label text="{i18n>gstin}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox alignContent="Start" justifyContent="SpaceBetween" width="100%" displayInline="true" visible="{=${Summary>flag}===1?true:false}">
+							<Text text="{Summary>gstin}"/>
+							<core:Icon src="sap-icon://circle-task-2" color="{=${Summary>authToken}==='Active'?'#00FF00':'#FF0000'}" size="0.8rem"
+								tooltip="{Summary>authToken}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="9rem">
+					<Label text="{i18n>returnPeriod}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Summary>returnPeriod', formatter:'.formatter.periodFormat'}" visible="{=${Summary>flag}===1?true:false}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="8rem">
+					<Label text="{i18n>returnType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{Summary>returnType}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column>
+					<Label text="{i18n>returnSection}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{Summary>returnSection}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>count}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{Summary>count}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>taxableVal}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Summary>taxableValue', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>totalTax}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Summary>totalTaxes', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>igst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Summary>igst', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>cgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Summary>cgst', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>sgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Summary>sgst', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>cess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Summary>cess', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column visible="false">
+					<Label text="{i18n>reviewStatus}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{Summary>reviewStatus}" visible="{=${Summary>flag}===1?true:false}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column visible="false">
+					<Label text="{i18n>saveStatus}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Link text="{Summary>saveStatus}" press="onPressStatus" visible="{=${Summary>flag}===1?true:false}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" visible="false">
+					<Label text="{i18n>error} ({i18n>gstn})" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{Summary>errorGstn}"/>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:TreeTable>
+		<ui:TreeTable id="tabStatusAPI" rows="{path:'Summary>/', parameters:{ arrayNames:['items'], numberOfExpandedLevels:1 }}"
+			selectionMode="MultiToggle" selectionBehavior="Row" fixedColumnCount="4" enableSelectAll="false">
+			<ui:extension>
+				<Toolbar>
+					<Title text="Details" titleStyle="H4"/>
+					<ToolbarSpacer/>
+					<!--<Button type="Emphasized" id="bSaveApi" text="Save to GSTN" press="onButtonPress" tooltip="{i18n>btnOutwardTip}" visible="false"/>-->
+					<!--<Button type="Emphasized" id="bApprApi" text="Request for Approval" press="onButtonPress" visible="false"/>-->
+					<Button type="Reject" id="bDeleleApi" text="{i18n>deleteData}" press="onPressSummaryDelete" enabled="false"/>
+					<Button type="Ghost" id="bExpApi" icon="sap-icon://expand-all" tooltip="{i18n>expand}" press="onPressExpandCollapse"/>
+					<Button type="Ghost" id="bColApi" icon="sap-icon://collapse-all" tooltip="{i18n>collapse}" press="onPressExpandCollapse"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:rowSettingsTemplate>
+				<ui:RowSettings highlight="{=${Summary>date}==='Total'?'Information':(${Summary>flag}===0?'Warning':'None')}"/>
+			</ui:rowSettingsTemplate>
+			<ui:columns>
+				<ui:Column width="9rem">
+					<Label text="{i18n>date}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<ObjectAttribute text="{path:'Summary>date', formatter:'.formatter.dateFormat'}" visible="{=${Summary>flag}===0?true:false}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<Label text="{i18n>gstin}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox alignContent="Start" justifyContent="SpaceBetween" width="100%" displayInline="true" visible="{=${Summary>flag}===1?true:false}">
+							<Text text="{Summary>gstin}"/>
+							<core:Icon src="sap-icon://circle-task-2" color="{=${Summary>authToken}==='Active'?'#00FF00':'#FF0000'}" size="0.8rem"
+								tooltip="{Summary>authToken}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="9rem">
+					<Label text="{i18n>returnPeriod}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Summary>returnPeriod', formatter:'.formatter.periodFormat'}" visible="{=${Summary>flag}===1?true:false}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="8rem">
+					<Label text="{i18n>returnType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{Summary>returnType}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column>
+					<Label text="{i18n>returnSection}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{Summary>returnSection}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>count}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{Summary>count}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>taxableVal}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Summary>taxableValue', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>totalTax}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Summary>totalTaxes', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>igst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Summary>igst', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>cgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Summary>cgst', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>sgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Summary>sgst', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>cess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'Summary>cess', formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column visible="false">
+					<Label text="{i18n>reviewStatus}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{Summary>reviewStatus}" visible="{=${Summary>flag}===1?true:false}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column visible="false">
+					<Label text="{i18n>saveStatus}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Link text="{Summary>saveStatus}" press="onPressStatus" visible="{=${Summary>flag}===1?true:false}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" visible="false">
+					<Label text="{i18n>error} ({i18n>gstn})" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{Summary>errorGstn}"/>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:TreeTable>
+	</Panel>
+</core:FragmentDefinition>

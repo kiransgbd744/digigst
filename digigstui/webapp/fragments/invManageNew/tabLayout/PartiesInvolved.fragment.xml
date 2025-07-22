@@ -1,0 +1,343 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table" xmlns:form="sap.ui.layout.form">
+	<Toolbar class="toolbarbot sapUiSmallMarginBottom sapUiSmallMarginTop">
+		<Label text="Document Category :" design="Bold" class="sapUiSmallMarginBegin titleFont titleFontEinv"/>
+		<VBox>
+			<!--<Label text="{i18n>docCategory}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>-->
+			<Text text="{InvoiceItemModel>/docCat}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="docCat" value="{InvoiceItemModel>/docCat}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/docCatState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/docCatText}"/>
+		</VBox>
+	</Toolbar>
+	<Toolbar class="toolbarbot sapUiTinyMarginBottom">
+		<Label text="Buyer Details" design="Bold" class="sapUiSmallMarginBegin titleFont"/>
+	</Toolbar>
+	<l:Grid defaultSpan="L2" hSpacing="2" vSpacing="2" class="sapUiTinyMarginTop">
+		<VBox>
+			<Label text="{i18n>custGstin}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/custGstin}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="custGstin" value="{InvoiceItemModel>/custGstin}" maxLength="15" liveChange="alphaNumeric" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/custGstinState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/custGstinText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>customerTradeName}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/custTradeName}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="custTradeName" value="{InvoiceItemModel>/custTradeName}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/custTradeNameState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/custTradeNameText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>custOrSuppName}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/custOrSupName}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="custOrSupName" value="{InvoiceItemModel>/custOrSupName}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/custOrSupNameState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/custOrSupNameText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>custOrSuppAddress1}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/custOrSupAddr1}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="custOrSupAddr1" value="{InvoiceItemModel>/custOrSupAddr1}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/custOrSupAddr1State', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/custOrSupAddr1Text}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>custOrSuppAddress2}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/custOrSupAddr2}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="custOrSupAddr2" value="{InvoiceItemModel>/custOrSupAddr2}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/custOrSupAddr2State', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/custOrSupAddr2Text}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>custOrSuppAddress4}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/custOrSupAddr4}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="custOrSupAddr4" value="{InvoiceItemModel>/custOrSupAddr4}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/custOrSupAddr4State', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/custOrSupAddr4Text}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>customerPincode}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/custPincode}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="custPincode" value="{InvoiceItemModel>/custPincode}" maxLength="6" type="Number" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/custPincodeState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/custPincodeText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>billToState}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<!--<Text text="{InvoiceItemModel>/billToState}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>-->
+			<!--<Input name="billToState" value="{InvoiceItemModel>/billToState}" maxLength="2" visible="{InvoiceItemModel>/edit}"-->
+			<!--	valueState="{path:'InvoiceItemModel>/billToStateState', formatter:'.formatter.formatState'}"-->
+			<!--	valueStateText="{InvoiceItemModel>/billToStateText}"/>-->
+			<ComboBox name="billToState" selectedKey="{InvoiceItemModel>/billToState}"
+				valueState="{path:'InvoiceItemModel>/billToStateState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/billToStateText}" showSecondaryValues="true"
+				items="{ path: 'stateCode>/resp/states', sorter: { path: 'state' } }" visible="{= !${InvoiceItemModel>/edit}}" class="checkBoxHideBorder"
+				editable="false">
+				<core:ListItem key="{stateCode>state}" text="{stateCode>state} - {stateCode>value}"/>
+			</ComboBox>
+			<ComboBox name="billToState" selectedKey="{InvoiceItemModel>/billToState}"
+				valueState="{path:'InvoiceItemModel>/billToStateState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/billToStateText}" showSecondaryValues="true"
+				items="{ path: 'stateCode>/resp/states', sorter: { path: 'state' } }" visible="{InvoiceItemModel>/edit}">
+				<core:ListItem key="{stateCode>state}" text="{stateCode>state} - {stateCode>value}"/>
+			</ComboBox>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>pos}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/pos}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="pos" value="{InvoiceItemModel>/pos}" maxLength="2" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/posState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/posText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>customerPhone}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/custPhone}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="custPhone" value="{InvoiceItemModel>/custPhone}" maxLength="100" type="Number" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/custPhoneState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/custPhoneText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>customerEmail}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/custEmail}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="custEmail" value="{InvoiceItemModel>/custEmail}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/custEmailState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/custEmailText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>customerPANOrAadhaar}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/custPANOrAadhaar}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="custPANOrAadhaar" value="{InvoiceItemModel>/custPANOrAadhaar}" maxLength="16" liveChange="alphaNumberSpecial"
+				visible="{InvoiceItemModel>/edit}" valueState="{path:'InvoiceItemModel>/custPANOrAadhaarState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/custPANOrAadhaarText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>customerTan}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/custTan}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="custTan" value="{InvoiceItemModel>/custTan}" maxLength="10" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/custTanState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/custTanText}"/>
+		</VBox>
+	</l:Grid>
+	<Toolbar class="toolbarbot sapUiTinyMarginBottom">
+		<Label text="Ship to Details" design="Bold" class="sapUiSmallMarginBegin titleFont"/>
+	</Toolbar>
+	<l:Grid defaultSpan="L2" hSpacing="2" vSpacing="2" class="sapUiTinyMarginTop">
+		<VBox>
+			<Label text="{i18n>shipToGstin}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/shipToGstin}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="shipToGstin" value="{InvoiceItemModel>/shipToGstin}" maxLength="15" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/shipToGstinState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/shipToGstinText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>shipToTradeName}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/shipToTradeName}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="shipToTradeName" value="{InvoiceItemModel>/shipToTradeName}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/shipToTradeNameState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/shipToTradeNameText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>shipToLegalName}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/shipToLegalName}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="shipToLegalName" value="{InvoiceItemModel>/shipToLegalName}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/shipToLegalNameState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/shipToLegalNameText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>shipToBuildingNumber}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/shipToBuildingNo}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="shipToBuildingNo" value="{InvoiceItemModel>/shipToBuildingNo}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/shipToBuildingNoState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/shipToBuildingNoText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>shipToBuildingName}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/shipToBuildingName}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="shipToBuildingName" value="{InvoiceItemModel>/shipToBuildingName}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/shipToBuildingNameState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/shipToBuildingNameText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>shipToLocation}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/shipToLocation}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="shipToLocation" value="{InvoiceItemModel>/shipToLocation}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/shipToLocationState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/shipToLocationText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>shipToPincode}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/shipToPincode}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="shipToPincode" value="{InvoiceItemModel>/shipToPincode}" maxLength="6" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/shipToPincodeState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/shipToPincodeText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>shipToState}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<!--<Text text="{InvoiceItemModel>/shipToState}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>-->
+			<!--<Input name="shipToState" value="{InvoiceItemModel>/shipToState}" maxLength="2" visible="{InvoiceItemModel>/edit}"-->
+			<!--	valueState="{path:'InvoiceItemModel>/shipToStateState', formatter:'.formatter.formatState'}"-->
+			<!--	valueStateText="{InvoiceItemModel>/shipToStateText}"/>-->
+			<ComboBox name="shipToState" selectedKey="{InvoiceItemModel>/shipToState}"
+				valueState="{path:'InvoiceItemModel>/shipToStateState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/shipToStateText}" showSecondaryValues="true"
+				items="{ path: 'stateCode>/resp/states', sorter: { path: 'state' } }" visible="{= !${InvoiceItemModel>/edit}}" class="checkBoxHideBorder"
+				editable="false">
+				<core:ListItem key="{stateCode>state}" text="{stateCode>state} - {stateCode>value}"/>
+			</ComboBox>
+			<ComboBox name="shipToState" selectedKey="{InvoiceItemModel>/shipToState}"
+				valueState="{path:'InvoiceItemModel>/shipToStateState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/shipToStateText}" showSecondaryValues="true"
+				items="{ path: 'stateCode>/resp/states', sorter: { path: 'state' } }" visible="{InvoiceItemModel>/edit}">
+				<core:ListItem key="{stateCode>state}" text="{stateCode>state} - {stateCode>value}"/>
+			</ComboBox>
+		</VBox>
+	</l:Grid>
+	<Toolbar class="toolbarbot sapUiTinyMarginBottom">
+		<Label text="Seller Details" design="Bold" class="sapUiSmallMarginBegin titleFont"/>
+	</Toolbar>
+	<l:Grid defaultSpan="L2" hSpacing="2" vSpacing="2" class="sapUiTinyMarginTop">
+		<VBox>
+			<Label text="{i18n>supplierGstin}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/suppGstin}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>supplierTradeName}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/supTradeName}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="supTradeName" value="{InvoiceItemModel>/supTradeName}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/supTradeNameState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/supTradeNameText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>supplierLegalName}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/supLegalName}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="supLegalName" value="{InvoiceItemModel>/supLegalName}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/supLegalNameState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/supLegalNameText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>supplierAddress1}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/supBuildingNo}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="custOrSupAddr1" value="{InvoiceItemModel>/supBuildingNo}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/custOrSupAddr1State', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/custOrSupAddr1Text}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>supplierAddress2}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/supBuildingName}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="custOrSupAddr2" value="{InvoiceItemModel>/supBuildingName}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/custOrSupAddr2State', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/custOrSupAddr2Text}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>supplierLocation}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/supLocation}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="supLocation" value="{InvoiceItemModel>/supLocation}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/supLocationState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/supLocationText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>supplierPincode}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/supPincode}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="supPincode" value="{InvoiceItemModel>/supPincode}" maxLength="6" type="Number" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/supPincodeState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/supPincodeText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>supplierStateCode}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<!--<Text text="{InvoiceItemModel>/supStateCode}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>-->
+			<!--<Input name="supStateCode" value="{InvoiceItemModel>/supStateCode}" maxLength="2" type="Number" visible="{InvoiceItemModel>/edit}"-->
+			<!--	valueState="{path:'InvoiceItemModel>/supStateCodeState', formatter:'.formatter.formatState'}"-->
+			<!--	valueStateText="{InvoiceItemModel>/supStateCodeText}"/>-->
+			<ComboBox name="supStateCode" selectedKey="{InvoiceItemModel>/supStateCode}"
+				valueState="{path:'InvoiceItemModel>/supStateCodeState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/supStateCodeText}" showSecondaryValues="true"
+				items="{ path: 'stateCode>/resp/states', sorter: { path: 'state' } }" visible="{= !${InvoiceItemModel>/edit}}" class="checkBoxHideBorder"
+				editable="false">
+				<core:ListItem key="{stateCode>state}" text="{stateCode>state} - {stateCode>value}"/>
+			</ComboBox>
+			<ComboBox name="supStateCode" selectedKey="{InvoiceItemModel>/supStateCode}"
+				valueState="{path:'InvoiceItemModel>/supStateCodeState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/supStateCodeText}" showSecondaryValues="true"
+				items="{ path: 'stateCode>/resp/states', sorter: { path: 'state' } }" visible="{InvoiceItemModel>/edit}">
+				<core:ListItem key="{stateCode>state}" text="{stateCode>state} - {stateCode>value}"/>
+			</ComboBox>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>supplierPhone}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/supPhone}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="supPhone" value="{InvoiceItemModel>/supPhone}" maxLength="10" type="Number" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/supPhoneState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/supPhoneText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>supplierEmail}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/supEmail}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="supEmail" value="{InvoiceItemModel>/supEmail}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/supEmailState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/supEmailText}"/>
+		</VBox>
+	</l:Grid>
+	<Toolbar class="toolbarbot sapUiTinyMarginBottom">
+		<Label text="Dispatcher Details" design="Bold" class="sapUiSmallMarginBegin titleFont"/>
+	</Toolbar>
+	<l:Grid id="idgrid12" defaultSpan="L2" hSpacing="2" vSpacing="2" class="sapUiTinyMarginTop">
+		<VBox>
+			<Label text="{i18n>dispatcherGstin}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/dispatcherGstin}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="dispatcherGstin" value="{InvoiceItemModel>/dispatcherGstin}" maxLength="15" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/dispatcherGstinState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/dispatcherGstinText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>dispatcherTradeName}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/dispatcherTradeName}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="dispatcherTradeName" value="{InvoiceItemModel>/dispatcherTradeName}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/dispatcherTradeNameState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/dispatcherTradeNameText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>dispatcherBuildingNumber}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/dispatcherBuildingNo}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="dispatcherBuildingNo" value="{InvoiceItemModel>/dispatcherBuildingNo}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/dispatcherBuildingNoState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/dispatcherBuildingNoText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>dispatcherBuildingName}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/dispatcherBuildingName}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="dispatcherBuildingName" value="{InvoiceItemModel>/dispatcherBuildingName}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/dispatcherBuildingNameState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/dispatcherBuildingNameText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>dispatcherLocation}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/dispatcherLocation}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="dispatcherLocation" value="{InvoiceItemModel>/dispatcherLocation}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/dispatcherLocationState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/dispatcherLocationText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>dispatcherPincode}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/dispatcherPincode}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="dispatcherPincode" value="{InvoiceItemModel>/dispatcherPincode}" maxLength="6" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/dispatcherPincodeState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/dispatcherPincodeText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>dispatcherStateCode}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<!--<Text text="{InvoiceItemModel>/dispatcherStateCode}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>-->
+			<!--<Input name="dispatcherStateCode" value="{InvoiceItemModel>/dispatcherStateCode}" maxLength="2" visible="{InvoiceItemModel>/edit}"-->
+			<!--	valueState="{path:'InvoiceItemModel>/dispatcherStateCodeState', formatter:'.formatter.formatState'}"-->
+			<!--	valueStateText="{InvoiceItemModel>/dispatcherStateCodeText}"/>-->
+			<ComboBox name="dispatcherStateCode" selectedKey="{InvoiceItemModel>/dispatcherStateCode}"
+				valueState="{path:'InvoiceItemModel>/dispatcherStateCodeState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/dispatcherStateCodeText}" showSecondaryValues="true"
+				items="{ path: 'stateCode>/resp/states', sorter: { path: 'state' } }" visible="{= !${InvoiceItemModel>/edit}}" class="checkBoxHideBorder"
+				editable="false">
+				<core:ListItem key="{stateCode>state}" text="{stateCode>state} - {stateCode>value}"/>
+			</ComboBox>
+			<ComboBox name="dispatcherStateCode" selectedKey="{InvoiceItemModel>/dispatcherStateCode}"
+				valueState="{path:'InvoiceItemModel>/dispatcherStateCodeState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/dispatcherStateCodeText}" showSecondaryValues="true"
+				items="{ path: 'stateCode>/resp/states', sorter: { path: 'state' } }" visible="{InvoiceItemModel>/edit}">
+				<core:ListItem key="{stateCode>state}" text="{stateCode>state} - {stateCode>value}"/>
+			</ComboBox>
+		</VBox>
+	</l:Grid>
+</core:FragmentDefinition>

@@ -1,0 +1,166 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<ui:Table id="tabCreditLedgerDtl" rows="{CreditDtls>/resp}" selectionMode="None" class="sapUiTinyMarginTop sapUiTinyMarginBeginEnd"
+		visible="false">
+		<ui:extension>
+			<Toolbar height="3.2rem">
+				<VBox>
+					<Label text="From Date"/>
+					<DatePicker id="dtLedgrCreditFromDate" displayFormat="MMM dd, yyyy" valueFormat="dd-MM-yyyy" change="onFromDateChangeLedgrCredit"/>
+				</VBox>
+				<VBox>
+					<Label text="To Date"/>
+					<DatePicker id="dtLedgrCreditToDate" displayFormat="MMM dd, yyyy" valueFormat="dd-MM-yyyy"/>
+				</VBox>
+				<VBox>
+					<Label/>
+					<Button text="Filter" press="onPrsCreditGo" class="buttoncolor"/>
+				</VBox>
+				<ToolbarSpacer/>
+				<Button text="Excel Download" class="buttoncolorSec" icon="sap-icon://excel-attachment" tooltip="Download details in Excel"
+					iconFirst="false" press="onDtlCreditDwnld"/>
+				<Button text="PDF Download" icon="sap-icon://pdf-attachment" tooltip="Download details in PDF" press="onDownloadCreditLedgerPdf"
+					class="buttoncolorSec"/>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="4rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text="Sr.No" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{CreditDtls>tabSerNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="7rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text="Date" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{CreditDtls>itcTransDate}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="9rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text="Reference No" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{CreditDtls>refNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="6rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text="Tax Period" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{CreditDtls>taxPeriod}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="Begin">
+				<ui:multiLabels>
+					<Label text="Description" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{CreditDtls>desc}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="15rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text="Transaction Type(Debit/Credit)" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{CreditDtls>transType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="5" width="8rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text="Credit/Debit" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'CreditDtls>crDrIgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'CreditDtls>crDrCgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="SGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'CreditDtls>crDrSgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'CreditDtls>crDrCess',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Total" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'CreditDtls>crDrTotal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="5" width="8rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text="Balance" textAlign="Center" design="Bold"/>
+					<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'CreditDtls>balIgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'CreditDtls>balCgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="SGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'CreditDtls>balSgst',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'CreditDtls>balCess',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Total" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'CreditDtls>balTotal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+	</ui:Table>
+</core:FragmentDefinition>

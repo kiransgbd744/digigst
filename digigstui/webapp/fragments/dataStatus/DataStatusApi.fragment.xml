@@ -1,0 +1,137 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<ui:Table id="tabData" rows="{Data>/}" selectionMode="MultiToggle" selectionBehavior="RowSelector" visibleRowCount="12" fixedRowCount="1"
+		enableSelectAll="false" visible="true" rowSelectionChange="onRowSelectionChange">
+		<ui:extension>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button type="Emphasized" id="bStatsSumm" text="{i18n>viewSummary}" press="onPressSummary"/>
+				<!--<Button type="Emphasized" id="bStatsSave" text="Save to GSTN" press="onButtonPress" tooltip="{i18n>btnOutwardTip}" visible="false"/>-->
+				<!--<Button type="Emphasized" id="bStatsAppr" text="Request for Approval" press="onButtonPress" visible="false"/>-->
+				<Button type="Reject" id="bStatsDel" text="Delete Data" enabled="false" press="onButtonPress"/>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="9rem">
+				<Label text="{i18n>receiveDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ObjectIdentifier title="{path:'Data>receivedDate', formatter:'.formatter.dateFormat'}" titleActive="true" titlePress="onPressDetail"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" visible="{=${DataStatus>/withSAPTotal}==='Y'?true:false}">
+				<Label text="{i18n>sapTotal}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{Data>sapTotal}"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" visible="{=${DataStatus>/withSAPTotal}==='Y'?true:false}">
+				<Label text="{i18n>difference} ({i18n>inCount})" textAlign="Center" tooltip="{i18n>diffTip}" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{Data>diff}"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<Label text="{i18n>totalAsp}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{Data>totalRecords}"/>
+						<core:Icon src="sap-icon://download" tooltip="{i18n>download}" size="0.75rem" class="sapUiTinyMarginBegin"
+							press="onPressReportDownload($event,${Data>totalRecords},'totalrecords')"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" headerSpan="2">
+				<ui:multiLabels>
+					<Label text="{i18n>processed}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<Label text="{i18n>active}" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Link text="{Data>processedActive}" press="onPressStatsLink($event,'api','P',${Data>processedActive})"/>
+						<core:Icon src="sap-icon://download" tooltip="{i18n>download}" size="0.75rem" class="sapUiTinyMarginBegin"
+							press="onPressReportDownload($event,${Data>processedActive},'processed','processedActive')"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="{i18n>inactive}" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{Data>processedInactive}"/>
+						<core:Icon src="sap-icon://download" tooltip="{i18n>download}" size="0.75rem" class="sapUiTinyMarginBegin"
+							press="onPressReportDownload($event,${Data>processedInactive},'processed','processedInactive')"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" headerSpan="2">
+				<ui:multiLabels>
+					<HBox justifyContent="Center" width="100%">
+						<Label text="{i18n>error}" design="Bold"/>
+						<core:Icon src="sap-icon://download" tooltip="{i18n>downError}" size="0.75rem" press=".onPressCatalog($event,'err','api')"
+							class="sapUiTinyMarginBegin"/>
+					</HBox>
+					<Label text="{i18n>active}" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Link text="{Data>errorActive}" press="onPressStatsLink($event,'api','E',${Data>errorActive})"/>
+						<core:Icon src="sap-icon://download" tooltip="{i18n>download}" size="0.75rem" class="sapUiTinyMarginBegin"
+							press="onPressReportDownload($event,${Data>errorActive},'error','errorActive')"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="{i18n>inactive}" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{Data>errorInactive}"/>
+						<core:Icon src="sap-icon://download" tooltip="{i18n>download}" size="0.75rem" class="sapUiTinyMarginBegin"
+							press="onPressReportDownload($event,${Data>errorInactive},'error','errorInactive')"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" headerSpan="2">
+				<ui:multiLabels>
+					<HBox justifyContent="Center" width="100%">
+						<Label text="{i18n>info}" design="Bold" tooltip="{i18n>infoTooltip}"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" tooltip="{i18n>downInfo}" press=".onPressCatalog($event,'err','api')"
+							class="sapUiTinyMarginBegin"/>
+					</HBox>
+					<Label text="{i18n>active}" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Link text="{Data>infoActive}" press="onPressStatsLink($event,'api','I',${Data>infoActive})"/>
+						<core:Icon src="sap-icon://download" tooltip="{i18n>download}" size="0.75rem" class="sapUiTinyMarginBegin"
+							press="onPressReportDownload($event,${Data>infoActive},'processedinfo','processedInfoActive')"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="{i18n>inactive}" design="Bold" textAlign="Center" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{Data>infoInactive}"/>
+						<core:Icon src="sap-icon://download" tooltip="{i18n>download}" size="0.75rem" class="sapUiTinyMarginBegin"
+							press="onPressReportDownload($event,${Data>infoInactive},'processedinfo','processedInfoInactive')"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+		<ui:footer>
+			<ObjectStatus text="{i18n>noteApiStatus}" state="Error"/>
+		</ui:footer>
+	</ui:Table>
+</core:FragmentDefinition>

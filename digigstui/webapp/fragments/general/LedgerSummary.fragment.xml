@@ -1,0 +1,358 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table"
+	core:require="{util: 'com/ey/digigst/util/Formatter'}">
+	<ui:Table id="tabLedger" rows="{path:'LedgerTable>/resp', sorter: {path: 'gstin',descending:false}}" fixedColumnCount="2"
+		visibleRowCount="17" visible="{=${ViewProperty>/table}==='tabLedger'}" class="sapUiTinyMarginTop sapUiTinyMarginBeginEnd">
+		<ui:extension>
+			<Toolbar height="3.2rem">
+				<VBox visible="false">
+					<Label text="Tax Period" class="sapUiTinyMarginBegin"/>
+					<DatePicker id="dtLedger" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+				</VBox>
+				<ToolbarSpacer/>
+				<VBox>
+					<Label/>
+					<HBox>
+						<MenuButton text="Get/Save ITC Reversal and Reclaim" class="buttoncolorSec ledger19">
+							<Menu itemSelected="onGetSaveItcReversalAction(${$parameters>/item/mProperties/key})">
+								<MenuItem key="getItcReversal" text="Get Opening Balance for Credit Reversal and Re-Claimed Ledger"/>
+								<MenuItem key="saveItcReversal" text="Save Opening Balance for Credit Reversal and Re-Claimed Ledger"/>
+							</Menu>
+						</MenuButton>
+						<MenuButton text="Get/Save RCM" class="sapUiTinyMarginBeginEnd buttoncolorSec">
+							<Menu itemSelected="onGetSaveRcmAction(${$parameters>/item/mProperties/key})">
+								<MenuItem key="getRcmLedger" text="Get opening balance for RCM Ledger"/>
+								<MenuItem key="saveRcmLedger" text="Save opening balance for RCM Ledger"/>
+							</Menu>
+						</MenuButton>
+						<Button text="Get Liability Ledger call" press="onGetLedgerCall('L')" class="buttoncolorSec"/>
+						<MenuButton text="Get Detailed Ledger Call" beforeMenuOpen="onGetLedgerCall('C')" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+						<Button text="Get Ledger Call" press="onRefresh" class="sapUiTinyMarginEnd buttoncolorSec"/>
+						<Button type="Transparent" icon="sap-icon://refresh" press="onPressGo" tooltip="Refresh"/>
+						<Button type="Transparent" icon="sap-icon://download" tooltip="Download" enabled="{= ${userPermission>/appPermission/P99}}"
+							press="onDownloadLedger"/>
+					</HBox>
+				</VBox>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="14rem" hAlign="Begin">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="GSTIN" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<VBox>
+						<HBox>
+							<Text text="{LedgerTable>state}" textAlign="Begin" width="8rem" class="stateColor"/>
+						</HBox>
+						<HBox alignContent="Start" justifyContent="SpaceBetween">
+							<Link text="{LedgerTable>gstin}"/>
+							<core:Icon src="sap-icon://circle-task-2" size="0.8rem" tooltip="Generate OTP" visible="{=!!${LedgerTable>gstin}}"
+								press="onActivateAuthToken(${LedgerTable>gstin},${LedgerTable>status})">
+								<core:customData>
+									<core:CustomData key="authToken" value="{=!${LedgerTable>status}?'':${LedgerTable>status}}" writeToDom="true"/>
+								</core:customData>
+							</core:Icon>
+						</HBox>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Get Ledger Call Status" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus text="{LedgerTable>getCallStatus}" state="{path:'LedgerTable>getCallStatus', formatter:'.formatter.statusClr'}" active="false"/>
+						<Text text="{LedgerTable>getCallStatusTimeStamp}" class="timeStmpClr"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="5" minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text="Electronic Credit Register" textAlign="Center" width="100%" design="Bold"/>
+					<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>itcigst_totbal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>itccgst_totbal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="SGST/UTGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>itcsgst_totbal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>itccess_totbal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="5rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Details" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<core:Icon src="sap-icon://detail-view" color="#007ad9" width="0.8rem" tooltip="Go to Detailed Ledger" press="onPrsDtlCreditLdgr"
+						visible="{parts:['LedgerTable>itcigst_totbal','LedgerTable>itccgst_totbal','LedgerTable>itcsgst_totbal'],formatter:'._visiDetIcon'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="5" minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text="Electronic Cash Ledger" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>cashigst_tot_bal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>cashcgst_tot_bal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="SGST/UTGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>cashsgst_tot_bal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>cashcess_tot_bal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="5rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Details" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<core:Icon src="sap-icon://detail-view" color="#007ad9" width="0.8rem" tooltip="Go to Detailed Ledger" press="onPrsDtlCashLdgr"
+						visible="{parts:['LedgerTable>cashigst_tot_bal','LedgerTable>cashcgst_tot_bal','LedgerTable>cashsgst_tot_bal'],formatter:'._visiDetIcon'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="5" minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text="Electronic Liability Ledger" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>libigst_totbal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>libcgst_totbal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="SGST/UTGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>libsgst_totbal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>libcess_totbal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="5rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Details" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<core:Icon src="sap-icon://detail-view" color="#007ad9" width="0.8rem" tooltip="Go to Detailed Ledger" press="onDetLiblyLdgr"
+						visible="{parts:['LedgerTable>libigst_totbal','LedgerTable>libcgst_totbal','LedgerTable>libsgst_totbal'],formatter:'._visiDetIcon'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="5" minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text="Electronic Credit Reversal &amp; Re-claim Ledger" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>crRevigst_totbal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>crRevcgst_totbal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="SGST/UTGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>crRevsgst_totbal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>crRevcess_totbal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="5rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Details" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<core:Icon src="sap-icon://detail-view" color="#007ad9" width="0.8rem" tooltip="Go to Detailed Ledger" press="onDetCrRevNReclaimLedger"
+						visible="{parts:['LedgerTable>crRevigst_totbal','LedgerTable>crRevcgst_totbal','LedgerTable>crRevsgst_totbal'],formatter:'._visiDetIcon'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="5" minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text="ITC RCM Ledger" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>rcmIgst_totbal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>rcmCgst_totbal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="SGST/UTGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>rcmSgst_totbal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>rcmCess_totbal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="5rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Details" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<core:Icon src="sap-icon://detail-view" color="#007ad9" width="0.8rem" tooltip="Go to Detailed Ledger" press="onDetRcmLedger"
+						visible="{parts:['LedgerTable>rcmIgst_totbal','LedgerTable>rcmCgst_totbal','LedgerTable>rcmSgst_totbal'],formatter:'._visiDetIcon'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="5" minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text="Negative Liability Ledger" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>negativeIgst_totbal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>negativeCgst_totbal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="SGST/UTGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>negativeSgst_totbal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LedgerTable>negativeCess_totbal',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="5rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Details" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<core:Icon src="sap-icon://detail-view" color="#007ad9" width="0.8rem" tooltip="Go to Detailed Ledger" press="onDetNegativeLiability"
+						visible="{parts:['LedgerTable>negativeIgst_totbal','LedgerTable>negativeCgst_totbal','LedgerTable>negativeSgst_totbal'],formatter:'._visiDetIcon'}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+		<ui:footer>
+			<HBox>
+				<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+				<Text text="Auth Token Active" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+				<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+				<Text text="Auth Token Inactive" class="sapUiTinyMarginBegin"/>
+			</HBox>
+		</ui:footer>
+	</ui:Table>
+</core:FragmentDefinition>

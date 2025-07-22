@@ -1,0 +1,217 @@
+package com.ey.advisory.app.services.validation.purchase;
+
+import static com.ey.advisory.common.GSTConstants.APP_VALIDATION;
+import static com.ey.advisory.common.GSTConstants.HSNORSAC;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.IntStream;
+
+import org.javatuples.Pair;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+import com.ey.advisory.admin.data.entities.client.EntityConfigPrmtEntity;
+import com.ey.advisory.app.data.entities.client.InwardTransDocLineItem;
+import com.ey.advisory.app.data.entities.client.InwardTransDocument;
+import com.ey.advisory.app.services.validation.DocRulesValidator;
+import com.ey.advisory.app.services.validation.sales.ProductMasterRateAndHsnValUtil;
+import com.ey.advisory.app.util.OnboardingQuestionValidationsUtil;
+import com.ey.advisory.common.GSTConstants;
+import com.ey.advisory.common.ProcessingContext;
+import com.ey.advisory.common.ProcessingResult;
+import com.ey.advisory.common.ProcessingResultType;
+import com.ey.advisory.common.StaticContextHolder;
+import com.ey.advisory.common.TransDocProcessingResultLoc;
+
+/**
+ * @author Siva.Nandam
+ *
+ */
+public class HsnOrSacANDRateMasterValidation
+		implements DocRulesValidator<InwardTransDocument> {
+
+	@Autowired
+	@Qualifier("OnboardingQuestionValidationsUtil")
+	private OnboardingQuestionValidationsUtil util;
+
+	public static final BigDecimal TWO = new BigDecimal("2");
+
+	@Override
+	public List<ProcessingResult> validate(InwardTransDocument document,
+			ProcessingContext context) {
+
+		List<InwardTransDocLineItem> items = document.getLineItems();
+
+		List<ProcessingResult> errors = new ArrayList<>();
+
+		if (document.getCgstin() == null || document.getCgstin().isEmpty())
+			return errors;
+
+		String paramkryId = GSTConstants.I9;
+		util = StaticContextHolder.getBean("OnboardingQuestionValidationsUtil",
+				OnboardingQuestionValidationsUtil.class);
+		Map<Long, List<EntityConfigPrmtEntity>> entityConfigParamMap = document
+				.getEntityConfigParamMap();
+	//	String paramtrvalue = util.valid(paramkryId, document.getCgstin());
+		String paramtrvalue = util.valid(entityConfigParamMap, paramkryId,
+				document.getEntityId());
+		String paramkryId10 = GSTConstants.I10;
+		//String paramtrvalue10 = util.valid(paramkryId10, document.getCgstin());
+		String paramtrvalue10 = util.valid(entityConfigParamMap, paramkryId10,
+				document.getEntityId());
+		if (paramtrvalue == null || paramtrvalue.isEmpty())
+			return errors;
+
+		if (paramtrvalue.equalsIgnoreCase(GSTConstants.C)) {
+			IntStream.range(0, items.size()).forEach(idx -> {
+				InwardTransDocLineItem item = items.get(idx);
+				if (item.getHsnSac() != null && !item.getHsnSac().isEmpty()) {
+					boolean isIntra = isIntraState(document);
+					
+					String regex = "^[0-9]*$";
+					Pattern pattern = Pattern.compile(regex);
+
+					Matcher matcher = pattern.matcher(item.getHsnSac().trim());
+					if(matcher.matches()){
+					Integer hsnOrsac = Integer.parseInt(item.getHsnSac());
+					if (hsnOrsac > 0) {
+						
+						BigDecimal igstRate = item.getIgstRate();
+						BigDecimal cgstRate = item.getCgstRate();
+						BigDecimal sgstRate = item.getSgstRate();
+						if (igstRate == null) {
+							igstRate = BigDecimal.ZERO;
+						}
+
+						if (cgstRate == null) {
+							cgstRate = BigDecimal.ZERO;
+						}
+
+						if (sgstRate == null) {
+							sgstRate = BigDecimal.ZERO;
+						}
+						BigDecimal cgstRatemul = cgstRate.multiply(TWO);
+						BigDecimal sgstRatemul = sgstRate.multiply(TWO);
+						
+						Map<String, List<Pair<Integer, BigDecimal>>> 
+		                map = document.getMasterItemMap();
+						if(map==null){
+							if (paramtrvalue10 != null && paramtrvalue10
+									.equalsIgnoreCase(GSTConstants.A)) {
+								Set<String> errorLocations = new HashSet<>();
+								errorLocations.add(HSNORSAC);
+								errorLocations.add(GSTConstants.IGST_RATE);
+								errorLocations.add(GSTConstants.CGST_RATE);
+								errorLocations.add(GSTConstants.SGST_RATE);
+								TransDocProcessingResultLoc location 
+								             = new TransDocProcessingResultLoc(
+										idx, errorLocations.toArray());
+								errors.add(new ProcessingResult(APP_VALIDATION,
+										"ER0521",
+										"HSN + Rate combination provided "
+										+ "is not as per Product Master",
+										location));
+							}
+							if (paramtrvalue10 != null && paramtrvalue10
+									.equalsIgnoreCase(GSTConstants.B)) {
+								Set<String> errorLocations = new HashSet<>();
+								errorLocations.add(HSNORSAC);
+								errorLocations.add(GSTConstants.IGST_RATE);
+								errorLocations.add(GSTConstants.CGST_RATE);
+								errorLocations.add(GSTConstants.SGST_RATE);
+								TransDocProcessingResultLoc location 
+								           = new TransDocProcessingResultLoc(
+										idx, errorLocations.toArray());
+								errors.add(
+										new ProcessingResult(APP_VALIDATION,
+												ProcessingResultType.INFO,
+												"IN0508",
+												"HSN + Rate combination "
+												+ "provided is not as per "
+												+ "Product Master",
+												location));
+							}
+						}
+						if(map!=null){
+						boolean igstValid = ProductMasterRateAndHsnValUtil
+								.isValidHsnAndRate(map, hsnOrsac,
+										igstRate,document.getSgstin());
+
+						boolean cgstValid = ProductMasterRateAndHsnValUtil
+								.isValidHsnAndRate(map, hsnOrsac,
+										cgstRatemul,document.getSgstin());
+
+						boolean sgstValid = ProductMasterRateAndHsnValUtil
+								.isValidHsnAndRate(map, hsnOrsac,
+										sgstRatemul,document.getSgstin());
+		
+						
+						
+						if((!isIntra && !igstValid) 
+								|| (isIntra && !cgstValid) 
+								||  (isIntra && !sgstValid) 
+								){
+						
+							if (paramtrvalue10 != null && paramtrvalue10
+									.equalsIgnoreCase(GSTConstants.A)) {
+								Set<String> errorLocations = new HashSet<>();
+								errorLocations.add(HSNORSAC);
+								errorLocations.add(GSTConstants.IGST_RATE);
+								errorLocations.add(GSTConstants.CGST_RATE);
+								errorLocations.add(GSTConstants.SGST_RATE);
+								TransDocProcessingResultLoc location 
+								             = new TransDocProcessingResultLoc(
+										idx, errorLocations.toArray());
+								errors.add(new ProcessingResult(APP_VALIDATION,
+										"ER0521",
+										"HSN + Rate combination provided "
+										+ "is not as per Product Master",
+										location));
+							}
+							if (paramtrvalue10 != null && paramtrvalue10
+									.equalsIgnoreCase(GSTConstants.B)) {
+								Set<String> errorLocations = new HashSet<>();
+								errorLocations.add(HSNORSAC);
+								errorLocations.add(GSTConstants.IGST_RATE);
+								errorLocations.add(GSTConstants.CGST_RATE);
+								errorLocations.add(GSTConstants.SGST_RATE);
+								TransDocProcessingResultLoc location 
+								           = new TransDocProcessingResultLoc(
+										idx, errorLocations.toArray());
+								errors.add(
+										new ProcessingResult(APP_VALIDATION,
+												ProcessingResultType.INFO,
+												"IN0508",
+												"HSN + Rate combination "
+												+ "provided is not as per "
+												+ "Product Master",
+												location));
+							}
+						}
+					}
+				}
+				}
+				}
+			});
+		}
+
+		return errors;
+
+	}
+
+	private String getFirst2CharsOfSgstin(InwardTransDocument doc) {
+		return doc.getCgstin().substring(0, 2);
+	}
+
+	private boolean isIntraState(InwardTransDocument doc) {
+		String first2Chars = getFirst2CharsOfSgstin(doc);
+		return first2Chars.equals(doc.getPos());
+	}
+}

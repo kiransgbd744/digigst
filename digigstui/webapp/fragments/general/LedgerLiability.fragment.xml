@@ -1,0 +1,504 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<ui:Table id="idtableLiability" rows="{LiabilityDtl>/resp}" selectionMode="None" class="sapUiTinyMarginTop sapUiTinyMarginBeginEnd"
+		visible="false">
+		<ui:extension>
+			<Toolbar height="4rem">
+				<VBox>
+					<Label text="Tax Period" class="sapUiTinyMarginBegin"/>
+					<DatePicker id="dtLibDtl" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+				</VBox>
+				<VBox>
+					<Label/>
+					<Button text="Filter" class="buttoncolor" press="onGoLibDtls"/>
+				</VBox>
+				<ToolbarSpacer/>
+				<Button text="Excel Download" class="buttoncolorSec" icon="sap-icon://excel-attachment" tooltip="Download details in Excel"
+					iconFirst="false" press="onPrsLibExclDwnld"/>
+				<Button text="PDF Download" class="buttoncolorSec" icon="sap-icon://pdf-attachment" iconFirst="false" tooltip="Download details in PDF"
+					press="onPrsLibPDFDwnld"/>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="8rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text="Sr.No" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{LiabilityDtl>oDtlLibSrNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text="Date" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{LiabilityDtl>dt}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="10rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text="Reference No" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{LiabilityDtl>ref_no}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="18rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text="Ledger Used for Discharging Liability" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{LiabilityDtl>disTyp}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="13rem" hAlign="Begin">
+				<ui:multiLabels>
+					<Label text="Description" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{LiabilityDtl>desc}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="16rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text="Transaction Type(Debit/Credit)" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{LiabilityDtl>tr_typ}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="6" width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text="IGST Debited/Credited" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>igst/tx',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Interest" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>igst/intr',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Penalty" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>igst/pen',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Fee" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>igst/fee',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Others" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>igst/oth',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Total" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>igst/tot',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="6" width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text="IGST Balance" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>igstbal/tx',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Interest" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>igstbal/intr',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Penalty" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>igstbal/pen',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Fee" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>igstbal/fee',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Others" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>igstbal/oth',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Total" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>igstbal/tot',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="6" width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text="CGST Debited/Credited" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cgst/tx',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Interest" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cgst/intr',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Penalty" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cgst/pen',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Fee" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cgst/fee',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Others" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cgst/oth',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Total" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cgst/tot',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="6" width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text="CGST Balance" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cgstbal/tx',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Interest" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cgstbal/intr',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Penalty" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cgstbal/pen',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Fee" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cgstbal/fee',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Others" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cgstbal/oth',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Total" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cgstbal/tot',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="6" width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text="SGST Debited/Credited" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>sgst/tx',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Interest" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>sgst/intr',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Penalty" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>sgst/pen',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Fee" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>sgst/fee',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Others" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>sgst/oth',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Total" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>sgst/tot',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="6" width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text="SGST Balance" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>sgstbal/tx',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Interest" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>sgstbal/intr',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Penalty" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>sgstbal/pen',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Fee" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>sgstbal/fee',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Others" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>sgstbal/oth',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Total" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>sgstbal/tot',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="6" width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text="Cess Debited/Credited" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cess/tx',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Interest" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cess/intr',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Penalty" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cess/pen',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Fee" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cess/fee',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Others" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cess/oth',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Total" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cess/tot',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="6" width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text="Cess Balance" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cessbal/tx',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Interest" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cessbal/intr',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Penalty" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cessbal/pen',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Fee" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cessbal/fee',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Others" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cessbal/oth',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Total" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'LiabilityDtl>cessbal/tot',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+	</ui:Table>
+</core:FragmentDefinition>

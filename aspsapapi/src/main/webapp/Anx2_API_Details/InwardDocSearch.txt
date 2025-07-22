@@ -1,0 +1,47 @@
+URL : /inwardDocSearch.do
+Service : POST
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+Request Payload :
+
+{  
+   "hdr":{  
+      "pageNum":0,
+      "pageSize":50
+   },
+   "req":{  
+	  "entityId":["1"],
+      "criteria":"",
+      "receivFromDate":"2019-08-19",
+      "receivToDate":"2019-08-20",
+      "returnFromDate":null,
+      "returnToDate":null,
+      "docNo":null,     
+	  "processingStatus": "E",
+	  "fileId": null,
+	  "dataCategory":[],
+	  "tableNumber":[],
+	  "docType":[],
+	  "returnType":[],
+	  "counterPartyGstin":[],
+      "counterPartyFlag":null,
+      "dataSecAttrs": {
+      	 "PC":["PC08382"],
+         "GSTIN":[],
+         "Plant":[],
+         "D":[],
+         "PO":[],
+         "DC":[],
+         "L":[],
+         "UD1":[],
+         "UD2":[],
+         "UD3":[],
+         "UD4":[],
+         "UD5":[],
+         "UD6":[]
+      }
+   }
+}
+

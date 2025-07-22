@@ -1,0 +1,247 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage id="dpITC04Summary" class="cl_dpScroll" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" class="sapUiTinyMarginEnd" tooltip="{i18>back}" press="onPressBack"/>
+						<Title text="ITC - 04" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar id="fbSummaryRecord" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="slSummaryGstin" items="{path:'DataPermission>/respData/dataSecurity/gstin'}">
+									<core:Item key="{DataPermission>value}" text="{DataPermission>value}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Financial year" visibleInFilterBar="true">
+							<fb:control>
+								<Select width="100%" id="slSFinancialyear" items="{oFyModel>/finYears}" forceSelection="true" change="onFnYear('S')">
+									<core:Item key="{oFyModel>key}" text="{oFyModel>fullFy}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="{i18n>taxPeriod}" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="slSQTaxPeriod" forceSelection="true" width="100%" items="{path:'ITC04taxPeriod>/'}">
+									<core:Item key="{ITC04taxPeriod>key}" text="{ITC04taxPeriod>taxPeriod}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" id="fbSummaryHbox" width="10%">
+					<Button id="bSummaryFilter" class="buttoncolorSec" icon="sap-icon://filter" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilter('S')"/>
+					<!--<Button id="bSummaryClear" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd" press="onPressClear"/>-->
+					<Button id="bSummaryGo" text="Filter" press="onSearch('S')" class="sapUiTinyMarginBeginEnd buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer showFullScreen="false" showZoom="true" showPersonalization="false" autoAdjustHeight="false" visible="true">
+				<commons:toolbar>
+					<OverflowToolbar height="3.2rem">
+						<!--<VBox>
+							<Text text=""/>
+							<HBox>
+								<Label text="{i18n>fileNilReturn}" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop classgstr11"/>
+								<Button type="Emphasized" text="Yes" enabled="false"/>
+							</HBox>
+						</VBox>-->
+						<ToolbarSpacer/>
+						<VBox>
+							<Text text=""/>
+							<HBox>
+								<Button class="buttoncolorSec" text="Get ITC-04 Details" press="onPressITC04GetDetails($event,'S')"
+									enabled="{= ${userPermission>/appPermission/P7}}" visible="true"/>
+								<Button text="{i18n>saveStatus}" press="onPressSaveStatus($event,'S')" enabled="{= ${userPermission>/appPermission/P7}}"
+									class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+								<MenuButton class="buttoncolorSec" text="{i18n>downReport}" enabled="{= ${userPermission>/appPermission/P7}}">
+									<Menu id="bSummaryDownloadRpt" itemSelected="onPressDownloadReport($event,${$parameters>/item},'S')">
+										<MenuItem key="itc04Aspuploaded" text="{i18n>aspUploaded}"/>
+										<MenuItem key="itc04AspSavable" text="{i18n>aspSaveable}"/>
+										<MenuItem key="itc04SavedSubmitted" text="{i18n>saveSubmitted}"/>
+										<MenuItem key="itc04Entitylevel" text="{i18n>entityLevel}"/>
+										<MenuItem key="itc04AspError" text="{i18n>aspError}"/>
+										<MenuItem key="itc04GstnError" text="{i18n>gstnError}"/>
+									</Menu>
+								</MenuButton>
+							</HBox>
+						</VBox>
+						<VBox>
+							<Text text="{SubmitStatus>/timeStamp}" class="timeStmpClr"/>
+							<Button class="buttoncolorSec" text="{i18n>submit}" press="onPressSubmit('S')" width="10rem" enabled="false"/>
+						</VBox>
+						<VBox>
+							<Text text=""/>
+							<Button tclass="buttoncolorSec" id="bApprRequest" text="{i18n>requestApproval}" press="onPressApprovalRequest" enabled="false"/>
+						</VBox>
+						<VBox>
+							<HBox>
+								<Text id="txtStatus" text="{path:'ApprovalStatus>/status',formatter:'.apprStatusText'}">
+									<customData>
+										<core:CustomData key="apprColor" value="{path:'ApprovalStatus>/status',formatter:'.apprStatusColor'}" writeToDom="true"/>
+									</customData>
+								</Text>
+								<Text id="txtReqSent" text="{path:'ApprovalStatus>/timeStamp',formatter:'.apprStatusTime'}" class="timeStmpClr"/>
+							</HBox>
+						</VBox>
+						<!--<HBox>-->
+						<!--<Button type="Emphasized" text="{i18n>signFile}" press="onPressSignNFile('S')" class="sapUiTinyMarginBegin"
+									enabled="{= ${userPermission>/appPermission/P7}}"/>-->
+						<!--</HBox>-->
+						<VBox>
+							<HBox>
+								<Text text="{SignFileStatus>/status}: {SignFileStatus>/timeStamp}" class="submitStatsClr statsFont"/>
+								<Text text=""/>
+							</HBox>
+							<HBox>
+								<!--enabled="{=${SubmitStatus>/signFile}&amp;&amp;!${SignFileStatus>/submit}}"-->
+								<!--<Button class="buttoncolorSec" text="{i18n>signFile}" press="onSignFile" width="8rem" enabled="{= ${userPermission>/appPermission/P7}}"/>-->
+								<MenuButton text="Sign &amp; File" width="9rem" class="sapUiTinyMarginEnd buttoncolorSec" enabled="{= ${userPermission>/appPermission/P7}}">
+									<Menu itemSelected="onSignFile">
+										<MenuItem text="Sign &amp; File ITC-04 (DSC)" key="DSC"/>
+										<MenuItem text="Sign &amp; File ITC-04 (EVC)" key="EVC"/>
+									</Menu>
+								</MenuButton>
+								<Button text="Filing Status" press="onFilingStatus" class="sapUiTinyMarginBegin buttoncolorSec"/>
+							</HBox>
+						</VBox>
+						<!--</VBox>-->
+						<VBox class="sapUiTinyMarginBegin">
+							<HBox>
+								<Text text=""/>
+								<ObjectStatus id="tSummSave" state="Warning"/>
+							</HBox>
+							<Button id="bSaveGstn" text="{i18n>saveGstn}" press="onPressSaveGstn('S')" class="sapUiTinyMarginEnd buttoncolorSec"
+								enabled="{= ${userPermission>/appPermission/P7}}"/>
+						</VBox>
+						<VBox class="sapUiTinyMarginBegin">
+							<HBox>
+								<Text text=""/>
+								<ObjectStatus id="tSummUpdate" state="Warning"/>
+							</HBox>
+							<HBox>
+								<Button class="buttoncolorSec" id="bSummUpdate" text="{i18n>updataGstnData}" enabled="{= ${userPermission>/appPermission/P7}}"
+									press="onUpdateGstnData($event,'S')"/>
+								<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="{i18n>downExcel}" enabled="{= ${userPermission>/appPermission/P7}}"
+									press="onExportExcel('S')"/>
+								<!--<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="{i18n>downPdf}" press="onPressDownloadPdf('S')"-->
+								<!--	enabled="{= ${userPermission>/appPermission/P7}}"/>-->
+								<MenuButton icon="sap-icon://pdf-attachment" type="Transparent" enabled="{= ${userPermission>/appPermission/P7}}" class="cl_dropgstr1"
+									tooltip="{i18n>downPdf}">
+									<Menu>
+										<MenuItem text="As per DigiGST Values" key="delete1" press="onPressDownloadPdf('S','true')"/>
+										<MenuItem text="As per GSTN Values" key="delete2" press="onPressDownloadPdf('S','false')"/>
+									</Menu>
+								</MenuButton>
+							</HBox>
+						</VBox>
+						<commons:ChartContainerToolbarPlaceholder/>
+					</OverflowToolbar>
+				</commons:toolbar>
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<Panel class="sapUiNoContentPadding">
+								<ui:Table id="tabOutward" rows="{ProcessSummary>/itc04Records/}" selectionMode="None" fixedColumnCount="1" visibleRowCount="5">
+									<ui:extension>
+										<!--<Toolbar>
+											<Label text="Showing:" design="Bold"/>
+											<CheckBox text="{i18n>asp}" selected="{visiSummAnx1>/asp}" editable="{=!${visiSummAnx1>/enableAsp}}" select="onSelectCheckBox"/>
+											<CheckBox text="{i18n>gstn}" selected="{visiSummAnx1>/gstn}" editable="{=!${visiSummAnx1>/enableGstn}}" select="onSelectCheckBox"/>
+											<CheckBox text="{i18n>difference}" selected="{visiSummAnx1>/diff}" editable="{=!${visiSummAnx1>/enableDiff}}" select="onSelectCheckBox"/>
+											<ToolbarSpacer/>
+										</Toolbar>-->
+									</ui:extension>
+									<ui:columns>
+										<ui:Column width="30rem">
+											<Label text="Table Description" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<HBox justifyContent="SpaceBetween" alignItems="End" width="100%" height="100%">
+													<HBox>
+														<!--<Link text="{ProcessSummary>table}"/>-->
+														<Link text="{path:'ProcessSummary>table',formatter:'.formatter.formatITC04TableType'}" emphasized="true"
+															press="onPressITC04TableTypeLink(${ProcessSummary>table})"/>
+													</HBox>
+												</HBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="120" headerSpan="2" hAlign="End" visible="{visiSummAnx1>/asp}">
+											<ui:multiLabels>
+												<Label text="As available at DigiGST" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="{i18n>count}" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{ProcessSummary>aspCount}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/asp}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{path:'ProcessSummary>aspTaxableValue',formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="120" headerSpan="2" hAlign="End" visible="{visiSummAnx1>/gstn}">
+											<ui:multiLabels>
+												<Label text="As available at GSTN" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="{i18n>count}" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{ProcessSummary>gstnCount}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/gstn}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{path:'ProcessSummary>gstnTaxableValue',formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="120" headerSpan="2" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text="Difference" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="{i18n>count}" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{ProcessSummary>diffCount}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{path:'ProcessSummary>diffTaxableValue',formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<ui:footer>
+										<ObjectStatus
+											text="Note : Taxable Value for table 5A, 5B and 5C has been provided in DigiGST column for reference, however the same is not required to be saved to GSTN (as per APIs). Hence under GSTN and Difference column NA has been mentioned "
+											state="Error"/>
+									</ui:footer>
+								</ui:Table>
+							</Panel>
+						</commons:content>
+					</commons:ChartContainerContent>
+				</commons:content>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

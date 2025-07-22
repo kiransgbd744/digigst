@@ -1,0 +1,47 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.ui.layout.form">
+	<Dialog title="{path:'IconITC3B>/header', formatter:'.formatter.subSectionNameOR'}" type="Message" draggable="true" contentWidth="60%" class="sapUiSizeCompact">
+		<!--<customHeader>-->
+		<!--	<Bar>-->
+		<!--		<contentMiddle>-->
+		<!--			<Label text="{i18n>saveStatus}" design="Bold"/>-->
+		<!--		</contentMiddle>-->
+		<!--	</Bar>-->
+		<!--</customHeader>-->
+		<beginButton>
+			<Button text="OK" press="OnPressOtherITCClose"/>
+		</beginButton>
+		<ScrollContainer horizontal="false" vertical="true" height="12rem">
+			<Table items="{IconITC3B>/resp}" mode="None" sticky="ColumnHeaders"  noDataText="No Products" class="sapUiNoContentPadding">
+				<columns >
+					<Column hAlign="Left" width="20rem">
+						<Label text="Particulars" design="Bold"/>
+					</Column>
+					<Column hAlign="Center" width="8rem">
+						<Label text="Integrated Tax" design="Bold"/>
+					</Column>
+					<Column width="8rem" hAlign="Center">
+						<Label text="Central Tax" design="Bold"/>
+					</Column>
+					<Column width="8rem" hAlign="Center">
+						<Label text="State/UT Tax" design="Bold"/>
+					</Column>
+					<Column hAlign="Center" width="8rem">
+						<Label text="Cess" design="Bold"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem vAlign="Middle">
+						<cells>
+							<Text text="{path:'IconITC3B>subSectionName', formatter:'.formatter.subSectionNameIcon'}" textAlign='Left' wrapping="false"/>
+							<Text text="{IconITC3B>digiIgst}" wrapping="false"/>
+							<Text text="{IconITC3B>digiCgst}"  wrapping="false"/>
+							<Text text="{IconITC3B>digiSgst}" wrapping="false"/>
+							<Text text="{IconITC3B>digiCess}" wrapping="false"/>
+							
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</ScrollContainer>
+	</Dialog>
+</core:FragmentDefinition>

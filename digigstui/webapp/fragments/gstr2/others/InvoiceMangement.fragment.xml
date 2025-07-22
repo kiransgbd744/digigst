@@ -1,0 +1,121 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table">
+	<f:DynamicPage id="dpManagePR">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<FlexBox>
+						<Button type="Transparent" id="btnBackPR" icon="sap-icon://nav-back" press="onPressBackPR" tooltip="Back" visible="false"/>
+						<SegmentedButton id="sbManagePR" selectedKey="Process" selectionChange="onSelectionChange" class="sapUiTinyMarginBegin">
+							<items>
+								<SegmentedButtonItem text="Processed" key="Process" width="6rem"/>
+								<SegmentedButtonItem text="Errors" key="Error" width="5rem"/>
+							</items>
+						</SegmentedButton>
+					</FlexBox>
+				</f:heading>
+				<f:actions>
+					<Button type="Transparent" id="btnPrev" icon="sap-icon://navigation-left-arrow" press="onPressPrevNext" visible="false"
+						tooltip="Previous Error"/>
+					<Button type="Transparent" id="btnNext" icon="sap-icon://navigation-right-arrow" press="onPressPrevNext" visible="false"
+						tooltip="Next Error"/>
+					<Button type="Emphasized" id="btnEditPR" text="Edit" press="onPressEditPR"/>
+					<Button type="Accept" id="btnSavePR" text="Save Changes" press="onPressSavePR" visible="false"/>
+					<Button type="Reject" id="btnDeletePR" text="Delete" press="onPressDeletePR" visible="false"/>
+					<Button type="Transparent" text="Trail"/>
+					<Button type="Emphasized" icon="sap-icon://download" id="btnDownloadPR" tooltip="Download" press="onPressDownload"/>
+					<Button id="btnProcessedInvErrors" type="Emphasized" icon="sap-icon://message-popup" tooltip="Errors With Description"
+						press="handleProcessedMessages" visible="false"/>
+					<Button type="Emphasized" icon="sap-icon://message-popup" id="btnMsgPop" text="{/messagesLength}" tooltip="Errors With Description"
+						press="handleErrorMessages" visible="false"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader>
+				<fb:FilterBar id="fbManagePR" showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false" class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Criteria" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<Select id="idslInvManageCriteria" forceSelection="true" change="onSelectChangeDate" items="{ path: 'DropDown>/criteria' }">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="From Date - To Date" mandatory="true" visibleInFilterBar="true">
+							<fb:control>
+								<DateRangeSelection id="idDrsInvManage" displayFormat="MMM dd, yyyy" change="onChange"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Entity" visibleInFilterBar="true">
+							<fb:control>
+							
+								<MultiComboBox id="idInvEntity" items="{EntityModel>/resp/}" selectionChange="onChangeEntity" width="100%">
+									<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Recipient GSTIN" visibleInFilterBar="true">
+							<fb:control>
+									<MultiComboBox id="idslInvManageGSTIN" items="{ path: 'SuppGstinModel>/resp/' }">
+									<core:Item key="{SuppGstinModel>gstin}" text="{SuppGstinModel>gstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Doc No" visibleInFilterBar="true">
+							<fb:control>
+								<Input id="idInvManageDocNo" value="" maxLength="16" change="onChange" liveChange="onLiveChange"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label=" Staging File Attribute" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idmcbInvManageField" items="{ path: 'Fields>/TabField' }" width="100%">
+									<core:Item key="{Fields>key}" text="{Fields>key}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						
+						
+							
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="H" label="Data Category" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slCategory" items="{DropDown>/dataCategory/}" selectionChange="changeDataCategory" width="100%">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="I" label="Table No." visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slTableNo" width="100%">
+									<core:Item key="" text=""/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="J" label="View" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="slView" width="100%">
+									<core:Item key="trans" text="Transaction"/>
+									<core:Item key="Sumry" text="Summary"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						
+						
+						
+						
+						
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.PrProcess" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.PrProcessItems" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.PrErrors" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.PrErrorItems" type="XML"/>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

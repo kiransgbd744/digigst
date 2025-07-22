@@ -1,0 +1,110 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table">
+	<f:DynamicPage class="sapUiNoContentPadding sapUiNoMargin" visible="true">
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Communication Type" visibleInFilterBar="true">
+							<fb:control>
+								<Select selectedKey="{FilterModel>/commType}">
+									<core:Item key="DRC01B" text="DRC01B"/>
+									<core:Item key="DRC01C" text="DRC01C"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox items="{userPermission>/respData/dataSecurity/gstin}" selectedKeys="{FilterModel>/gstin}" selectionChange="selectAll"
+									width="100%">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="From Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="drcCommDtFr" displayFormat="MMM yyyy" valueFormat="yyyyMM" change="onChangeDateValue" value="{FilterModel>/frDate}"
+									maxDate="{FilterModel>/maxDate}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="To Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="drcCommDtTo" displayFormat="MMM yyyy" valueFormat="yyyyMM" value="{FilterModel>/toDate}" maxDate="{FilterModel>/maxDate}"
+									minDate="{FilterModel>/minDate}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="E-mail Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox selectedKeys="{FilterModel>/emailType}" selectionChange="selectAll" width="100%">
+									<core:Item key="All" text="All"/>
+									<core:Item key="Original" text="Original"/>
+									<core:Item key="Reminder 1" text="Reminder 1"/>
+									<core:Item key="Reminder 2" text="Reminder 2"/>
+									<core:Item key="Reminder 3" text="Reminder 3"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onClearDrcComm"/>
+					<Button text="Filter" class="buttoncolor" press="onSearchDrcComm"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table rows="{DrcCommunication>/}" enableColumnReordering="false" selectionMode="None">
+				<ui:columns>
+					<ui:Column hAlign="Center">
+						<Label text="Request ID" textAlign="Center" width="100%" design="Bold"/>
+						<ui:template>
+							<Text text="{DrcCommunication>requestId}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<Label text="{i18n>gstin}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{DrcCommunication>gstin}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<Label text="Tax Period" textAlign="Center" width="100%" design="Bold"/>
+						<ui:template>
+							<Text text="{DrcCommunication>taxPeriod}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<Label text="Date / Time" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{DrcCommunication>emailTime}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="Report Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{DrcCommunication>reportStatus}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" width="10rem">
+						<Label text="Download Report" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<core:Icon src="sap-icon://download" press="onDownloadDrc01Comm(${DrcCommunication>requestId})" visible="{DrcCommunication>isDownload}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<Label text="E-mail Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{DrcCommunication>emailStatus}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<Label text="E-mail Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{DrcCommunication>emailType}"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

@@ -1,0 +1,17 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.VendorTrend"
+	busyIndicatorDelay="0">
+	<IconTabBar expanded="true" id="iditbReports" select="handleIconTabBarSelect" class="sapUiNoContentPadding" backgroundDesign="Transparent"
+		stretchContentHeight="true" selectedKey="ManageAuthToken" expandable="false">
+		<items>
+			<IconTabFilter text="Vendor Compliance History" tooltip="Vendor Compliance History" key="AutoRecon">
+				<mvc:XMLView viewName="com.ey.digigst.view.VendorRating" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Customer Compliance History" tooltip="Customer Compliance History" key="ComplianceHistory">
+				<mvc:XMLView viewName="com.ey.digigst.view.CustomerCH" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="My Compliance History" tooltip="My Compliance History" key="VenRetFilngStatus">
+				<mvc:XMLView viewName="com.ey.digigst.view.MyCH" type="XML"/>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</mvc:View>

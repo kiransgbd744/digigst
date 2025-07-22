@@ -1,0 +1,79 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<ui:Table id="tabLedger2" rows="{/}" selectionMode="None" class="sapUiTinyMarginTop sapUiTinyMarginBeginEnd" visible="false">
+		<ui:extension>
+			<Toolbar height="4rem">
+				<VBox>
+					<Label text="From Date - To Date"/>
+					<DateRangeSelection displayFormat="dd-MM-yyyy"/>
+				</VBox>
+				<VBox>
+					<Label/>
+					<Button text="Filter" class="buttoncolor"/>
+				</VBox>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="8rem">
+				<ui:multiLabels>
+					<Label text="Sr.No" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="9rem">
+				<ui:multiLabels>
+					<Label text="Tax Period" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="20rem" hAlign="Center" headerSpan="5">
+				<ui:multiLabels>
+					<Label text="Amount of Provisional Credit Balance" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="20rem">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="20rem">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="SGST" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="20rem">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="20rem">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Total" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+	</ui:Table>
+</core:FragmentDefinition>

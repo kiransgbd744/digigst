@@ -1,0 +1,156 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table" xmlns:f="sap.f"
+	xmlns:layout="sap.ui.layout" xmlns:fb="sap.ui.comp.filterbar">
+	<f:DynamicPage id="dpRecipntRespSumm" visible="false">
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding">
+				<fb:FilterBar id="fbResponseSummary" showGoOnFB="false" showClearOnFB="false" width="90%" showFilterConfiguration="false" search="onSearch"
+					clear="onClearFilter" useToolbar="false" class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="false">
+							<fb:control>
+								<Select id="responseSumEntity" items="{EntityModel>/}" change="onResponseEntyChng" width="100%">
+									<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="responseSumGstin" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}"
+									selectionFinish="onRespSummGstinChange">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Recipient PAN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="responseSumPAN" width="100%" items="{RespnseSumGstins1>/}" selectionFinish="onRespSummPan">
+									<core:Item key="{RespnseSumGstins1>cpan}" text="{RespnseSumGstins1>cpan}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Recipient GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="responseSumRGstin" width="100%" items="{RespnseSumGstins>/}">
+									<core:Item key="{RespnseSumGstins>cgstin}" text="{RespnseSumGstins>cgstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Date of Upload to GSTN" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="RecptRespUpldDate" forceSelection="false" items="{DropDown>/uploadGstn}" change="onSelectChange">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dtResponseSum" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" id="fbRespncStatusHboxRS" width="10%">
+					<Button id="bRespnsFilter" icon="sap-icon://filter" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilter"/>
+					<Button id="bRespnsClear" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd" press="onResponseSumClear"/>
+					<Button id="bRespnsGo" text="{i18n>go}" type="Emphasized" press="onResponseSumGo"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+	</f:DynamicPage>
+	<ui:TreeTable id="tabRespSummary" rows="{path:'RespnseSummTabl>/', parameters:{arrayNames:['level2','level3'],numberOfExpandedLevels:1}}"
+		selectionMode="None" visible="false">
+		<!--rows="{path:'Annexure1>/respSummary/', parameters:{arrayNames:['items']}}"-->
+		<ui:extension>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<MenuButton type="Emphasized" text="Download Report">
+					<Menu itemSelected="onMenuItemPress">
+						<MenuItem text="Processed Records (Line Item Level)" key="processLineItem"/>
+						<MenuItem text="Processed Records (HSN / Rate Level)" key="processRate"/>
+						<MenuItem text="Tax Amount Recon" key="taxAmtRecon"/>
+						<MenuItem text="Counter Party Response" key="cpResopnse"/>
+						<MenuItem text="Submitted Records" key="submitted"/>
+						<MenuItem text="Entity Level Summary" key="entityLevel"/>
+						<MenuItem text="Records available for Amendment" key="amendRecord"/>
+						<MenuItem text="Consolidate DigiGST Error" key="digiError"/>
+						<MenuItem text="Consolidate GSTN Error" key="gstnError"/>
+					</Menu>
+				</MenuButton>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="10rem">
+				<Label text="Recipient PAN" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{RespnseSummTabl>cPan}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="Recpient Name" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{RespnseSummTabl>cName}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="Recipient GSTIN" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{RespnseSummTabl>cgstin}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="Table Type" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{RespnseSummTabl>tableType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="Doc Type" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{RespnseSummTabl>docType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="Not Saved" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{RespnseSummTabl>notSavedCount}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="Saved to GSTN" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{RespnseSummTabl>savedCount}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="Accepted" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{RespnseSummTabl>accepted}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="Rejected" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{RespnseSummTabl>rejectedCount}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="Pending" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{RespnseSummTabl>pendingCount}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="No Action" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{RespnseSummTabl>noActionCount}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column>
+				<Label text="Remarks" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text=""/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+	</ui:TreeTable>
+</core:FragmentDefinition>

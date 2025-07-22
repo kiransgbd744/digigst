@@ -1,0 +1,280 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<Dialog title="{i18n>hsnSummary}" type="Message" class="sapUiSizeCompact" contentWidth="100%">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="{i18n>hsnSummary}" design="Bold"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<beginButton>
+			<Button text="{i18n>close}" class="buttoncolorSec" press="onCloseDialog('hsnSummary')"/>
+		</beginButton>
+		<Toolbar class="sapUiTinyMarginBeginEnd">
+			<Label text="{i18n>gstin}:" design="Bold" class="sapUiTinyMarginBegin"/>
+			<Text text="{Payload>/dataSecAttrs/GSTIN/0}"/>
+			<Label text="{i18n>taxPeriod}:" design="Bold" class="sapUiSmallMarginBegin"/>
+			<Text text="{path:'Payload>/taxPeriod',formatter:'.formatter.periodFormat'}"/>
+		</Toolbar>
+		<ui:Table id="tabVerticalHsn" rows="{HsnSummary>/verticalData/}" selectionBehavior="Row" selectionMode="MultiToggle" fixedColumnCount="4"
+			class="sapUiSmallMarginTop sapUiTinyMarginBeginEnd">
+			<ui:extension>
+				<Toolbar>
+					<Title id="iHsnTitle" titleStyle="H3"/>
+					<ToolbarSpacer/>
+					<Button class="buttoncolorSec" text="{i18n>moveAspToUser}" press="onMoveHsnComputedToUser" enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" text="{i18n>save}" press="onSaveHsnSummary" enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" text="{i18n>cancel}" press="onCancelHsnSummary" enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" icon="sap-icon://delete" tooltip="{i18n>delete}" press="onDeleteHsnSummary"
+						enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" icon="sap-icon://edit" tooltip="{i18n>edit}" press="onEditHsnSummary" enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" icon="sap-icon://add" tooltip="{i18n>add}" press="onAddHsnSummary" enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" icon="sap-icon://excel-attachment" tooltip="{i18n>downExcel}" enabled="false"/>
+					<Button class="buttoncolorSec" icon="sap-icon://pdf-attachment" tooltip="{i18n>downPdf}" enabled="false"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column hAlign="End" width="4rem">
+					<Label text="{i18n>sNo}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{HsnSummary>sNo}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem">
+					<Label text="Record Type" textAlign="Center" width="100%" design="Bold" required="true" textDirection="RTL"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{HsnSummary>recordType}" visible="{=!${HsnSummary>edit}}"/>
+							<ComboBox selectedKey="{HsnSummary>recordType}" change="onChangeHsnValue" valueState="{HsnSummary>recordTypeState}"
+								valueStateText="{HsnSummary>recordTypeStateText}" visible="{HsnSummary>edit}">
+								<core:Item key="B2B" text="B2B"/>
+								<core:Item key="B2C" text="B2C"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="8rem">
+					<Label text="{i18n>hsn}" textAlign="Center" width="100%" design="Bold" required="true" textDirection="RTL"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{HsnSummary>hsn}" visible="{=!${HsnSummary>edit}}"/>
+							<Input value="{HsnSummary>hsn}" change="onChangeHsnValue" valueState="{HsnSummary>hsnState}" valueStateText="{HsnSummary>hsnStateText}"
+								visible="{HsnSummary>edit}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="8rem" visible="{HsnSummary>/rateIncludedInHsn}">
+					<Label text="Tax Rate" textAlign="Center" width="100%" design="Bold" required="true" textDirection="RTL"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{path:'HsnSummary>taxRate',formatter:'.formatter.amountValue'}" visible="{=!${HsnSummary>edit}}"/>
+							<ComboBox items="{path:'RateMaster>/',sorter:{path:'value'},templateShareable:false}" change="onChangeHsnValue"
+								selectedKey="{HsnSummary>taxRate}" valueState="{HsnSummary>taxRateState}" valueStateText="{HsnSummary>taxRateStateText}"
+								visible="{HsnSummary>edit}">
+								<core:Item key="{RateMaster>value}" text="{RateMaster>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>uqc}" textAlign="Center" width="100%" design="Bold" required="true" textDirection="RTL"/>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{HsnSummary>uqc}" visible="{=!${HsnSummary>edit}}"/>
+							<ComboBox items="{path:'UomMaster>/',sorter:{path:'uqc'},templateShareable:false}" change="onChangeHsnValue" selectedKey="{HsnSummary>uqc}"
+								valueState="{HsnSummary>uqcState}" valueStateText="{HsnSummary>uqcStateText}" visible="{HsnSummary>edit}">
+								<core:Item key="{UomMaster>uqc}" text="{UomMaster>uqc} - {UomMaster>uqcDesc}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="18rem" headerSpan="8" visible="true">
+					<ui:multiLabels>
+						<Label text="{i18n>eyComputed}" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="{i18n>description}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{HsnSummary>aspDesc}"/>
+							<!--<Text text="{HsnSummary>aspDesc}" visible="{=${HsnSummary>aspQunty}=== 0 ?false:true}"/>-->
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem" hAlign="End">
+					<ui:multiLabels>
+						<Label text=""/>
+						<Label text="{i18n>itemQty}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{path:'HsnSummary>aspQunty',formatter:'.formatter.quntyValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem" visible="{=!${HsnSummary>/rateIncludedInHsn}}" hAlign="End">
+					<ui:multiLabels>
+						<Label text=""/>
+						<Label text="{i18n>totalValue}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{path:'HsnSummary>aspTotalValue',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem" hAlign="End">
+					<ui:multiLabels>
+						<Label text=""/>
+						<Label text="{i18n>Total} {i18n>taxable}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{path:'HsnSummary>aspTaxableValue',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem" hAlign="End">
+					<ui:multiLabels>
+						<Label text=""/>
+						<Label text="{i18n>igst}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{path:'HsnSummary>aspIgst',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem" hAlign="End" visible="{visiSummAnx1>/ey}">
+					<ui:multiLabels>
+						<Label text=""/>
+						<Label text="{i18n>cgst}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{path:'HsnSummary>aspCgst',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem" hAlign="End">
+					<ui:multiLabels>
+						<Label text=""/>
+						<Label text="{i18n>sgst}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{path:'HsnSummary>aspSgst',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem" hAlign="End">
+					<ui:multiLabels>
+						<Label text=""/>
+						<Label text="{i18n>cess}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{path:'HsnSummary>aspCess',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="18rem" headerSpan="8" visible="true">
+					<ui:multiLabels>
+						<Label text="{i18n>userEdit}" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="{i18n>description}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{HsnSummary>uiDesc}" visible="{=!${HsnSummary>visi}}"/>
+							<Input value="{HsnSummary>uiDesc}" change="onChangeHsnValue" valueState="{HsnSummary>descState}" valueStateText="{HsnSummary>descStateText}"
+								visible="{HsnSummary>visi}" width="17rem"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem" hAlign="End">
+					<ui:multiLabels>
+						<Label text=""/>
+						<Label text="{i18n>itemQty}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{path:'HsnSummary>usrQunty',formatter:'.formatter.quntyValue'}" visible="{=!${HsnSummary>visi}}"/>
+							<Input value="{HsnSummary>usrQunty}" textAlign="End" valueState="{HsnSummary>usrQuntyState}" valueStateText="{HsnSummary>usrQuntyStateText}"
+								visible="{HsnSummary>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem" hAlign="End" visible="{=!${HsnSummary>/rateIncludedInHsn}}">
+					<ui:multiLabels>
+						<Label text=""/>
+						<Label text="{i18n>totalValue}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{path:'HsnSummary>usrTotalValue',formatter:'.formatter.amountValue'}" visible="{=!${HsnSummary>visi}}"/>
+							<Input value="{HsnSummary>usrTotalValue}" textAlign="End" valueState="{HsnSummary>usrTotalValueState}"
+								valueStateText="{HsnSummary>usrTotalValueStateText}" visible="{HsnSummary>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<ui:multiLabels>
+						<Label text=""/>
+						<Label text="{i18n>Total} {i18n>taxable}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{path:'HsnSummary>usrTaxableValue',formatter:'.formatter.amountValue'}" visible="{=!${HsnSummary>visi}}"/>
+							<Input value="{HsnSummary>usrTaxableValue}" textAlign="End" valueState="{HsnSummary>usrTaxableValueState}"
+								valueStateText="{HsnSummary>usrTaxableValueStateText}" visible="{HsnSummary>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem" hAlign="End">
+					<ui:multiLabels>
+						<Label text=""/>
+						<Label text="{i18n>igst}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{path:'HsnSummary>usrIgst',formatter:'.formatter.amountValue'}" visible="{=!${HsnSummary>visi}}"/>
+							<Input value="{HsnSummary>usrIgst}" textAlign="End" valueState="{HsnSummary>usrIgstState}" valueStateText="{HsnSummary>usrIgstStateText}"
+								visible="{HsnSummary>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column >
+				<ui:Column width="10rem" hAlign="End" visible="{visiSummAnx1>/ey}">
+					<ui:multiLabels>
+						<Label text=""/>
+						<Label text="{i18n>cgst}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{path:'HsnSummary>usrCgst',formatter:'.formatter.amountValue'}" visible="{=!${HsnSummary>visi}}"/>
+							<Input value="{HsnSummary>usrCgst}" textAlign="End" valueState="{HsnSummary>usrCgstState}" valueStateText="{HsnSummary>usrCgstStateText}"
+								visible="{HsnSummary>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<ui:multiLabels>
+						<Label text=""/>
+						<Label text="{i18n>sgst}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{path:'HsnSummary>usrSgst',formatter:'.formatter.amountValue'}" visible="{=!${HsnSummary>visi}}"/>
+							<Input value="{HsnSummary>usrSgst}" textAlign="End" valueState="{HsnSummary>usrSgstState}" valueStateText="{HsnSummary>usrSgstStateText}"
+								visible="{HsnSummary>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<ui:multiLabels>
+						<Label text=""/>
+						<Label text="{i18n>cess}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{path:'HsnSummary>usrCess',formatter:'.formatter.amountValue'}" visible="{=!${HsnSummary>visi}}"/>
+							<Input value="{HsnSummary>usrCess}" textAlign="End" valueState="{HsnSummary>usrCessState}" valueStateText="{HsnSummary>usrCessStateText}"
+								visible="{HsnSummary>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+			<ui:footer>
+				<HBox>
+					<Label
+						text="Note : For HSN codes starting from '99', UQC will be saved as NA and QTY will be saved as zero ('0') for GSTR-1 details saved from tax period May 2021 and onwards."
+						design="Bold" class="sapUiTinyMarginBegin"/>
+				</HBox>
+			</ui:footer>
+		</ui:Table>
+	</Dialog>
+</core:FragmentDefinition>

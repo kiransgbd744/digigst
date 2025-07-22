@@ -1,0 +1,547 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt">
+	<f:DynamicPage id="dynamicPageId">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<SegmentedButton id="sbStatus" selectedKey="API" selectionChange="onSelectionChange">
+							<items>
+								<SegmentedButtonItem text="API" key="API" width="4rem"/>
+								<SegmentedButtonItem text="Web Upload" key="Upload" width="6rem"/>
+								<SegmentedButtonItem text="SFTP" key="SFTP" width="4rem"/>
+							</items>
+						</SegmentedButton>
+						<SegmentedButton id="sbUpload" selectedKey="API" selectionChange="onSelectionChange" class="sapUiLargeMarginBegin" visible="false">
+							<items>
+								<SegmentedButtonItem text="Upload" key="Upload" width="4rem"/>
+								<SegmentedButtonItem text="File Status" key="Status" width="6rem"/>
+							</items>
+						</SegmentedButton>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader>
+				<f:content>
+					<HBox id="hbRbgStatus" visible="false">
+						<Label id="lRbgStatus" text="Data Type:" labelFor="rbgStatus" design="Bold" class="sapUiTinyMarginTop sapUiTinyMarginEnd"/>
+						<RadioButtonGroup id="rbgStatus" columns="6" width="100%">
+							<buttons>
+								<RadioButton text="Raw File"/>
+								<RadioButton text="B2CS"/>
+								<RadioButton text="Nil / Exempt / Non"/>
+								<RadioButton text="Advances Received"/>
+								<RadioButton text="Advances Adjusted"/>
+								<RadioButton text="Invoice Series"/>
+							</buttons>
+						</RadioButtonGroup>
+					</HBox>
+					<fb:FilterBar id="fbStatus" reset="onReset" search="onSearch" useToolbar="false" showGoOnFB="true" class="sapUiNoContentPadding">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Criteria" visibleInFilterBar="true">
+								<fb:control>
+									<Select id="slStatusCriteria" forceSelection="true" change="onSelectChange" items="{ path: 'DropDown>/criteria' }">
+										<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" id="fbDateRange" label="From Date - To Date" visibleInFilterBar="true">
+								<fb:control>
+									<DateRangeSelection id="drsStatus" displayFormat="YYYY-MM-dd" change="onChange"/>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Entity" visibleInFilterBar="true">
+								<fb:control>
+									<Select id="slStatusEntity" items="{DropDown>/Entity}" change="onSelectionChange" width="100%">
+										<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Supplier GSTIN" visibleInFilterBar="true">
+								<fb:control>
+									<MultiComboBox id="mcbStatusGSTIN" items="{GSTIN>/}" change="onSelectChange" width="100%">
+										<core:Item key="{GSTIN>key}" text="{GSTIN>text}"/>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<ui:Table id="tabData" rows="{Data>/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10" fixedRowCount="1"
+					fixedColumnCount="2" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<Button type="Emphasized" id="bSummary" text="Summary" press="onButtonPress"/>
+							<Button type="Emphasized" id="bRequestforApproval" text="Request for Approval" press="onButtonPressRequestforApproval"/>
+							<Button type="Accept" id="bStatSave" text="Save to GSTN" press="onPressSave"/>
+							<Button type="Reject" id="bStatDelASP" text="Delete Data" press="onMessageInformationDialogPress"/>
+							<!--<Button type="Reject" id="bStatDelASP" text="Delete from ASP" press="onPressDelete"/>
+							<Button type="Reject" id="bStatDelGSTN" text="Delete from GSTN" press="onPressDelete"/>
+							<Button type="Reject" id="bStatDelete" text="Delete from ASP and GSTN" press="onPressDelete"/>-->
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="7rem">
+							<ui:multiLabels>
+								<Label text=""/>
+								<Label text="Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<ObjectIdentifier title="{Data>Date}" titleActive="true" titlePress="onPressDetail"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column id="idERPCol" hAlign="End" width="8rem">
+							<ui:multiLabels>
+								<Label text="SAP" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Total" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Text text="{Data>SAP/Total}"/>
+									<!--<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>-->
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column id="idDiffCol" hAlign="End" width="8rem">
+							<ui:multiLabels>
+								<Label text="Difference" textAlign="Center" width="100%" wrapping="true" design="Bold"
+									tooltip="Diffrenece between data sent by SAP and data recieved by ASP"/>
+								<Label text="(In Count)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Text text="{Data>Diff/Count}"/>
+									<!--<Text text="{Data>diff}"/>-->
+									
+									<!--<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>-->
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<!--<ui:Column id="idEYCol" headerSpan="3" hAlign="End" width="5rem">-->
+						<!--	<ui:multiLabels>-->
+						<!--		<Label text="HCI" textAlign="Center" width="100%" design="Bold"/>-->
+						<!--		<Label text="Total" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+						<!--	</ui:multiLabels>-->
+						<!--	<ui:template>-->
+						<!--		<HBox alignItems="Start" justifyContent="End">-->
+						<!--			<ObjectStatus text="{Data>HCI/Total}" state="{=${{Data>HCI/Total}===${Data>SAP/Total}?Green:Red}"/>-->
+						<!--			<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>-->
+						<!--		</HBox>-->
+						<!--	</ui:template>-->
+						<!--</ui:Column>-->
+						<!--<ui:Column hAlign="End" width="6rem">-->
+						<!--	<ui:multiLabels>-->
+						<!--		<Label text="HCI" design="Bold"/>-->
+						<!--		<Label text="Processed" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+						<!--	</ui:multiLabels>-->
+						<!--	<ui:template>-->
+						<!--		<HBox alignItems="Start" justifyContent="End">-->
+						<!--			<Text text="{Data>HCI/Process}"/>-->
+						<!--			<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>-->
+						<!--		</HBox>-->
+						<!--	</ui:template>-->
+						<!--</ui:Column>-->
+						<!--<ui:Column hAlign="End" width="5rem">-->
+						<!--	<ui:multiLabels>-->
+						<!--		<Label text="HCI" textAlign="Center" width="100%" design="Bold"/>-->
+						<!--		<HBox alignItems="Start" justifyContent="Center">-->
+						<!--			<Label text="Errors" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+						<!--			<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"/>-->
+						<!--		</HBox>-->
+						<!--	</ui:multiLabels>-->
+						<!--	<ui:template>-->
+						<!--		<HBox alignItems="Start" justifyContent="End">-->
+						<!--			<Text text="{Data>HCI/Error}"/>-->
+						<!--			<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>-->
+						<!--		</HBox>-->
+						<!--	</ui:template>-->
+						<!--</ui:Column>-->
+						<ui:Column id="idASPCol" headerSpan="6" hAlign="End" width="7rem">
+							<ui:multiLabels>
+								<Label text="ASP" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Total" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Text text="{Data>ASP/Total}"/>
+									<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="8rem">
+							<ui:multiLabels>
+								<Label text="ASP" design="Bold"/>
+								<Label text="Processed" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Link text="{Data>ASP/Process}" press="onAspProcessLink"/>
+									<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="7rem">
+							<ui:multiLabels>
+								<Label text="ASP" textAlign="Center" width="100%" design="Bold"/>
+								<HBox alignItems="Start" justifyContent="Center">
+									<Label text="Errors" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"/>
+								</HBox>
+							</ui:multiLabels>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Link text="{Data>ASP/Error}" press="onAspErrorLink"/>
+									<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="9rem">
+							<ui:multiLabels>
+								<Label text="ASP" textAlign="Center" width="100%" design="Bold"/>
+								<HBox alignItems="Start" justifyContent="Center">
+									<Label text="Information" textAlign="Center" width="100%" wrapping="true" design="Bold" tooltip="Information is part of Processed records"/>
+									<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"/>
+								</HBox>
+							</ui:multiLabels>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Text text="{Data>ASP/Info}"/>
+									<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="9rem">
+							<ui:multiLabels>
+								<Label text="ASP" textAlign="Center" width="100%" design="Bold"/>
+								<HBox alignItems="Start" justifyContent="Center">
+									<Label text="Rectified" textAlign="Center" width="100%" wrapping="true" design="Bold" tooltip="Rectified"/>
+									<!--	<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Rectified Catalog" class="sapUiTinyMarginBegin"/>-->
+								</HBox>
+							</ui:multiLabels>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Text text="{Data>ASP/Rect}"/>
+									<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem">
+							<ui:multiLabels>
+								<Label text="ASP" design="Bold"/>
+								<Label text="Save Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Link text="{Data>ASP/Status}" press="onPressDetail"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column id="idGSTNCol" headerSpan="2" hAlign="End" width="8rem">
+							<ui:multiLabels>
+								<Label text="GSTN" design="Bold" textAlign="Center" width="100%"/>
+								<Label text="Processed" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Link text="{Data>GSTIN/Process}" press="onGstinProcessLink"/>
+									<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" visible="{=${Data>GSTIN/Process}==='0'?false:true}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="7rem">
+							<ui:multiLabels>
+								<Label text="GSTN" design="Bold"/>
+								<HBox alignItems="Start" justifyContent="Center">
+									<Label text="Error" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"/>
+								</HBox>
+							</ui:multiLabels>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Link text="{Data>GSTIN/Error}" press="onGstinErrorLink"/>
+									<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" visible="{=${Data>GSTIN/Error}==='0'?false:true}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text=""/>
+								<Label text="Review Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<ObjectIdentifier title="{Data>Review}" titleActive="true" titlePress="onPressDetail"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:Table>
+				<!--Web Upload-->
+				<UploadCollection id="ucWebUpload" maximumFilenameLength="55" maximumFileSize="10" multiple="false" noDataDescription="{i18n>NoUploadTxt}"
+					fileSizeExceed="onFileSizeExceed" typeMissmatch="onTypeMissmatch" uploadComplete="onUploadComplete" change="onUploadChange"
+					noDataText="Upload File" beforeUploadStarts="onBeforeUploadStarts" instantUpload="false" fileType="xlsx,csv,txt"
+					items="{path: 'UploadCollection>/items', templateShareable: false}" visible="false">
+					<toolbar>
+						<OverflowToolbar id="myId">
+							<Title id="attachmentTitle"/>
+							<ToolbarSpacer/>
+							<Button id="btnDownload" icon="sap-icon://download" tooltip="Download" press="onDownloadFormat" type="Transparent"/>
+							<Button id="btnUpload" icon="sap-icon://upload" tooltip="Upload" press="onUpload" enabled="true" type="Transparent"/>
+							<UploadCollectionToolbarPlaceholder/>
+						</OverflowToolbar>
+					</toolbar>
+					<items>
+						<UploadCollectionItem documentId="{UploadCollection>documentId}" fileName="{UploadCollection>fileName}"
+							mimeType="{UploadCollection>mimeType}" thumbnailUrl="{UploadCollection>thumbnailUrl}" url="{UploadCollection>url}" enableEdit="false"
+							visibleEdit="false" attributes="{ path: 'attributes', templateShareable: false }"
+							statuses="{ path: 'UploadCollection>statuses', templateShareable: false }" selected="{UploadCollection>selected}">
+							<attributes>
+								<ObjectAttribute title="{UploadCollection>title}"
+									text="{ parts: [ 'UploadCollection>text', 'UploadCollection>type' ], formatter : '.formatAttribute' }" active="false"/>
+							</attributes>
+							<statuses>
+								<ObjectStatus title="{UploadCollection>title}" text="{UploadCollection>text}" state="{UploadCollection>state}"/>
+							</statuses>
+						</UploadCollectionItem>
+					</items>
+				</UploadCollection>
+				<!--File Status-->
+				<ui:Table id="tabFileStatus" rows="{FileStatus>/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10" visible="false"
+					enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<Button type="Emphasized" text="Summary" press="onPressSummary"/>
+							<Button type="Emphasized" text="Request for Approval" press="onPressReqForApproval"/>
+							<Button type="Accept" id="bFileSave" text="Save to GSTN" press="onPressSave"/>
+							<Button type="Reject" id="bFileDelASP" text="Delete Data" press="onMessageInformationDialogPress"/>
+							<!--	<Button type="Reject" id="bFileDelASP" text="Delete from ASP" press="onPressDelete"/>
+							<Button type="Reject" id="bFileDelGSTN" text="Delete from GSTN" press="onPressDelete"/>
+							<Button type="Reject" id="bFileDelete" text="Delete from ASP and GSTN" press="onPressDelete"/>-->
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="7rem">
+							<Label text="Date of Upload" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{FileStatus>Date}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem">
+							<Label text="Uploaded by" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{FileStatus>UploadBy}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem">
+							<Label text="File Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{FileStatus>FileType}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem">
+							<Label text="File Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{FileStatus>FileName}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem">
+							<Label text="File Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{FileStatus>FileStatus}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="7rem">
+							<Label text="Total Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Text text="{FileStatus>Total}"/>
+									<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" alt="Download"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="7rem">
+							<Label text="Processed Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Text text="{FileStatus>ProcessASP}"/>
+									<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="8rem">
+							<HBox width="100%">
+								<Label text="Error (ASP)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<core:Icon src="sap-icon://download" size="0.75rem" press="onDownloadCatalog" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"/>
+							</HBox>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Link text="{FileStatus>ErrorASP}" press="onFileAspErrorPress"/>
+									<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="6rem">
+							<HBox width="100%">
+								<Label text="Information" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<core:Icon src="sap-icon://download" size="0.75rem" press="onDownloadCatalog" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"/>
+							</HBox>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Text text="{FileStatus>Info}"/>
+									<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="7rem">
+							<Label text="Save Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text=""/>
+								<!--<core:Icon src="sap-icon://save" class="sapUiTinyMarginBegin" alt="Download"/>-->
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="7rem">
+							<Label text="Processed (GSTIN)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Text text="{FileStatus>ProcessGSTN}"/>
+									<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="6rem">
+							<HBox alignItems="Start" justifyContent="Center">
+								<Label text="Error (GSTIN)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" alt="Download"/>
+							</HBox>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Text text="{FileStatus>ErrorGSTN}"/>
+									<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" alt="Download"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:Table>
+			</Panel>
+		</f:content>
+		<!-- DynamicPage Footer -->
+		<f:footer/>
+	</f:DynamicPage>
+	<f:DynamicPage id="dyStatusSummary" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<FlexBox>
+						<Button type="Transparent" id="bBack" icon="sap-icon://nav-back" press="onButtonPress"/>
+						<Title text="API Summary" titleStyle="H4" class="custTitle"/>
+					</FlexBox>
+				</f:heading>
+				<f:actions>
+					<Button type="Accept" id="bSumSave" text="Save to GSTN" press="onPressSave"/>
+					<Button type="Reject" id="bStatDelASP1" text="Delete Data" press="onMessageInformationDialogPress"/>
+					<!--<Button type="Reject" id="bSumDelASP" text="Delete from ASP" press="onPressDelete"/>
+					<Button type="Reject" id="bSumDelGSTN" text="Delete from GSTN" press="onPressDelete"/>
+					<Button type="Reject" id="bSumDelete" text="Delete from ASP and GSTN" press="onPressDelete"/>-->
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<ui:TreeTable id="tabStatusData" rows="{path:'Summary>/', parameters:{ arrayNames:['items'], numberOfExpandedLevels:1 }}"
+				selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10" fixedColumnCount="4" enableSelectAll="false">
+				<ui:columns>
+					<ui:Column width="12rem">
+						<Label text="Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{Summary>Date}" visible="{=${Summary>Flag}===0?true:false}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{Summary>GSTIN}" visible="{=${Summary>Flag}===1?true:false}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Return Period" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{Summary>Period}" visible="{=${Summary>Flag}===1?true:false}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Return Section" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{Summary>Section}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="5rem">
+						<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{Summary>Count}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{Summary>TaxableValue}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="6rem">
+						<Label text="Total Taxes" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{Summary>Taxes}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="5rem">
+						<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{Summary>IGST}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="5rem">
+						<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{Summary>CGST}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="5rem">
+						<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{Summary>SGST}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="5rem">
+						<Label text="CESS" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{Summary>CESS}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="6rem">
+						<Label text="Auth Token" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox>
+								<Text text="{Summary>AuthToken}" visible="{=(${Summary>Flag}===1 &amp;&amp; ${Summary>AuthToken}==='Active')?true:false}"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Save Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Link text="{Summary>Status}" press="onPressStatus" visible="{=${Summary>Flag}===1?true:false}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem" visible="false">
+						<Label text="Error (GSTN)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{Summary>ErrorGSTN}"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:TreeTable>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

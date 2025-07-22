@@ -1,0 +1,32 @@
+URL : /saveToGstnStatus.do
+Service : POST 
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+Request Payload:
+
+{
+"hdr": {
+           "pageNo": "",
+            "pageSize": ""                     
+         },
+"req": {
+                "gstin":"27GSPMH0481G1ZN",
+                "retPeriod":"082018"
+        }               
+}
+
+Response of Save To Gstn review status:
+
+{
+    "hdr": {
+        "status": "S"
+    },
+    "resp": {
+        "gstin": "27GSPMH0481G1ZN",
+        "retPeriod": "082018",
+        "statusCode": 10,
+        "saveStatus": "USER REQUEST INITIATED"
+    }
+}

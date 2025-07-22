@@ -1,0 +1,47 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:ui="sap.ui.table">
+	<Table id="tabErrorPR" items="{path:'InvManagePR>/'}" busyIndicatorDelay="{worklistView>/tableBusyDelay}" updateFinished="onUpdateFinished"
+		width="auto" class="a" growing="true" visible="false">
+		<columns>
+			<Column width="5%" vAlign="Middle">
+				<Text text="S.NO"/>
+			</Column>
+			<Column width="7%" vAlign="Middle">
+				<Text text="Recipient GSTIN"/>
+			</Column>
+			<Column width="5%" vAlign="Middle">
+				<Text text="Document Type"/>
+			</Column>
+			<Column width="5%" vAlign="Middle">
+				<Text text="Document Number"/>
+			</Column>
+			<Column width="5%" vAlign="Middle">
+				<Text text="Document Date"/>
+			</Column>
+			<Column width="5%" vAlign="Middle">
+				<Text text="Supplier GSTIN"/>
+			</Column>
+			<Column width="5%" vAlign="Middle">
+				<Text text="Return Period"/>
+			</Column>
+			<Column width="15%" vAlign="Middle">
+				<Text text="Error Code"/>
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem vAlign="Middle" type="Navigation" press="PRErrorItemPress">
+				<cells>
+					<Text text="{InvManagePR>sno}"/>
+					<Text text="{InvManagePR>supplierGstin}"/>
+					<Text text="{InvManagePR>docType}"/>
+					<ObjectNumber number="{InvManagePR>docNo}"/>
+						<Text text="{path:'InvManagePR>docDate', formatter:'.formatter._dateFormat'}"/>
+				
+					<Text text="{InvManagePR>supplierGstin}"/>
+				<!--	<Text text="{InvManagePR>returnPeriod}"/>-->
+						<Text text="{path:'InvManagePR>returnPeriod',formatter:'.formatter._periodFormat'}"/>
+					<Link text="{InvManagePR>errCodeStr}" emphasized="true" tooltip="{InvManagePR>errorDescStr}"/>
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+</core:FragmentDefinition>

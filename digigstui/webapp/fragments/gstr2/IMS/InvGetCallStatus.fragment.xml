@@ -1,0 +1,77 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog title="IMS Get Invoice Get Call Status" type="Messages" class="sapUiSizeCompact cl_saveHeader" showHeader="true" contentWidth="90%">
+		<beginButton>
+			<Button text="Close" class="buttoncolorSec" press="onCloseInvGetCallStatus"/>
+		</beginButton>
+		<HBox class="sapUiTinyMarginTop">
+			<Label text="GSTIN > " design="Bold" class="sapUiTinyMarginBeginEnd"/>
+			<Text text="{StatusProperty>/gstin}"/>
+		</HBox>
+		<Table items="{InvGetCallStatus>/}" class="sapUiMediumMarginBottom">
+			<columns>
+				<Column hAlign="Center" width="12rem">
+					<Label text="B2B" design="Bold" textAlign="Center" width="100%"/>
+				</Column>
+				<Column hAlign="Center" width="12rem">
+					<Label text="B2BA" design="Bold"/>
+				</Column>
+				<Column hAlign="Center" width="12rem">
+					<Label text="CN" design="Bold"/>
+				</Column>
+				<Column hAlign="Center" width="12rem">
+					<Label text="CNA" design="Bold"/>
+				</Column>
+				<Column hAlign="Center" width="12rem">
+					<Label text="DN" design="Bold"/>
+				</Column>
+				<Column hAlign="Center" width="12rem">
+					<Label text="DNA" design="Bold"/>
+				</Column>
+				<Column hAlign="Center" width="12rem">
+					<Label text="ECOM" design="Bold"/>
+				</Column>
+				<Column hAlign="Center" width="12rem">
+					<Label text="ECOMA" design="Bold"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<VBox width="100%">
+							<ObjectStatus text="{InvGetCallStatus>B2BStatus}" state="{path:'InvGetCallStatus>B2BStatus', formatter:'.formatter.statusClr'}" active="false"/>
+							<Text text="{InvGetCallStatus>B2BTimeStamp}" class="timeStmpClr"/>
+						</VBox>
+						<VBox width="100%">
+							<ObjectStatus text="{InvGetCallStatus>B2BAStatus}" state="{path:'InvGetCallStatus>B2BAStatus', formatter:'.formatter.statusClr'}" active="false"/>
+							<Text text="{InvGetCallStatus>B2BATimeStamp}" class="timeStmpClr"/>
+						</VBox>
+						<VBox width="100%">
+							<ObjectStatus text="{InvGetCallStatus>CNStatus}" state="{path:'InvGetCallStatus>CNStatus', formatter:'.formatter.statusClr'}" active="false"/>
+							<Text text="{InvGetCallStatus>CNTimeStamp}" class="timeStmpClr"/>
+						</VBox>
+						<VBox width="100%">
+							<ObjectStatus text="{InvGetCallStatus>CNAStatus}" state="{path:'InvGetCallStatus>CNAStatus', formatter:'.formatter.statusClr'}" active="false"/>
+							<Text text="{InvGetCallStatus>CNATimeStamp}" class="timeStmpClr"/>
+						</VBox>
+						<VBox width="100%">
+							<ObjectStatus text="{InvGetCallStatus>DNStatus}" state="{path:'InvGetCallStatus>DNStatus', formatter:'.formatter.statusClr'}" active="false"/>
+							<Text text="{InvGetCallStatus>DNTimeStamp}" class="timeStmpClr"/>
+						</VBox>
+						<VBox width="100%">
+							<ObjectStatus text="{InvGetCallStatus>DNAStatus}" state="{path:'InvGetCallStatus>DNAStatus', formatter:'.formatter.statusClr'}" active="false"/>
+							<Text text="{InvGetCallStatus>DNATimeStamp}" class="timeStmpClr"/>
+						</VBox>
+						<VBox width="100%">
+							<ObjectStatus text="{InvGetCallStatus>ECOMStatus}" state="{path:'InvGetCallStatus>ECOMStatus', formatter:'.formatter.statusClr'}" active="false"/>
+							<Text text="{InvGetCallStatus>ECOMTimeStamp}" class="timeStmpClr"/>
+						</VBox>
+						<VBox width="100%">
+							<ObjectStatus text="{InvGetCallStatus>ECOMAStatus}" state="{path:'InvGetCallStatus>ECOMAStatus', formatter:'.formatter.statusClr'}" active="false"/>
+							<Text text="{InvGetCallStatus>ECOMATimeStamp}" class="timeStmpClr"/>
+						</VBox>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</Dialog>
+</core:FragmentDefinition>

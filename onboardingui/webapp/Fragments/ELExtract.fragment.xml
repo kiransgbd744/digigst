@@ -1,0 +1,15 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<IconTabBar expanded="true" select="handleIconTabBarSelect" class="sapUiNoContentPadding"
+		backgroundDesign="Transparent" stretchContentHeight="true" selectedKey="Hierarchy" expandable="false">
+		<items>
+			<IconTabFilter text="Latest" tooltip="Latest" key="Latest">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.DraftELExtract" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="History" tooltip="History" key="History">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.History" type="XML"/>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</core:FragmentDefinition>

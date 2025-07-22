@@ -1,0 +1,927 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.CustomerCH"
+	xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons"
+	xmlns:u="sap.ui.unified" busyIndicatorDelay="0">
+	<f:DynamicPage id="id_NonCompalintPg" class="cl_dpScrollRecon">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Title text="Customer Compliance History" class="sapUiSmallMarginBegin clTitleMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar showFilterConfiguration="false" useToolbar="false" class="sapUiNoContentPadding" width="90%" showGoOnFB="false"
+					showClearOnFB="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Financial Year" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idFiYear" forceSelection="true" items="{oFyModel>/finYears}">
+									<core:Item key="{oFyModel>fy}" text="{oFyModel>fy}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Return Type" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idRetType" forceSelection="true">
+									<core:Item key="GSTR1" text="GSTR-1"/>
+									<core:Item key="GSTR3B" text="GSTR-3B"/>
+									<core:Item key="GSTR13B" text="GSTR-1 &amp; GSTR-3B"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Customer PAN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiInput id="idVenPan" showSuggestion="true" showValueHelp="true" valueHelpRequest="handleValueHelp" tokens="{Token>/}">
+									<tokens>
+										<Token key="{Token>pan}" text="{Token>pan}"/>
+									</tokens>
+								</MultiInput>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="Y" label="Customer GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiInput id="idVenGstin" showSuggestion="true" showValueHelp="true" valueHelpRequest="handleValueHelp1" tokens="{TokenGSTN>/}">
+									<tokens>
+										<Token key="{TokenGSTN>gstin}" text="{TokenGSTN>gstin}"/>
+									</tokens>
+								</MultiInput>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="Z" label="View Type"
+							visibleInFilterBar="{= ${isChan>/isChannelOne}=== true ? false:true }">
+							<fb:control>
+								<Select id="idViewType" forceSelection="true">
+									<core:Item key="All" text="All"/>
+									<core:Item key="Top 10 Compliant" text="Top 10 Compliant Customers"/>
+									<core:Item key="Top 20 Compliant" text="Top 20 Compliant Customers"/>
+									<core:Item key="Top 10 Non-Compliant" text="Top 10 Non-Compliant Customers"/>
+									<core:Item key="Top 20 Non-Compliant" text="Top 20 Non-Compliant Customers"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<!--<Button type="Ghost" text="Clear" class="sapUiTinyMarginEnd" press="onPressClear"/>-->
+					<Button class="buttoncolor" press="onPressGo" text="Filter"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<VBox>
+				<commons:ChartContainer showFullScreen="false" showZoom="true" showPersonalization="false" autoAdjustHeight="false" id="nonId">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<Panel class="sapFDynamicPageAlignContent">
+									<ui:Table id="GSTR1Id" rowSelectionChange="onSelectionConsolMatch" rows="{path:'VenComR>/'}" enableSelectAll="true" fixedBottomRowCount="0"
+										fixedColumnCount="0" visibleRowCount="10" selectionMode="MultiToggle" visible="true">
+										<ui:columns>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label design="Bold" text="Customer GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>vendorGstin}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="20rem">
+												<Label design="Bold" text="Customer Name" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>vendorName}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem" visible="{= ${isChan>/isChannelOne}=== true ? false:true }">
+												<Label design="Bold" text="Return Filing Frequency" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>filingType}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem" visible="{= ${isChan>/isChannelOne}=== true ? false:true }">
+												<Label design="Bold" text="Avg FY Rating" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>averageRating}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label design="Bold" text="Total Returns Filed" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>ttlRetFiled}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label design="Bold" text="Returns Filed in Time" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>retFiledInTime}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label design="Bold" text="Late Filed Returns" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>lateRetFiled}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label design="Bold" text="Total Return not Filed" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>ttlRetNotFiled}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Apr" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>AprilStatus1'},{path : 'VenComR>AprilisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>AprilStatus1}"/>
+														<Text text="{VenComR>AprilStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="May" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>MayStatus1'},{path : 'VenComR>MayisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>MayStatus1}"/>
+														<Text text="{VenComR>MayStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Jun" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>JuneStatus1'},{path : 'VenComR>JuneisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>JuneStatus1}"/>
+														<Text text="{VenComR>JuneStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Jul" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>JulyStatus1'},{path : 'VenComR>JulyisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>JulyStatus1}"/>
+														<Text text="{VenComR>JulyStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Aug" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>AugStatus1'},{path : 'VenComR>AugisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>AugStatus1}"/>
+														<Text text="{VenComR>AugStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Sep" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>SepStatus1'},{path : 'VenComR>SepisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>SepStatus1}"/>
+														<Text text="{VenComR>SepStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Oct" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>OctStatus1'},{path : 'VenComR>OctisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>OctStatus1}"/>
+														<Text text="{VenComR>OctStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Nov" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>NovStatus1'},{path : 'VenComR>NovisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>NovStatus1}"/>
+														<Text text="{VenComR>NovStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Dec" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>DecStatus1'},{path : 'VenComR>DecisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>DecStatus1}"/>
+														<Text text="{VenComR>DecStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Jan" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>JanStatus1'},{path : 'VenComR>JanisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>JanStatus1}"/>
+														<Text text="{VenComR>JanStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Feb" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>FebStatus1'},{path : 'VenComR>FebisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>FebStatus1}"/>
+														<Text text="{VenComR>FebStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Mar" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>MarStatus1'},{path : 'VenComR>MarisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>MarStatus1}"/>
+														<Text text="{VenComR>MarStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+										</ui:columns>
+									</ui:Table>
+									<ui:Table id="GSTR3Id" rowSelectionChange="onSelectionConsolMatch" rows="{path:'VenComR>/'}" enableSelectAll="true" fixedBottomRowCount="0"
+										fixedColumnCount="0" visibleRowCount="10" selectionMode="MultiToggle" visible="false">
+										<ui:columns>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label design="Bold" text="Customer GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>vendorGstin}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="20rem">
+												<Label design="Bold" text="Customer Name" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>vendorName}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem" visible="{= ${isChan>/isChannelOne}=== true ? false:true }">
+												<Label design="Bold" text="Return Filing Frequency" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>filingType}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem" visible="{= ${isChan>/isChannelOne}=== true ? false:true }">
+												<Label design="Bold" text="Avg FY Rating" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>averageRating}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label design="Bold" text="Total Returns Filed" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>ttlRetFiled}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label design="Bold" text="Returns Filed in Time" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>retFiledInTime}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label design="Bold" text="Late Filed Returns" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>lateRetFiled}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label design="Bold" text="Total Return not Filed" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>ttlRetNotFiled}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Apr" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>AprilStatus3'},{path : 'VenComR>AprilisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>AprilStatus3}"/>
+														<Text text="{VenComR>AprilStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="May" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>MayStatus3'},{path : 'VenComR>MayisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>MayStatus3}"/>
+														<Text text="{VenComR>MayStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Jun" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>JuneStatus3'},{path : 'VenComR>JuneisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>JuneStatus3}"/>
+														<Text text="{VenComR>JuneStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Jul" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>JulyStatus3'},{path : 'VenComR>JulyisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>JulyStatus3}"/>
+														<Text text="{VenComR>JulyStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Aug" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>AugStatus3'},{path : 'VenComR>AugisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>AugStatus3}"/>
+														<Text text="{VenComR>AugStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Sep" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>SepStatus3'},{path : 'VenComR>SepisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>SepStatus3}"/>
+														<Text text="{VenComR>SepStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Oct" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>OctStatus3'},{path : 'VenComR>OctisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>OctStatus3}"/>
+														<Text text="{VenComR>OctStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Nov" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>NovStatus3'},{path : 'VenComR>NovisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>NovStatus3}"/>
+														<Text text="{VenComR>NovStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Dec" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>DecStatus3'},{path : 'VenComR>DecisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>DecStatus3}"/>
+														<Text text="{VenComR>DecStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Jan" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>JanStatus3'},{path : 'VenComR>JanisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>JanStatus3}"/>
+														<Text text="{VenComR>JanStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Feb" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>FebStatus3'},{path : 'VenComR>FebisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>FebStatus3}"/>
+														<Text text="{VenComR>FebStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Mar" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>MarStatus3'},{path : 'VenComR>MarisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>MarStatus3}"/>
+														<Text text="{VenComR>MarStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+										</ui:columns>
+									</ui:Table>
+									<ui:Table id="GSTR13B" rowSelectionChange="onSelectionConsolMatch" rows="{path:'VenComR>/'}" enableSelectAll="true" fixedBottomRowCount="0"
+										fixedColumnCount="0" visibleRowCount="10" selectionMode="MuttiToggle" visible="false">
+										<ui:columns>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label design="Bold" text="Customer GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>vendorGstin}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="20rem">
+												<Label design="Bold" text="Customer Name" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>vendorName}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem" visible="{= ${isChan>/isChannelOne}=== true ? false:true }">
+												<Label design="Bold" text="Return Filing Frequency" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>filingType}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem" visible="{= ${isChan>/isChannelOne}=== true ? false:true }">
+												<Label design="Bold" text="Avg FY Rating" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>averageRating}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label design="Bold" text="Total Returns Filed" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>ttlRetFiled}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label design="Bold" text="Returns Filed in Time" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>retFiledInTime}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label design="Bold" text="Late Filed Returns" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>lateRetFiled}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label design="Bold" text="Total Return not Filed" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{VenComR>ttlRetNotFiled}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Apr" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>AprilStatus1'},{path : 'VenComR>AprilisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>AprilStatus1}"/>
+														<Text text="{VenComR>AprilStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-3B" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>AprilStatus3'},{path : 'VenComR>AprilisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>AprilStatus3}"/>
+														<Text text="{VenComR>AprilStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="May" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>MayStatus1'},{path : 'VenComR>MayisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>MayStatus1}"/>
+														<Text text="{VenComR>MayStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-3B" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>MayStatus3'},{path : 'VenComR>MayisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>MayStatus3}"/>
+														<Text text="{VenComR>MayStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Jun" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>JuneStatus1'},{path : 'VenComR>JuneisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>JuneStatus1}"/>
+														<Text text="{VenComR>JuneStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-3B" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>JuneStatus3'},{path : 'VenComR>JuneisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>JuneStatus3}"/>
+														<Text text="{VenComR>JuneStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Jul" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>JulyStatus1'},{path : 'VenComR>JulyisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>JulyStatus1}"/>
+														<Text text="{VenComR>JulyStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-3B" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>JulyStatus3'},{path : 'VenComR>JulyisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>JulyStatus3}"/>
+														<Text text="{VenComR>JulyStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Aug" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>AugStatus1'},{path : 'VenComR>AugisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>AugStatus1}"/>
+														<Text text="{VenComR>AugStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-3B" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>AugStatus3'},{path : 'VenComR>AugisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>AugStatus3}"/>
+														<Text text="{VenComR>AugStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Sep" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>SepStatus1'},{path : 'VenComR>SepisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>SepStatus1}"/>
+														<Text text="{VenComR>SepStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-3B" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>SepStatus3'},{path : 'VenComR>SepisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>SepStatus3}"/>
+														<Text text="{VenComR>SepStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Oct" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>OctStatus1'},{path : 'VenComR>OctisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>OctStatus1}"/>
+														<Text text="{VenComR>OctStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-3B" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>OctStatus3'},{path : 'VenComR>OctisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>OctStatus3}"/>
+														<Text text="{VenComR>OctStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Nov" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>NovStatus1'},{path : 'VenComR>NovisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>NovStatus1}"/>
+														<Text text="{VenComR>NovStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-3B" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>NovStatus3'},{path : 'VenComR>NovisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>NovStatus3}"/>
+														<Text text="{VenComR>NovStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Dec" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>DecStatus1'},{path : 'VenComR>DecisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>DecStatus1}"/>
+														<Text text="{VenComR>DecStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-3B" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>DecStatus3'},{path : 'VenComR>DecisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>DecStatus3}"/>
+														<Text text="{VenComR>DecStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Jan" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>JanStatus1'},{path : 'VenComR>JanisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>JanStatus1}"/>
+														<Text text="{VenComR>JanStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-3B" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>JanStatus3'},{path : 'VenComR>JanisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>JanStatus3}"/>
+														<Text text="{VenComR>JanStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Feb" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>FebStatus1'},{path : 'VenComR>FebisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>FebStatus1}"/>
+														<Text text="{VenComR>FebStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-3B" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>FebStatus3'},{path : 'VenComR>FebisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>FebStatus3}"/>
+														<Text text="{VenComR>FebStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Mar" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>MarStatus1'},{path : 'VenComR>MarisFiledOnTime'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>MarStatus1}"/>
+														<Text text="{VenComR>MarStatus1Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="2" hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="" design="Bold" textAlign="Center" width="100%"/>
+													<Label text="GSTR-3B" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox width="100%">
+														<ObjectStatus state="{parts:[{path : 'VenComR>MarStatus3'},{path : 'VenComR>MarisFiledOnTime3'}], formatter : '.formatter.statusVCR'}"
+															text="{VenComR>MarStatus3}"/>
+														<Text text="{VenComR>MarStatus3Date}" class="timeStmpClr"/>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+										</ui:columns>
+									</ui:Table>
+								</Panel>
+							</commons:content>
+						</commons:ChartContainerContent>
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar>
+							<HBox id="fileuId" visible="true">
+								<Label text="Upload Due Date Master :" design="Bold" class="sapUiTinyMarginTop sapUiTinyMarginEnd"/>
+								<u:FileUploader id="FileUploadId" name="file" fileType="xlsx,xlsm,xls,csv" sameFilenameAllowed="false" sendXHR="true" width="30rem"
+									uploadComplete="onUploadComplete" enabled="{= ${userPermission>/appPermission/P24}}" class="buttoncolorSec"/>
+								<Button text="{i18n>upload}" press="onUpload" class="sapUiTinyMarginBegin buttoncolor" enabled="{= ${userPermission>/appPermission/P24}}"/>
+								<Label id="UploadTimeId" class="timeStmpClr sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+							</HBox>
+							<ToolbarSpacer/>
+							<VBox>
+								<Label/>
+								<Button class="buttoncolorSec" text="Rating Criteria" press="onRatingCriteria" enabled="{= ${userPermission>/appPermission/P24}}"
+									visible="{= ${isChan>/isChannelOne}=== true ? false:true }"/>
+							</VBox>
+							<VBox>
+								<Label/>
+								<Button class="buttoncolorSec" text="Download Due Date Master" press="onDDM" enabled="{= ${userPermission>/appPermission/P24}}"/>
+							</VBox>
+							<VBox>
+								<Label id="TimeSid" class="timeStmpClr"/>
+								<Button class="buttoncolorSec" text="Get Return Filing Status" press="onReturnFilling" enabled="{= ${userPermission>/appPermission/P24}}"
+									width="12rem"/>
+							</VBox>
+							<VBox>
+								<Label id="freqTime" class="timeStmpClr"/>
+								<Button class="buttoncolorSec" text="Get Filing Frequency" press="onFilingFrequency" enabled="{= ${userPermission>/appPermission/P24}}"
+									width="12rem"/>
+							</VBox>
+							<VBox>
+								<Label/>
+								<MenuButton class="buttoncolorSec" text="Download Reports" enabled="{= ${userPermission>/appPermission/P24}}">
+									<Menu itemSelected="onMenuItemPress">
+										<MenuItem key="tableData" text="Download Table data"/>
+										<MenuItem key="Vendor Compliance Summary" text="Customer Compliance Summary"/>
+										<MenuItem key="Vendor Compliance Rating" text="Customer Compliance History"/>
+										<MenuItem key="" text="Customer Recon &amp; Compliance Rating" enabled="false"/>
+									</Menu>
+								</MenuButton>
+							</VBox>
+							<VBox>
+								<Label/>
+								<Button type="Transparent" id="openbutnon" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="true"
+									press="onnonDetFullScreen('open')"/>
+								<Button type="Transparent" id="closebutnon" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="false"
+									press="onnonDetFullScreen('close')"/>
+							</VBox>
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+				<!--</Panel>-->
+				<Toolbar class="">
+					<HBox>
+						<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem" class="sapUiTinyMarginBeginEnd"/>
+						<Text text="Filed within Due Date" class="sapUiTinyMarginBeginEnd"/>
+						<core:Icon src="sap-icon://circle-task-2" color="blue" size="0.8rem" class="sapUiTinyMarginBeginEnd"/>
+						<Text text="Filed after Due Date" class="sapUiTinyMarginBeginEnd"/>
+						<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem" class="sapUiTinyMarginBeginBegin"/>
+						<Text text="Not Filed" class="sapUiTinyMarginBeginEnd"/>
+					</HBox>
+					<HBox width="100%" justifyContent="Center">
+						<Button id="btnFirstN" type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" class="sapUiTinyMarginBeginEnd"
+							enabled="false" press="onPressPagination"/>
+						<Button id="btnPrevN" type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="false"
+							press="onPressPagination"/>
+						<Input id="inPageNoN" type="Number" textAlign="End" width="4rem" submit="onSubmitPagination" enabled="false" class="sapUiTinyMarginBegin"
+							value="0"/>
+						<Text id="txtPageNoN" text="/ 0" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+						<Button id="btnNextN" type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="false" press="onPressPagination"/>
+						<Button id="btnLastN" type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" class="sapUiTinyMarginBeginEnd" enabled="false"
+							press="onPressPagination"/>
+						<Select id="idPageN" change="onPNChange" forceSelection="true" width="10%">
+							<core:Item key="10" text="10"/>
+							<core:Item key="25" text="25"/>
+							<core:Item key="50" text="50"/>
+							<core:Item key="75" text="75"/>
+							<core:Item key="100" text="100"/>
+						</Select>
+					</HBox>
+				</Toolbar>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

@@ -1,0 +1,227 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table">
+	<f:DynamicPage visible="{=!${Property>/visiSumm}}" class="sapUiNoContentPadding sapUiNoMargin">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="GSTR-2B Vs GSTR-3B (Summary)" titleStyle="H3"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar id="fbProcessRecord2A" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idPGstin2B" items="{userPermission>/respData/dataSecurity/gstin}" selectedKeys="{FilterModel>/gstins}" selectionChange="selectAll"
+									width="100%">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="From Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dp2b3bFr" displayFormat="MMM yyyy" valueFormat="MMyyyy" value="{FilterModel>/frDate}" maxDate="{FilterModel>/maxDate}"
+									change="onChangeDateValue('E')"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="To Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dp2b3bTo" displayFormat="MMM yyyy" valueFormat="MMyyyy" value="{FilterModel>/toDate}" maxDate="{FilterModel>/maxDate}"
+									minDate="{FilterModel>/minDate}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" press="onPressClear" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+					<Button text="Filter" press="onSearch2bVs3b" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table id="tabEntity" rows="{Gstr2b3bProcessData>/}" selectionMode="MultiToggle" visibleRowCount="8" fixedColumnCount="1"
+				class="sapUiSmallMarginTop">
+				<ui:extension>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+						<Button class="buttoncolorSec" text="Initiate Recon" press="onInitiateRecon" enabled="{=${userPermission>/appPermission/P4}}"/>
+						<Button class="buttoncolorSec" text="Initiate Get GSTR-3B" press="onInitiateGetGstr3b" enabled="{=${userPermission>/appPermission/P4}}"/>
+						<Button class="buttoncolorSec" text="Initiate Get GSTR-2B" press="onInitiateGetGstr2b" enabled="{=${userPermission>/appPermission/P4}}"/>
+						<Button class="buttoncolorSec" text="Download Report" press="onDownloadEntityRpt" enabled="{=${userPermission>/appPermission/P4}}"/>
+						<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="{i18n>downExcel}" enabled="{=${userPermission>/appPermission/P4}}"
+							press="onExportExcel('P')"/>
+						<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="{i18n>downPdf}" class="sapUiTinyMarginEnd" enabled="false"/>
+					</OverflowToolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="14rem">
+						<Label text="{i18n>gstin}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<VBox>
+								<HBox>
+									<Text text="{Gstr2b3bProcessData>state}" width="8rem" class="stateColor"/>
+									<Text text="{=${Gstr2b3bProcessData>regType}==='REGULAR'?'':${Gstr2b3bProcessData>regType}}" class="stateColor fontSmall"/>
+								</HBox>
+								<HBox alignContent="Start" justifyContent="SpaceBetween">
+									<Link text="{Gstr2b3bProcessData>gstin}" emphasized="true" press="onGstr2bSummary"/>
+									<core:Icon src="sap-icon://circle-task-2" visible="{=${Gstr2b3bProcessData>state}===''?false:true}" size="0.8rem"
+										tooltip="{Gstr2b3bProcessData>authToken}" color="{=${Gstr2b3bProcessData>authToken}==='Active'?'#00ff00':'#ff0000'}"
+										press="onActivateAuthToken(${Gstr2b3bProcessData>gstin},${Gstr2b3bProcessData>authToken})"/>
+								</HBox>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="11rem">
+						<Label text="Recon Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<VBox width="100%">
+								<ObjectStatus text="{Gstr2b3bProcessData>reconStatus}" active="{=${Gstr2b3bProcessData>reconStatus}!=='NOT INITIATED'?true:false}"
+									state="{path:'Gstr2b3bProcessData>reconStatus', formatter:'.formatter.statusClr'}" press="onPressSaveStatus($event,'P')"/>
+								<Text text="{Gstr2b3bProcessData>reconTimestamp}" class="timeStmpClr"/>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="Get GSTR-3B Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<VBox width="100%">
+								<ObjectStatus text="{Gstr2b3bProcessData>getGstr3BStatus}" active="{=${Gstr2b3bProcessData>getGstr3BStatus}!=='NOT INITIATED'?true:false}"
+									state="{path:'Gstr2b3bProcessData>getGstr3BStatus', formatter:'.formatter.statusClr'}" press="onPressSaveStatus($event,'P')"/>
+								<Text text="{Gstr2b3bProcessData>getGstr3BTimestamp}" class="timeStmpClr"/>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="Get GSTR-2B Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<VBox width="100%">
+								<ObjectStatus text="{Gstr2b3bProcessData>gstr2aStatus}" active="{=${Gstr2b3bProcessData>gstr2aStatus}!=='NOT INITIATED'?true:false}"
+									state="{path:'Gstr2b3bProcessData>gstr2aStatus', formatter:'.formatter.statusClr'}" press="onPressSaveStatus($event,'P')"/>
+								<Text text="{Gstr2b3bProcessData>gstr2aTimestamp}" class="timeStmpClr"/>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" headerSpan="4" width="7rem">
+						<ui:multiLabels>
+							<Label text="GSTR-3B ITC" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'Gstr2b3bProcessData>gstr3BIgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<ui:multiLabels>
+							<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'Gstr2b3bProcessData>gstr3BCgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<ui:multiLabels>
+							<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'Gstr2b3bProcessData>gstr3BSgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<ui:multiLabels>
+							<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="CESS" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'Gstr2b3bProcessData>gstr3BCess', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" headerSpan="4" width="7rem">
+						<ui:multiLabels>
+							<Label text="GSTR-2B ITC" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+						<Text text="{path:'Gstr2b3bProcessData>gstr2AIgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<ui:multiLabels>
+							<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'Gstr2b3bProcessData>gstr2ACgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<ui:multiLabels>
+							<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'Gstr2b3bProcessData>gstr2ASgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<ui:multiLabels>
+							<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="CESS" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'Gstr2b3bProcessData>gstr2ACess', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" headerSpan="4" width="7rem">
+						<ui:multiLabels>
+							<Label text="Difference" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'Gstr2b3bProcessData>diffIgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<ui:multiLabels>
+							<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'Gstr2b3bProcessData>diffCgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<ui:multiLabels>
+							<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'Gstr2b3bProcessData>diffSgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" width="7rem">
+						<ui:multiLabels>
+							<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<Label text="CESS" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'Gstr2b3bProcessData>diffCess', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+				<ui:footer>
+					<HBox>
+						<core:Icon src="sap-icon://circle-task-2" ariaLabelledBy="txtActive" color="#00ff00" size="0.8rem"/>
+						<Text id="txtActive" text="Auth Token Active" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+						<core:Icon src="sap-icon://circle-task-2" ariaLabelledBy="txtInactive" color="red" size="0.8rem"/>
+						<Text id="txtInactive" text="Auth Token Inactive" class="sapUiTinyMarginBegin"/>
+					</HBox>
+				</ui:footer>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

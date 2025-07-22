@@ -1,0 +1,382 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:commons="sap.suite.ui.commons">
+	<!--<f:DynamicPage class="clDPANX2Summary">
+		<f:content>-->
+	<SplitApp initialDetail="detail" initialMaster="master" orientationChange="onOrientationChange">
+		<detailPages>
+			<Page showHeader="false" id="reconsumId">
+				<content>
+					<Toolbar class="sapUiTinyMarginTop">
+						<OverflowToolbar>
+							<SegmentedButton selectedKey="PRaction" selectionChange="onSelectionChangeRRERReconsum" id="idSelectionChangeRRERSum" width="20rem">
+								<items>
+									<SegmentedButtonItem text="Action" key="PRaction"/>
+									<SegmentedButtonItem text="Information" key="RRInfo"/>
+								</items>
+							</SegmentedButton>
+							<Button type="Default" text="Dynamic Matching for Additional Entries" press="onDynamicMatchingPress"/>
+							<ToolbarSpacer/>
+							<!--<Button icon="sap-icon://filter-fields" type="Default" tooltip="Adapt Filters" press="onPressAdaptFilters" class="sapUiTinyMarginEnd"/>-->
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</Toolbar>
+					<Panel>
+						<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="true" visible="true"
+							id="id_reconaction">
+							<commons:content>
+								<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+									<commons:content>
+										<ui:TreeTable rows="{path:'ReconSummaryDetails>/', parameters:{ arrayNames:['category'], numberOfExpandedLevels:1 }}" selectionMode="None"
+											selectionBehavior="Row" visibleRowCount="20" fixedColumnCount="1" enableSelectAll="false" id="id_TreeRecon"
+											toggleOpenState="toggleOpenState1">
+											<ui:Column width="16rem">
+												<ui:multiLabels>
+													<Label text=""/>
+													<Label text="Particulars" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox justifyContent="SpaceBetween" alignItems="End" width="100%" height="100%">
+														<ObjectStatus text="{ReconSummaryDetails>particulars}" tooltip="{Anx2>Tooltip}" press="onPressParticulars" active="true"
+															state="{ReconSummaryDetails>state}"/>
+														<core:Icon src="sap-icon://download" press="onExportExcelReconResult" visible="{ReconSummaryDetails>IconDownload}"
+															tooltip="Download {ReconSummaryDetails>particulars} Report" class="sapUiSmallMarginBegin" size="0.8rem"/>
+														<!--	<core:Icon src="sap-icon://download" press="onExportExcelReconResult" visible="{=${Anx2>particulars}=== 'Additional Entries' ?true:false}"
+																tooltip="Download Additional in PR Report" class="sapUiSmallMarginBegin" size="0.8rem"/>
+															<core:Icon src="sap-icon://download" press="onExportExcelReconResult" visible="{=${Anx2>particulars}=== 'Additional Entries' ?true:false}"
+																tooltip="Download Additional in ANX-2 Report" class="sapUiSmallMarginBegin" size="0.8rem"/>-->
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="15rem" id="userResponceID" visible="true">
+												<ui:multiLabels>
+													<Label text=""/>
+													<Label text="User Response" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox >
+														<ComboBox items="{Anx2>itemsF4}" visible="{ReconSummaryDetails>SuggestedRes}" width="14rem">
+															<core:Item key="{Anx2>key}" text="{Anx2>key}"/>
+														</ComboBox>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="13rem" id="suggestedrespID" visible="true">
+												<ui:multiLabels>
+													<Label text=""/>
+													<Label text="Suggested Response" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox>
+														<Text text="{ReconSummaryDetails>suggestedResponse}"/>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="4" hAlign="End" width="6rem">
+												<ui:multiLabels>
+													<Label text="ANX - 2" textAlign="Center" width="100%" design="Bold"/>
+													<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox alignItems="Start" justifyContent="End">
+														<Text text="{ReconSummaryDetails>anx2count}"/>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="End" width="4rem">
+												<ui:multiLabels>
+													<Label text="" design="Bold"/>
+													<Label text="%" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox alignItems="Start" justifyContent="End">
+														<Text text="{parts:[{path : 'ReconSummaryDetails>anx2per'}], formatter : '.formatter.amountValue'}"/>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="End" width="12rem">
+												<ui:multiLabels>
+													<Label text="" width="100%" design="Bold"/>
+													<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox alignItems="Start" justifyContent="End">
+														<Text text="{parts:[{path : 'ReconSummaryDetails>anxtaxvalue'}], formatter : '.formatter.amountValue'}"/>
+														<!--	<Text text="{Anx2>anx2tValue}"/>-->
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="End" width="12rem">
+												<ui:multiLabels>
+													<Label text="" textAlign="Center" width="100%" design="Bold"/>
+													<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox alignItems="Start" justifyContent="End">
+														<Text text="{parts:[{path : 'ReconSummaryDetails>anxtotaltax'}], formatter : '.formatter.amountValue'}"/>
+														<!--	<Text text="{Anx2>anx2tTax}"/>-->
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column headerSpan="4" hAlign="End" width="6rem">
+												<ui:multiLabels>
+													<Label text="Purchase Register" textAlign="Center" width="100%" design="Bold"/>
+													<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox alignItems="Start" justifyContent="End">
+														<Text text="{ReconSummaryDetails>pr2count}"/>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="End" width="4rem">
+												<ui:multiLabels>
+													<Label text="Parchase Register" design="Bold"/>
+													<Label text=" % " textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox alignItems="Start" justifyContent="End">
+														<Text text="{parts:[{path : 'ReconSummaryDetails>pr2per'}], formatter : '.formatter.amountValue'}"/>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="End" width="12rem">
+												<ui:multiLabels>
+													<Label text="Parchase Register" width="100%" design="Bold"/>
+													<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox alignItems="Start" justifyContent="End">
+														<Text text="{parts:[{path : 'ReconSummaryDetails>prtaxvalue'}], formatter : '.formatter.amountValue'}"/>
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="End" width="12rem">
+												<ui:multiLabels>
+													<Label text="Parchase Register" textAlign="Center" width="100%" design="Bold"/>
+													<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox alignItems="Start" justifyContent="End">
+														<Text text="{parts:[{path : 'ReconSummaryDetails>prtotaltax'}], formatter : '.formatter.amountValue'}"/>
+														<!--		<Text text="{Anx2>prtTax}"/>-->
+													</HBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="End" width="12rem">
+												<ui:multiLabels>
+													<Label text="" textAlign="Center" width="100%" design="Bold"/>
+													<Label text="Total Available Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<HBox alignItems="Start" justifyContent="End">
+														<Text text="{parts:[{path : 'ReconSummaryDetails>totalAvailableTax'}], formatter : '.formatter.amountValue'}"/>
+														<!--	<Text text="{Anx2>anx2tTax}"/>-->
+													</HBox>
+												</ui:template>
+											</ui:Column>
+										</ui:TreeTable>
+									</commons:content>
+								</commons:ChartContainerContent >
+							</commons:content>
+							<commons:toolbar>
+								<OverflowToolbar>
+									<ToolbarSpacer/>
+									<Button type="Emphasized" text="Save Responses" press="onSave"/>
+									<Button icon="sap-icon://expand-all" press="onExpandFirstLevel"/>
+									<Button icon="sap-icon://collapse-all" press="onCollapseAll"/>
+									<Button icon="sap-icon://filter" type="Default" tooltip="Adapt Filters" press="onPressAdaptFilters" class="sapUiTinyMarginEnd"/>
+									<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+								</OverflowToolbar>
+							</commons:toolbar>
+						</commons:ChartContainer>
+						<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false" visible="false"
+							class="sapUiSmallMarginTop" id="id_treeReconSum">
+							<commons:content>
+								<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+									<commons:content>
+										<Panel>
+											<ui:TreeTable rows="{path:'Anx2>/ReconSummaryInfo1', parameters:{ arrayNames:['items'], numberOfExpandedLevels:1 }}" class=""
+												selectionMode="None" selectionBehavior="Row" visibleRowCount="6" fixedColumnCount="1" enableSelectAll="false">
+												<ui:Column width="21rem">
+													<ui:multiLabels>
+														<Label text=""/>
+														<Label text="Particulars" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+													</ui:multiLabels>
+													<ui:template>
+														<HBox justifyContent="SpaceBetween" alignItems="End" width="100%" height="100%">
+															<Link text="{Anx2>particulars}" press="onPressParticulars"/>
+															<core:Icon src="sap-icon://download" press="onExportExcelReconResult" tooltip="Download {Anx2>particulars} Report"
+																class="sapUiSmallMarginBegin" size="0.8rem"/>
+														</HBox>
+													</ui:template>
+												</ui:Column>
+												<ui:Column headerSpan="4" hAlign="End" width="">
+													<ui:multiLabels>
+														<Label text="Parchase Register" textAlign="Center" width="100%" design="Bold"/>
+														<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+													</ui:multiLabels>
+													<ui:template>
+														<HBox alignItems="Start" justifyContent="End">
+															<Text text="{Anx2>prCount}"/>
+														</HBox>
+													</ui:template>
+												</ui:Column>
+												<ui:Column hAlign="End" width="4rem">
+													<ui:multiLabels>
+														<Label text="Parchase Register" design="Bold"/>
+														<Label text=" % " textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+													</ui:multiLabels>
+													<ui:template>
+														<HBox alignItems="Start" justifyContent="End">
+															<Text text="{Anx2>prPercentage}"/>
+														</HBox>
+													</ui:template>
+												</ui:Column>
+												<ui:Column hAlign="End" width="10rem">
+													<ui:multiLabels>
+														<Label text="Parchase Register" width="100%" design="Bold"/>
+														<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+													</ui:multiLabels>
+													<ui:template>
+														<HBox alignItems="Start" justifyContent="End">
+															<Text text="{parts:[{path : 'Anx2>prtValue'}], formatter : '.formatter.amountValue'}"/>
+														</HBox>
+													</ui:template>
+												</ui:Column>
+												<ui:Column hAlign="End" width="10rem">
+													<ui:multiLabels>
+														<Label text="Parchase Register" textAlign="Center" width="100%" design="Bold"/>
+														<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+													</ui:multiLabels>
+													<ui:template>
+														<HBox alignItems="Start" justifyContent="End">
+															<Text text="{parts:[{path : 'Anx2>prtTax'}], formatter : '.formatter.amountValue'}"/>
+														</HBox>
+													</ui:template>
+												</ui:Column>
+												<ui:Column headerSpan="4" hAlign="End" width="">
+													<ui:multiLabels>
+														<Label text="ANX - 2" textAlign="Center" width="100%" design="Bold"/>
+														<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+													</ui:multiLabels>
+													<ui:template>
+														<HBox alignItems="Start" justifyContent="End">
+															<Text text="{Anx2>anx2Count}"/>
+														</HBox>
+													</ui:template>
+												</ui:Column>
+												<ui:Column hAlign="End" width="4rem">
+													<ui:multiLabels>
+														<Label text="" design="Bold"/>
+														<Label text="%" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+													</ui:multiLabels>
+													<ui:template>
+														<HBox alignItems="Start" justifyContent="End">
+															<Text text="{Anx2>anx2Percentage}"/>
+														</HBox>
+													</ui:template>
+												</ui:Column>
+												<ui:Column hAlign="End" width="10rem">
+													<ui:multiLabels>
+														<Label text="" width="100%" design="Bold"/>
+														<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+													</ui:multiLabels>
+													<ui:template>
+														<HBox alignItems="Start" justifyContent="End">
+															<Text text="{parts:[{path : 'Anx2>anx2tValue'}], formatter : '.formatter.amountValue'}"/>
+														</HBox>
+													</ui:template>
+												</ui:Column>
+												<ui:Column hAlign="End" width="10rem">
+													<ui:multiLabels>
+														<Label text="" textAlign="Center" width="100%" design="Bold"/>
+														<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+													</ui:multiLabels>
+													<ui:template>
+														<HBox alignItems="Start" justifyContent="End">
+															<Text text="{parts:[{path : 'Anx2>anx2tTax'}], formatter : '.formatter.amountValue'}"/>
+														</HBox>
+													</ui:template>
+												</ui:Column>
+											</ui:TreeTable>
+										</Panel>
+									</commons:content>
+								</commons:ChartContainerContent >
+							</commons:content>
+							<commons:toolbar>
+								<OverflowToolbar>
+									<Label text="Information Reports" design="Bold"/>
+									<ToolbarSpacer/>
+									<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+								</OverflowToolbar>
+							</commons:toolbar>
+						</commons:ChartContainer>
+					</Panel>
+				</content>
+			</Page>
+		</detailPages>
+		<masterPages>
+			<Page showHeader="false">
+				<content>
+					<VBox height="50%">
+						<Toolbar height="8rem" class="clVerticalLayoutColor123">
+							<VBox class="sapUiSmallMarginBegin">
+								<Label text="Entity" class="sapUiTinyMarginBegin" required="true" visible="false"/>
+								<Select items="{path:'EntityModel>/'}" change="onSelectionChange" id="ReconSumEntityID" class="sapUiTinyMarginBegin" width="14rem"
+									visible="false">
+									<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>
+								</Select>
+								<!--<Select items="{EntityList>/resp/}" width="100%" change="onSelectionChange" id="ReconSumEntityID">
+								<core:Item key="{EntityList>entityId}" text="{EntityList>entityName}"/>
+							</Select>-->
+								<Label text="Period :" class="sapUiTinyMarginBegin sapUiTinyMarginTop" required="true"/>
+								<HBox>
+									<DatePicker id="reconSumDateID" displayFormat="MMM yyyy" valueFormat="MMyyyy" width="14rem" class="input sapUiTinyMarginBegin"/>
+									<Button text="GO" type="Emphasized" class="input sapUiTinyMarginBegin" press="onReconSummGO"/>
+								</HBox>
+							</VBox>
+						</Toolbar>
+						<!--<Panel height="100%">-->
+						<ui:Table rowSelectionChange="onSelection" rows="{GstnLstData>/}" selectionMode="MultiToggle" visibleRowCount="10" enableSelectAll="true"
+							class="listMargin" id="gstinTab">
+							<ui:extension>
+								<Toolbar>
+									<SearchField liveChange="onSearchGstins" width="100%"/>
+								</Toolbar>
+							</ui:extension>
+							<ui:columns>
+								<ui:Column width="9.5rem">
+									<Label design="Bold" text="GSTIN" textAlign="Center"/>
+									<ui:template>
+										<VBox class="sapUiTinyMarginTopBottom">
+											<Label text="{GstnLstData>state}" tooltip="Latest Date" class="clTextSize8"/>
+											<Link text="{GstnLstData>gstin}" press="handlePress" class="clTextSize1"/>
+										</VBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="12rem">
+									<Label design="Bold" text="Status" textAlign="Center"/>
+									<ui:template>
+										<VBox class="sapUiTinyMarginTopBottom">
+											<Label text="{GstnLstData>status}" tooltip="ANX-2 Status"/>
+											<Label text="{GstnLstData>statusdate}" tooltip="Latest Date" class="clTextSize50"/>
+										</VBox>
+									</ui:template>
+								</ui:Column>
+							</ui:columns>
+						</ui:Table>
+						<!--</Panel>-->
+						<Label class="sapUiTinyMarginTop"/>
+						<Label class="sapUiTinyMarginTop"/>
+						<Label class="sapUiTinyMarginTop"/>
+						<Label class="sapUiTinyMarginTop"/>
+						<Label class="sapUiTinyMarginTop"/>
+					</VBox>
+				</content>
+			</Page>
+		</masterPages>
+	</SplitApp>
+	<!--	</f:content>
+	</f:DynamicPage>-->
+</core:FragmentDefinition>

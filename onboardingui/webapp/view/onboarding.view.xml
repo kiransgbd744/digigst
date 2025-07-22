@@ -1,0 +1,78 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.onboarding.controller.onboarding"
+	xmlns:html="http://www.w3.org/1999/xhtml" busyIndicatorDelay="0">
+	<IconTabBar expanded="true" id="idIconTabBar" select="handleIconTabBarSelect" backgroundDesign="Transparent" stretchContentHeight="true"
+		selectedKey="FileUpload" expandable="false" class="sapUiNoContentPadding clOnBoard">
+		<items>
+			<IconTabFilter showAll="true" count="On-Boarding" key="All" enabled="false"/>
+			<IconTabSeparator/>
+			<IconTabFilter id="itFileUpload" icon="sap-icon://upload-to-cloud" text="File Upload" tooltip="File Upload" key="FileUpload">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.FileUpload" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter id="itDraftELExtract" icon="sap-icon://manager-insight" text="EL Details" tooltip="EL Details" key="ELExtract">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.ELExtract" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter id="itGSTINDetails" icon="sap-icon://detail-view" text="Registration Details" tooltip="Registration Details"
+				key="GSTNDetails">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.GSTNDetails" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter id="itHierarchy" icon="sap-icon://building" text="Organization" tooltip="Organization" key="Organization">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.Hierarchy" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter id="itUserCreation" icon="sap-icon://create" text="User Creation" tooltip="User Creation" key="UserCreation">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.UserCreation" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter id="itUserMapping" icon="sap-icon://role" text="Data Security" tooltip="Data Security" key="DataSecurity">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.UserMapping" type="XML"/>
+			</IconTabFilter>
+			<!--<IconTabFilter id="itAppPermission" icon="sap-icon://permission" text="App Permission" tooltip="App Permission" key="AppPermission"
+				visible="false">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.AppPermission" type="XML"/>
+			</IconTabFilter>-->
+			<IconTabFilter id="itAppPermission1" icon="sap-icon://permission" text="Entity Level App Permission" tooltip="Entity Level App Permission"
+				key="AppPermission1">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.AppPermission1" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter id="itGroupPermission" key="GroupPermission" icon="sap-icon://kpi-managing-my-area" text="Group Level App Permission"
+				tooltip="Group Level App Permission">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.GroupPermission" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter id="itERPDetails" key="ERPRegistration" icon="sap-icon://ppt-attachment" text="Source Registration"
+				tooltip="Source Registration">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.ERPDetails" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter id="itCompanyCodeMapping" key="companycodeMapping" icon="sap-icon://activity-2" text="Company Code Mapping"
+				tooltip="Source ID to Company Code Mapping">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.companycodeMapping" type="XML"/>
+			</IconTabFilter>
+			<!--<IconTabFilter id="itERPMapping" key="ERPMapping" icon="sap-icon://ppt-attachment" text="ERP Mapping" tooltip="ERP Mapping" visible="false">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.ERPMapping" type="XML"/>
+			</IconTabFilter>-->
+			<IconTabFilter id="itScenarioPermissionStand" key="StandardIntegration" icon="sap-icon://role" text="Scenario Permission"
+				tooltip="Scenario Permission">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.ScenarioPermission" type="XML"/>
+			</IconTabFilter>
+			<!--<IconTabFilter id="itScenarioPermissionAdvan" icon="sap-icon://work-history" text="Advanced Integration" tooltip="Advanced Integration"
+				key="AdvancedIntegration" visible="false">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.ScenarioPermission1" type="XML"/>
+			</IconTabFilter>-->
+			<IconTabFilter id="itServiceOptions" key="ServiceOptions" icon="sap-icon://crm-service-manager" text="Service Options"
+				tooltip="Service Options">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.ServiceOptions" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter id="itMakerChecker" key="MakerChecker" icon="sap-icon://bbyd-active-sales" text="Maker Checker" tooltip="Maker Checker">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.MakerChecker" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter id="itEINVCnnfig" icon="sap-icon://activity-2" text="EINV Configuration" tooltip="EINV Configuration" key="EINVCnnfig">
+				<mvc:XMLView viewName="com.ey.onboarding.view.EINVCofig"/>
+			</IconTabFilter>
+			<IconTabFilter id="itFeedback" icon="sap-icon://feedback" text="Feedback" tooltip="Feedback" key="Feedback"
+				visible="{=(${GroupCdModel>/code}==='sp0002' || ${GroupCdModel>/code}==='y8nvcqp4f9')}">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.UserFeedback" type="XML"/>
+			</IconTabFilter>
+			<!--<IconTabFilter id="itHistory" icon="sap-icon://work-history" text="Validate Function" tooltip="Validate Function"
+				key="ValidateFunction">
+				<core:Fragment fragmentName="com.ey.onboarding.Fragments.History" type="XML"/>
+			</IconTabFilter>-->
+		</items>
+	</IconTabBar>
+</mvc:View>

@@ -1,0 +1,184 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<ui:Table id="idReconRTable" rowSelectionChange="onSelectionConsolMatch" rows="{path:'ConsldTablData>/'}" selectionMode="MultiToggle"
+		enableSelectAll="true" visibleRowCount="8" visible="{=!${Display>/swRecon}}">
+		<ui:columns>
+			<ui:Column width="10rem">
+				<Label design="Bold" text="Recipient GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<ObjectStatus text="{ConsldTablData>gstin}" state="None"/>
+					<Text text="{ConsldTablData>gstin}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="10rem">
+				<Label design="Bold" text="Vendor GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<ObjectStatus text="{ConsldTablData>vendorGstin}" state="None"/>
+					<Text text="{ConsldTablData>vendorGstin}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="5rem">
+				<Label design="Bold" text="Doc Type" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox>
+						<ObjectStatus text="{path:'ConsldTablData>docTypePR', formatter:'.formatter.docType'}"
+							state="{path:'ConsldTablData>isDocTypeMatch', formatter:'.formatter.reconcolorPR'}"/>
+						<ObjectStatus text="{path:'ConsldTablData>docType2A',formatter:'.formatter.docType'}"
+							state="{path:'ConsldTablData>isDocTypeMatch', formatter:'.formatter.reconcolor'}"/>
+						<ObjectStatus text="{ConsldTablData>docTypePR}" state="{path:'ConsldTablData>isDocTypeMatch', formatter:'.formatter.reconcolorPR'}"/>
+						<ObjectStatus text="{ConsldTablData>docType2A}" state="{path:'ConsldTablData>isDocTypeMatch', formatter:'.formatter.reconcolor'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="150" id="recDocNo">
+				<Label design="Bold" text="Doc No" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox>
+						<ObjectStatus text="{ConsldTablData>docNumberPR}" state="{path:'ConsldTablData>isDocNumberMatch', formatter:'.formatter.reconcolorPR'}"/>
+						<ObjectStatus text="{ConsldTablData>docNumber2A}" state="{path:'ConsldTablData>isDocNumberMatch', formatter:'.formatter.reconcolor'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="6.5rem" id="recDocDate">
+				<Label design="Bold" text="Doc Date" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox>
+						<ObjectStatus text="{ConsldTablData>docDatePR}" state="{path:'ConsldTablData>isDocDateMatch', formatter:'.formatter.reconcolorPR'}"/>
+						<ObjectStatus text="{ConsldTablData>docDate2A}" state="{path:'ConsldTablData>isDocDateMatch', formatter:'.formatter.reconcolor'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="150" id="recBoeNo" visible="false">
+				<Label design="Bold" text="BOE No" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox>
+						<ObjectStatus text="{ConsldTablData>boeNoPR}" state="{path:'ConsldTablData>isBoeNoMatch', formatter:'.formatter.reconcolorPR'}"/>
+						<ObjectStatus text="{ConsldTablData>boeNo2A}" state="{path:'ConsldTablData>isBoeNoMatch', formatter:'.formatter.reconcolor'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" width="6.5rem" id="recBoeDate" visible="false">
+				<Label design="Bold" text="BOE Date" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox>
+						<ObjectStatus text="{ConsldTablData>boeDatePR}" state="{path:'ConsldTablData>isBoeDateMatch', formatter:'.formatter.reconcolorPR'}"/>
+						<ObjectStatus text="{ConsldTablData>boeDate2A}" state="{path:'ConsldTablData>isBoeDateMatch', formatter:'.formatter.reconcolor'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" minWidth="105">
+				<Label design="Bold" text="Total Tax" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox alignItems="End">
+						<ObjectStatus text="{ConsldTablData>totalTaxPR}" state="{path:'ConsldTablData>isTotalTaxMatch', formatter:'.formatter.reconcolorPR'}"/>
+						<ObjectStatus text="{ConsldTablData>totalTax2A}" state="{path:'ConsldTablData>isTotalTaxMatch', formatter:'.formatter.reconcolor'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" minWidth="105">
+				<Label design="Bold" text="IGST" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox alignItems="End">
+						<ObjectStatus text="{ConsldTablData>igstPR}" state="{path:'ConsldTablData>isIgstMatch', formatter:'.formatter.reconcolorPR'}"/>
+						<ObjectStatus text="{ConsldTablData>igst2A}" state="{path:'ConsldTablData>isIgstMatch', formatter:'.formatter.reconcolor'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" minWidth="105">
+				<Label design="Bold" text="CGST" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox alignItems="End">
+						<ObjectStatus text="{ConsldTablData>cgstPR}" state="{path:'ConsldTablData>isCgstMatch', formatter:'.formatter.reconcolorPR'}"/>
+						<ObjectStatus text="{ConsldTablData>cgst2A}" state="{path:'ConsldTablData>isCgstMatch', formatter:'.formatter.reconcolor'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" minWidth="105">
+				<Label design="Bold" text="SGST" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox alignItems="End">
+						<ObjectStatus text="{ConsldTablData>sgstPR}" state="{path:'ConsldTablData>isSgstMatch', formatter:'.formatter.reconcolorPR'}"/>
+						<ObjectStatus text="{ConsldTablData>sgst2A}" state="{path:'ConsldTablData>isSgstMatch', formatter:'.formatter.reconcolor'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" minWidth="105">
+				<Label design="Bold" text="Cess" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<VBox alignItems="End">
+						<ObjectStatus text="{ConsldTablData>cessPR}" state="{path:'ConsldTablData>isCessMatch', formatter:'.formatter.reconcolorPR'}"/>
+						<ObjectStatus text="{ConsldTablData>cess2A}" state="{path:'ConsldTablData>isCessMatch', formatter:'.formatter.reconcolor'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="180">
+				<Label design="Bold" text="Accounting Voucher No" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<Text text="{ConsldTablData>accVoucherNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="350">
+				<Label design="Bold" text="Mismatch Reason" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<Text text="{ConsldTablData>mismatchReason}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="150">
+				<Label design="Bold" text="Recon Response" textAlign="Center" width="100%" wrapping="true"/>
+				<ui:template>
+					<Text text="{path:'ConsldTablData>responseTaken'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="20rem">
+				<Label design="Bold" text="Response Remarks"/>
+				<ui:template>
+					<Text text="{ConsldTablData>respRemarks}" textAlign="Center"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="10rem"
+				visible="{=(!!${GroupPermission>/GR1} &amp;&amp; (${Display>/LabelRR} ==='2B' ? !!${GroupPermission>/GR2} : !!${GroupPermission>/GR4}))}">
+				<Label design="Bold" text="IMS Action (GSTN)"/>
+				<ui:template>
+					<Text text="{ConsldTablData>imsActionGstn}" textAlign="Center"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="10rem"
+				visible="{=(!!${GroupPermission>/GR1} &amp;&amp; (${Display>/LabelRR} ==='2B' ? !!${GroupPermission>/GR2} : !!${GroupPermission>/GR4}))}">
+				<Label design="Bold" text="IMS Action (DigiGST)"/>
+				<ui:template>
+					<Text text="{ConsldTablData>imsActionDigiGst}" textAlign="Center"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="10rem"
+				visible="{=(!!${GroupPermission>/GR1} &amp;&amp; (${Display>/LabelRR} ==='2B' ? !!${GroupPermission>/GR2} : !!${GroupPermission>/GR4}))}">
+				<Label design="Bold" text="IMS UniqueID"/>
+				<ui:template>
+					<Text text="{ConsldTablData>imsUniqId}" textAlign="Center"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+		<ui:footer>
+			<HBox width="100%" justifyContent="Center">
+				<Button type="Ghost" icon="sap-icon://media-rewind" tooltip="First Page" enabled="{Display>/bFirstRRL}" class="sapUiTinyMarginBeginEnd"
+					press="onPaginationLockRR('F')"/>
+				<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="{Display>/bPrevRRL}"
+					press="onPaginationLockRR('P')"/>
+				<Input type="Number" textAlign="End" width="4rem" enabled="{Display>/ePageNoRRL}" value="{Display>/inPageNoRRL}"
+					submit="onSubmitPaginationRR" class="sapUiTinyMarginBegin"/>
+				<Text text="/ {Display>/pgTotalRRL}" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+				<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" press="onPaginationLockRR('N')"
+					enabled="{Display>/bNextRRL}"/>
+				<Button type="Ghost" icon="sap-icon://media-forward" tooltip="Last Page" enabled="{Display>/bLastRRL}" class="sapUiTinyMarginBeginEnd"
+					press="onPaginationLockRR('L')"/>
+				<Select forceSelection="true" selectedKey="{Display>/pgSizeRRL}" change="onReconResults">
+					<core:Item key="10" text="10"/>
+					<core:Item key="25" text="25"/>
+					<core:Item key="50" text="50"/>
+					<core:Item key="75" text="75"/>
+					<core:Item key="100" text="100"/>
+					<core:Item key="200" text="200"/>
+					<core:Item key="300" text="300"/>
+				</Select>
+			</HBox>
+		</ui:footer>
+	</ui:Table>
+</core:FragmentDefinition>

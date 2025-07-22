@@ -1,0 +1,68 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:f="sap.ui.layout.form">
+	<Dialog title="Save GSTR-1" type="Message" class="sapUiSizeCompact cl_saveHeader" xmlns:fb="sap.ui.comp.filterbar">
+		<content>
+			<layout:VerticalLayout>
+				<layout:Grid defaultSpan="L3 M3 S12" vSpacing="0" class="sapUiTinyMarginTop">
+					<layout:content>
+						<VBox>
+							<Label text="Tax Period" required="false"/>
+							<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" id="id_TaxProcess12" editable="false" width="12rem"/>
+						</VBox>
+						<VBox visible="{=!${visiSummPopup>/P}}" class="sapUiSmallMarginBegin">
+							<Label text="GSTIN" required="false"/>
+							<Select id="slSummaryGstin11" items="{path:'DataPermission>/respData/dataSecurity/gstin'}" width="12rem">
+								<core:Item key="{DataPermission>value}" text="{DataPermission>value}"/>
+							</Select>
+						</VBox>
+					</layout:content>
+				</layout:Grid>
+				<HBox class="sapUiSmallMarginTop">
+					<Label text="Transectional Level Data" design="Bold"/>
+					<CheckBox select="onSelectSaveStatausPopup($event,'T')" id="id_select1Nd" class="cl_check sapUiTinyMarginBottom"/>
+				</HBox>
+				<layout:Grid defaultSpan="L3 M3 S12" vSpacing="0" class="sapUiTinyMarginTop">
+					<layout:content>
+						<CheckBox text="B2B(4A,4B,6B,6C)" selected="{GetSection>/b2bFlag}"/>
+						<CheckBox text="B2BA(9A)" selected="{GetSection>/b2baFlag}"/>
+						<CheckBox text="B2CL(5A)" selected="{GetSection>/b2clFlag}"/>
+						<CheckBox text="B2CLA(9A)" selected="{GetSection>/b2claFlag}"/>
+						<CheckBox text="EXP(6A)" selected="{GetSection>/expFlag}"/>
+						<CheckBox text="EXPA(9A)" selected="{GetSection>/expaFlag}"/>
+						<CheckBox text="CDNR(9B)" selected="{GetSection>/cdnrFlag}"/>
+						<CheckBox text="CDNRA(9C)" selected="{GetSection>/cdnraFlag}"/>
+						<CheckBox text="CDNUR(9B)" selected="{GetSection>/cdnurFlag}"/>
+						<CheckBox text="CDNURA(9C)" selected="{GetSection>/cdnuraFlag}"/>
+						<CheckBox text="ECOM[15(i) &amp; 15(iii)]" selected="{GetSection>/ecom15iFlag}"/>
+						<CheckBox text="ECOMA[15A(I)]" selected="{GetSection>/ecom15AIFlag}"/>
+					</layout:content>
+				</layout:Grid>
+				<HBox class="sapUiSmallMarginTop">
+					<Label text="Summary Level Data" design="Bold"/>
+					<CheckBox select="onSelectSaveStatausPopup($event,'S')" id="id_select2Nd" class="cl_check sapUiTinyMarginBottom"/>
+				</HBox>
+				<layout:Grid defaultSpan="L4 M4 S12" vSpacing="0" class="sapUiTinyMarginTop">
+					<layout:content>
+						<CheckBox text="B2CS" selected="{GetSection>/b2csFlag}"/>
+						<CheckBox text="B2CSA" selected="{GetSection>/b2csaFlag}"/>
+						<CheckBox text=" Advance Received" selected="{GetSection>/atFlag}"/>
+						<CheckBox text="Advance Received Amendments" selected="{GetSection>/ataFlag}"/>
+						<CheckBox text="Advance Adjustment" selected="{GetSection>/txpFlag}"/>
+						<CheckBox text="Advance Adjustment Amendments " selected="{GetSection>/txpaFlag}"/>
+						<CheckBox text="Nil, Exempt and Non GST Supplies" selected="{GetSection>/nilFlag}"/>
+						<CheckBox text="HSN Summary" selected="{GetSection>/hsnsumFlag}"/>
+						<CheckBox text="Document Issued" selected="{GetSection>/docissFlag}"/>
+						<CheckBox text="SUPPLIER VIA ECOM(14)" selected="{GetSection>/supp14Flag}"/>
+						<CheckBox text="SUPPLIER VIA ECOM-A(14A)" selected="{GetSection>/supp14AFlag}"/>
+						<CheckBox text="ECOM[15(ii) &amp; 15(iv)]" selected="{GetSection>/ecom15iiFlag}"/>
+						<CheckBox text="ECOMA[15A(II)]" selected="{GetSection>/ecom15AIIFlag}"/>
+					</layout:content>
+				</layout:Grid>
+			</layout:VerticalLayout>
+		</content>
+		<buttons>
+			<Button class="buttoncolorSec" text="Reset" press="onSaveGstr6ABtnDialog('R')"/>
+			<Button class="buttoncolorSec" text="Save" press="onSaveGstr6ABtnDialog('S')"/>
+			<Button class="buttoncolorSec" text="Cancel" press="onSaveGstr6ABtnDialog('C')"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

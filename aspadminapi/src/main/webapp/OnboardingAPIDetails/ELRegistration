@@ -1,0 +1,69 @@
+URL : /getElRegistration.do
+Service : POST 
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+
+Request Payload :
+
+{
+  "req":{
+          "groupCode":"ern00002"
+  }
+}
+
+
+
+
+
+URL : /updateElRegistration.do
+Service : POST 
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+
+Request Payload :
+
+{
+	"req":
+		[
+			{
+			"entityId":1,
+			"entityName":"SAP_POC_Sandbox",	
+			"id":22,
+			"regType":"normal",
+			"groupCode":"ern00002",
+			"supplierGstin":"33PTCDE1234F1Z6",
+			"gstnUsername":"Gstn2",
+			"bankAccNo":"B12345",
+			"regEmail":"gst@ey.com.in", 
+			"regMobile":"767324432", 
+			"primaryAuthEmail":"gst@ey.com", 
+			"secondaryAuthEmail":"gst1@ey.com", 
+			"primaryContactEmail":"gst2@ey.com", 
+			"secondaryContactEmail":"gst3@ey.com",
+			"turnover":2
+			}
+		]
+}
+
+
+
+
+URL : /deleteElRegistration.do
+Service : POST 
+Header : 
+Authorization - Basic Authentication
+Content-Type - application/json
+
+
+Request Payload :
+
+{
+	"req":
+		[
+			{"id":4}]
+	
+}

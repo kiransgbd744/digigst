@@ -1,0 +1,419 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:table="sap.ui.table">
+	<f:DynamicPage fitContent="true" class="ReconResponce">
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<HBox>
+					<HBox class="sapUiLargeMarginEnd">
+						<Label text="File Type:" labelFor="rgbFileType" design="Bold" width="5rem" class="sapUiTinyMarginTop"/>
+						<RadioButtonGroup selectedIndex="{Property>/viewFileType}" columns="6">
+							<RadioButton text="GL Code Master"/>
+							<RadioButton text="Business Unit"/>
+							<RadioButton text="Document Type"/>
+							<RadioButton text="Supply Type"/>
+							<RadioButton text="Tax Code Master"/>
+							<RadioButton text="GL Mapping"/>
+						</RadioButtonGroup>
+					</HBox>
+					<Button text="{i18n>view}" tooltip="{i18n>view}" press="onViewMasterData" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<VBox>
+				<table:Table rows="{GLCodeMaster>/}" id="GLCodeMaster" visible="{=${Property>/viewType}==='glCode'}">
+					<table:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<Button text="Save" tooltip="Save" press="onSave" class="buttoncolorSec"/>
+							<Button icon="sap-icon://delete" tooltip="Delete" press="onDelete" class="buttoncolorSec"/>
+							<Button icon="sap-icon://edit" tooltip="Edit" press="onEdit" class="buttoncolorSec"/>
+							<Button icon="sap-icon://add" tooltip="Add" press="onAdd" class="buttoncolorSec"/>
+						</Toolbar>
+					</table:extension>
+					<table:columns>
+						<table:Column hAlign="End" width="10rem">
+							<Label text="CGST Tax GL Codes" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{GLCodeMaster>cgstTaxGlCode}" visible="{= ${GLCodeMaster>edit} }" textAlign="End"/>
+									<Text text="{GLCodeMaster>cgstTaxGlCode}" visible="{= !${GLCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column hAlign="End" width="10rem">
+							<Label text="SGST Tax GL Code" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{GLCodeMaster>sgstTaxGlCode}" visible="{= ${GLCodeMaster>edit} }" textAlign="End"/>
+									<Text text="{GLCodeMaster>sgstTaxGlCode}" visible="{= !${GLCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column hAlign="End" width="10rem">
+							<Label text="IGST Tax GL Code" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{GLCodeMaster>igstTaxGlCode}" visible="{= ${GLCodeMaster>edit} }" textAlign="End"/>
+									<Text text="{GLCodeMaster>igstTaxGlCode}" visible="{= !${GLCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column hAlign="End" width="10rem">
+							<Label text="UGST Tax GL Code" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{GLCodeMaster>ugstTaxGlCode}" visible="{= ${GLCodeMaster>edit} }" textAlign="End"/>
+									<Text text="{GLCodeMaster>ugstTaxGlCode}" visible="{= !${GLCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column hAlign="End" width="10rem">
+							<Label text="Compensation Cess GL Code" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{GLCodeMaster>compensationCessGlCode}" visible="{= ${GLCodeMaster>edit} }" textAlign="End"/>
+									<Text text="{GLCodeMaster>compensationCessGlCode}" visible="{= !${GLCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column hAlign="End" width="10rem">
+							<Label text="Kerala Cess GL Code" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{GLCodeMaster>keralaCessGlCode}" visible="{= ${GLCodeMaster>edit} }" textAlign="End"/>
+									<Text text="{GLCodeMaster>keralaCessGlCode}" visible="{= !${GLCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column hAlign="End" width="10rem">
+							<Label text="Revenue GLs" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{GLCodeMaster>revenueGls}" visible="{= ${GLCodeMaster>edit} }" textAlign="End"/>
+									<Text text="{GLCodeMaster>revenueGls}" visible="{= !${GLCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column hAlign="End" width="10rem">
+							<Label text="Expence GLs" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{GLCodeMaster>expenceGls}" visible="{= ${GLCodeMaster>edit} }" textAlign="End"/>
+									<Text text="{GLCodeMaster>expenceGls}" visible="{= !${GLCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column hAlign="End" width="10rem">
+							<Label text="Exchange rate diff GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{GLCodeMaster>exchangeRate}" visible="{= ${GLCodeMaster>edit} }" textAlign="End"/>
+									<Text text="{GLCodeMaster>exchangeRate}" visible="{= !${GLCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column hAlign="End" width="10rem">
+							<Label text="Export GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{GLCodeMaster>exportGl}" visible="{= ${GLCodeMaster>edit} }" textAlign="End"/>
+									<Text text="{GLCodeMaster>exportGl}" visible="{= !${GLCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column hAlign="End" width="10rem">
+							<Label text="Forex Gls Part of revenue" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{GLCodeMaster>forexGlsPor}" visible="{= ${GLCodeMaster>edit} }" textAlign="End"/>
+									<Text text="{GLCodeMaster>forexGlsPor}" visible="{= !${GLCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column hAlign="End" width="10rem">
+							<Label text="Taxable Advance (Liability) GLs" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{GLCodeMaster>taxableAdvanceLiabilityGls}" visible="{= ${GLCodeMaster>edit} }" textAlign="End"/>
+									<Text text="{GLCodeMaster>taxableAdvanceLiabilityGls}" visible="{= !${GLCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column hAlign="End" width="11rem">
+							<Label text="Non-Taxable Advance (Liability) GLs" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{GLCodeMaster>nonTaxableAdvanceLiabilityGls}" visible="{= ${GLCodeMaster>edit} }" textAlign="End"/>
+									<Text text="{GLCodeMaster>nonTaxableAdvanceLiabilityGls}" visible="{= !${GLCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column hAlign="End" width="11rem">
+							<Label text="Cross-Charge and Stock transfer GLs" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{GLCodeMaster>ccAndStGls}" visible="{= ${GLCodeMaster>edit} }" textAlign="End"/>
+									<Text text="{GLCodeMaster>ccAndStGls}" visible="{= !${GLCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column hAlign="End" width="11rem">
+							<Label text="Unbilled Revenue GLs" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{GLCodeMaster>unbilledRevenueGls}" visible="{= ${GLCodeMaster>edit} }" textAlign="End"/>
+									<Text text="{GLCodeMaster>unbilledRevenueGls}" visible="{= !${GLCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column hAlign="End" width="10rem">
+							<Label text="Bank A/C GLs" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{GLCodeMaster>bankAccGls}" visible="{= ${GLCodeMaster>edit} }" textAlign="End"/>
+									<Text text="{GLCodeMaster>bankAccGls}" visible="{= !${GLCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column hAlign="End" width="10rem">
+							<Label text="Input Tax GLs" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{GLCodeMaster>inputTaxGls}" visible="{= ${GLCodeMaster>edit} }" textAlign="End"/>
+									<Text text="{GLCodeMaster>inputTaxGls}" visible="{= !${GLCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column hAlign="End" width="10rem">
+							<Label text="Fixed Asset GLs" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{GLCodeMaster>fixedAssetGls}" visible="{= ${GLCodeMaster>edit} }" textAlign="End"/>
+									<Text text="{GLCodeMaster>fixedAssetGls}" visible="{= !${GLCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+					</table:columns>
+				</table:Table>
+				<table:Table rows="{BusinessUnit>/}" id="BusinessUnit" visible="{=${Property>/viewType}==='busiUnit'}">
+					<table:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<Button text="Save" tooltip="Save" press="onSave" class="buttoncolorSec"/>
+							<Button icon="sap-icon://delete" tooltip="Delete" press="onDelete" class="buttoncolorSec"/>
+							<Button icon="sap-icon://edit" tooltip="Edit" press="onEdit" class="buttoncolorSec"/>
+							<Button icon="sap-icon://add" tooltip="Add" press="onAdd" class="buttoncolorSec"/>
+						</Toolbar>
+					</table:extension>
+					<table:columns>
+						<table:Column>
+							<Label text="Business Place" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{BusinessUnit>businessPlace}" visible="{= ${BusinessUnit>edit} }"/>
+									<Text text="{BusinessUnit>businessPlace}" visible="{= !${BusinessUnit>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column>
+							<Label text="Business Area" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{BusinessUnit>businessArea}" visible="{= ${BusinessUnit>edit} }"/>
+									<Text text="{BusinessUnit>businessArea}" visible="{= !${BusinessUnit>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column>
+							<Label text="Plant Code" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{BusinessUnit>plantCode}" visible="{= ${BusinessUnit>edit} }"/>
+									<Text text="{BusinessUnit>plantCode}" visible="{= !${BusinessUnit>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column>
+							<Label text="Profit Centre" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{BusinessUnit>profitCentre}" visible="{= ${BusinessUnit>edit} }"/>
+									<Text text="{BusinessUnit>profitCentre}" visible="{= !${BusinessUnit>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column>
+							<Label text="Cost Centre" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{BusinessUnit>costCentre}" visible="{= ${BusinessUnit>edit} }"/>
+									<Text text="{BusinessUnit>costCentre}" visible="{= !${BusinessUnit>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column>
+							<Label text="GSTIN" required="true" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{BusinessUnit>gstin}" visible="{= ${BusinessUnit>edit} }"/>
+									<Text text="{BusinessUnit>gstin}" visible="{= !${BusinessUnit>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+					</table:columns>
+				</table:Table>
+				<table:Table rows="{DocumentType>/}" id="DocumentType" visible="{=${Property>/viewType}==='docType'}">
+					<table:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<Button text="Save" tooltip="Save" press="onSave" class="buttoncolorSec"/>
+							<Button icon="sap-icon://delete" tooltip="Delete" press="onDelete" class="buttoncolorSec"/>
+							<Button icon="sap-icon://edit" tooltip="Edit" press="onEdit" class="buttoncolorSec"/>
+							<Button icon="sap-icon://add" tooltip="Add" press="onAdd" class="buttoncolorSec"/>
+						</Toolbar>
+					</table:extension>
+					<table:columns>
+						<table:Column>
+							<Label text="Document Type" required="true" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{DocumentType>docType}" required="true" visible="{= ${DocumentType>edit} }"/>
+									<Text text="{DocumentType>docType}" visible="{= !${DocumentType>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column>
+							<Label text="Document Type MS" design="Bold" required="true" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{DocumentType>docTypeMs}" visible="{= ${DocumentType>edit} }"/>
+									<Text text="{DocumentType>docTypeMs}" visible="{= !${DocumentType>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+					</table:columns>
+				</table:Table>
+				<table:Table rows="{SupplyType>/}" id="SupplyType" visible="{=${Property>/viewType}==='suppType'}">
+					<table:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<Button text="Save" class="buttoncolorSec" press="onSave"/>
+							<Button icon="sap-icon://delete" tooltip="Delete" class="buttoncolorSec" press="onDelete"/>
+							<Button icon="sap-icon://edit" tooltip="Edit" class="buttoncolorSec" press="onEdit"/>
+							<Button icon="sap-icon://add" tooltip="Add" class="buttoncolorSec" press="onAdd"/>
+						</Toolbar>
+					</table:extension>
+					<table:columns>
+						<table:Column>
+							<Label text="Supply Type Reg" required="true" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{SupplyType>supplyTypeReg}" visible="{= ${SupplyType>edit} }"/>
+									<Text text="{SupplyType>supplyTypeReg}" visible="{= !${SupplyType>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column>
+							<Label text="Supply Type MS" required="true" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{SupplyType>supplyTypeMs}" visible="{= ${SupplyType>edit} }"/>
+									<Text text="{SupplyType>supplyTypeMs}" visible="{= !${SupplyType>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+					</table:columns>
+				</table:Table>
+				<table:Table rows="{TaxCodeMaster>/}" id="TaxCodeMaster" visible="{=${Property>/viewType}==='taxCode'}">
+					<table:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<Button text="Save" tooltip="Save" press="onSave" class="buttoncolorSec"/>
+							<Button icon="sap-icon://delete" tooltip="Delete" press="onDelete" class="buttoncolorSec"/>
+							<Button icon="sap-icon://edit" tooltip="Edit" press="onEdit" class="buttoncolorSec"/>
+							<Button icon="sap-icon://add" tooltip="Add" press="onAdd" class="buttoncolorSec"/>
+						</Toolbar>
+					</table:extension>
+					<table:columns>
+						<table:Column>
+							<Label text="Transaction Type GL" required="true" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{TaxCodeMaster>transactionTypeGl}" visible="{= ${TaxCodeMaster>edit} }"/>
+									<Text text="{TaxCodeMaster>transactionTypeGl}" visible="{= !${TaxCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column>
+							<Label text="Tax Code Description MS" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{TaxCodeMaster>taxCodeDescriptionMs}" visible="{= ${TaxCodeMaster>edit} }"/>
+									<Text text="{TaxCodeMaster>taxCodeDescriptionMs}" visible="{= !${TaxCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column>
+							<Label text="Tax Type MS" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{TaxCodeMaster>taxTypeMs}" visible="{= ${TaxCodeMaster>edit} }"/>
+									<Text text="{TaxCodeMaster>taxTypeMs}" visible="{= !${TaxCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column>
+							<Label text="Eligibility MS" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{TaxCodeMaster>eligibilityMs}" visible="{= ${TaxCodeMaster>edit} }"/>
+									<Text text="{TaxCodeMaster>eligibilityMs}" visible="{= !${TaxCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column>
+							<Label text="Tax Rate MS" required="true" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{TaxCodeMaster>taxRateMs}" visible="{= ${TaxCodeMaster>edit} }"/>
+									<Text text="{TaxCodeMaster>taxRateMs}" visible="{= !${TaxCodeMaster>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+					</table:columns>
+				</table:Table>
+				<table:Table rows="{GLMapping>/}" id="GLMapping" visible="{=${Property>/viewType}==='glMapping'}">
+					<table:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<Button text="Save" tooltip="Save" press="onSave" class="buttoncolorSec"/>
+							<!--<Button icon="sap-icon://delete" tooltip="Delete" press="onDelete" class="buttoncolorSec"/>-->
+							<Button icon="sap-icon://edit" tooltip="Edit" press="onEdit" class="buttoncolorSec"/>
+							<!--<Button icon="sap-icon://add" tooltip="Add" press="onAdd" class="buttoncolorSec"/>-->
+						</Toolbar>
+					</table:extension>
+					<table:columns>
+						<table:Column>
+							<Label text="Base Headers" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{GLMapping>baseHeader}" visible="{= ${GLMapping>edit} }"/>
+									<Text text="{GLMapping>baseHeader}" visible="{= !${GLMapping>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+						<table:Column>
+							<Label text="Input File Headers" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+							<table:template>
+								<VBox>
+									<Input value="{GLMapping>inputFileHeaders}" visible="{= ${GLMapping>edit} }"/>
+									<Text text="{GLMapping>inputFileHeaders}" visible="{= !${GLMapping>edit} }"/>
+								</VBox>
+							</table:template>
+						</table:Column>
+					</table:columns>
+				</table:Table>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

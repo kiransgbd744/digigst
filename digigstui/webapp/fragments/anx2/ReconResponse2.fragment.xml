@@ -1,0 +1,757 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons" xmlns:layout="sap.ui.layout">
+	<f:DynamicPage class="clDPANX2Summary">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button icon="sap-icon://nav-back" type="Transparent" press="handleLinkPressReconResBack1" id="idEntityLevelBack1" visible="false"/>
+						<Title text="Entity Level" id="idEntityLevelTitle1" class="sapUiSmallMarginBegin clTitleMarginTop"/>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<SegmentedButton selectedKey="PRSummary" selectionChange="onSelectionChangeRRERRecon" id="idSelectionChangeRRER" width="20rem">
+						<items>
+							<SegmentedButtonItem text="Summary" key="Summary"/>
+							<SegmentedButtonItem text="Detail" key="Detail"/>
+						</items>
+					</SegmentedButton>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding">
+				<fb:FilterBar showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="ReconResponseData" clear="onClearFilterRecResp"
+					useToolbar="false" class="sapUiNoContentPadding" visible="true" id="summaryfilterID">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="false">
+							<fb:control>
+								<Select items="{path:'EntityModel>/'}" change="onSummaryEntityChange" id="summEntityID">
+									<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>
+								</Select>
+								<!--<Select items="{EntityList>/resp/}" width="100%" change="onSummaryEntityChange" id="summEntityID">
+									<core:Item key="{EntityList>entityId}" text="{EntityList>entityName}"/>
+								</Select>-->
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" id="summGSTINEntityID"
+									selectionFinish="onSelectReconRespGstin">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+								<!--<MultiComboBox width="100%" items="{GstnLst>/resp/gstins}" id="summGSTINEntityID">
+									<core:Item key="{GstnLst>gstin}" text="{GstnLst>gstin}"/>
+								</MultiComboBox>-->
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" change="handleChange" width="12rem" id="ReconsumaryDateID"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Table Type" visibleInFilterBar="true" visible="true">
+							<fb:control>
+								<MultiComboBox id="tableTypeID" selectionFinish="onSummaryTableTypeChange">
+									<core:Item key="All" text="All"/>
+									<core:Item key="B2B" text="B2B"/>
+									<core:Item key="SEZWP" text="SEZWP"/>
+									<core:Item key="SEZWOP" text="SEZWOP"/>
+									<core:Item key="DXP" text="DXP"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>-->
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Document Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="DocTypeID" selectionChange="onSummaryTableTypeChange1">
+									<core:Item key="All" text="All"/>
+									<core:Item key="INV" text="INV"/>
+									<core:Item key="DR" text="DR"/>
+									<core:Item key="CR" text="CR"/>
+									<core:Item key="INV - A" text="INV - A"/>
+									<core:Item key="DR - A" text="DR - A"/>
+									<core:Item key="CR - A" text="CR - A"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="H" label="Type" visibleInFilterBar="true" id="id_TypeFilter" visible="false">
+							<fb:control>
+								<MultiComboBox id="typeID" selectionChange="onSummaryTableTypeChange2">
+									<core:Item key="All" text="All"/>
+									<core:Item key="A2" text="A2" id="id_A2"/>
+									<core:Item key="PR Tax" text="PR Tax"/>
+									<core:Item key="PR Available" text="PR Available"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="Response" visibleInFilterBar="true" id="idfgiRRResponse1"
+							visible="false">
+							<fb:control>
+								<MultiComboBox >
+									<core:Item key="All" text="All"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="Report" visibleInFilterBar="true" id="idfgiRRReport1" visible="false">
+							<fb:control>
+								<MultiComboBox >
+									<core:Item key="All" text="All"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<fb:FilterBar showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onReconRespLinkData"
+					clear="onClearFilterRecRespLink" useToolbar="false" class="sapUiNoContentPadding" visible="false" id="filterDetail">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A1" label="Entity" visibleInFilterBar="false">
+							<fb:control>
+								<Select items="{path:'EntityModel>/'}" change="onDetailEntityChange" id="EntityID1">
+									<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>
+								</Select>
+								<!--<Select items="{EntityList>/resp/}" width="100%" change="onDetailEntityChange" id="EntityID1">
+									<core:Item key="{EntityList>entityId}" text="{EntityList>entityName}"/>
+								</Select>-->
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C1" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<Select width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" id="GSTINEntityID1">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</Select>
+								<!--<Select width="100%" items="{GstnLst1>/resp/gstins}" id="GSTINEntityID1" forceSelection="false">
+									<core:Item key="{GstnLst1>gstin}" text="{GstnLst1>gstin}"/>
+								</Select>-->
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B1" label="Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker displayFormat="MMM yyyy" valueFormat="MMyyyy" change="handleChange" width="12rem" id="ReconsumaryDateID1"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D1" label="Table Type" visibleInFilterBar="true" visible="true">
+							<fb:control>
+								<MultiComboBox id="detailTabTypeID" selectionChange="onSelectionTypeChange">
+									<core:Item key="All" text="All"/>
+									<core:Item key="B2B" text="B2B"/>
+									<core:Item key="SEZWP" text="SEZWP"/>
+									<core:Item key="SEZWOP" text="SEZWOP"/>
+									<core:Item key="DXP" text="DXP"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E1" label="Document Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="detailDocTypeID" selectionChange="onSelectionTypeChange1">
+									<core:Item key="All" text="All"/>
+									<core:Item key="INV" text="INV"/>
+									<core:Item key="DR" text="DR"/>
+									<core:Item key="CR" text="CR"/>
+									<core:Item key="INV - A" text="INV - A"/>
+									<core:Item key="DR - A" text="DR - A"/>
+									<core:Item key="CR - A" text="CR - A"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="H1" label="Type" visibleInFilterBar="true" id="id_TypeFilter1">
+							<fb:control>
+								<MultiComboBox id="detailTypeID" selectionChange="onSelectionTypeChange2">
+									<core:Item key="All" text="All"/>
+									<core:Item key="A2" text="A2" id="id_A21"/>
+									<core:Item key="PR Tax" text="PR Tax"/>
+									<core:Item key="PR Available" text="PR Available"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F1" label="Response" visibleInFilterBar="true" id="idfgiRRResponse11"
+							visible="false">
+							<fb:control>
+								<MultiComboBox >
+									<core:Item key="All" text="All"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G1" label="Report" visibleInFilterBar="true" id="idfgiRRReport11"
+							visible="false">
+							<fb:control>
+								<MultiComboBox >
+									<core:Item key="All" text="All"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel>
+				<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false" id="idRREntity1"
+					visible="false">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<ui:Table rowSelectionChange="onSelection" rows="{ReconResponce>/resp/detailsData}" selectionMode="None" visibleRowCount="20"
+									enableSelectAll="true" fixedBottomRowCount="0" fixedColumnCount="2" id="idRREntityTable1">
+									<ui:columns>
+										<ui:Column width="12rem">
+											<Label design="Bold" text="GSTIN" width=""/>
+											<ui:template>
+												<VBox>
+													<HBox>
+														<Text text="{ReconResponce>stateName}" width="8rem" class="stateColor"/>
+														<!--<Text text="{Anx2>state}" class="stateColor fontSmall"/>-->
+													</HBox>
+													<HBox alignContent="Start" justifyContent="SpaceBetween">
+														<Link text="{ReconResponce>gstin}" press="handleLinkPressRRGSTIN1"/>
+														<core:Icon src="sap-icon://circle-task-2" size="0.8rem" class="sapUiSmallMarginBegin" tooltip="Generate OTP"
+															visible="{=${ReconResponce>authStatus}=== '' ?false:true}" color="{=${ReconResponce>authStatus}=== 'A' ?'#00ff00':'#ff0000'}"
+															press="onPressGenerateOTP3"/>
+													</HBox>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="8rem" hAlign="Left">
+											<Label design="Bold" text="Type" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="Anx-2" class="blueColor" visible="{visiSummAnx2>/A2}"/>
+													<Text text="PR Tax" class="BlkCol" visible="{visiSummAnx2>/PR}"/>
+													<Text text="PR Available" class="orgCol" visible="{visiSummAnx2>/PRA}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem">
+											<Label design="Bold" text="Accept A2 &amp; ITC A2" width=""/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>a2/a1'}], formatter : '.formatter.amountValue'}" class="blueColor" visible="{visiSummAnx2>/A2}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pr/a1'}], formatter : '.formatter.amountValue'}" class="BlkCol" visible="{visiSummAnx2>/PR}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pra/a1'}], formatter : '.formatter.amountValue'}" class="orgCol" visible="{visiSummAnx2>/PRA}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Accept A2 &amp; ITC PR Available " textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>a2/a2'}], formatter : '.formatter.amountValue'}" class="blueColor" visible="{visiSummAnx2>/A2}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pr/a2'}], formatter : '.formatter.amountValue'}" class="BlkCol" visible="{visiSummAnx2>/PR}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pra/a2'}], formatter : '.formatter.amountValue'}" class="orgCol" visible="{visiSummAnx2>/PRA}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Accept A2 &amp; ITC PR Tax " textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>a2/a3'}], formatter : '.formatter.amountValue'}" class="blueColor" visible="{visiSummAnx2>/A2}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pr/a3'}], formatter : '.formatter.amountValue'}" class="BlkCol" visible="{visiSummAnx2>/PR}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pra/a3'}], formatter : '.formatter.amountValue'}" class="orgCol" visible="{visiSummAnx2>/PRA}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Pending ANX2" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>a2/p1'}], formatter : '.formatter.amountValue'}" class="blueColor" visible="{visiSummAnx2>/A2}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pr/p1'}], formatter : '.formatter.amountValue'}" class="BlkCol" visible="{visiSummAnx2>/PR}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pra/p1'}], formatter : '.formatter.amountValue'}" class="orgCol" visible="{visiSummAnx2>/PRA}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Reject ANX2" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>a2/r1'}], formatter : '.formatter.amountValue'}" class="blueColor" visible="{visiSummAnx2>/A2}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pr/r1'}], formatter : '.formatter.amountValue'}" class="BlkCol" visible="{visiSummAnx2>/PR}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pra/r1'}], formatter : '.formatter.amountValue'}" class="orgCol" visible="{visiSummAnx2>/PRA}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Reject A2 &amp; ITC PR Available " textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>a2/r1u1'}], formatter : '.formatter.amountValue'}" class="blueColor" visible="{visiSummAnx2>/A2}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pr/r1u1'}], formatter : '.formatter.amountValue'}" class="BlkCol" visible="{visiSummAnx2>/PR}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pra/r1u1'}], formatter : '.formatter.amountValue'}" class="orgCol" visible="{visiSummAnx2>/PRA}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Reject A2 &amp; ITC PR Tax " textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>a2/r1u2'}], formatter : '.formatter.amountValue'}" class="blueColor" visible="{visiSummAnx2>/A2}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pr/r1u2'}], formatter : '.formatter.amountValue'}" class="BlkCol" visible="{visiSummAnx2>/PR}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pra/r1u2'}], formatter : '.formatter.amountValue'}" class="orgCol" visible="{visiSummAnx2>/PRA}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="ITC PR available of earlier tax period" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>a2/a1u1'}], formatter : '.formatter.amountValue'}" class="blueColor" visible="{visiSummAnx2>/A2}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pr/a1u1'}], formatter : '.formatter.amountValue'}" class="BlkCol" visible="{visiSummAnx2>/PR}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pra/a1u1'}], formatter : '.formatter.amountValue'}" class="orgCol" visible="{visiSummAnx2>/PRA}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="ITC PR Tax of earlier tax period" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>a2/a1u2'}], formatter : '.formatter.amountValue'}" class="blueColor" visible="{visiSummAnx2>/A2}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pr/a1u2'}], formatter : '.formatter.amountValue'}" class="BlkCol" visible="{visiSummAnx2>/PR}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pra/a1u2'}], formatter : '.formatter.amountValue'}" class="orgCol" visible="{visiSummAnx2>/PRA}"/>
+												</VBox>
+												<!--	<Text text="{Anx2>noactionAddpr}"/>-->
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Accept ANX 2 of earlier tax period" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>a2/a4'}], formatter : '.formatter.amountValue'}" class="blueColor" visible="{visiSummAnx2>/A2}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pr/a4'}], formatter : '.formatter.amountValue'}" class="BlkCol" visible="{visiSummAnx2>/PR}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pra/a4'}], formatter : '.formatter.amountValue'}" class="orgCol" visible="{visiSummAnx2>/PRA}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="No Action Allowed" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>a2/naa'}], formatter : '.formatter.amountValue'}" class="blueColor" visible="{visiSummAnx2>/A2}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pr/naa'}], formatter : '.formatter.amountValue'}" class="BlkCol" visible="{visiSummAnx2>/PR}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pra/naa'}], formatter : '.formatter.amountValue'}" class="orgCol" visible="{visiSummAnx2>/PRA}"/>
+												</VBox>
+												<!--	<Text text="{Anx2>noactionAddpr}"/>-->
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Provisional ITC PR Available" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>a2/u1'}], formatter : '.formatter.amountValue'}" class="blueColor" visible="{visiSummAnx2>/A2}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pr/u1'}], formatter : '.formatter.amountValue'}" class="BlkCol" visible="{visiSummAnx2>/PR}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pra/u1'}], formatter : '.formatter.amountValue'}" class="orgCol" visible="{visiSummAnx2>/PRA}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Provisional ITC PR Tax " textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>a2/u2'}], formatter : '.formatter.amountValue'}" class="blueColor" visible="{visiSummAnx2>/A2}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pr/u2'}], formatter : '.formatter.amountValue'}" class="BlkCol" visible="{visiSummAnx2>/PR}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pra/u2'}], formatter : '.formatter.amountValue'}" class="orgCol" visible="{visiSummAnx2>/PRA}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="No Action (Addl A2)" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>a2/naA2'}], formatter : '.formatter.amountValue'}" class="blueColor" visible="{visiSummAnx2>/A2}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pr/naA2'}], formatter : '.formatter.amountValue'}" class="BlkCol" visible="{visiSummAnx2>/PR}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pra/naA2'}], formatter : '.formatter.amountValue'}" class="orgCol" visible="{visiSummAnx2>/PRA}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="No Action(Reconciled)" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>a2/naRc'}], formatter : '.formatter.amountValue'}" class="blueColor" visible="{visiSummAnx2>/A2}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pr/naRc'}], formatter : '.formatter.amountValue'}" class="BlkCol" visible="{visiSummAnx2>/PR}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pra/naRc'}], formatter : '.formatter.amountValue'}" class="orgCol" visible="{visiSummAnx2>/PRA}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="No Action(Addl PR)" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>a2/naPr'}], formatter : '.formatter.amountValue'}" class="blueColor" visible="{visiSummAnx2>/A2}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pr/naPr'}], formatter : '.formatter.amountValue'}" class="BlkCol" visible="{visiSummAnx2>/PR}"/>
+													<Text text="{parts:[{path : 'ReconResponce>pra/naPr'}], formatter : '.formatter.amountValue'}" class="orgCol" visible="{visiSummAnx2>/PRA}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<ui:footer>
+										<Toolbar>
+											<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+											<Text text="Auth Token Active"/>
+											<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+											<Text text="Auth Token Inactive"/>
+											<ToolbarSpacer/>
+											<Label text="Note: " design="Bold"/>
+											<Label text="All figures in the table are Total Taxes" class="red" design="Bold"/>
+										</Toolbar>
+									</ui:footer>
+								</ui:Table>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+				</commons:ChartContainer>
+				<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false" id="idRREntitysum"
+					visible="true">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<ui:Table rowSelectionChange="onSelection" rows="{ReconResponce>/resp/summaryData}" selectionMode="None" class="" visibleRowCount="20"
+									enableSelectAll="true" fixedBottomRowCount="0" fixedColumnCount="2" id="idRREntityTablesum">
+									<ui:columns>
+										<ui:Column width="12rem">
+											<Label design="Bold" text="GSTIN" width=""/>
+											<ui:template>
+												<!--		<HBox justifyContent="SpaceBetween" width="100%">
+													<Link text="{Anx2>GSTIN}" press="handleLinkPressRRGSTIN"/>
+													<core:Icon src="sap-icon://circle-task-2" size="0.8rem" class="sapUiSmallMarginBegin" tooltip="Generate OTP"
+														visible="{=${Anx2>GSTIN}=== '' ?false:true}" color="{=${Anx2>highlight}=== true ?'#00ff00':'#ff0000'}" press="onPressIcon"/>
+												</HBox>-->
+												<VBox>
+													<HBox>
+														<Text text="{ReconResponce>stateName}" width="8rem" class="stateColor"/>
+														<!--<Text text="{Anx2>state}" class="stateColor fontSmall"/>-->
+													</HBox>
+													<HBox alignContent="Start" justifyContent="SpaceBetween">
+														<Link text="{ReconResponce>gstin}" press="handleLinkPressRRGSTIN12"/>
+														<core:Icon src="sap-icon://circle-task-2" size="0.8rem" class="sapUiSmallMarginBegin" tooltip="Generate OTP"
+															visible="{=${ReconResponce>gstin}=== '' ?false:true}" color="{=${Anx2>highlight}=== true ?'#00ff00':'#ff0000'}" press="onPressGenerateOTP3"/>
+													</HBox>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem">
+											<Label design="Bold" text="Accept A2 &amp; ITC A2" width=""/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>a1'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<!--<ui:Column width="12rem">
+											<Label design="Bold" text="Last Updated" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{Anx2>date}"/>
+											</ui:template>
+										</ui:Column>-->
+										<!--<ui:Column width="8rem" hAlign="Left">-->
+										<!--	<Label design="Bold" text="Type" textAlign="Center" width="100%" wrapping="true"/>-->
+										<!--	<ui:template>-->
+										<!--		<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">-->
+										<!--			<Text text="Anx-2" class="blueColor"/>-->
+										<!--			<Text text="PR Tax" class="BlkCol"/>-->
+										<!--			<Text text="PR Available" class="orgCol"/>-->
+										<!--		</VBox>-->
+										<!--	</ui:template>-->
+										<!--</ui:Column>-->
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Accept A2 &amp; ITC PR Available " textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>a2'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Accept A2 &amp; ITC PR Tax " textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>a3'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>
+													<!--<Text text="{parts:[{path : 'Anx2>pending'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>-->
+													<!--<Text text="{parts:[{path : 'Anx2>pending'}], formatter : '.formatter.amountValue'}" class="orgCol"/>-->
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Pending ANX2" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>p1'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>
+													<!--<Text text="{parts:[{path : 'Anx2>reject'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>-->
+													<!--<Text text="{parts:[{path : 'Anx2>reject'}], formatter : '.formatter.amountValue'}" class="orgCol"/>-->
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Reject ANX2" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>r1'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>
+													<!--<Text text="{parts:[{path : 'Anx2>upload'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>-->
+													<!--<Text text="{parts:[{path : 'Anx2>upload'}], formatter : '.formatter.amountValue'}" class="orgCol"/>-->
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="11rem" hAlign="End">
+											<Label design="Bold" text="No Action(Addl ANX-2) " textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>naA2'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>
+													<!--<Text text="{parts:[{path : 'Anx2>noactionAddanx1'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>-->
+													<!--<Text text="{parts:[{path : 'Anx2>noactionAddanx1'}], formatter : '.formatter.amountValue'}" class="orgCol"/>-->
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="11rem" hAlign="End">
+											<Label design="Bold" text="No Action(Reconciled) " textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>naRc'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>
+													<!--<Text text="{parts:[{path : 'Anx2>noactionAddanx1'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>-->
+													<!--<Text text="{parts:[{path : 'Anx2>noactionAddanx1'}], formatter : '.formatter.amountValue'}" class="orgCol"/>-->
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="No Action(Addl PR) " textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>naPr'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>
+													<!--<Text text="{parts:[{path : 'Anx2>noactionAddanx1'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>-->
+													<!--<Text text="{parts:[{path : 'Anx2>noactionAddanx1'}], formatter : '.formatter.amountValue'}" class="orgCol"/>-->
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Reject A2 &amp; ITC PR Available " textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>r1u1'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>
+													<!--<Text text="{parts:[{path : 'Anx2>noactionReconciled'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>-->
+													<!--<Text text="{parts:[{path : 'Anx2>noactionReconciled'}], formatter : '.formatter.amountValue'}" class="orgCol"/>-->
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Reject A2 &amp; ITC PR Tax " textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>r1u2'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>
+													<!--<Text text="{parts:[{path : 'Anx2>noactionAddpr'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>-->
+													<!--<Text text="{parts:[{path : 'Anx2>noactionAddpr'}], formatter : '.formatter.amountValue'}" class="orgCol"/>-->
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="ITC PR available of earlier tax period" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>noactionAddpr'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>
+													<!--<Text text="{parts:[{path : 'Anx2>noactionAddpr'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>-->
+													<!--<Text text="{parts:[{path : 'Anx2>noactionAddpr'}], formatter : '.formatter.amountValue'}" class="orgCol"/>-->
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="ITC PR Tax of earlier tax period" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>noactionAddpr'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>
+													<!--<Text text="{parts:[{path : 'Anx2>noactionAddpr'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>-->
+													<!--<Text text="{parts:[{path : 'Anx2>noactionAddpr'}], formatter : '.formatter.amountValue'}" class="orgCol"/>-->
+												</VBox>
+												<!--	<Text text="{Anx2>noactionAddpr}"/>-->
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Accept ANX 2 of earlier tax period" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>aa2e'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>
+													<!--<Text text="{parts:[{path : 'Anx2>noactionAddpr'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>-->
+													<!--<Text text="{parts:[{path : 'Anx2>noactionAddpr'}], formatter : '.formatter.amountValue'}" class="orgCol"/>-->
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="No Action Allowed" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>naa'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>
+													<!--<Text text="{parts:[{path : 'Anx2>noactionAddpr'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>-->
+													<!--<Text text="{parts:[{path : 'Anx2>noactionAddpr'}], formatter : '.formatter.amountValue'}" class="orgCol"/>-->
+												</VBox>
+												<!--	<Text text="{Anx2>noactionAddpr}"/>-->
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Provisional ITC PR Available" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>u1'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>
+													<!--<Text text="{parts:[{path : 'ReconResponce>noactionAddpr'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>-->
+													<!--<Text text="{parts:[{path : 'Anx2>noactionAddpr'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>-->
+													<!--<Text text="{parts:[{path : 'Anx2>noactionAddpr'}], formatter : '.formatter.amountValue'}" class="orgCol"/>-->
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Provisional ITC PR Tax " textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+													<Text text="{parts:[{path : 'ReconResponce>u2'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>
+													<!--<Text text="{parts:[{path : 'ReconResponce>noactionAddpr'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>-->
+													<!--<Text text="{parts:[{path : 'Anx2>noactionAddpr'}], formatter : '.formatter.amountValue'}" class="BlkCol"/>-->
+													<!--<Text text="{parts:[{path : 'Anx2>noactionAddpr'}], formatter : '.formatter.amountValue'}" class="orgCol"/>-->
+												</VBox>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<ui:footer>
+										<Toolbar>
+											<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+											<Text text="Auth Token Active"/>
+											<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+											<Text text="Auth Token Inactive"/>
+											<ToolbarSpacer/>
+											<Label text="Note: " design="Bold"/>
+											<Label text="All figures in the table are Total Taxes" class="red" design="Bold"/>
+										</Toolbar>
+									</ui:footer>
+								</ui:Table>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+				</commons:ChartContainer>
+				<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false" id="idRRSummaryReport1"
+					visible="false">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<ui:TreeTable rowSelectionChange="onSelection"
+									rows="{path:'SummDetailGstin>/', parameters:{ arrayNames:['level2','level3'], numberOfExpandedLevels:2 }}" selectionMode="MultiToggle"
+									visibleRowCount="23" enableSelectAll="true" fixedBottomRowCount="0" fixedColumnCount="2" id="idRRReportTable1">
+									<ui:columns>
+										<ui:Column width="9em" hAlign="Left">
+											<Label design="Bold" text="Table" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{SummDetailGstin>tableType}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="Left">
+											<Label design="Bold" text="Doc Type" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{SummDetailGstin>docType}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="15rem" hAlign="Left">
+											<Label design="Bold" text="Response" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{path:'SummDetailGstin>response', formatter:'.formatter.ResponceDesc'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="Left">
+											<Label design="Bold" text="Exact Match" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{parts:[{path : 'SummDetailGstin>exactMatch'}], formatter : '.formatter.amountValue'}"/>
+												<!--<Text text="{SummDetailGstin>exactMatch}"/>-->
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="Left">
+											<Label design="Bold" text="Match upto Tolerance" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{parts:[{path : 'SummDetailGstin>matchUpToTolerance'}], formatter : '.formatter.amountValue'}"/>
+												<!--<Text text="{SummDetailGstin>matchWithTolerance}"/>-->
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="Left">
+											<Label design="Bold" text="Value Mismatch" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{parts:[{path : 'SummDetailGstin>valueMismatch'}], formatter : '.formatter.amountValue'}"/>
+												<!--<Text text="{SummDetailGstin>valueMismatch}"/>-->
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="Left">
+											<Label design="Bold" text="POS Mismatch" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{parts:[{path : 'SummDetailGstin>posMismatch'}], formatter : '.formatter.amountValue'}"/>
+												<!--<Text text="{SummDetailGstin>posMismatch}"/>-->
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="Left">
+											<Label design="Bold" text="Document Date Mismatch" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{parts:[{path : 'SummDetailGstin>docDateMismatch'}], formatter : '.formatter.amountValue'}"/>
+												<!--<Text text="{Anx2>Report5}"/>-->
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="Left">
+											<Label design="Bold" text="Multi-Mismatch" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{parts:[{path : 'SummDetailGstin>multiMismatch'}], formatter : '.formatter.amountValue'}"/>
+												<!--<Text text="{Anx2>Report5}"/>-->
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="Left">
+											<Label design="Bold" text="Document Type Mismatch" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{parts:[{path : 'SummDetailGstin>docTypeMismatch'}], formatter : '.formatter.amountValue'}"/>
+												<!--<Text text="{Anx2>Report5}"/>-->
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="Left">
+											<Label design="Bold" text="Fuzzy Match" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{parts:[{path : 'SummDetailGstin>fuzzyMatch'}], formatter : '.formatter.amountValue'}"/>
+												<!--<Text text="{Anx2>Report5}"/>-->
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="Left">
+											<Label design="Bold" text="Additional in ANX 2" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{parts:[{path : 'SummDetailGstin>addtionalAnx2'}], formatter : '.formatter.amountValue'}"/>
+												<!--<Text text="{Anx2>Report5}"/>-->
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="Left">
+											<Label design="Bold" text="Additional in PR" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{parts:[{path : 'SummDetailGstin>addtionalPR'}], formatter : '.formatter.amountValue'}"/>
+												<!--<Text text="{Anx2>Report5}"/>-->
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:TreeTable>
+							</commons:content>
+						</commons:ChartContainerContent>
+					</commons:content>
+				</commons:ChartContainer>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<!--	<f:DynamicPage class="clDPANX2Summary">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button icon="sap-icon://nav-back" type="Transparent" press="handleLinkPressReconResBack1" id="idEntityLevelBack1" visible="false"/>
+						<Title text="Entity Level" id="idEntityLevelTitle1" class="sapUiSmallMarginBegin clTitleMarginTop"/>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<SegmentedButton selectedKey="PRSummary" selectionChange="onSelectionChangeRRERRecon" id="idSelectionChangeRRER" width="20rem">
+						<items>
+							<SegmentedButtonItem text="Summary" key="Summary"/>
+							<SegmentedButtonItem text="Detail" key="Detail"/>
+						</items>
+					</SegmentedButton>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.anx2.ReconResponceSummary" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.anx2.ReconRespDetail" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.anx2.ReconReviewSummary" type="XML"/>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>-->
+</core:FragmentDefinition>

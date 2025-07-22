@@ -1,0 +1,208 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.f" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table"
+	xmlns:u="sap.ui.unified" xmlns:fb="sap.ui.comp.filterbar" xmlns:html="http://www.w3.org/1999/xhtml">
+	<f:DynamicPage id="dynamicSO">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<RadioButtonGroup columns="3" id="RB" select="radioSelect">
+						<buttons>
+							<RadioButton text="Option I - Entity, Plant Code &amp; Profit Centre"/>
+							<RadioButton text="Option II - Entity, GSTIN &amp; Plant Code"/>
+							<RadioButton text="Options III - Entity, GSTIN &amp; Profit Centre"/>
+						</buttons>
+					</RadioButtonGroup>
+				</f:heading>
+				<f:actions>
+					<Label text="Last Updated At :" design="Bold"/>
+					<Label id="labId" design="Bold" class="sapUiSmallMarginEnd sapUiTiniMarginTop"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<ui:Table id="idTableSO" rows="{ServiceOptions>/}" selectionMode="None" selectionBehavior="Row" visibleRowCount="6" fixedRowCount="0"
+					fixedColumnCount="0" enableSelectAll="true">
+					<ui:extension>
+						<Toolbar>
+							<Label design="Bold"
+								text="Note : Option I - For this option - B2C Dynamic QR code configurations can be done at Entity, Plant Code &amp; Profit Centre level'"
+								visible="true" id="option1" class="clDataTimeText sapUiSmallMarginEnd"/>
+							<Label design="Bold"
+								text="Note : Option II - For this option - B2C Dynamic QR code configurations can be done at Entity, GSTIN &amp; Plant Code level'"
+								visible="false" id="option2" class="clDataTimeText sapUiSmallMarginEnd"/>
+							<Label design="Bold"
+								text="Note : Options III - For this option - B2C Dynamic QR code configurations can be done at Entity, GSTIN &amp; Profit Centre level'"
+								visible="false" id="option3" class="clDataTimeText sapUiSmallMarginEnd"/>
+							<ToolbarSpacer/>
+							<Button class="buttoncolorSec" icon="sap-icon://edit" tooltip="Edit rows" id="idSOEditRows" press="onEditRows" visible="false"/>
+							<Button class="buttoncolorSec" icon="sap-icon://add" tooltip="Add row" id="idSOAddrow" press="onAddrow"/>
+							<Button class="buttoncolor" text="Save Changes" id="idSOSubmit" press="onSubmit" enabled="false"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<!--<ui:Column width="4rem" headerSpan="0">
+							<ui:multiLabels>
+								<Label text="S.No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{ServiceOptions>sno}"/>
+							</ui:template>
+						</ui:Column>-->
+						<ui:Column width="12rem" hAlign="Center">
+							<Label text="Entity Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{ServiceOptions>entityName}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="18rem" visible="{Visible>/G}">
+							<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Select items="{getAllGstin>/}" selectedKey="{ServiceOptions>gstin}" width="100%" change="onGstinChange" forceSelection="false">
+									<core:Item key="{getAllGstin>gstin}" text="{getAllGstin>gstin}"/>
+								</Select>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="15rem" visible="{Visible>/P}">
+							<ui:multiLabels>
+								<Label text="Plant Code" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<ComboBox items="{getAllPlant>/}" selectedKey="{ServiceOptions>plantCode}" width="100%" change="onPlantChange" forceSelection="false">
+									<core:ListItem key="{getAllPlant>plantcode}" text="{getAllPlant>plantcode}"/>
+								</ComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="15rem" visible="{Visible>/PC}">
+							<ui:multiLabels>
+								<Label text="Profit Centre" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<ComboBox items="{getProfitCenter>/}" selectedKey="{ServiceOptions>profitCentre}" width="100%" change="onProfitCenterChange"
+									forceSelection="false">
+									<core:ListItem key="{getProfitCenter>profitCenter}" text="{getProfitCenter>profitCenter}"/>
+								</ComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="15rem">
+							<ui:multiLabels>
+								<HBox>
+									<Label text="Transaction Initiation Mode" required="true" wrapping="true" textAlign="Center" width="100%" design="Bold"/>
+									<core:Icon color="#1C4C98" src="sap-icon://message-information" id="press1Id" press="press1"/>
+								</HBox>
+							</ui:multiLabels>
+							<ui:template>
+								<ComboBox selectedKey="{ServiceOptions>transMode}" width="100%">
+									<core:ListItem key="15" text="Ecommerce Taxpayer"/>
+									<core:ListItem key="22" text="Other than Ecommerce Taxpayer"/>
+								</ComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="15rem">
+							<ui:multiLabels>
+								<HBox>
+									<Label required="true" text="Payee Address (UPI ID - Virtual Payment ID)" wrapping="true" textAlign="Center" width="100%" design="Bold"/>
+									<core:Icon color="#1C4C98" src="sap-icon://message-information" id="press2Id" press="press2"/>
+								</HBox>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{ServiceOptions>payeeAddress}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="15rem" hAlign="Center">
+							<HBox>
+								<Label required="true" text="Payee Name" textAlign="Center" width="100%" design="Bold"/>
+								<core:Icon color="#1C4C98" src="sap-icon://message-information" id="press3Id" press="press3" class="sapUiTinyMarginBegin"/>
+							</HBox>
+							<ui:template>
+								<Input value="{ServiceOptions>payeeName}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="15rem">
+							<HBox>
+								<Label required="true" text="Payee Merchant Code" wrapping="true" textAlign="Center" width="100%" design="Bold"/>
+								<core:Icon color="#1C4C98" src="sap-icon://message-information" id="press4Id" press="press4" class="sapUiTinyMarginBegin"/>
+							</HBox>
+							<ui:template>
+								<Input value="{ServiceOptions>payeeMerCode}" type="Number"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="15rem">
+							<HBox>
+								<Label required="true" text="Transaction QR Medium" wrapping="true" textAlign="Center" width="100%" design="Bold"/>
+								<core:Icon color="#1C4C98" src="sap-icon://message-information" id="press5Id" press="press5" class="sapUiTinyMarginBegin"/>
+							</HBox>
+							<ui:template>
+								<ComboBox selectedKey="{ServiceOptions>transQRMed}" width="100%">
+									<core:ListItem key="02" text="02 - APP (On Application)"/>
+									<core:ListItem key="03" text="03 - POS (Point of Sale Machine)"/>
+									<core:ListItem key="04" text="04 - Physical / Share Intent mode"/>
+									<core:ListItem key="05" text="05 - ATM"/>
+									<core:ListItem key="06" text="06 - WEB"/>
+								</ComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="15rem">
+							<HBox>
+								<Label text="Amount payable for DQR" wrapping="true" textAlign="Center" width="100%" design="Bold"/>
+								<core:Icon color="#1C4C98" src="sap-icon://message-information" id="press7Id" press="press7"/>
+							</HBox>
+							<ui:template>
+								<ComboBox selectedKey="{ServiceOptions>paymentInfo}" width="100%">
+									<core:ListItem key="I" text="Invoice Value"/>
+									<core:ListItem key="B" text="Balance Amount"/>
+								</ComboBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="15rem">
+							<HBox>
+								<Label text="QR Code Expiry Time (In Days)" wrapping="true" textAlign="Center" width="100%" design="Bold"/>
+								<core:Icon color="#1C4C98" src="sap-icon://message-information" id="press6Id" press="press6"/>
+							</HBox>
+							<ui:template>
+								<Input value="{ServiceOptions>qrExpiry}" type="Number"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="5rem">
+							<ui:multiLabels>
+								<Label/>
+							</ui:multiLabels>
+							<ui:template>
+								<Button icon="sap-icon://delete" press="onDelete"/>
+								<!--visible="{parts:[{path : 'InterStateSupplies>posCompute'},{path :'InterStateSupplies>posAutoCal'}], formatter : '.formatter.DelVis'}"-->
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+					<ui:footer>
+						<VBox>
+							<HBox>
+								<Label required="true"/>
+								<Label design="Bold"
+									text="Please confirm whether Payee Name contains any personal data (such as first name and last name of the individual) :"
+									class="sapUiTinyMarginBegin sapUiTinyMarginTop clDataTimeText"/>
+								<RadioButtonGroup columns="3" id="RB1" select="radioSelect1" selectedIndex="-1" enabled="{= ${userPermission>/appPermission/P9}}">
+									<buttons>
+										<RadioButton text="Yes"/>
+										<RadioButton text="No"/>
+									</buttons>
+								</RadioButtonGroup>
+							</HBox>
+							<HBox>
+								<Label required="true"/>
+								<CheckBox editable="false" id="checkId" select="onCheck"/>
+								<HBox>
+									<Label class="sapUiTinyMarginBegin sapUiTinyMarginTop clDataTimeText" design="Bold" text="I accept to have read the"/>
+									<Link text="Privacy Notice" class="sapUiTinyMarginBegin sapUiTinyMarginEnd sapUiTinyMarginTop clDataTimeText" press="onPrivacyNotice"/>
+									<Label design="Bold" text="and consent for processing of my Personal Data on this system" class="sapUiTinyMarginTop clDataTimeText"/>
+								</HBox>
+							</HBox>
+							<HBox>
+								<Label required="true"/>
+								<Label design="Bold" text="Mandatory Field" class="sapUiTinyMarginBegin sapUiTinyMarginTop"/>
+							</HBox>
+						</VBox>
+					</ui:footer>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

@@ -1,0 +1,27 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" controllerName="com.ey.digigst.controller.App">
+	<Dialog id="dTimer" type="Message" title="Session Timeout" showHeader="true" class="sapUiSizeCompact">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Title titleStyle="H5" text="Session Timeout"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<HBox alignItems="Center" class="sapUiTinyMarginTopBottom">
+			<core:Icon src="sap-icon://message-warning" color="#E69A17" size="2rem" class="sapUiSmallMarginBeginEnd"/>
+			<VBox>
+				<Label text="Your Session is about to expire."/>
+				<Text text="You will be logged out in {Timer>/time} seconds"/>
+				<!--<HBox alignItems="Center" class="sapUiTinyMarginTopBottom">-->
+				<!--	<Title text="{Timer>/time}" titleStyle="H1"/>-->
+				<!--	<Text text="seconds" class="sapUiTinyMarginBegin"/>-->
+				<!--</HBox>-->
+				<!--<Text text="Press any key to stay connected."/>-->
+			</VBox>
+		</HBox>
+		<buttons>
+			<Button text="Log Out" class="buttoncolorSec" type="Default" press="onLogout"/>
+			<Button text="Continue Session"  id="idContinueSession" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="OnResumeSession"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,44 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Label text="Entity :" class="sapUiTinyMarginTop" design="Bold" visible="true"/>
+						<Select items="{entity>/resp}" change="onSelectionChange" id="idEntityGeneral" showSecondaryValues="true" width="15rem" visible="true"
+							class="sapUiTinyMarginBegin">
+							<core:ListItem key="{entity>entityId}" text="{entity>entityName}"/>
+						</Select>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<Button type="Accept" icon="sap-icon://edit" tooltip="Edit rows" id="idConfigEditRows" press="onEditGeneral"/>
+					<Button type="Emphasized" id="idSubmitGeneral" enabled="{Property>/subGeneral}" icon="sap-icon://save" text="Submit" press="onSubmitGeneral"/>
+					<Button type="Ghost" icon="sap-icon://reset" text="Reset" press="onResetConfig('General')"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<!--<VBox items="{path:'General>/resp', factory:'.createContentGeneral'}" class="sapUiContentPadding"/>-->
+			<VBox>
+				<List items="{General>/resp}">
+					<CustomListItem>
+						<VBox>
+							<Label text="{General>sno}. {General>ques}" design="Bold"/>
+							<RadioButtonGroup enabled="{General>edit}" columns="4" selectedIndex="{General>selected}" buttons="{General>items/}" width="100%"
+								class="sapUiTinyMarginBottom" select="onSelectRBG(${General>id})" visible="{=${General>keyType}==='R'?true:false}">
+								<RadioButton text="{General>answerDesc}"/>
+							</RadioButtonGroup>
+							<Input width="20rem" enabled="{General>edit}" type="{General>type}" change="onSelectRBG(${General>id})" maxLength="{General>maxLength}"
+								value="{General>answerDesc}" visible="{=${General>keyType}=== 'T' ?true:false}" class="sapUiTinyMarginBottom sapUiSmallMarginBegin"/>
+							<DatePicker width="20rem" enabled="{General>edit}" change="onSelectRBG(${General>id})" value="{General>answerDesc}" valueFormat="MMyyyy"
+								displayFormat="MMM yyyy" visible="{=${General>keyType}=== 'D' ?true:false}" class="sapUiTinyMarginBottom sapUiSmallMarginBegin"/>
+						</VBox>
+					</CustomListItem>
+				</List>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

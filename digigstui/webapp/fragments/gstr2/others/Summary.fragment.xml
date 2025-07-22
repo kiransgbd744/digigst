@@ -1,0 +1,1161 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:content/>
+				<f:actions>
+					<Button type="Emphasized" text="Request for Approval"/>
+					<Button type="Emphasized" text="Preview" press="onPreviewSummary"/>
+					<Button type="Accept" text="Save to GSTN" press="onSaveSummaryGSTN"/>
+					<Button type="Reject" text="Delete from ASP" visible="false" press="onDeleteSummary"/>
+					<Button type="Reject" text="Delete from GSTN" visible="false" press="onDeleteSummary"/>
+					<Button type="Reject" text="Delete from ASP and GSTN" visible="false" press="onDeleteSummary"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding">
+				<fb:FilterBar reset="onReset" search="onSearch" useToolbar="false" showGoOnFB="true">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="true">
+							<fb:control>
+								<Select items="{DropDown>/Entity}" change="onSelectionChange" width="100%">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Supplier GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox items="{GSTIN>/}" change="onSelectChange" width="100%">
+									<core:Item key="{GSTIN>key}" text="{GSTIN>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DateRangeSelection displayFormat="MMM yyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<Toolbar>
+					<Title text="Summary" level="H2"/>
+					<ToolbarSpacer/>
+					<Select change="onSelectionChangeSummary" width="8rem">
+						<core:Item key="All" text="All"/>
+						<core:Item key="EY" text="EY"/>
+						<core:Item key="GSTN" text="GSTN"/>
+						<core:Item key="Diff" text="Diff"/>
+					</Select>
+				</Toolbar>
+				<ui:TreeTable selectionMode="Single" toggleOpenState="onToggleOpenState" selectionBehavior="Row" visibleRowCount="3" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<Title text="B2B Invoices" level="H2"/>
+							<Text text="(Section 3,4A)"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column minWidth="130">
+							<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox>
+									<Text text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?true:false}"/>
+									<Link text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?false:true}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="7rem">
+							<Label text="IGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="CGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>invValue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="SGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxableValue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Cess Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxPayble}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>igst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>sgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cess}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+				<ui:TreeTable selectionMode="Single" toggleOpenState="onToggleOpenState" selectionBehavior="Row" visibleRowCount="3" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<Title text="Credit/Debit Notes-Registered" level="H2"/>
+							<Text text="(Section 6C)"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column minWidth="130">
+							<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox>
+									<Text text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?true:false}"/>
+									<Link text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?false:true}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="7rem">
+							<Label text="IGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="CGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>invValue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="SGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxableValue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Cess Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxPayble}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>igst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>sgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cess}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+				<ui:TreeTable selectionMode="Single" toggleOpenState="onToggleOpenState" selectionBehavior="Row" visibleRowCount="3" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<Title text="Credit/Debit Notes-UnRegistered" level="H2"/>
+							<Text text="(Section 6C)"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column minWidth="130">
+							<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox>
+									<Text text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?true:false}"/>
+									<Link text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?false:true}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="7rem">
+							<Label text="IGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="CGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>invValue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="SGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxableValue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Cess Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxPayble}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>igst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>sgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cess}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+				<ui:TreeTable selectionMode="Single" toggleOpenState="onToggleOpenState" selectionBehavior="Row" visibleRowCount="3" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<Title text="Ammended B2B" level="H2"/>
+							<Text text="(Section 6A)"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column minWidth="130">
+							<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox>
+									<Text text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?true:false}"/>
+									<Link text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?false:true}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="7rem">
+							<Label text="IGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="CGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>invValue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="SGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxableValue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Cess Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxPayble}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>igst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>sgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cess}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+				<ui:TreeTable selectionMode="Single" toggleOpenState="onToggleOpenState" selectionBehavior="Row" visibleRowCount="3" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<Title text="Ammended B2BUR" level="H2"/>
+							<Text text="(Section 6A)"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column minWidth="130">
+							<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox>
+									<Text text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?true:false}"/>
+									<Link text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?false:true}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="7rem">
+							<Label text="IGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="CGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>invValue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="SGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxableValue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Cess Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxPayble}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>igst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>sgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cess}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+				<ui:TreeTable selectionMode="Single" toggleOpenState="onToggleOpenState" selectionBehavior="Row" visibleRowCount="3" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<Title text="Ammended Import of Service" level="H2"/>
+							<Text text="(Section 6A)"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column minWidth="130">
+							<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox>
+									<Text text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?true:false}"/>
+									<Link text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?false:true}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="7rem">
+							<Label text="IGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="CGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>invValue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="SGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxableValue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Cess Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxPayble}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>igst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>sgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cess}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+				<ui:TreeTable selectionMode="Single" toggleOpenState="onToggleOpenState" selectionBehavior="Row" visibleRowCount="3" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<Title text="B2B Unregistered" level="H2"/>
+							<Text text="(Section 4B)"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column minWidth="130">
+							<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox>
+									<Text text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?true:false}"/>
+									<Link text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?false:true}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="7rem">
+							<Label text="IGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="CGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>invValue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="SGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxableValue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Cess Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxPayble}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>igst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>sgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cess}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+				<ui:TreeTable selectionMode="Single" toggleOpenState="onToggleOpenState" selectionBehavior="Row" visibleRowCount="3" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<Title text="Ammended Credit/Debit Notes-Registered" level="H2"/>
+							<Text text="(Section 6D)"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column minWidth="130">
+							<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox>
+									<Text text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?true:false}"/>
+									<Link text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?false:true}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="7rem">
+							<Label text="IGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="CGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>invValue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="SGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxableValue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Cess Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxPayble}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>igst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>sgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cess}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+				<ui:TreeTable selectionMode="Single" toggleOpenState="onToggleOpenState" selectionBehavior="Row" visibleRowCount="3" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<Title text="Ammended Credit/Debit Notes-UnRegistered" level="H2"/>
+							<Text text="(Section 6D)"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column minWidth="130">
+							<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox>
+									<Text text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?true:false}"/>
+									<Link text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?false:true}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="7rem">
+							<Label text="IGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="CGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>invValue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="SGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxableValue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Cess Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxPayble}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>igst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>sgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cess}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+				<ui:TreeTable selectionMode="Single" toggleOpenState="onToggleOpenState" selectionBehavior="Row" visibleRowCount="3" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<Title text="Imports of Goods/Capital Goods" level="H2"/>
+							<Text text="(Section 5A,5B)"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column minWidth="130">
+							<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox>
+									<Text text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?true:false}"/>
+									<Link text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?false:true}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="7rem">
+							<Label text="IGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Cess Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxPayble}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>igst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cgst}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+				<ui:TreeTable selectionMode="Single" toggleOpenState="onToggleOpenState" selectionBehavior="Row" visibleRowCount="3" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<Title text="Imports of Service" level="H2"/>
+							<Text text="(Section 4C)"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column minWidth="130">
+							<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox>
+									<Text text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?true:false}"/>
+									<Link text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?false:true}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="7rem">
+							<Label text="IGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Cess Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxPayble}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>igst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cgst}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+				<ui:TreeTable selectionMode="Single" toggleOpenState="onToggleOpenState" selectionBehavior="Row" visibleRowCount="3" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<Title text="Ammended Imports of Goods" level="H2"/>
+							<Text text="(Section 6B)"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column minWidth="130">
+							<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox>
+									<Text text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?true:false}"/>
+									<Link text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?false:true}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="7rem">
+							<Label text="IGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Cess Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxPayble}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>igst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cgst}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+				<ui:TreeTable selectionMode="Single" toggleOpenState="onToggleOpenState" selectionBehavior="Row" visibleRowCount="3" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<Title text="NIL/Composition/Exempted/Non-GST Inward Supplies" level="H2"/>
+							<Text text="(Section 7)"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column >
+							<Label text="Composition Inward Supplies" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox>
+									<Text text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?true:false}"/>
+									<Link text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?false:true}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<Label text="Nil rated Inward Supplies" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Exempted Inward Supplies" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxPayble}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Non GST Inward Supplies" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>igst}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+				<ui:TreeTable selectionMode="Single" toggleOpenState="onToggleOpenState" selectionBehavior="Row" visibleRowCount="3" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<Title text="Advance Paid" level="H2"/>
+							<Text text="(Section Part I 10A)"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="12rem">
+							<Label text="Gross Advance Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column >
+							<Label text="Tax Payable" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox>
+									<Text text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?true:false}"/>
+									<Link text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?false:true}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="7rem">
+							<Label text="IGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="CGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxPayble}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="SGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>igst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Cess Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cgst}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+				<ui:TreeTable selectionMode="Single" toggleOpenState="onToggleOpenState" selectionBehavior="Row" visibleRowCount="3" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<Title text="Advance Adjusted" level="H2"/>
+							<Text text="(Section Part I 10B)"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="12rem">
+							<Label text="Gross Advance Adjusted" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="7rem">
+							<Label text="IGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="CGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxPayble}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="SGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>igst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Cess Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cgst}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+				<ui:TreeTable selectionMode="Single" toggleOpenState="onToggleOpenState" selectionBehavior="Row" visibleRowCount="3" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<Title text="Advance Paid Ammended" level="H2"/>
+							<Text text="(Section Part II 10A)"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="12rem">
+							<Label text="Gross Advance Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column >
+							<Label text="Tax Payable" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox>
+									<Text text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?true:false}"/>
+									<Link text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?false:true}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="7rem">
+							<Label text="IGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="CGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxPayble}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="SGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>igst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Cess Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cgst}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+				<ui:TreeTable selectionMode="Single" toggleOpenState="onToggleOpenState" selectionBehavior="Row" visibleRowCount="3" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<Title text="Advance Adjust Ammended" level="H2"/>
+							<Text text="(Section Part II 10B)"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="12rem">
+							<Label text="Gross Advance Adjusted" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="7rem">
+							<Label text="IGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="CGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxPayble}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="SGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>igst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Cess Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cgst}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+				<ui:TreeTable selectionMode="Single" toggleOpenState="onToggleOpenState" selectionBehavior="Row" visibleRowCount="3" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<Title text="ITC Reversal" level="H2"/>
+							<Text text="(Section Part 11 Part A)"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="8rem">
+							<Label text="IGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="CGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxPayble}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="SGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>igst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Cess Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cgst}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+				<ui:TreeTable selectionMode="Single" toggleOpenState="onToggleOpenState" selectionBehavior="Row" visibleRowCount="3" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<Title text="Ammended ITC Reversal" level="H2"/>
+							<Text text="(Section 11 Part B)"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="8rem">
+							<Label text="IGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="CGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxPayble}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="SGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>igst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Cess Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cgst}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+				<ui:TreeTable selectionMode="Single" toggleOpenState="onToggleOpenState" selectionBehavior="Row" visibleRowCount="3" enableSelectAll="false">
+					<ui:extension>
+						<Toolbar>
+							<Title text="HSN/SAC Summary of Inward Supplies" level="H2"/>
+							<Text text="(Section 13)"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column minWidth="130">
+							<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox>
+									<Text text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?true:false}"/>
+									<Link text="{SummaryDiff>type}" visible="{=(${SummaryDiff>type}==='Diff')?false:true}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="7rem">
+							<Label text="IGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>records}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="CGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>invValue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="SGST Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxableValue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Cess Paid" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>taxPayble}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>igst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>sgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="ITC Availed Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{SummaryDiff>cess}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:TreeTable>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

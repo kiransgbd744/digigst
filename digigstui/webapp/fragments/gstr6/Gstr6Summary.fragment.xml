@@ -1,0 +1,878 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f"
+	xmlns:commons="sap.suite.ui.commons" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table">
+	<f:DynamicPage id="dpBulkSavegstrNew1" visible="true">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Title text="GSTR-6" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<l:VerticalLayout width="100%">
+					<l:Grid defaultSpan="L2 M2 S12" vSpacing="0" class="sapUiTinyMarginTop">
+						<l:content>
+							<VBox>
+								<Label text="GSTIN"/>
+								<MultiComboBox id="idgstingstr6" width="100%" items="{Gstin>/}">
+									<core:Item key="{Gstin>value}" text="{Gstin>value}"/>
+								</MultiComboBox>
+							</VBox>
+							<VBox>
+								<Label text="Tax Period" required="true"/>
+								<DatePicker id="idTaxperiodGstr6pro" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</VBox>
+							<VBox>
+								<Label text=""/>
+								<HBox>
+									<Button icon="sap-icon://filter" id="idFilterProcess" tooltip="Adapt Filters" press="onPressAdaptFilter"
+										class="sapUiTinyMarginBegin buttoncolorSec"/>
+									<Button text="Filter" class="sapUiTinyMarginBegin buttoncolor" press="onPressProcessGoGstr6"/>
+								</HBox>
+							</VBox>
+						</l:content>
+					</l:Grid>
+				</l:VerticalLayout>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel>
+				<commons:ChartContainer showFullScreen="false" autoAdjustHeight="false" id="idPREntityNew">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<ui:Table id="idPREntityTableNew" rowSelectionChange="onSelection" rows="{path:'Gstr6PRSumData>/resp/'}" selectionMode="MultiToggle"
+									visibleRowCount="8" fixedBottomRowCount="0" enableSelectAll="true" fixedColumnCount="3" enableColumnReordering="false">
+									<ui:columns>
+										<ui:Column width="11rem">
+											<Label design="Bold" text="GSTIN" width=""/>
+											<ui:template>
+												<VBox>
+													<HBox>
+														<Text text="{Gstr6PRSumData>state}" width="8rem" class="stateColor"/>
+														<Text text="{Gstr6PRSumData>regType}" class="stateColor fontSmall"/>
+													</HBox>
+													<HBox alignContent="Start" justifyContent="SpaceBetween">
+														<Link text="{Gstr6PRSumData>gstin}" press="onPressGstrNew11Summary"/>
+														<core:Icon src="sap-icon://circle-task-2" size="0.8rem" class="sapUiSmallMarginBegin" tooltip="{Gstr6PRSumData>authToken}"
+															visible="{=${Gstr6PRSumData>gstin}=== '' ?false:true}" color="{=${Gstr6PRSumData>authToken}=== 'Active' ?'#00ff00':'#ff0000'}"
+															press="onPressGenerateOTP"/>
+													</HBox>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem">
+											<Label text="{i18n>saveStatus}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<VBox width="100%">
+													<ObjectStatus text="{Gstr6PRSumData>status}" active="{=${Gstr6PRSumData>status}!=='NOT INITIATED'?true:false}"
+														state="{path:'Gstr6PRSumData>status', formatter:'.formatter.statusClr'}" press="onPressSaveStatus($event,'P')"/>
+													<Text text="{Gstr6PRSumData>timeStamp}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem">
+											<Label text="Auto Calculate - DigiGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<VBox width="100%">
+													<ObjectStatus text="{Gstr6PRSumData>digiStatus}"/>
+													<Text text="{Gstr6PRSumData>digiUpdatedOn}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Count" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Label text="{Gstr6PRSumData>count}" design="{=!${Gstr6PRSumData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Invoice Value" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'Gstr6PRSumData>invoiceValue'}], formatter : '.formatter.amountValue'}"
+													design="{=!${Gstr6PRSumData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End">
+											<Label design="Bold" text="Taxable Value" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'Gstr6PRSumData>taxableValue'}], formatter : '.formatter.amountValue'}"
+													design="{=!${Gstr6PRSumData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End" id="idPREntityTableColNew6">
+											<Label design="Bold" text="Total Tax" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'Gstr6PRSumData>totalTax'}], formatter : '.formatter.amountValue'}"
+													design="{=!${Gstr6PRSumData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End" id="idPREntityTableColNew7">
+											<HBox>
+												<Label design="Bold" text="IGST" textAlign="Center" width="100%" wrapping="true"/>
+												<core:Icon src="sap-icon://favorite" size="0.8rem" color="#346187" class="sapUiTinyMarginBegin"/>
+											</HBox>
+											<ui:template>
+												<Label text="{parts:[{path : 'Gstr6PRSumData>tpIgst'}], formatter : '.formatter.amountValue'}"
+													design="{=!${Gstr6PRSumData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End" id="idPREntityTableColNew8">
+											<HBox>
+												<Label design="Bold" text="CGST" textAlign="Center" width="100%" wrapping="true"/>
+												<core:Icon src="sap-icon://favorite" size="0.8rem" color="#346187" class="sapUiTinyMarginBegin"/>
+											</HBox>
+											<ui:template>
+												<Label text="{parts:[{path : 'Gstr6PRSumData>tpCgst'}], formatter : '.formatter.amountValue'}"
+													design="{=!${Gstr6PRSumData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End" id="idPREntityTableColNew9">
+											<HBox>
+												<Label design="Bold" text="SGST" textAlign="Center" width="100%" wrapping="true"/>
+												<core:Icon src="sap-icon://favorite" size="0.8rem" color="#346187" class="sapUiTinyMarginBegin"/>
+											</HBox>
+											<ui:template>
+												<Label text="{parts:[{path : 'Gstr6PRSumData>tpSgst'}], formatter : '.formatter.amountValue'}"
+													design="{=!${Gstr6PRSumData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End" id="idPREntityTableColNew10">
+											<HBox>
+												<Label design="Bold" text="Cess" textAlign="Center" width="100%" wrapping="true"/>
+												<core:Icon src="sap-icon://favorite" size="0.8rem" color="#346187" class="sapUiTinyMarginBegin"/>
+											</HBox>
+											<ui:template>
+												<Label text="{parts:[{path : 'Gstr6PRSumData>tpCess'}], formatter : '.formatter.amountValue'}"
+													design="{=!${Gstr6PRSumData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End" id="idPREntityTableColNew11">
+											<HBox>
+												<Label design="Bold" text="Total Credit Eligible" textAlign="Center" width="100%" wrapping="true"/>
+											</HBox>
+											<ui:template>
+												<Label text="{parts:[{path : 'Gstr6PRSumData>totCreElig'}], formatter : '.formatter.amountValue'}"
+													design="{=!${Gstr6PRSumData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End" id="idPREntityTableColNew12">
+											<HBox>
+												<Label design="Bold" text="IGST " textAlign="Center" width="100%" wrapping="true"/>
+												<core:Icon src="sap-icon://number-sign" color="#000000" size="0.8rem" class="sapUiTinyMarginBegin"/>
+											</HBox>
+											<ui:template>
+												<Label text="{parts:[{path : 'Gstr6PRSumData>ceIgst'}], formatter : '.formatter.amountValue'}"
+													design="{=!${Gstr6PRSumData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End" id="idPREntityTableColNew13">
+											<HBox>
+												<Label design="Bold" text="CGST " textAlign="Center" width="100%" wrapping="true"/>
+												<core:Icon src="sap-icon://number-sign" color="#000000" size="0.8rem" class="sapUiTinyMarginBegin"/>
+											</HBox>
+											<ui:template>
+												<Label text="{parts:[{path : 'Gstr6PRSumData>ceCgst'}], formatter : '.formatter.amountValue'}"
+													design="{=!${Gstr6PRSumData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End" id="idPREntityTableColNew14">
+											<HBox>
+												<Label design="Bold" text="SGST" textAlign="Center" width="100%" wrapping="true"/>
+												<core:Icon src="sap-icon://number-sign" color="#000000" size="0.8rem" class="sapUiTinyMarginBegin"/>
+											</HBox>
+											<ui:template>
+												<Label text="{parts:[{path : 'Gstr6PRSumData>ceSgst'}], formatter : '.formatter.amountValue'}"
+													design="{=!${Gstr6PRSumData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" hAlign="End" id="idPREntityTableColNew15">
+											<HBox>
+												<Label design="Bold" text="Cess" textAlign="Center" width="100%" wrapping="true"/>
+												<core:Icon src="sap-icon://number-sign" color="#000000" size="0.8rem" class="sapUiTinyMarginBegin"/>
+											</HBox>
+											<ui:template>
+												<Label text="{parts:[{path : 'Gstr6PRSumData>ceCess'}], formatter : '.formatter.amountValue'}"
+													design="{=!${Gstr6PRSumData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<ui:footer>
+										<Toolbar>
+											<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+											<Text text="Auth Token Active"/>
+											<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+											<Text text="Auth Token Inactive"/>
+											<ToolbarSpacer/>
+										</Toolbar>
+									</ui:footer>
+								</ui:Table>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar>
+							<Label text="Showing:" design="Bold"/>
+							<CheckBox text="Tax Payable" select="onSelectCheckBoxCol1" selected="true"/>
+							<core:Icon src="sap-icon://favorite" color="#346187" size="0.8rem"/>
+							<CheckBox text="Credit Eligible" select="onSelectCheckBoxCol2" selected="true"/>
+							<core:Icon src="sap-icon://number-sign" size="0.8rem"/>
+							<ToolbarSpacer/>
+							<Button text="File a NIL Return" press="onFileNilReturn('E')" class="buttoncolorSec"/>
+							<Button text="Auto Calculate – DigiGST" enabled="{=${userPermission>/appPermission/P5}}" press="onEntityAutoCalDigiGST"
+								class="buttoncolorSec"/>
+							<Button text="Update GSTN Data" class="buttoncolorSec" press="onPressUpdateGstnData" enabled="{= ${userPermission>/appPermission/P5}}"/>
+							<Button text="Save to GSTN" class="buttoncolorSec" press="fnSaveGstnGSTR6('P')" width="10rem"
+								enabled="{= ${userPermission>/appPermission/P5}}"/>
+							<Button text="Get GSTR-6 Detailed" enabled="{= ${userPermission>/appPermission/P5}}" press="onPressProcessStatus"
+								id="id_processdetailStatus" class="buttoncolorSec"/>
+							<Button text="Online Error Correction" class="buttoncolorSec" enabled="{= ${userPermission>/appPermission/P5}}"
+								press="onPressonlineerrorCor" id="idOnlineProcess"/>
+							<MenuButton class="buttoncolorSec" text="Download Reports" enabled="{= ${userPermission>/appPermission/P5}}">
+								<Menu itemSelected="onMenuItemPressGstr6down">
+									<MenuItem text="Processed Records (Current Period)" key="current"/>
+									<MenuItem text="Consolidated DigiGST Error" key="gstr6AspError"/>
+									<MenuItem text="Entity Level Summary Report" key="gstr6EntityLevelSummary"/>
+									<MenuItem text="Process Record/Distribution Data" key="processed"/>
+								</Menu>
+							</MenuButton>
+							<Button class="buttoncolorSec" text="Delete Data" press="onButtonExtractDeletePress11" enabled="false"/>
+							<Button type="Transparent" icon="sap-icon://excel-attachment" enabled="{= ${userPermission>/appPermission/P5}}" tooltip="Download Excel"
+								id="idPRSummaryEDNew" press="onExportExcel('P')"/>
+							<MenuButton icon="sap-icon://pdf-attachment" type="Transparent" enabled="{= ${userPermission>/appPermission/P4}}" class="cl_dropgstr1"
+								tooltip="{i18n>downPdf}">
+								<Menu>
+									<MenuItem text="As per DigiGST Values" key="delete1" press="onDownloadEntityPDF(true)"/>
+									<MenuItem text="As per GSTN Values" key="delete2" press="onDownloadEntityPDF(false)"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Transparent" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="{=!${PrProperty>/processFullScreen}}"
+								press="onGstr6FullScreen('openProcess')"/>
+							<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="{PrProperty>/processFullScreen}"
+								press="onGstr6FullScreen('closeProcess')"/>
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="dpBulkSavegstrNew1a" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" class="sapUiTinyMarginEnd" press="onPressBackGSTRNew1"/>
+						<Title text="GSTR-6" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<l:VerticalLayout width="100%">
+					<l:Grid defaultSpan="L2 M2 S12" vSpacing="0" class="sapUiTinyMarginTop">
+						<l:content>
+							<VBox>
+								<Label text="GSTIN"/>
+								<Select id="idgstingstrnew1" width="100%" items="{Gstin>/}">
+									<core:Item key="{Gstin>value}" text="{Gstin>value}"/>
+								</Select>
+							</VBox>
+							<VBox>
+								<Label text="Tax Period" required="true"/>
+								<DatePicker id="idTaxSummary" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</VBox>
+							<VBox>
+								<Label text=""/>
+								<HBox>
+									<Button icon="sap-icon://filter" id="idFilterSummary" type="Default" tooltip="Adapt Filters" press="onPressAdaptFilter"
+										class="sapUiTinyMarginBegin buttoncolorSec"/>
+									<Button text="Filter" class="sapUiTinyMarginBegin buttoncolor" press="onPressSummaryGo"/>
+								</HBox>
+							</VBox>
+						</l:content>
+					</l:Grid>
+				</l:VerticalLayout>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer id="id_summarytabgstr6" class="cl_scroll sapUiTinyMarginTop">
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<Panel>
+								<ui:TreeTable id="tabOutward1gstrnew1"
+									rows="{path:'Gstr6DetailedData>/resp', parameters:{ arrayNames:['items'], numberOfExpandedLevels:0 }}" selectionMode="None"
+									fixedColumnCount="1" visibleRowCount="5" visible="true" class="cl_tabclass" toggleOpenState="onPressToggle">
+									<ui:extension>
+										<Toolbar>
+											<Label text="Showing:" design="Bold"/>
+											<CheckBox select="onSelectCheckBoxCol" editable="{=!${showing>/enableasp}}" selected="{showing>/asp}" text="DigiGST"/>
+											<CheckBox select="onSelectCheckBoxCol" editable="{=!${showing>/enablegstn}}" selected="{showing>/gstn}" text="GSTN"/>
+											<CheckBox select="onSelectCheckBoxCol" editable="{=!${showing>/enablediff}}" selected="{showing>/diff}" text="Difference"/>
+											<ToolbarSpacer/>
+											<Button type="Ghost" id="idNewA2Exp2" icon="sap-icon://expand-all" tooltip="{i18n>expand}" press="expandCollapseAnx2SummaryNew2"
+												class="sapUiTinyMarginEnd"/>
+											<Button type="Ghost" id="idNewA2Col2" icon="sap-icon://collapse-all" tooltip="{i18n>collapse}" press="expandCollapseAnx2SummaryNew2"/>
+										</Toolbar>
+									</ui:extension>
+									<ui:columns>
+										<ui:Column width="22rem">
+											<Label text="Inward" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<HBox justifyContent="SpaceBetween" alignItems="End" width="100%" height="100%">
+													<HBox>
+														<Link text="{Gstr6DetailedData>docType}" press="onpressB2bGSTR6" enabled="{= ${userPermission>/appPermission/P5}}"/>
+													</HBox>
+												</HBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="8rem" headerSpan="8" hAlign="End" visible="{showing>/asp}" class="columngstr1">
+											<ui:multiLabels>
+												<Label text="DigiGST" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{Gstr6DetailedData>aspCount}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="End" visible="{showing>/asp}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="Invoice Value" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DetailedData>aspInvValue'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="End" visible="{showing>/asp}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DetailedData>aspTaxbValue'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="End" visible="{showing>/asp}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="Total Tax" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DetailedData>aspTotTax'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="End" visible="{showing>/asp}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DetailedData>aspIgst'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="End" visible="{showing>/asp}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DetailedData>aspCgst'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="End" visible="{showing>/asp}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DetailedData>aspSgst'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="End" visible="{showing>/asp}" name="cellBorderRight">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DetailedData>aspCess'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="8rem" headerSpan="8" hAlign="End" visible="{showing>/gstn}">
+											<ui:multiLabels>
+												<Label text="GSTN" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{Gstr6DetailedData>gstnCount}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="End" visible="{showing>/gstn}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="Invoice Value" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DetailedData>gstnInvValue'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="End" visible="{showing>/gstn}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DetailedData>gstnTaxbValue'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="End" visible="{showing>/gstn}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="Total Tax" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DetailedData>gstnTotTax'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="End" visible="{showing>/gstn}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DetailedData>gstnIgst'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="End" visible="{showing>/gstn}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DetailedData>gstnCgst'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="End" visible="{showing>/gstn}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DetailedData>gstnSgst'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="End" visible="{showing>/gstn}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DetailedData>gstnCess'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="8rem" headerSpan="8" hAlign="End" visible="{showing>/diff}">
+											<ui:multiLabels>
+												<Label text="Difference" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{Gstr6DetailedData>diffCount}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="End" visible="{showing>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="Invoice Value" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DetailedData>diffInvValue'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="End" visible="{showing>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DetailedData>diffTaxbValue'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="End" visible="{showing>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="Total Tax" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DetailedData>diffTotTax'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="End" visible="{showing>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DetailedData>diffIgst'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="End" visible="{showing>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DetailedData>diffCgst'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="End" visible="{showing>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DetailedData>diffSgst'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="9rem" hAlign="End" visible="{showing>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DetailedData>diffCess'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<ui:footer>
+										<Toolbar>
+											<!--<Text text="Tax Liability includes tax payable by recipient on reverse charge supplies" class="classgstr1"/>-->
+										</Toolbar>
+									</ui:footer>
+								</ui:TreeTable>
+								<ui:TreeTable id="tabDistTablegstrnew"
+									rows="{path:'Gstr6DistributionData>/resp', parameters:{ arrayNames:['items'], numberOfExpandedLevels:0 }}" selectionMode="None"
+									fixedColumnCount="1" visibleRowCount="4" visible="true" class="cl_tabclass" toggleOpenState="onPressToggle1">
+									<ui:extension></ui:extension>
+									<ui:columns>
+										<ui:Column width="22rem">
+											<Label text="Distribution" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<HBox justifyContent="SpaceBetween" alignItems="End" width="100%" height="100%">
+													<HBox>
+														<Link text="{Gstr6DistributionData>distribution}" press="onpressB2bGSTR6Dist" enabled="{= ${userPermission>/appPermission/P5}}"/>
+													</HBox>
+												</HBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column headerSpan="9" hAlign="End" visible="{showing>/asp}" class="columngstr1">
+											<ui:multiLabels>
+												<Label text="DigiGST" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{Gstr6DistributionData>aspCount}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" visible="{showing>/asp}" class="columngstr1">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="IGSTasIGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{Gstr6DistributionData>aspIgstasIgst}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" visible="{showing>/asp}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="IGSTasSGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DistributionData>aspIgstasSgst'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" visible="{showing>/asp}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="IGSTasCGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DistributionData>aspIgstasCgst'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" visible="{showing>/asp}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="SGSTasSGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DistributionData>aspSgstasSgst'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" visible="{showing>/asp}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="SGSTasIGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DistributionData>aspSgstasIgst'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" visible="{showing>/asp}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="CGSTasCGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DistributionData>aspCgstasCgst'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" visible="{showing>/asp}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="CGSTasIGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DistributionData>aspCgstasIgst'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" visible="{showing>/asp}" name="cellBorderRight">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="CESSAmount" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path : 'Gstr6DistributionData>aspCessAmount'}], formatter : '.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<ui:footer>
+										<Toolbar>
+											<!--<Text text="Tax Liability includes tax payable by recipient on reverse charge supplies" class="classgstr1"/>-->
+										</Toolbar>
+									</ui:footer>
+								</ui:TreeTable>
+							</Panel>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+				<commons:toolbar>
+					<OverflowToolbar height="3.2rem">
+						<ToolbarSpacer/>
+						<VBox>
+							<Text text=""/>
+							<Button text="File a NIL Return" press="onFileNilReturn('G')" class="buttoncolorSec"/>
+						</VBox>
+						<VBox>
+							<Text text="{Gstr6DetailedData>/digiStatus}{=!${Gstr6DetailedData>/digiStatus}?'':':'} {Gstr6DetailedData>/digiUpdatedOn}" class="statsFont"/>
+							<Button text="Auto Calculate – DigiGST" press="onAutoCalculateDigiGST" enabled="{=${userPermission>/appPermission/P5}}"
+								class="buttoncolorSec"/>
+						</VBox>
+						<VBox>
+							<Text text=""/>
+							<HBox>
+								<Button text="Save Status" press="onPressSaveStatus($event,'S')" enabled="{= ${userPermission>/appPermission/P5}}"
+									class="sapUiTinyMarginEnd buttoncolorSec"/>
+								<Button id="idOnlineSummary" text="Online Error Correction" enabled="{= ${userPermission>/appPermission/P5}}" press="onPressonlineerrorCor"
+									class="sapUiTinyMarginEnd buttoncolorSec"/>
+								<MenuButton text="Download Report" class="buttoncolorSec" enabled="{= ${userPermission>/appPermission/P5}}">
+									<Menu itemSelected="onMenuItemPressGstr6down1">
+										<MenuItem text="Processed Records (Current Period)" key="processLineItem"/>
+										<MenuItem text="Consolidated DigiGST Error" key="gstr6AspError1"/>
+										<MenuItem text="Process Record/Distribution Data" key="processed1"/>
+									</Menu>
+								</MenuButton>
+								<Button text="Delete Data" class="sapUiTinyMarginEnd buttoncolorSec" press="onButtonDeletegstr1" visible="false" enabled="false"/>
+							</HBox>
+						</VBox>
+						<VBox class="clsavetogstinbtn">
+							<Text text="{SaveGstnStats>/updatedDate}" class="submitStatsClr statsFont"/>
+							<Button text="Save to GSTN" class="buttoncolorSec" press="fnSaveGstnGSTR6" width="10rem" enabled="{= ${userPermission>/appPermission/P5}}"/>
+						</VBox>
+						<VBox>
+							<Text text=""/>
+							<Button text="Get GSTR-6 Detailed" press="onPressProcessStatus" id="id_summDetailStatus" class="buttoncolorSec"
+								enabled="{= ${userPermission>/appPermission/P5}}"/>
+						</VBox>
+						<VBox>
+							<Text text="{Submit>/status}{=!${Submit>/status}?'':':'} {path:'Submit>/updatedDate',formatter:'.getTimeStamp'}"
+								tooltip="{Submit>/errorCode}: {Submit>/errorDesc}" class="submitStatsClr statsFont"/>
+							<Button text="Proceed To File" class="buttoncolorSec" width="11rem" press="fnSubmitGSTR6" enabled="{= ${userPermission>/appPermission/P5}}"/>
+						</VBox>
+						<Button text="Request for Approval" press="fnsPressgstr1Request2" visible="false" enabled="false" class="sapUiSmallMarginTop buttoncolorSec"/>
+						<VBox>
+							<Text text="{SignFileStatus>/status}{=!${SignFileStatus>/status}?'':':'} {path:'SignFileStatus>/timeStamp',formatter:'.getTimeStamp'}"
+								class="submitStatsClr statsFont"/>
+							<HBox>
+								<MenuButton text="Sign &amp; File" width="9rem" class="buttoncolorSec" enabled="{= ${userPermission>/appPermission/P5}}">
+									<Menu itemSelected="onSignFile">
+										<MenuItem text="Sign &amp; File GSTR-6 (DSC)" key="DSC"/>
+										<MenuItem text="Sign &amp; File GSTR-6 (EVC)" key="EVC"/>
+									</Menu>
+								</MenuButton>
+								<Button text="Filing Status" press="onFilingStatus" class="sapUiTinyMarginBegin buttoncolorSec"
+									enabled="{= ${userPermission>/appPermission/P5}}"/>
+							</HBox>
+						</VBox>
+						<VBox class="sapUiTinyMarginEnd">
+							<Text id="anx1TimegstrNew1" text="{Gstr6DetailedData>/lastUpdate}"/>
+							<HBox>
+								<Button type="Ghost" text="Update GSTN Data" class="buttoncolorSec" enabled="{= ${userPermission>/appPermission/P5}}" press="fnsUpdateGSTR6"/>
+								<Button type="Transparent" icon="sap-icon://excel-attachment" enabled="{= ${userPermission>/appPermission/P5}}" tooltip="Download Excel"
+									class="sapUiTinyMarginEnd" press="onExportExcel('S')"/>
+								<MenuButton icon="sap-icon://pdf-attachment" type="Transparent" enabled="{= ${userPermission>/appPermission/P6}}" class="cl_dropgstr1"
+									tooltip="{i18n>downPdf}">
+									<Menu>
+										<MenuItem text="As per DigiGST Values" key="delete1" press="onExportPDF('S','true')"/>
+										<MenuItem text="As per GSTN Values" key="delete2" press="onExportPDF('S','false')"/>
+									</Menu>
+								</MenuButton>
+								<Button type="Transparent" icon="sap-icon://full-screen" id="bGstr2SummaryFullScreen" tooltip="{i18n>openFullScreen}"
+									press="onGstr6FullScreen('openSummary')" visible="{=!${PrProperty>/summaryFullScreen}}"/>
+								<Button type="Transparent" icon="sap-icon://exit-full-screen" id="bGstr2SummaryCloseScreen" tooltip="{i18n>closeFullScreen}"
+									press="onGstr6FullScreen('closeSummary')" visible="{PrProperty>/summaryFullScreen}"/>
+							</HBox>
+						</VBox>
+						<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+					</OverflowToolbar>
+				</commons:toolbar>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="idRequestIDwisePage3B" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button icon="sap-icon://nav-back" type="Transparent" press="onPressRequestIDwiseBack3B"/>
+						<Title text="Request ID wise" class="sapUiSmallMarginBegin clTitleMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Request ID" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="Reqid" width="100%" items="{path:'getgstr2RequestIds>/', sorter: {path: 'requestId',descending:true}}"
+									selectionChange="selectAll">
+									<core:Item key="{getgstr2RequestIds>requestId}" text="{getgstr2RequestIds>requestId}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="k" label="Recon Status" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idReconType123" class="input" forceSelection="false">
+									<core:Item key="REPORT GENERATED" text="REPORT GENERATED"/>
+									<core:Item key="REPORT GENERATION FAILED" text="REPORT GENERATION FAILED"/>
+									<core:Item key="RECON FAILED" text="RECON FAILED"/>
+									<core:Item key="RECON COMPLETED" text="RECON COMPLETED"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="Clear" press="onPressClearRequestIDwise" class="sapUiTinyMarginBegin buttoncolorSec"/>
+					<Button text="Filter" press="onPressRequestIDwise3B" class="sapUiTinyMarginBegin buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false">
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table rows="{path:'ReqWiseData2A>/resp/', sorter: {path: 'requestId',descending:true}}" selectionMode="None" selectionBehavior="Row"
+								visibleRowCount="22" fixedColumnCount="0" enableSelectAll="false">
+								<ui:Column width="10%">
+									<Label design="Bold" text="Request ID"/>
+									<ui:template>
+										<Text text="{ReqWiseData2A>requestId}"/>
+										<!-- NewReturns-->
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="No. of GSTIN"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Link text="{ReqWiseData2A>gstinCount}" press="onPressGSTIN"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="Tax Period From" wrapping="true"/>
+									<ui:template>
+										<Text
+											text="{= ${ReqWiseData2A>reqType} === 'Document Date Wise' ? ${ReqWiseData2A>fromDocDate} : ${path:'ReqWiseData2A>fromTaxPeriod', formatter:'.formatter.month'}}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="Tax Period To" wrapping="true"/>
+									<ui:template>
+										<Text
+											text="{= ${ReqWiseData2A>reqType} === 'Document Date Wise' ? ${ReqWiseData2A>toDocDate} : ${path:'ReqWiseData2A>toTaxPeriod', formatter:'.formatter.month'}}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="Initiation"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{ReqWiseData2A>initiatedOn}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="15%">
+									<Label design="Bold" text="Initiated By"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{ReqWiseData2A>initiatedBy}_{ReqWiseData2A>emailId}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="Completion"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{ReqWiseData2A>completionOn}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="12%">
+									<Label design="Bold" text="Download"/>
+									<ui:template>
+										<HBox alignItems="Start" justifyContent="Center">
+											<core:Icon src="sap-icon://download" tooltip="Download" press="onConfigExtractPress2A" class="sapUiTinyMarginBegin"
+												visible="{=${ReqWiseData2A>status}==='REPORT_GENERATED'}"></core:Icon>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="14%">
+									<Label design="Bold" text="Status"/>
+									<ui:template>
+										<Text text="{parts:[{path : 'ReqWiseData2A>status'}], formatter : '.formatter.statusReplace'}"/>
+									</ui:template>
+								</ui:Column>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+				<commons:toolbar>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+						<Button type="Transparent" icon="sap-icon://download" tooltip="Download Summary" press="onDownloadSummary" visible="false"/>
+						<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+					</OverflowToolbar>
+				</commons:toolbar>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

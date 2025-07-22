@@ -1,0 +1,32 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.GSTR1"
+	displayBlock="true" busyIndicatorDelay="0">
+	<IconTabBar id="idIconTabBarGstr1" select="handleIconTabBarSelectGstr1" expanded="true" class="sapUiNoContentPadding sapUiSmallMarginBottom"
+		backgroundDesign="Transparent" stretchContentHeight="true" selectedKey="PrSummary" expandable="false">
+		<items>
+			<IconTabFilter text="Processed Summary" tooltip="Processed Summary" key="PrSummary">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr1.ProcessRecords" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr1.ProcessSummary" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text=" E-Invoice Summary" tooltip="E-Invoice Summary" key="EINV">
+				<mvc:XMLView viewName="com.ey.digigst.view.GSTR1EINV"/>
+			</IconTabFilter>
+			<IconTabFilter text="Processed Records Vs Submitted Data" tooltip="Processed Records Vs Submitted Data" key="gstr1PvsS" enabled="true">
+				<mvc:XMLView viewName="com.ey.digigst.view.Gstr1PRvsSD"/>
+			</IconTabFilter>
+			<IconTabFilter text="Processed Records Vs E-Invoice Data" tooltip="Processed Records Vs E-Invoice Data" key="gstr1PvsI" enabled="true"
+				visible="true" id="id_PRvsENV">
+				<mvc:XMLView viewName="com.ey.digigst.view.Gstr1PRvsEINV"/>
+			</IconTabFilter>
+			<IconTabFilter text="3 Way Recon" tooltip="3 Way Recon" key="gstr1PvsI1" enabled="{= ${userPermission>/appPermission/P35}}">
+				<mvc:XMLView viewName="com.ey.digigst.view.ThreeWayRecon"/>
+			</IconTabFilter>
+			<IconTabFilter text="Sales Register vs DigiGST processed data" tooltip="Sales Register vs DigiGST processed data" key="SalesvsDigiGST"
+				visible="{= ${userPermission>/appPermission/P40}}">
+				<mvc:XMLView viewName="com.ey.digigst.view.SalesvsDigiGST"/>
+			</IconTabFilter>
+			<IconTabFilter text="Supplier IMS" tooltip="Supplier IMS" key="SupplierIMS" visible="{=!!${GroupPermission>/GR12}}">
+				<mvc:XMLView viewName="com.ey.digigst.view.SupplierIMS"/>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</mvc:View>

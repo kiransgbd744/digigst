@@ -1,0 +1,52 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m">
+	<Dialog id="dGstr8Diff" type="Message" contentWidth="60%" class="sapUiSizeCompact">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="Difference betwween DigiGST &amp; GSTN" design="Bold"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<endButton>
+			<Button text="Close" press="onCloseDiffGstr8"/>
+		</endButton>
+		<Table items="{/}" sticky="HeaderToolbar,ColumnHeaders">
+			<columns>
+				<Column>
+					<Label text="Section" design="Bold" textAlign="Center"/>
+				</Column>
+				<Column hAlign="End" width="10rem">
+					<Label text="Gross Supplies Made" design="Bold" textAlign="Center"/>
+				</Column>
+				<Column hAlign="End" width="12rem">
+					<Label text="Gross Supplies Returned" design="Bold" textAlign="Center"/>
+				</Column>
+				<Column hAlign="End" width="10rem">
+					<Label text="Net Supplies" design="Bold" textAlign="Center"/>
+				</Column>
+				<Column hAlign="End" width="10rem">
+					<Label text="IGST" design="Bold" textAlign="Center"/>
+				</Column>
+				<Column hAlign="End" width="10rem">
+					<Label text="CGST" design="Bold" textAlign="Center"/>
+				</Column>
+				<Column hAlign="End" width="10rem">
+					<Label text="SGST" design="Bold" textAlign="Center"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<Text text="{path:'section'}"/>
+						<Text text="{path:'grossSuppliesMade',formatter:'.formatter.amountValue'}"/>
+						<Text text="{path:'grossSuppliesReturn',formatter:'.formatter.amountValue'}"/>
+						<Text text="{path:'netSupplies',formatter:'.formatter.amountValue'}"/>
+						<Text text="{path:'igst',formatter:'.formatter.amountValue'}"/>
+						<Text text="{path:'cgst',formatter:'.formatter.amountValue'}"/>
+						<Text text="{path:'sgst',formatter:'.formatter.amountValue'}"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</Dialog>
+</core:FragmentDefinition>

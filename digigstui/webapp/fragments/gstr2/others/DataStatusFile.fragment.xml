@@ -1,0 +1,116 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:ui="sap.ui.table">
+	<ui:Table id="tabFileStatPR" rows="{FileStatus>/resp}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10"
+		enableSelectAll="false" visible="false">
+		<ui:extension>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button type="Emphasized" text="Summary" press="onPressSummary"/>
+				<Button type="Emphasized" text="Request for Approval" press="onPressReqForApproval"/>
+				<Button type="Accept" text="Save to GSTN" press="onPressSave"/>
+				<Button type="Reject" text="Delete Data" press="onMessageInformationDialogPress"/>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="7rem">
+				<Label text="Date of Upload" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{FileStatus>date}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem">
+				<Label text="Uploaded by" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{FileStatus>uploadBy}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem">
+				<Label text="File Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{FileStatus>fileType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem">
+				<Label text="File Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{FileStatus>fileName}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem">
+				<Label text="File Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{FileStatus>fileStatus}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="7rem">
+				<Label text="Total Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{FileStatus>total}"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" alt="Download"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="7rem">
+				<Label text="Processed Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{FileStatus>processASP}"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="8rem">
+				<HBox width="100%">
+					<Label text="Error (ASP)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<core:Icon src="sap-icon://download" size="0.75rem" press="onDownloadCatalog" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"/>
+				</HBox>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Link text="{FileStatus>errorASP}" press="onFileAspErrorPress"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="6rem">
+				<HBox width="100%">
+					<Label text="Information" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<core:Icon src="sap-icon://download" size="0.75rem" press="onDownloadCatalog" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"/>
+				</HBox>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{FileStatus>info}"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="7rem">
+				<Label text="Save Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{FileStatus>status}"/>
+					<!--<core:Icon src="sap-icon://save" class="sapUiTinyMarginBegin" alt="Download"/>-->
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="7rem">
+				<Label text="Processed (GSTIN)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{FileStatus>processGSTN}"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="End" width="6rem">
+				<HBox alignItems="Start" justifyContent="Center">
+					<Label text="Error (GSTIN)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" alt="Download"/>
+				</HBox>
+				<ui:template>
+					<HBox alignItems="Start" justifyContent="End">
+						<Text text="{FileStatus>errorGSTN}"/>
+						<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" alt="Download"/>
+					</HBox>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+	</ui:Table>
+</core:FragmentDefinition>

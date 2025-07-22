@@ -1,0 +1,154 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.VendorLedger"
+	xmlns:ui="sap.ui.table" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:commons="sap.suite.ui.commons" busyIndicatorDelay="0">
+	<f:DynamicPage id="id180DaysReversal" visible="true">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<Title text="Vendor Ledger" titleStyle="H3" class="tinyMarginTop"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onLoadEntity" clear="onClearMainFilter"
+					useToolbar="false" class="sapUiNoContentPadding" width="90%">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Vendor GSTIN" visibleInFilterBar="true" required="true">
+							<fb:control>
+								<MultiComboBox id="GSTINEntityID" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" selectionChange="selectAll">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="From Date" visibleInFilterBar="true" required="true">
+							<fb:control>
+								<DatePicker id="idDateFrom" displayFormat="dd-MM-yyyy" valueFormat="dd-MM-yyyy" change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="To Date" visibleInFilterBar="true" required="true">
+							<fb:control>
+								<DatePicker id="idDateTo" displayFormat="dd-MM-yyyy" valueFormat="dd-MM-yyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onClearMainFilter"/>
+					<Button text="Filter" press="onLoadEntity" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer showFullScreen="false" autoAdjustHeight="false" class="sapUiTinyMarginBeginEnd cl_ChartConHeight" id="idCcSummary">
+				<commons:toolbar>
+					<OverflowToolbar class="colorToolbar toolbarHeight">
+						<ToolbarSpacer/>
+						<Button class="buttoncolorSec" text="Upload Opening Bal." press="onCompute"/>
+						<Button text="Download Report" press="" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+						<commons:ChartContainerToolbarPlaceholder/>
+					</OverflowToolbar>
+				</commons:toolbar>
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table rows="{SummTab>/vendorR/}" id="idSumTab" enableColumnReordering="false" class="sapUiTinyMarginTop" selectionMode="MultiToggle">
+								<ui:columns>
+									<ui:Column>
+										<Label text="Vendor GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<HBox alignContent="Start" justifyContent="SpaceBetween">
+												<Link text="{SummTab>VendorGSTIN}" emphasized="true"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<Label text="Customer GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<VBox class="sapUiTinyMarginTopBottom">
+												<Text text="{SummTab>SupplierGSTIN}"></Text>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<Label text="Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<VBox>
+												<Text text="{SummTab>Date}"></Text>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<Label text="Particulars" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{SummTab>Particulars}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<Label text="Opening Balance Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{SummTab>OpeningBalanceAmount}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<Label text="Payment Ref Number" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{SummTab>PaymentRefNumber}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<Label text="Payment Ref Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{SummTab>PaymentRefDate}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<Label text="Paid Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{SummTab>PaidAmount}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<Label text="Particulars" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{SummTab>Particulars1}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<Label text="Document Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{SummTab>DocType}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<Label text="Document Number" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{SummTab>DocNo}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<Label text="Document Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{SummTab>DocDate}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<Label text="Amount Adjusted" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{SummTab>AmountAdjusted}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<Label text="Closing Balance Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{SummTab>ClosingBalanceAmount}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent>
+				</commons:content>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

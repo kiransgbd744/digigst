@@ -1,0 +1,31 @@
+/**
+ * 
+ */
+package com.ey.advisory.common;
+
+/**
+ * @author Laxmi.Salukuti
+ *
+ */
+public enum EwbProcessingStatus {
+
+	NOT_APPLICABLE(1), ASP_ERROR(2), ASP_PROCESSED(3),INPROGRESS_GENERATION(4),
+	GENERATION_ERROR(5),PART_A_GENERATED(6), PENDING_CANCELLATION(7),
+	INPROGRESS_CANCELLATION(8),ERROR_CANCELLATION(9),UPDATED_PARTB(13),ERROR_UPDATE_PARTB(12),EXTENDED(19),
+	ERROR_EXTEND(18),UPDATED_TRANSPORTER(16),ERROR_UPDATE_TRANSPORTER(15)
+	,INPROGRESS_UPDATE_TRANSPORTER(14),INPROGRESS_UPDATE_PARTB(11),
+	INPROGRESS_EXTEND(17),DISCARDED(20),REJECTED(21),EXPIRED(22),
+	CANCELLED(10),
+	EWAY_BILL_GENERATED_ERP(23),EWAY_BILL_NOT_GENERATED_ERP(24),NOT_OPTED(25),INPROGRESS_REJECTION(26),ERROR_REJECTION(27);
+	
+	int ewbProcessingStatusCode;
+
+	EwbProcessingStatus(int ewbProcessingStatusCode) {
+		this.ewbProcessingStatusCode = ewbProcessingStatusCode;
+	}
+
+	public int getEwbProcessingStatusCode() {
+		return ewbProcessingStatusCode;
+	}
+
+}

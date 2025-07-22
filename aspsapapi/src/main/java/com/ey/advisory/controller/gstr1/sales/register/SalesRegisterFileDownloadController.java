@@ -1,0 +1,91 @@
+package com.ey.advisory.controller.gstr1.sales.register;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Optional;
+
+import org.apache.chemistry.opencmis.client.api.Document;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ey.advisory.app.data.repositories.client.SalesRegisterDownloadReconReportsRepository;
+import com.ey.advisory.common.AppException;
+import com.ey.advisory.common.DocumentUtility;
+import com.ey.advisory.common.multitenancy.TenantContext;
+import com.ey.advisory.service.gstr1.sales.register.SalesRegisterReconDownloadReportsEntity;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * @author Shashikant.Shukla
+ *
+ */
+
+@RestController
+@Slf4j
+public class SalesRegisterFileDownloadController {
+
+	@Autowired
+	@Qualifier("SalesRegisterDownloadReconReportsRepository")
+	SalesRegisterDownloadReconReportsRepository reconDownlRepo;
+
+	@GetMapping(value = "/ui/salesRegisterDownloadDocument")
+	public void eWB3WayDownloadDocument(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		LOGGER.debug(
+				"inside eWB3WayDownloadDocument method and file type is {} ",
+				"3WayReconReport");
+
+		String tenantCode = TenantContext.getTenantId();
+		LOGGER.debug("Tenant Id Is {}", tenantCode);
+
+		String configId = request.getParameter("configId");
+		String reportType = request.getParameter("reportType");
+		
+		if (LOGGER.isDebugEnabled()) {
+			String msg = String.format(
+					" Downloading report with configId  %s"
+							+ " and Report Type  %s and request is %s",configId,
+							reportType, request);
+			LOGGER.debug(msg);
+		}
+
+		Optional<SalesRegisterReconDownloadReportsEntity> configEntity = reconDownlRepo
+				.findByConfigIdAndReportType(Long.valueOf(configId),
+						reportType);
+
+		if (!configEntity.isPresent()) {
+			String msg = "No records found";
+			throw new AppException(msg);
+		}
+		String fileName = configEntity.get().getPath();
+
+		String fileFolder = "SalesRegisterReconReport";
+
+		Document document = DocumentUtility.downloadDocument(fileName,
+				fileFolder);
+
+		if (document == null) {
+			return;
+		}
+
+		InputStream inputStream = document.getContentStream().getStream();
+		int read = 0;
+		byte[] bytes = new byte[1024];
+
+		if (document != null) {
+			response.setHeader("Content-Disposition",
+					String.format("attachment; filename = " + fileName));
+			OutputStream outputStream = response.getOutputStream();
+			while ((read = inputStream.read(bytes)) != -1) {
+				outputStream.write(bytes, 0, read);
+			}
+		}
+
+	}
+
+}

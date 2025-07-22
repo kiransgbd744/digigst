@@ -1,0 +1,1087 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"properties": {
+		"req": {
+			"type": "object",
+			"properties": {
+				"userId": {
+					"type": "string",
+					"maxLength": 100
+				},
+				"srcFileName": {
+					"type": "string",
+					"maxLength": 100
+				},
+				"srcIdentifier": {
+					"type": "string",
+					"maxLength": 100
+				},
+				"division": {
+					"type": "string",
+					"maxLength": 100
+				},
+				"salesOrg": {
+					"type": "string",
+					"maxLength": 100
+				},
+				"distChannel": {
+					"type": "string",
+					"maxLength": 100
+				},
+				"returnPeriod": {
+					"type": "string",
+					"minLength": 6,
+					"maxLength": 6
+				},
+				"suppGstin": {
+					"type": "string",
+					"maxLength": 15
+				},
+				"docType": {
+					"type": "string",
+					"maxLength": 5
+				},
+				"docNo": {
+					"type": "string",
+					"maxLength": 16
+				},
+				"docDate": {
+					"type": "string",
+					"maxLength": 10
+				},
+				"orgDocType": {
+					"type": "string",
+					"maxLength": 5
+				},
+				"crDrPreGst": {
+					"type": "string",
+					"maxLength": 1
+				},
+				"custGstin": {
+					"type": "string",
+					"maxLength": 15
+				},
+				"custOrSupType": {
+					"type": "string",
+					"maxLength": 1
+				},
+				"diffPercent": {
+					"type": "string",
+					"maxLength": 3
+				},
+				"orgCgstin": {
+					"type": "string",
+					"minLength": 15,
+					"maxLength": 15
+				},
+				"custOrSupName": {
+					"type": "string",
+					"minLength": 3,
+					"maxLength": 100
+				},
+				"custOrSupCode": {
+					"type": "string",
+					"maxLength": 100
+				},
+				"custOrSupAddr1": {
+					"type": "string",
+					"minLength": 1,
+					"maxLength": 120
+				},
+				"custOrSupAddr2": {
+					"type": "string",
+					"minLength": 3,
+					"maxLength": 120
+				},
+				"custOrSupAddr4": {
+					"type": "string",
+					"minLength": 3,
+					"maxLength": 100
+				},
+				"billToState": {
+					"type": "string",
+					"minLength": 2,
+					"maxLength": 2
+				},
+				"shipToState": {
+					"type": "string",
+					"minLength": 2,
+					"maxLength": 2
+				},
+				"pos": {
+					"type": "string",
+					"maxLength": 2
+				},
+				"udf28": {
+					"type": "number",
+					"maxLength": 16
+				},
+				"udf29": {
+					"type": "string",
+					"maxLength": 500
+				},
+				"udf30": {
+					"type": "string",
+					"maxLength": 500
+				},
+				"stateApplyingCess": {
+					"type": "string",
+					"maxLength": 2
+				},
+				"portCode": {
+					"type": "string",
+					"minLength": 2,
+					"maxLength": 10
+				},
+				"shippingBillNo": {
+					"type": "string",
+					"minLength": 1,
+					"maxLength": 20
+				},
+				"shippingBillDate": {
+					"type": "string"
+				},
+				"sec7OfIgstFlag": {
+					"type": "string",
+					"maxLength": 1
+				},
+				"reverseCharge": {
+					"type": "string",
+					"maxLength": 2
+				},
+				"tcsFlag": {
+					"type": "string",
+					"maxLength": 1
+				},
+				"ecomGSTIN": {
+					"type": "string",
+					"minLength": 15,
+					"maxLength": 15,
+					"pattern": "([0-9]{2}[0-9|A-Z]{13})"
+				},
+				"claimRefundFlag": {
+					"type": "string",
+					"maxLength": 1
+				},
+				"autoPopToRefundFlag": {
+					"type": "string",
+					"maxLength": 1
+				},
+				"accVoucherNo": {
+					"type": "string",
+					"maxLength": 100
+				},
+				"accVoucherDate": {
+					"type": "string"
+				},
+				"ewbNo": {
+					"type": "string",
+					"maxLength": 12
+				},
+				"ewbDate": {
+					"type": "string"
+				},
+				"irn": {
+					"type": "string",
+					"maxLength": 64
+				},
+				"irnDate": {
+					"type": "string"
+				},
+				"taxScheme": {
+					"type": "string",
+					"maxLength": 10
+				},
+				"docCat": {
+					"type": "string",
+					"maxLength": 4
+				},
+				"docAmt": {
+					"type": "number",
+					"maxLength": 16
+				},
+				"supTradeName": {
+					"type": "string",
+					"minLength": 3,
+					"maxLength": 100
+				},
+				"supLegalName": {
+					"type": "string",
+					"minLength": 3,
+					"maxLength": 100
+				},
+				"supBuildingNo": {
+					"type": "string",
+					"minLength": 1,
+					"maxLength": 120
+				},
+				"supBuildingName": {
+					"type": "string",
+					"minLength": 3,
+					"maxLength": 120
+				},
+				"supLocation": {
+					"type": "string",
+					"minLength": 3,
+					"maxLength": 50
+				},
+				"supPincode": {
+					"type": "integer",
+					"minimum": 100000,
+					"maximum": 999999
+				},
+				"supStateCode": {
+					"type": "string",
+					"minLength": 2,
+					"maxLength": 2
+				},
+				"supPhone": {
+					"type": "string",
+					"minLength": 6,
+					"maxLength": 12
+				},
+				"supEmail": {
+					"type": "string",
+					"minLength": 6,
+					"maxLength": 100
+				},
+				"custTradeName": {
+					"type": "string",
+					"minLength": 3,
+					"maxLength": 100
+				},
+				"custPincode": {
+					"type": "integer",
+					"minimum": 100000,
+					"maximum": 999999
+				},
+				"custPhone": {
+					"type": "string",
+					"minLength": 6,
+					"maxLength": 12
+				},
+				"custEmail": {
+					"type": "string",
+					"minLength": 6,
+					"maxLength": 100
+				},
+				"dispatcherGstin": {
+					"type": "string",
+					"maxLength": 15
+				},
+				"dispatcherTradeName": {
+					"type": "string",
+					"minLength": 3,
+					"maxLength": 100
+				},
+				"dispatcherBuildingNo": {
+					"type": "string",
+					"minLength": 1,
+					"maxLength": 120
+				},
+				"dispatcherBuildingName": {
+					"type": "string",
+					"minLength": 3,
+					"maxLength": 120
+				},
+				"dispatcherLocation": {
+					"type": "string",
+					"minLength": 3,
+					"maxLength": 100
+				},
+				"dispatcherPincode": {
+					"type": "integer",
+					"minimum": 100000,
+					"maximum": 999999
+				},
+				"dispatcherStateCode": {
+					"type": "string",
+					"minLength": 2,
+					"maxLength": 2
+				},
+				"shipToGstin": {
+					"type": "string",
+					"maxLength": 15
+				},
+				"shipToTradeName": {
+					"type": "string",
+					"minLength": 3,
+					"maxLength": 100
+				},
+				"shipToLegalName": {
+					"type": "string",
+					"minLength": 3,
+					"maxLength": 100
+				},
+				"shipToBuildingNo": {
+					"type": "string",
+					"minLength": 1,
+					"maxLength": 120
+				},
+				"shipToBuildingName": {
+					"type": "string",
+					"minLength": 3,
+					"maxLength": 120
+				},
+				"shipToLocation": {
+					"type": "string",
+					"minLength": 3,
+					"maxLength": 100
+				},
+				"shipToPincode": {
+					"type": "integer",
+					"minimum": 100000,
+					"maximum": 999999
+				},
+				"invOtherCharges": {
+					"type": "number",
+					"maxLength": 19
+				},
+				"invAssessableAmt": {
+					"type": "number",
+					"maxLength": 19
+				},
+				"invIgstAmt": {
+					"type": "number",
+					"maxLength": 19
+				},
+				"invCgstAmt": {
+					"type": "number",
+					"maxLength": 19
+				},
+				"invSgstAmt": {
+					"type": "number",
+					"maxLength": 19
+				},
+				"invCessAdvaloremAmt": {
+					"type": "number",
+					"maxLength": 19
+				},
+				"invCessSpecificAmt": {
+					"type": "number",
+					"maxLength": 19
+				},
+				"invStateCessAmt": {
+					"type": "number",
+					"maxLength": 19
+				},
+				"roundOff": {
+					"type": "number",
+					"maxLength": 4
+				},
+				"totalInvValueInWords": {
+					"type": "string",
+					"maxLength": 200
+				},
+				"foreignCurrency": {
+					"type": "string",
+					"minLength": 3,
+					"maxLength": 16
+				},
+				"countryCode": {
+					"type": "string",
+					"minLength": 2,
+					"maxLength": 2
+				},
+				"invValueFc": {
+					"type": "number",
+					"maxLength": 19
+				},
+				"invPeriodStartDate": {
+					"type": "string"
+				},
+				"invPeriodEndDate": {
+					"type": "string"
+				},
+				"payeeName": {
+					"type": "string",
+					"minLength": 1,
+					"maxLength": 100
+				},
+				"modeOfPayment": {
+					"type": "string",
+					"minLength": 1,
+					"maxLength": 18
+				},
+				"branchOrIfscCode": {
+					"type": "string",
+					"minLength": 1,
+					"maxLength": 11
+				},
+				"paymentTerms": {
+					"type": "string",
+					"minLength": 1,
+					"maxLength": 100
+				},
+				"paymentInstruction": {
+					"type": "string",
+					"minLength": 1,
+					"maxLength": 100
+				},
+				"creditTransfer": {
+					"type": "string",
+					"minLength": 1,
+					"maxLength": 100
+				},
+				"directDebit": {
+					"type": "string",
+					"minLength": 1,
+					"maxLength": 100
+				},
+				"creditDays": {
+					"type": "integer",
+					"maximum": 9999
+				},
+				"paymentDueDate": {
+					"type": "string",
+					"maxLength": 10
+				},
+				"accDetail": {
+					"type": "string",
+					"minLength": 1,
+					"maxLength": 18
+				},
+				"tdsFlag": {
+					"type": "string",
+					"maxLength": 1
+				},
+				"tranType": {
+					"type": "string",
+					"maxLength": 1
+				},
+				"subsupplyType": {
+					"type": "string",
+					"maxLength": 10
+				},
+				"otherSupplyTypeDesc": {
+					"type": "string",
+					"maxLength": 20
+				},
+				"transporterID": {
+					"type": "string",
+					"maxLength": 15
+				},
+				"transporterName": {
+					"type": "string",
+					"minLength": 3,
+					"maxLength": 100
+				},
+				"transportMode": {
+					"type": "string",
+					"maxLength": 10
+				},
+				"transportDocNo": {
+					"type": "string",
+					"minLength": 1,
+					"maxLength": 15
+				},
+				"transportDocDate": {
+					"type": "string"
+				},
+				"distance": {
+					"type": "number",
+					"minLength": 1,
+					"maxLength": 4
+				},
+				"vehicleNo": {
+					"type": "string",
+					"minLength": 4,
+					"maxLength": 20
+				},
+				"vehicleType": {
+					"type": "string",
+					"maxLength": 1
+				},
+				"exchangeRt": {
+					"type": "string",
+					"maxLength": 100
+				},
+				"companyCode": {
+					"type": "string",
+					"maxLength": 100
+				},
+				"glPostingDate": {
+					"type": "string"
+				},
+				"salesOrderNo": {
+					"type": "string",
+					"maxLength": 100
+				},
+				"canReason": {
+					"type": "string",
+					"maxLength": 2
+				},
+				"canRemarks": {
+					"type": "string",
+					"maxLength": 100
+				},
+				"invStateCessSpecificAmt": {
+					"type": "number",
+					"maxLength": 16
+				},
+				"tcsFlagIncomeTax": {
+					"type": "string",
+					"maxLength": 1
+				},
+				"custPANOrAadhaar": {
+					"type": "string",
+					"maxLength": 16
+				},
+				"glStateCessSpecific": {
+					"type": "string",
+					"maxLength": 100
+				},
+				"glCodeIgst": {
+					"type": "string",
+					"maxLength": 100
+				},
+				"glCodeCgst": {
+					"type": "string",
+					"maxLength": 100
+				},
+				"glCodeSgst": {
+					"type": "string",
+					"maxLength": 100
+				},
+				"glCodeAdvCess": {
+					"type": "string",
+					"maxLength": 100
+				},
+				"glCodeSpCess": {
+					"type": "string",
+					"maxLength": 100
+				},
+				"glCodeStateCess": {
+					"type": "string",
+					"maxLength": 100
+				},
+				"preDocDtls": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"preceedingInvNo": {
+								"type": "string",
+								"minLength": 3,
+								"maxLength": 16
+							},
+							"preceedingInvDate": {
+								"type": "string"
+							},
+							"invRef": {
+								"type": "string",
+								"minLength": 1,
+								"maxLength": 20
+							}
+						}
+					}
+				},
+				"contrDtls": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"receiptAdviceRef": {
+								"type": "string",
+								"minLength": 1,
+								"maxLength": 20
+							},
+							"tenderRef": {
+								"type": "string",
+								"minLength": 1,
+								"maxLength": 20
+							},
+							"contractRef": {
+								"type": "string",
+								"minLength": 1,
+								"maxLength": 20
+							},
+							"externalRef": {
+								"type": "string",
+								"minLength": 1,
+								"maxLength": 20
+							},
+							"projectRef": {
+								"type": "string",
+								"minLength": 1,
+								"maxLength": 20
+							},
+							"custPoRefNo": {
+								"type": "string",
+								"minLength": 1,
+								"maxLength": 16
+							},
+							"custPoRefDate": {
+								"type": "string"
+							},
+							"receiptAdviceDate": {
+								"type": "string"
+							}
+						}
+					}
+				},
+				"addlDocDtls": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"supportingDocURL": {
+								"type": "string",
+								"minLength": 3,
+								"maxLength": 100
+							},
+							"supportingDocBase64": {
+								"type": "string",
+								"minLength": 3,
+								"maxLength": 1000
+							},
+							"addlInfo": {
+								"type": "string",
+								"minLength": 3,
+								"maxLength": 1000
+							}
+						}
+					}
+				},
+				"profitCentre1": {
+					"type": "string",
+					"maxLength": 100
+				},
+				"profitCentre2": {
+					"type": "string",
+					"maxLength": 100
+				},
+				"custTan": {
+					"type": "string",
+					"maxLength": 10
+				},
+				"lineItems": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"itemNo": {
+								"type": "string",
+								"minLength": 1,
+								"maxLength": 6
+							},
+							"paidAmt": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"balanceAmt": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"attribDtls": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"attributeName": {
+											"type": "string",
+											"minLength": 1,
+											"maxLength": 100
+										},
+										"attributeValue": {
+											"type": "string",
+											"minLength": 1,
+											"maxLength": 100
+										}
+									}
+								}
+							},
+							"stateCessSpecificRt": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"stateCessSpecificAmt": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"tcsRtIncomeTax": {
+								"type": "number",
+								"maxLength": 10
+							},
+							"tcsAmtIncomeTax": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"docRefNo": {
+								"type": "string",
+								"maxLength": 300
+							},
+							"glCodeTaxableVal": {
+								"type": "string",
+								"maxLength": 100
+							},
+							"supplyType": {
+								"type": "string",
+								"maxLength": 10
+							},
+							"fob": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"exportDuty": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"hsnsacCode": {
+								"type": "string",
+								"minLength": 4,
+								"maxLength": 8
+							},
+							"productCode": {
+								"type": "string",
+								"maxLength": 100
+							},
+							"itemDesc": {
+								"type": "string",
+								"minLength": 3,
+								"maxLength": 300
+							},
+							"itemType": {
+								"type": "string",
+								"maxLength": 100
+							},
+							"itemUqc": {
+								"type": "string",
+								"minLength": 3,
+								"maxLength": 8
+							},
+							"itemQty": {
+								"type": "number",
+								"maxLength": 13
+							},
+							"taxableVal": {
+								"type": "number",
+								"maxLength": 16
+							},
+							"igstRt": {
+								"type": "number",
+								"maxLength": 10
+							},
+							"igstAmt": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"cgstRt": {
+								"type": "number",
+								"maxLength": 10
+							},
+							"cgstAmt": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"sgstRt": {
+								"type": "number",
+								"maxLength": 10
+							},
+							"sgstAmt": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"cessRtAdvalorem": {
+								"type": "number",
+								"maxLength": 10
+							},
+							"cessAmtAdvalorem": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"cessRtSpecific": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"cessAmtSpecfic": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"stateCessRt": {
+								"type": "number",
+								"maxLength": 10
+							},
+							"stateCessAmt": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"otherValues": {
+								"type": "number"
+							},
+							"lineItemAmt": {
+								"type": "number"
+							},
+							"tcsAmt": {
+								"type": "number"
+							},
+							"itcFlag": {
+								"type": "string",
+								"maxLength": 2
+							},
+							"crDrReason": {
+								"type": "string",
+								"maxLength": 200
+							},
+							"udf1": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf2": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf3": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf4": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf5": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf6": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf7": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf8": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf9": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf10": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf11": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf12": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf13": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf14": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf15": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"location": {
+								"type": "string",
+								"maxLength": 100
+							},
+							"plantCode": {
+								"type": "string",
+								"maxLength": 100
+							},
+							"serialNoII": {
+								"type": "string",
+								"minLength": 1,
+								"maxLength": 20
+							},
+							"productName": {
+								"type": "string",
+								"minLength": 3,
+								"maxLength": 100
+							},
+							"isService": {
+								"type": "string",
+								"maxLength": 1
+							},
+							"barcode": {
+								"type": "string",
+								"minLength": 3,
+								"maxLength": 30
+							},
+							"batchNameOrNo": {
+								"type": "string",
+								"minLength": 3,
+								"maxLength": 20
+							},
+							"batchExpiryDate": {
+								"type": "string"
+							},
+							"warrantyDate": {
+								"type": "string"
+							},
+							"originCountry": {
+								"type": "string",
+								"maxLength": 2
+							},
+							"freeQuantity": {
+								"type": "number",
+								"maxLength": 13
+							},
+							"unitPrice": {
+								"type": "number",
+								"maxLength": 20
+							},
+							"itemAmt": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"itemDiscount": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"preTaxAmt": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"totalItemAmt": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"invRemarks": {
+								"type": "string",
+								"minLength": 3,
+								"maxLength": 100
+							},
+							"orderLineRef": {
+								"type": "string",
+								"minLength": 1,
+								"maxLength": 50
+							},
+							"tcsCgstAmt": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"tcsSgstAmt": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"tdsIgstAmt": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"tdsCgstAmt": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"tdsSgstAmt": {
+								"type": "number",
+								"maxLength": 19
+							},
+							"subDivision": {
+								"type": "string",
+								"maxLength": 100
+							},
+							"udf16": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf17": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf18": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf19": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf20": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf21": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf22": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf23": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf24": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf25": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf26": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"udf27": {
+								"type": "string",
+								"maxLength": 500
+							},
+							"profitCentre3": {
+								"type": "string",
+								"maxLength": 100
+							},
+							"profitCentre4": {
+								"type": "string",
+								"maxLength": 100
+							},
+							"profitCentre5": {
+								"type": "string",
+								"maxLength": 100
+							},
+							"profitCentre6": {
+								"type": "string",
+								"maxLength": 100
+							},
+							"profitCentre7": {
+								"type": "string",
+								"maxLength": 100
+							},
+							"profitCentre8": {
+								"type": "string",
+								"maxLength": 100
+							},
+							"ecomTransactionID": {
+								"type": "string",
+								"maxLength": 100
+							}
+						},
+						"required": [
+							"itemNo",
+							"hsnsacCode"						
+							]
+					}
+				}
+			},
+			"required": [
+				"docType",
+				"docNo",
+				"docDate",
+				"tranType",
+				"supStateCode",
+				"billToState",
+				"subsupplyType",
+				"docCat",
+				"lineItems"
+			]
+		}
+	},
+	"required": [
+		"req"
+	]
+}

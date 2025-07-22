@@ -1,0 +1,17 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:fb="sap.ui.comp.filterbar">
+	<Dialog title="Update Transporter ID for E-Waybill" type="Message" class="sapUiSizeCompact">
+		<VBox>
+			
+			<Label text="Transporter ID" class="sapUiTinyMarginTop"/>
+			<Input width="15rem" id="idEWBTransporterID" maxLength="20"/>
+			
+			<Label text="Provided Transporter ID will be applicable to all selected records" class="sapUiLargeMarginTop redLabel"/>
+		</VBox>
+		<beginButton>
+			<Button id="bApplyTran" text="Submit" type="Default" press="onPressTransporterClose"/>
+		</beginButton>
+		<endButton>
+			<Button id="bCancelTran" text="Close" type="Default" press="onPressTransporterClose"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

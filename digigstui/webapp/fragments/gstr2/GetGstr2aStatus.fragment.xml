@@ -1,0 +1,201 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:ui="sap.ui.table">
+	<Dialog id="dGet2aStatus" title="{i18n>getGstr2a}" type="Message" draggable="true" class="sapUiSizeCompact">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="{i18n>getGstr2a}" design="Bold"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<subHeader>
+			<Bar design="SubHeader">
+				<contentLeft>
+					<Label text="{i18n>period}: " design="Bold" class="sapUiTinyMarginBegin"/>
+					<Text text="{path:'Get2aStautsPayload>/req/taxPeriod', formatter:'.formatter.periodFormat'}" id="id_TaxText"/>
+				</contentLeft>
+				<contentRight>
+					<SegmentedButton selectedKey="{Get2aStatsProp>/segment}" selectionChange="onChangeGet2aSegment" id="idProcessStatusGet2ABtn"
+						class="sapUiSmallMarginBottom">
+						<items>
+							<SegmentedButtonItem key="all" text="{i18n>bAll2A}" width="10rem"/>
+							<SegmentedButtonItem key="fail" text="{i18n>bFailed2A}" width="10rem"/>
+						</items>
+					</SegmentedButton>
+				</contentRight>
+			</Bar>
+		</subHeader>
+		<content>
+			<ui:Table rows="{Get2aStauts>/}" selectionMode="MultiToggle" rowSelectionChange="onRowSelectionChangeget2A" id="idTabGetGstr2A"
+				enableColumnReordering="false" class="sapUiSizeCompact cl_popupCheck">
+				<ui:extension>
+					<Toolbar>
+						<!--<CheckBox text="{i18n>selectAll}" partiallySelected="{Get2aStatsProp>/allPartial}" selected="{Get2aStatsProp>/allSelect}"-->
+						<!--	select="onGet2aSelectAll(${$parameters>/selected})"/>-->
+						<ToolbarSpacer/>
+						<Button text="Download Reports" type="Emphasized" press="onPressProcessSumBtnGstr21"/>
+						<Button text="GET GSTR-2A" type="Emphasized" press="onPressGetGstr21Btn"/>
+						<Button text="Refresh" type="Emphasized" press="onPressRefreshBtn2A"/>
+						<!--<Button type="Emphasized" text="{i18n>getGstr2a}"/>-->
+						<!--<MenuButton type="Emphasized" text="{i18n>downReport}">-->
+						<!--	<Menu itemSelected="onDownloadGet2aReport($event,${$parameters>/item},'D')">-->
+						<!--		<MenuItem key="getGstr2A" text="{i18n>gstr2aComplete}"/>-->
+						<!--		<MenuItem key="dropOut" text="{i18n>gstr2aDropOut}" enabled="false"/>-->
+						<!--		<MenuItem key="exDropOut" text="{i18n>gst2aExDropOut}" enabled="false"/>-->
+						<!--	</Menu>-->
+						<!--</MenuButton>-->
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column hAlign="Left" width="11rem">
+						<Label text="{i18n>gstin}" design="Bold" textAlign="Left"/>
+						<ui:template>
+							<Text text="{Get2aStauts>gstin}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="11rem">
+						<HBox>
+							<CheckBox selected="{showing>/b2bFlag}" select="onCheckGet2aSection($event,'b2bFlag')"/>
+							<Label text="{i18n>2a_b2b}" design="Bold" textAlign="Left" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox alignItems="Center">
+								<CheckBox selected="{Get2aStauts>b2bFlag}"/>
+								<VBox>
+									<ObjectStatus text="{Get2aStauts>b2bStatus}" state="{path:'Get2aStauts>b2bStatus',formatter:'.statusFormat'}"/>
+									<Text text="{Get2aStauts>b2bTimeStamp}"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="11rem">
+						<HBox>
+							<CheckBox selected="{showing>/b2baFlag}" select="onCheckGet2aSection($event,'b2baFlag')"/>
+							<Label text="{i18n>2a_b2ba}" design="Bold" textAlign="Left" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<CheckBox selected="{Get2aStauts>b2baFlag}"/>
+								<VBox>
+									<ObjectStatus text="{Get2aStauts>b2baStatus}" state="{path:'Get2aStauts>b2bStatus',formatter:'.statusFormat'}"/>
+									<Text text="{Get2aStauts>b2baTimeStamp}"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<HBox>
+							<CheckBox selected="{showing>/cdnFlag}" select="onCheckGet2aSection($event,'cdnFlag')"/>
+							<Label text="{i18n>2a_cdn}" design="Bold" textAlign="Left" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<CheckBox selected="{Get2aStauts>cdnFlag}"/>
+								<VBox>
+									<ObjectStatus text="{Get2aStauts>cdnStatus}" state="{path:'Get2aStauts>b2bStatus',formatter:'.statusFormat'}"/>
+									<Text text="{Get2aStauts>cdnTimeStamp}"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<HBox>
+							<CheckBox selected="{showing>/cdnaFlag}" select="onCheckGet2aSection($event,'cdnaFlag')"/>
+							<Label text="{i18n>2a_cdna}" design="Bold" textAlign="Left" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<CheckBox selected="{Get2aStauts>cdnaFlag}"/>
+								<VBox>
+									<ObjectStatus text="{Get2aStauts>cdnaStatus}" state="{path:'Get2aStauts>b2bStatus',formatter:'.statusFormat'}"/>
+									<Text text="{Get2aStauts>cdnaTimeStamp}"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="11rem">
+						<HBox>
+							<CheckBox selected="{showing>/isdFlag}" select="onCheckGet2aSection($event,'isdFlag')"/>
+							<Label text="{i18n>2a_isd}" textAlign="Left" design="Bold" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<CheckBox selected="{Get2aStauts>isdFlag}"/>
+								<VBox>
+									<ObjectStatus text="{Get2aStauts>isdStatus}" state="{path:'Get2aStauts>b2bStatus',formatter:'.statusFormat'}"/>
+									<Text text="{Get2aStauts>isdTimeStamp}"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="11rem">
+						<HBox>
+							<CheckBox selected="{showing>/impgFlag}" select="onCheckGet2aSection($event,'impgFlag')"/>
+							<Label text="IMPG" textAlign="Left" design="Bold" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<CheckBox selected="{Get2aStauts>impgFlag}"/>
+								<VBox>
+									<ObjectStatus text="{Get2aStauts>impgStatus}" state="{= ${Get2aStauts>impgStatus} ==='Success' ?'Success':'Error'}"/>
+									<Text text="{Get2aStauts>impgTimeStamp}"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<HBox>
+							<CheckBox selected="{showing>/impgsezFlag}" select="onCheckGet2aSection($event,'impgsezFlag')"/>
+							<Label text="IMPGSEZ" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<CheckBox selected="{Get2aStauts>impgsezFlag}"/>
+								<VBox>
+									<HBox>
+										<ObjectStatus text="{Get2aStauts>impgSezStatus}" state="{= ${Get2aStauts>impgSezStatus} ==='Success' ?'Success':'Error'}"/>
+									</HBox>
+									<Text text="{Get2aStauts>impgSezTimeStamp}"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<HBox>
+							<CheckBox selected="{showing>/importFlag}" select="onCheckGet2aSection($event,'importFlag')"/>
+							<Label text="Import Amendments" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+						</HBox>
+						<ui:template>
+							<HBox>
+								<CheckBox selected="{Get2aStauts>importFlag}"/>
+								<VBox>
+									<HBox>
+										<ObjectStatus text="{Get2aStauts>amdhistStatus}" state="{= ${Get2aStauts>amdhistStatus} ==='Success' ?'Success':'Error'}"/>
+										<!--<core:Icon src="sap-icon://download" tooltip="{i18n>download}" press="onDownloadSummary"-->
+										<!--	visible="{= ${Get2aStauts>amdhistStatus} ==='Failed' ?false:true}" color="#5496cd"/>-->
+									</HBox>
+									<Text text="{Get2aStauts>amdhistTimeStamp}"/>
+								</VBox>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<!--<ui:Column width="12rem" visible="false">-->
+					<!--	<HBox justifyContent="Center" alignItems="Center" width="100%">-->
+					<!--		<CheckBox partiallySelected="{Get2aStatsProp>/isdaPartial}" selected="{Get2aStatsProp>/isdaStats}"-->
+					<!--			select="onCheckGet2aSection('isda',${$parameters>/selected})" enabled="false"/>-->
+					<!--		<Label text="{i18n>2a_isda}" design="Bold"/>-->
+					<!--	</HBox>-->
+					<!--	<ui:template>-->
+					<!--		<VBox>-->
+					<!--			<ObjectStatus text="{Get2aStauts>isdaStatus}" state="{path:'Get2aStauts>b2bStatus',formatter:'.statusFormat'}"/>-->
+					<!--			<Text text="{Get2aStauts>isdaTimeStamp}"/>-->
+					<!--		</VBox>-->
+					<!--	</ui:template>-->
+					<!--</ui:Column>-->
+				</ui:columns>
+			</ui:Table>
+		</content>
+		<endButton>
+			<Button type="Ghost" text="{i18n>close}" press="onCloseGet2aStatus"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

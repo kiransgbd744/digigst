@@ -1,0 +1,39 @@
+<core:FragmentDefinition  xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core"
+	xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:vm="sap.ui.comp.variants"
+	xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt">
+	<IconTabBar expanded="true" id="iditbTaxCredit" select="handleTaxsubSelect" class="sapUiNoContentPadding sapUiSmallMarginBottom clABC"
+		backgroundDesign="Transparent" stretchContentHeight="true" selectedKey="PRDataStatus" expandable="false">
+		<items>
+			<IconTabFilter text="Get 2A " tooltip="Get 2A " key="Get2A ">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.GETStatus" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Initiate 2A PR Matching" tooltip="Initiate 2A PR Matching" key="Initiate2APRMatching">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.MatchinggstrTwo" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Matching Status" tooltip="Matching Status" key="MatchingStatus">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.MatchingStatus" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Matching Reports" tooltip="Matching Reports" key="MatchingReports">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.ReportsgstrTwo" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Matching Response" tooltip="Matching Response" key="MatchingResponse">
+			<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.MatchingResponse" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Matching Summary" tooltip="Matching Summary" key="MatchingSummary">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.MatchingSummary" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="SR v/s 2A (TDS)" tooltip="SR v/s 2A (TDS)" key="SR2ATDS">
+		<!--	<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.MatchingResponse" type="XML"/>-->
+			</IconTabFilter>
+			<IconTabFilter text="SR v/s 2A (TCS)" tooltip="SR v/s 2A (TCS)" key="SR2ATCS">
+				<!--<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.PRDataStatus" type="XML"/>-->
+			</IconTabFilter>
+			<IconTabFilter text="ITC Reversal Reports" tooltip="ITC Reversal Reports" key="ITCReversalReports">
+				<!--<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.PRDataStatus" type="XML"/>-->
+			</IconTabFilter>
+			<IconTabFilter text="Vendor Communication" tooltip="Vendor Communication" key="VendorCommunication">
+			<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.VendorCommunication" type="XML"/>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</core:FragmentDefinition>

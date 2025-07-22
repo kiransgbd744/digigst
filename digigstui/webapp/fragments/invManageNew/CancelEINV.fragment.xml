@@ -1,0 +1,23 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:fb="sap.ui.comp.filterbar">
+	<Dialog title="Cancel E-Invoice" type="Message" class="sapUiSizeCompact">
+		<VBox>
+			<Label text="Kindly select reason code" />
+			<ComboBox id="idEINVReason" selectedKey="1" change="onComboBoxChange">
+				<core:Item key="1" text="Duplicate"/>
+				<core:Item key="2" text="Order Cancelled"/>
+				<core:Item key="3" text="Data Entry Mistake"/>
+				<core:Item key="4" text="Others"/>
+			</ComboBox>
+			<Label text="Kindly provide a remark" class="sapUiTinyMarginTop"/>
+			<Input maxLength="50" id="idEINVRemarks"/>
+			
+			<Label text="Reason &amp; remarks provided will be applicable to all selected records" class="sapUiLargeMarginTop redLabel"/>
+		</VBox>
+		<beginButton>
+			<Button id="bEINVApply" text="Submit" type="Default" press="onPressEINVCancelClose"/>
+		</beginButton>
+		<endButton>
+			<Button id="bEINVCancel" text="Close" type="Default" press="onPressEINVCancelClose"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,103 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:ui="sap.ui.table" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:commons="sap.suite.ui.commons" xmlns:u="sap.ui.unified">
+	<f:DynamicPage visible="{=${ViewProperty>/btnSegment}==='IMSGetCall'}" class="clDataStatusAPI">
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="IdimsGetCallGstin" items="{path:'userPermission>/respData/dataSecurity/gstin'}" selectionChange="selectAll">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" type="Default" press="clearImsGetCall" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+					<Button text="Filter" class="buttoncolor" press="getIMSData"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel>
+				<commons:ChartContainer id="idCcIMS" showFullScreen="false" autoAdjustHeight="false">
+					<commons:toolbar>
+						<OverflowToolbar>
+							<ToolbarSpacer/>
+							<Button text="Initiate GET IMS Invoices" class="buttoncolorSec" press="onPressGetIMSInv"/>
+							<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="{i18n>downExcel}" press="onDownloadImsGetCall"/>
+							<Button type="Transparent" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="{=!${ViewProperty>/getIMSFullScreen}}"
+								press="onGet2aFullScreen('openProcess')"/>
+							<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="{ViewProperty>/getIMSFullScreen}"
+								press="onGet2aFullScreen('closeProcess')"/>
+							<commons:ChartContainerToolbarPlaceholder/>
+						</OverflowToolbar>
+					</commons:toolbar>
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<ui:Table id="idTableIMS" rows="{path:'getIMS>/resp'}" selectionBehavior="Row" class="sapUiTinyMarginTop cl_popupCheck" fixedColumnCount="1"
+									visibleRowCount="8" rowSelectionChange="onRowSelectionChange2A">
+									<ui:columns>
+										<ui:Column hAlign="Left" width="15rem">
+											<HBox>
+												<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</HBox>
+											<ui:template>
+												<VBox>
+													<HBox>
+														<Text text="{getIMS>state}" width="8rem" class="stateColor"/>
+														<Text text="{=${getIMS>regType}==='REGULAR'?'':${getIMS>regType}}" class="stateColor fontSmall"/>
+													</HBox>
+													<HBox justifyContent="SpaceBetween" width="100%">
+														<Label text="{getIMS>gstin}"/>
+														<core:Icon src="sap-icon://circle-task-2" size="0.8rem" class="sapUiTinyMarginBegin" tooltip="{getIMS>authToken}"
+															visible="{=${getIMS>gstin}=== '' ?false:true}" color="{=${getIMS>authToken}=== 'Active' ?'#00ff00':'#ff0000'}"
+															press=" onActivateAuthToken(${getIMS>gstin},${getIMS>authToken})"/>
+													</HBox>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Left" width="15rem">
+											<HBox>
+												<Label text="Invoice Count Get Call" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+											</HBox>
+											<ui:template>
+												<VBox width="100%">
+													<ObjectStatus text="{getIMS>invCountStatus}" state="{path:'getIMS>invCountStatus', formatter:'.formatter.statusClr'}" active="false"/>
+													<Text text="{getIMS>invCountTimeStamp}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Left" width="15rem">
+											<HBox>
+												<Label text="Invoice Details Get Call" textAlign="Center" width="100%" wrapping="true" design="Bold" class="sapUiTinyMarginTop"/>
+											</HBox>
+											<ui:template>
+												<VBox width="100%">
+													<ObjectStatus text="{getIMS>invDetailsStatus}" state="{path:'getIMS>invDetailsStatus', formatter:'.formatter.statusClr'}"
+														press="onPressInvoivceGetCallStatus(${getIMS>gstin})" active="{=${getIMS>invDetailsStatus}!=='NOT INITIATED'?true:false}"/>
+													<Text text="{getIMS>invDetailsTimeStamp}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<ui:footer>
+										<HBox>
+											<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+											<Text text="Auth Token Active" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+											<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+											<Text text="Auth Token Inactive" class="sapUiTinyMarginBegin"/>
+										</HBox>
+									</ui:footer>
+								</ui:Table>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+				</commons:ChartContainer>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

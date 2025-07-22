@@ -1,0 +1,182 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:ui="sap.ui.table">
+	<ui:Table id="idgstr1Tab" rows="{path:'ComplienceHistory>/resp/'}" selectionMode="Multi" selectionBehavior="Row" visibleRowCount="20"
+		fixedColumnCount="1" rowSelectionChange="onRowSelectionChange2A" visible="false">
+		<ui:extension>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<MenuButton text="Download Report" class="buttoncolorSec">
+					<Menu itemSelected="onPressDownloadReport">
+						<MenuItem text="Summary Level" key="SL"/>
+						<MenuItem text="Transaction Level" key="TL"/>
+					</Menu>
+				</MenuButton>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column hAlign="Left" width="15rem">
+				<HBox>
+					<Label text="Entity Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<Link text="{ComplienceHistory>entityName}" press="handleLinkPressGetGSTINMain1"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center">
+				<HBox>
+					<Label text="April" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus
+							icon="{parts:[{path:'ComplienceHistory>aprilFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLIcon'}"
+							text="{parts:[{path:'ComplienceHistory>aprilFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus'}"
+							state="{parts:[{path:'ComplienceHistory>aprilFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus1'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center">
+				<HBox>
+					<Label text="May" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus
+							icon="{parts:[{path:'ComplienceHistory>mayFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLIcon'}"
+							text="{parts:[{path:'ComplienceHistory>mayFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus'}"
+							state="{parts:[{path:'ComplienceHistory>mayFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus1'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center">
+				<HBox>
+					<Label text="June" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus
+							icon="{parts:[{path:'ComplienceHistory>juneFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLIcon'}"
+							text="{parts:[{path:'ComplienceHistory>juneFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus'}"
+							state="{parts:[{path:'ComplienceHistory>juneFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus1'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center">
+				<HBox>
+					<Label text="July" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus
+							icon="{parts:[{path:'ComplienceHistory>julyFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLIcon'}"
+							text="{parts:[{path:'ComplienceHistory>julyFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus'}"
+							state="{parts:[{path:'ComplienceHistory>julyFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus1'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center">
+				<HBox>
+					<Label text="August" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus
+							icon="{parts:[{path:'ComplienceHistory>augFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLIcon'}"
+							text="{parts:[{path:'ComplienceHistory>augFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus'}"
+							state="{parts:[{path:'ComplienceHistory>augFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus1'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center">
+				<HBox>
+					<Label text="September" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus
+							icon="{parts:[{path:'ComplienceHistory>sepFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLIcon'}"
+							text="{parts:[{path:'ComplienceHistory>sepFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus'}"
+							state="{parts:[{path:'ComplienceHistory>sepFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus1'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center">
+				<HBox>
+					<Label text="October" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus
+							icon="{parts:[{path:'ComplienceHistory>octFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLIcon'}"
+							text="{parts:[{path:'ComplienceHistory>octFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus'}"
+							state="{parts:[{path:'ComplienceHistory>octFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus1'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center">
+				<HBox>
+					<Label text="November" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus
+							icon="{parts:[{path:'ComplienceHistory>novFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLIcon'}"
+							text="{parts:[{path:'ComplienceHistory>novFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus'}"
+							state="{parts:[{path:'ComplienceHistory>novFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus1'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center">
+				<HBox>
+					<Label text="December" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus
+							icon="{parts:[{path:'ComplienceHistory>decFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLIcon'}"
+							text="{parts:[{path:'ComplienceHistory>decFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus'}"
+							state="{parts:[{path:'ComplienceHistory>decFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus1'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center">
+				<HBox>
+					<Label text="January" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus
+							icon="{parts:[{path:'ComplienceHistory>janFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLIcon'}"
+							text="{parts:[{path:'ComplienceHistory>janFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus'}"
+							state="{parts:[{path:'ComplienceHistory>janFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus1'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center">
+				<HBox>
+					<Label text="February" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus
+							icon="{parts:[{path:'ComplienceHistory>febFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLIcon'}"
+							text="{parts:[{path:'ComplienceHistory>febFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus'}"
+							state="{parts:[{path:'ComplienceHistory>febFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus1'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center">
+				<HBox>
+					<Label text="March" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus
+							icon="{parts:[{path:'ComplienceHistory>marchFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLIcon'}"
+							text="{parts:[{path:'ComplienceHistory>marchFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus'}"
+							state="{parts:[{path:'ComplienceHistory>marchFiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus1'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+	</ui:Table>
+</core:FragmentDefinition>

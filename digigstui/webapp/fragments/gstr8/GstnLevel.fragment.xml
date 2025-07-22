@@ -1,0 +1,246 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table">
+	<f:DynamicPage id="dpGstr8Gstn" class="sapUiNoContentPadding sapUiNoMargin">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" class="sapUiTinyMarginEnd" tooltip="{i18>back}" press="onBackToEntity"/>
+						<Title text="GSTR - 8" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<Select items="{GstinModel>/}" width="100%" selectedKey="{HeaderModel>/gstin}">
+									<core:Item key="{GstinModel>gstin}" text="{GstinModel>gstin}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>taxPeriod}" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dGstnTaxPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy" value="{HeaderModel>/taxPeriod}"
+									maxDate="{HeaderModel>/maxDate}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" press="onGstnLevelClear" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+					<Button text="Filter" press="onGstnLevelSearch" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:TreeTable rows="{path:'GstnLevelRecord>/', parameters:{arrayNames:['items']}}" selectionMode="None" visibleRowCount="8"
+				fixedColumnCount="1">
+				<ui:extension>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button text="{i18n>deleteData}" press="onGstnDeleteData" class="buttoncolorSec" enabled="false"/>
+						<Button text="Save GSTR-8" press="onGstnSaveGstn" class=" buttoncolorSec"/>
+						<Button text="Get GSTR-8" press="onGstnGetGstr8" class="buttoncolorSec"/>
+						<Button text="{i18n>signFile}" class="buttoncolorSec" enabled="false"/>
+						<Button text="Save Status" press="onSaveStatus" class="sapUiTinyMarginEnd buttoncolorSec"/>
+						<MenuButton text="{i18n>downReport}" class="buttoncolorSec">
+							<Menu itemSelected="onDownloadReport('G',${$parameters>/item/mProperties/key})">
+								<MenuItem key="processRecords" text="Processed Records"/>
+								<MenuItem key="summaryRecords" text="Entity Level Summary Report"/>
+							</Menu>
+						</MenuButton>
+						<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="{i18n>downExcel}"/>
+						<MenuButton type="Transparent" icon="sap-icon://pdf-attachment" tooltip="{i18n>downPdf}">
+							<Menu itemSelected="onDownloadGstnPDF(${$parameters>/item/mProperties/key})">
+								<MenuItem key="digiGst" text="As per DigiGST Values"/>
+								<MenuItem key="gstn" text="As per GSTN Values"/>
+							</Menu>
+						</MenuButton>
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="14rem">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="Section" design="Bold" textAlign="Center" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{GstnLevelRecord>section}">
+								<customData>
+									<core:CustomData key="gstr8Section" value="{GstnLevelRecord>section}" writeToDom="true"/>
+								</customData>
+							</Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column headerSpan="6" hAlign="End" minWidth="180">
+						<ui:multiLabels>
+							<Label text="As Processed by DigiGST" design="Bold" textAlign="Center" width="100%"/>
+							<Label text="Gross Supplies - Made" design="Bold" textAlign="Center" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'GstnLevelRecord>aspGrossSuppliesMade', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" minWidth="200">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Gross supplies - Returned" design="Bold" textAlign="Center" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'GstnLevelRecord>aspGrossSuppliesReturned', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" minWidth="120">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Net Supplies" design="Bold" textAlign="Center" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'GstnLevelRecord>aspNetSupplies', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" minWidth="120">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="IGST" design="Bold" textAlign="Center" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'GstnLevelRecord>aspIgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" minWidth="120">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CGST" design="Bold" textAlign="Center" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'GstnLevelRecord>aspCgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" minWidth="120">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="SGST" design="Bold" textAlign="Center" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'GstnLevelRecord>aspSgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" headerSpan="6" minWidth="180">
+						<ui:multiLabels>
+							<Label text="As Available with GST Portal" design="Bold" textAlign="Center" width="100%"/>
+							<Label text="Gross Supplies - Made" design="Bold" textAlign="Center" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'GstnLevelRecord>gstnGrossSuppliesMade', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" minWidth="200">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Gross supplies - Returned" design="Bold" textAlign="Center" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'GstnLevelRecord>gstnGrossSuppliesReturned', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" minWidth="120">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Net Supplies" design="Bold" textAlign="Center" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'GstnLevelRecord>gstnNetSupplies', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" minWidth="120">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="IGST" design="Bold" textAlign="Center" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'GstnLevelRecord>gstnIgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" minWidth="120">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CGST" design="Bold" textAlign="Center" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'GstnLevelRecord>gstnCgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" minWidth="120">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="SGST" design="Bold" textAlign="Center" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'GstnLevelRecord>gstnSgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" headerSpan="6" minWidth="180">
+						<ui:multiLabels>
+							<Label text="Difference" design="Bold" textAlign="Center" width="100%"/>
+							<Label text="Gross Supplies - Made" design="Bold" textAlign="Center" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'GstnLevelRecord>diffGrossSuppliesMade', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" minWidth="200">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Gross supplies - Returned" design="Bold" textAlign="Center" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'GstnLevelRecord>diffGrossSuppliesReturned', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" minWidth="120">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Net Supplies" design="Bold" textAlign="Center" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'GstnLevelRecord>diffNetSupplies', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" minWidth="120">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="IGST" design="Bold" textAlign="Center" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'GstnLevelRecord>diffIgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" minWidth="120">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="CGST" design="Bold" textAlign="Center" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'GstnLevelRecord>diffCgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End" minWidth="120">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="SGST" design="Bold" textAlign="Center" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'GstnLevelRecord>diffSgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:TreeTable>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

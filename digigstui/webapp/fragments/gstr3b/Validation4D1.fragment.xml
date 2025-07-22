@@ -1,0 +1,46 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.ui.layout.form">
+	<Dialog title="Table 4D1 ITC Reclaim Validation" type="Message" draggable="true" contentWidth="70%" class="sapUiSizeCompact">
+		<ScrollContainer horizontal="false" vertical="true" height="12rem">
+			<Table items="{validation4D1>/resp}" mode="None" sticky="ColumnHeaders" noDataText="No Products" class="sapUiNoContentPadding">
+				<columns>
+					<Column hAlign="Left" width="30rem">
+						<Label text="Particulars" design="Bold"/>
+					</Column>
+					<Column hAlign="End" width="8rem">
+						<Label text="Integrated Tax" design="Bold"/>
+					</Column>
+					<Column hAlign="End" width="8rem">
+						<Label text="Central Tax" design="Bold"/>
+					</Column>
+					<Column hAlign="End" width="8rem">
+						<Label text="State/UT Tax" design="Bold"/>
+					</Column>
+					<Column hAlign="End" width="8rem">
+						<Label text="Cess" design="Bold"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem vAlign="Middle">
+						<cells>
+							<HBox>
+								<Text text="{path:'validation4D1>sectionName', formatter:'.formatter.validation4D1'}" textAlign='Left' wrapping="true"/>
+								<Button icon="sap-icon://refresh" type="Transparent" press="onPressRefresh4D1" visible="{=${validation4D1>sectionName} ==='GET_4D1(A)'}" class="sapUiTinyMarginBeginEnd"/>
+								<Label text="{validation4D1>timeStamp}" visible="{=${validation4D1>sectionName} ==='GET_4D1(A)'}" />
+							</HBox>
+							<Text text="{validation4D1>igst}" wrapping="false"/>
+							<Text text="{validation4D1>cgst}" wrapping="false"/>
+							<Text text="{validation4D1>sgst}" wrapping="false"/>
+							<Text text="{validation4D1>cess}" wrapping="false"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</ScrollContainer>
+		<beginButton>
+		<Button text="Save" press="onPressValidateClose('S')"/>
+		</beginButton>
+		<endButton>
+			<Button text="Cancel" press="onPressValidateClose('C')"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

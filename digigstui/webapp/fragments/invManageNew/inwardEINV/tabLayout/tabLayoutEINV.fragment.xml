@@ -1,0 +1,203 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table" xmlns:form="sap.ui.layout.form">
+	<VBox id="tabLayout" class="cltabLayout" visible="{=${Property>/displayTab} ==='TabLayout'}">
+		<l:BlockLayout background="Dashboard">
+			<l:BlockLayoutRow class="sapUiNoContentPadding">
+				<l:BlockLayoutCell class="clBlockLayout1" width="2">
+					<Toolbar class="colorToolbar">
+						<Label text="Document Details" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+					</Toolbar>
+					<l:Grid defaultSpan="L3" hSpacing="1" vSpacing="1" class="sapUiTinyMarginTop">
+						<VBox>
+							<Label text="Supplier GSTIN" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/supplierGSTIN}"/>
+						</VBox>
+						<VBox>
+							<Label text="Recipient GSTIN" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/customerGSTIN}"/>
+						</VBox>
+						<VBox>
+							<Label text="Document Type" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/documentType}"/>
+						</VBox>
+						<VBox>
+							<Label text="Document Number" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/documentNumber}"/>
+						</VBox>
+						<VBox>
+							<Label text="Document Date" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/documentDate}"/>
+						</VBox>
+						<VBox>
+							<Label text="Tax Scheme" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/taxScheme}"/>
+						</VBox>
+						<VBox>
+							<Label text="Supply Type" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/supplyType}"/>
+						</VBox>
+						<VBox>
+							<Label text="Reverse Charge Flag" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/reverseChargeFlag}"/>
+						</VBox>
+						<VBox>
+							<Label text="Ecom GSTIN" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/ecomGSTIN}"/>
+						</VBox>
+						<VBox>
+							<Label text="Section 7 Of IGST Flag" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/section7OfIGSTFlag}"/>
+						</VBox>
+						<VBox>
+							<Label text="Billing POS" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/billingPOS}"/>
+						</VBox>
+						<VBox>
+							<Label text="Invoice Remarks" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/invoiceRemarks}"/>
+						</VBox>
+						<VBox>
+							<Label text="Invoice Period Start Date" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/invoicePeriodStartDate}"/>
+						</VBox>
+						<VBox>
+							<Label text="Invoice Period End Date" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/invoicePeriodEndDate}"/>
+						</VBox>
+					</l:Grid>
+				</l:BlockLayoutCell>
+				<l:BlockLayoutCell class="clBlockLayout1" width="2">
+					<Toolbar class="colorToolbar">
+						<Label text="IRN Details" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+					</Toolbar>
+					<l:Grid defaultSpan="L3" hSpacing="1" vSpacing="1" class="sapUiTinyMarginTop">
+						<VBox>
+							<Label text="IRN Number" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/iRNNumber}"/>
+						</VBox>
+						<VBox>
+							<Label text="IRN Date" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/iRNDate}"/>
+						</VBox>
+						<VBox>
+							<Label text="IRN Generation Period" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/iRNGenerationPeriod}"/>
+						</VBox>
+						<VBox>
+							<Label text="Acknowledgement Number" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/acknowledgmentNumber}"/>
+						</VBox>
+						<VBox>
+							<Label text="IRN status" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/iRNStatus}"/>
+						</VBox>
+						<VBox>
+							<Label text="IRN Cancellation Date" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/iRNCancellationDate}"/>
+						</VBox>
+						<VBox>
+							<Label text="Cancellation Reason" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/cancellationReason}"/>
+						</VBox>
+						<VBox>
+							<Label text="Cancellation Remarks" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/cancellationRemarks}"/>
+						</VBox>
+						<VBox>
+							<Label text="IRN Get Call Date Time" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/iRNGetCallDateTime}"/>
+						</VBox>
+						<VBox>
+							<Label text="IRP Name" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/irpName}"/>
+						</VBox>
+					</l:Grid>
+				</l:BlockLayoutCell>
+			</l:BlockLayoutRow>
+			<l:BlockLayoutRow class="sapUiNoContentPadding">
+				<l:BlockLayoutCell class="clBlockLayout1" width="2">
+					<Toolbar class="colorToolbar">
+						<Label text="Value Details" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+					</Toolbar>
+					<l:Grid defaultSpan="L2" hSpacing="1" vSpacing="1" class="sapUiTinyMarginTop">
+						<VBox>
+							<Label text="Invoice Assessable Amount" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/invoiceAssessableAmount}"/>
+						</VBox>
+						<VBox>
+							<Label text="Invoice IGST Amount" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/invoiceIGSTAmount}"/>
+						</VBox>
+						<VBox>
+							<Label text="Invoice CGST Amount" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/invoiceCGSTAmount}"/>
+						</VBox>
+						<VBox>
+							<Label text="Invoice SGST Amount" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/invoiceSGSTAmount}"/>
+						</VBox>
+						<VBox>
+							<Label text="Invoice Cess Amount" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/invoiceCessAdvaloremAmount}"/>
+						</VBox>
+						<VBox>
+							<Label text="Invoice State Cess Amount" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/invoiceStateCessAdvaloremAmount}"/>
+						</VBox>
+						<VBox>
+							<Label text="Invoice Discount" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/invoiceDiscount}"/>
+						</VBox>
+						<VBox>
+							<Label text="Invoice Other Charges" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/invoiceOtherCharges}"/>
+						</VBox>
+						<VBox>
+							<Label text="Round Off" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/roundOff}"/>
+						</VBox>
+						<VBox>
+							<Label text="Invoice Value" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/invoiceValue}"/>
+						</VBox>
+						<VBox>
+							<Label text="Invoice Value FC" class=" titleFontEinv" design="Bold"/>
+							<Text text="{EInvMgmtDetail>/0/invoiceValueFC}"/>
+						</VBox>
+					</l:Grid>
+				</l:BlockLayoutCell>
+			</l:BlockLayoutRow>
+		</l:BlockLayout>
+		<l:BlockLayout background="Dashboard">
+			<l:BlockLayoutRow class="sapUiNoContentPadding">
+				<l:BlockLayoutCell class="clBlockLayout1">
+					<VBox>
+						<IconTabBar expanded="true" id="iditbTablayout" select="handleIconTabBarSelectINV" class="sapUiNoContentPadding sapUiSmallMarginBottom"
+							backgroundDesign="Transparent" stretchContentHeight="false" selectedKey="DDLine" expandable="false">
+							<items>
+								<IconTabFilter text="Item Level Details" tooltip="Item Level Details" key="DDLine">
+									<core:Fragment fragmentName="com.ey.digigst.fragments.invManageNew.inwardEINV.tabLayout.DDLine" type="XML"/>
+								</IconTabFilter>
+								<IconTabFilter text="Party Details" tooltip="Party Details" key="PartyDetails">
+									<core:Fragment fragmentName="com.ey.digigst.fragments.invManageNew.inwardEINV.tabLayout.PartyDetails" type="XML"/>
+								</IconTabFilter>
+								<IconTabFilter text="Preceding Doc &amp; Other Details" tooltip="Preceding Doc &amp; Other Details" key="PrecedingDetails">
+									<core:Fragment fragmentName="com.ey.digigst.fragments.invManageNew.inwardEINV.tabLayout.PrecedingDetails" type="XML"/>
+								</IconTabFilter>
+								<IconTabFilter text="Transport Details" tooltip="Transport Details" key="TransportDetails">
+									<core:Fragment fragmentName="com.ey.digigst.fragments.invManageNew.inwardEINV.tabLayout.TransportDetails" type="XML"/>
+								</IconTabFilter>
+								<IconTabFilter text="Payment Details" tooltip="Payment Details" key="PaymentDetails">
+									<core:Fragment fragmentName="com.ey.digigst.fragments.invManageNew.inwardEINV.tabLayout.PaymentDetails" type="XML"/>
+								</IconTabFilter>
+								<IconTabFilter text="Export Details" tooltip="Export Details" key="ExportDetails">
+									<core:Fragment fragmentName="com.ey.digigst.fragments.invManageNew.inwardEINV.tabLayout.ExportDetails" type="XML"/>
+								</IconTabFilter>
+							</items>
+						</IconTabBar>
+					</VBox>
+				</l:BlockLayoutCell>
+			</l:BlockLayoutRow>
+		</l:BlockLayout>
+	</VBox>
+</core:FragmentDefinition>

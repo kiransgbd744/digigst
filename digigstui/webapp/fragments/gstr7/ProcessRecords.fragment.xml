@@ -1,0 +1,187 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table">
+	<f:DynamicPage id="dpGstr7ProcessRecord" class="sapUiNoContentPadding sapUiNoMargin" visible="true">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="GSTR - 7 (Summary)" titleStyle="H3"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar id="fbProcessRecord" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idPGstin" width="100%" items="{path:'allTDSGstin>/'}" selectionChange="selectAll">
+									<core:Item key="{allTDSGstin>value}" text="{allTDSGstin>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>taxPeriod}" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="idPtaxPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" id="fbProcessHbox" width="10%">
+					<!--<Button id="bProcessFilter" icon="sap-icon://filter" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilter"/>-->
+					<Button id="bProcessClear" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onPressClear"/>
+					<Button id="bProcessGo" text="Filter" class="buttoncolor" press="onSearch"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table id="tabGstr7Process" rows="{ProcessedRecord>/}" selectionMode="MultiToggle" visibleRowCount="8" fixedColumnCount="1"
+				rowSelectionChange="onRowSelectionChange" class="sapUiSmallMarginTop">
+				<ui:extension>
+					<OverflowToolbar height="3.2rem">
+						<!--<Label text="{i18n>fileNilReturn}" class="sapUiTinyMarginBegin idlabelclassgstr1 classgstr11"/>
+						<Button type="Emphasized" text="Yes" press="onPressInyesgstr1" class="sapUiTinyMarginEnd" enabled="false"/>-->
+						<ToolbarSpacer/>
+						<VBox>
+							<Text text=""/>
+							<HBox>
+								<Button id="processupdategstn" text="{i18n>updataGstnData}" enabled="{= ${userPermission>/appPermission/P6}}"
+									press="onUpdateGstnDataProcess" class="sapUiTinyMarginEnd buttoncolorSec"/>
+								<Button text="{i18n>gstr7detail}" class="sapUiTinyMarginEnd buttoncolorSec" press="onPressGstr1GetDetails('P')" enabled="false"
+									visible="false"/>
+								<Button text="{i18n>onlineErrorCorr}" class="sapUiTinyMarginEnd buttoncolorSec" press="onPressErrorCorrection('P')" enabled="false"
+									visible="false"/>
+								<!--<Button type="Accept" id="bSaveStatus" text="Save Status" press="onPressSaveGstn" enabled="false"/>-->
+								<MenuButton text="{i18n>downReport}" class="sapUiTinyMarginEnd buttoncolorSec" enabled="{= ${userPermission>/appPermission/P6}}">
+									<Menu id="bDownloadRpt" itemSelected="onPressDownloadReport($event,${$parameters>/item},'P')">
+										<MenuItem key="gstr7AsUploaded" text="{i18n>aspUploaded}"/>
+										<MenuItem key="gstr7AspError" text="{i18n>aspError}"/>
+										<MenuItem key="gstr7GstnError" text="{i18n>gstnError}"/>
+										<!--Code added by Arun on 11/11/2021-->
+										<MenuItem key="gstr7Entity" text="{i18n>Entity}"/>
+										<!--Code End by Arun on 11/11/2021-->
+									</Menu>
+								</MenuButton>
+								<Button id="bApprovalRequest" text="{i18n>requestApproval}" press="onPressApprovalRequest" class="sapUiTinyMarginEnd buttoncolorSec"
+									enabled="false"/>
+								<Button id="bDeleteGstn" text="{i18n>deleteData}" press="onPressDeleteData" class="sapUiTinyMarginEnd buttoncolorSec" enabled="false"/>
+							</HBox>
+						</VBox>
+						<VBox>
+							<HBox>
+								<ObjectStatus id="tProSave" state="Warning"/>
+								<Text text=""/>
+							</HBox>
+							<HBox>
+								<Button id="bSaveToGstn" text="{i18n>saveGstn}" press="onPressSaveGstn" enabled="{= ${userPermission>/appPermission/P6}}"
+									class="sapUiTinyMarginEnd buttoncolorSec"/>
+							</HBox>
+						</VBox>
+						<VBox>
+							<Text text=""/>
+							<HBox>
+								<Button text="{i18n>submit}" press="onPressSubmit('P')" class="sapUiTinyMarginEnd buttoncolorSec" enabled="false"/>
+								<Button text="{i18n>signFile}" class="sapUiTinyMarginEnd buttoncolorSec" enabled="false"/>
+								<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="{i18n>downExcel}" class="sapUiTinyMarginEnd"
+									press="onExportExcel('P')" enabled="{= ${userPermission>/appPermission/P6}}"/>
+								<MenuButton icon="sap-icon://pdf-attachment" type="Transparent" enabled="{= ${userPermission>/appPermission/P6}}" class="cl_dropgstr1"
+									tooltip="{i18n>downPdf}">
+									<Menu>
+										<MenuItem text="As per DigiGST Values" key="delete1" press="onDownloadEntityPDF(true)"/>
+										<MenuItem text="As per GSTN Values" key="delete2" press="onDownloadEntityPDF(false)"/>
+									</Menu>
+								</MenuButton>
+								<!--<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="{i18n>downPdf}" press="onPressDownloadPdf('P')"-->
+								<!--	class="sapUiTinyMarginEnd" enabled="{= ${userPermission>/appPermission/P6}}"/>-->
+							</HBox>
+						</VBox>
+					</OverflowToolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="14rem">
+						<Label text="{i18n>gstin}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<VBox>
+								<HBox>
+									<Text text="{ProcessedRecord>state}" width="8rem" class="stateColor"/>
+									<Text text="{ProcessedRecord>regType}" class="stateColor fontSmall"/>
+								</HBox>
+								<HBox alignContent="Start" justifyContent="SpaceBetween">
+									<Link text="{ProcessedRecord>gstin}" emphasized="true" press="onPressGstr1Summary"/>
+									<core:Icon src="sap-icon://circle-task-2" visible="{=${ProcessedRecord>state}===''?false:true}" size="0.8rem"
+										tooltip="{ProcessedRecord>authToken}" color="{=${ProcessedRecord>authToken}==='Active'?'#00ff00':'#ff0000'}"
+										press="onActivateAuthToken(${ProcessedRecord>gstin},${ProcessedRecord>authToken})"/>
+								</HBox>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column >
+						<Label text="{i18n>saveStatus}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<VBox width="100%">
+								<ObjectStatus text="{ProcessedRecord>saveStatus}" active="{=${ProcessedRecord>saveStatus}!=='NOT INITIATED'?true:false}"
+									state="{path:'ProcessedRecord>saveStatus', formatter:'.formatter.statusClr'}" press="onPressSaveStatus($event,'P')"/>
+								<Text text="{ProcessedRecord>saveDateTime}" class="timeStmpClr"/>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<!--
+					<ui:Column >
+						<Label text="{i18n>filingStatus}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<VBox width="100%">
+								<ObjectStatus text="{ProcessedRecord>fileStatus}" active="{=${ProcessedRecord>fileStatus}!=='NOT INITIATED'?true:false}"
+									state="{path:'ProcessedRecord>fileStatus', formatter:'.formatter.statusClr'}" press="onPressSaveStatus($event,'P')"/>
+								<Text text="{ProcessedRecord>fileDateTime}" class="timeStmpClr"/>
+							</VBox>
+						</ui:template>
+					</ui:Column>-->
+					<ui:Column hAlign="End">
+						<Label text="{i18n>count}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>count}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="{i18n>totalAmount}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>totalAmount', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="{i18n>igst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>igst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="{i18n>cgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>cgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="{i18n>sgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>sgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<Label text="Difference" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<core:Icon src="sap-icon://show" size="1.5rem" tooltip="View Differential Data" color="#000000" press="onPressDifference" class="clsIcon"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+				<ui:footer>
+					<HBox>
+						<core:Icon src="sap-icon://circle-task-2" ariaLabelledBy="txtActive" color="#00ff00" size="0.8rem"/>
+						<Text id="txtActive" text="Auth Token Active" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+						<core:Icon src="sap-icon://circle-task-2" ariaLabelledBy="txtInactive" color="red" size="0.8rem"/>
+						<Text id="txtInactive" text="Auth Token Inactive" class="sapUiTinyMarginBegin"/>
+					</HBox>
+				</ui:footer>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

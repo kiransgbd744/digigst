@@ -1,0 +1,488 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.InwardSAC"
+	xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data" xmlns:viz="sap.viz.ui5.controls"
+	xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" height="100%" busyIndicatorDelay="0">
+	<Page id="idPageInward" class="ReconResponce">
+		<customHeader>
+			<Bar class="header colorToolbar">
+				<contentLeft>
+					<MenuButton id="idDimension" text="{i18n>rupeesIn} {i18n>K}" width="13rem" class="sapUiTinyMarginBegin buttoncolorSec">
+						<Menu itemSelected="onDinomChange" items="{oDinomtion>/}" id="idDimensionMenu">
+							<MenuItem key="{oDinomtion>Key}" text="{oDinomtion>Value}"/>
+						</Menu>
+					</MenuButton>
+				</contentLeft>
+				<contentMiddle>
+					<Title class="title sapUiSmallMarginEnd" text="Inward Supply - 1"/>
+					<Button icon="sap-icon://navigation-left-arrow" enabled="false"></Button>
+					<Title text="1/2"></Title>
+					<Button icon="sap-icon://navigation-right-arrow" press="onPressNextPage"></Button>
+				</contentMiddle>
+				<contentRight>
+					<Label text="Last Updated On :" class="sapUiTinyMarginEnd" design="Bold"></Label>
+					<Text text="{getLastUpdatedOn>/lastUpdatedOn/0/lastUpdatedOn}"></Text>
+				</contentRight>
+			</Bar>
+		</customHeader>
+		<content>
+			<l:VerticalLayout width="100%">
+				<l:BlockLayout background="Dashboard" class="cl_Contentpading">
+					<l:BlockLayoutRow accentCells="Accent1">
+						<l:BlockLayoutCell width="1" class=" cl_Blockout cl_blockBg">
+							<Panel>
+								<VBox alignContent="Center" alignItems="Center" class="sapUiTinyMarginTop">
+									<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTotalLiabDetailsModel>/totalItc' }], formatter : '.formatter.Denomination'}"
+										class="cl_textNumber sapUiTinyMarginTop"/>
+									<Label text="Total ITC" design="Bold"/>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell width="1" class=" cl_Blockout cl_blockBg">
+							<VBox>
+								<Toolbar class="cl_borderBOTTOM" height="3.2rem">
+									<ToolbarSpacer/>
+									<VBox alignContent="Center" alignItems="Center" class="sapUiSmallMarginTop">
+										<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTotalLiabDetailsModel>/inputGoods' }], formatter : '.formatter.Denomination'}"
+											class="cl_textNumber"/>
+										<Label text="Input Goods" design="Bold"/>
+									</VBox>
+									<ToolbarSpacer/>
+								</Toolbar>
+								<Toolbar class="cl_borderBOTTOM" height="3rem">
+									<ToolbarSpacer/>
+									<VBox alignContent="Center" alignItems="Center">
+										<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTotalLiabDetailsModel>/capitalGoods' }], formatter : '.formatter.Denomination'}"
+											class="cl_textNumber"/>
+										<Label text="Capital Goods" design="Bold"/>
+									</VBox>
+									<ToolbarSpacer/>
+								</Toolbar>
+							</VBox>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell width="1" class=" cl_Blockout cl_blockBg">
+							<Toolbar class="cl_borderBOTTOM" height="3.2rem">
+								<ToolbarSpacer/>
+								<VBox alignContent="Center" alignItems="Center" class="sapUiSmallMarginTop">
+									<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTotalLiabDetailsModel>/inputServices' }], formatter : '.formatter.Denomination'}"
+										class="cl_textNumber"/>
+									<Label text="Input Service" design="Bold"/>
+								</VBox>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_borderBOTTOM" height="3rem">
+								<ToolbarSpacer/>
+								<VBox alignContent="Center" alignItems="Center">
+									<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTotalLiabDetailsModel>/inEligibility' }], formatter : '.formatter.Denomination'}"
+										class="cl_textNumber"/>
+									<Label text="Ineligibility" design="Bold"/>
+								</VBox>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="cl_Blockout cl_blockBg">
+							<Panel class="cl_toolbarstate">
+								<VBox>
+									<Label text="Financial Year" class="cl_lebsta" design="Bold"/>
+									<Select id="idFinance" items="{oFyModel>/finYears}" selectedKey="{GloblePayloadInward>/fy}" width="100%" change="onFyChange"
+										class="sapUiSmallMarginTop">
+										<core:Item key="{oFyModel>fy}" text="{oFyModel>fy}"/>
+									</Select>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="cl_Blockout cl_blockBg">
+							<Panel>
+								<VBox>
+									<Label text="Recipient GSTIN" design="Bold"/>
+									<MultiComboBox id="idSupplier" items="{oGstinModel>/gstins}" selectedKeys="{GloblePayloadInward>/gstin}" width="100%"
+										showSecondaryValues="true" selectionChange="selectAll" class="sapUiSmallMarginTop">
+										<core:Item key="{oGstinModel>gstin}" text="{oGstinModel>gstin} {=!${oGstinModel>stateName}?'':'-'} {oGstinModel>stateName}"/>
+									</MultiComboBox>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="cl_Blockout cl_blockBg">
+							<Panel>
+								<VBox>
+									<Label text="Return Period" design="Bold"/>
+									<MultiComboBox id="idReturn" items="{oRetPeriodModel>/returnPeriods}" class="sapUiSmallMarginTop" width="100%" selectionChange="selectAll">
+										<core:Item key="{oRetPeriodModel>fy}" text="{oRetPeriodModel>fy}"/>
+									</MultiComboBox>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+				<Toolbar class="cl_borderBOTTOM">
+					<ToolbarSpacer></ToolbarSpacer>
+					<Button text="Filter" class="sapUiSmallMarginEnd buttoncolor" press="onGoSelect"></Button>
+				</Toolbar>
+				<l:BlockLayout class="cl_Contentpading">
+					<l:BlockLayoutRow accentCells="Accent1">
+						<l:BlockLayoutCell width="3">
+							<Panel class="sapUiNoContentPadding" visible="true">
+								<Toolbar class="cl_borderBOTTOM sapUiTinyMargin">
+									<Switch id="switchId" state="false" change="onSwitch">
+										<layoutData>
+											<FlexItemData growFactor="1"/>
+										</layoutData>
+									</Switch>
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Gross Inward Supplies" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+									<core:Icon src="sap-icon://download" press="onDownloadGross"></core:Icon>
+									<!--<Button icon="sap-icon://download" press="onDownloadGross"></Button>-->
+								</Toolbar>
+								<viz:Popover id="idPopOver"></viz:Popover>
+								<viz:VizFrame id="id_iddonut" xmlns="sap.viz" vizType="donut" class="cl_vizHeigDonut" uiConfig="{applicationSet:'fiori'}">
+									<viz:dataset>
+										<viz.data:FlattenedDataset data="{oGrossModel>/grossInward}">
+											<viz.data:dimensions>
+												<viz.data:DimensionDefinition id="xaxisId" name="Transaction Type" value="{oGrossModel>xAxis}"/>
+											</viz.data:dimensions>
+											<viz.data:measures>
+												<viz.data:MeasureDefinition name="Invoice Value" value="{oGrossModel>yAxis}"/>
+											</viz.data:measures>
+										</viz.data:FlattenedDataset>
+									</viz:dataset>
+									<viz:feeds>
+										<viz.feeds:FeedItem uid="size" type="Measure" values="Invoice Value"/>
+										<viz.feeds:FeedItem uid="color" type="Dimension" values="Transaction Type"/>
+									</viz:feeds>
+								</viz:VizFrame>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell width="3">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Month Wise Trend Analysis" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+									<core:Icon src="sap-icon://download" press="onDownloadMonth"></core:Icon>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTop">
+									<RadioButtonGroup id="idRdValue" selectedIndex="0" select="onSelectTrendValue" columns="4" class="sapUiTinyMarginBegin sapUiSmallMarginEnd">
+										<RadioButton text="Invoice Value"/>
+										<RadioButton text="Taxable Value"/>
+										<RadioButton text="Tax Amount"/>
+										<RadioButton text="Credit Available"/>
+									</RadioButtonGroup>
+									<!--<VBox class="sapUiTinyMarginBegin" visible="false">-->
+									<!--	<CheckBox text="{path:'oRetPeriodModel1>/returnPeriods/1/fy', formatter:'.formatter.Monthaxis'}" selected="{oRetPeriodModel1>/returnPeriods/1/select}" -->
+									<!--			visible="{path:'oRetPeriodModel1>/returnPeriods/1/fy', formatter:'.formatter.MonthCheckBox'}" select="MonthCheckSelect"/>-->
+									<!--	<CheckBox text="{path:'oRetPeriodModel1>/returnPeriods/2/fy', formatter:'.formatter.Monthaxis'}"  select="MonthCheckSelect"-->
+									<!--			visible="{path:'oRetPeriodModel1>/returnPeriods/2/fy', formatter:'.formatter.MonthCheckBox'}" selected="{oRetPeriodModel1>/returnPeriods/2/select}" />-->
+									<!--	<CheckBox text="{path:'oRetPeriodModel1>/returnPeriods/3/fy', formatter:'.formatter.Monthaxis'}" selected="{oRetPeriodModel1>/returnPeriods/3/select}" -->
+									<!--			visible="{path:'oRetPeriodModel1>/returnPeriods/3/fy', formatter:'.formatter.MonthCheckBox'}"  select="MonthCheckSelect"/>-->
+									<!--</VBox>-->
+									<!--<VBox class="sapUiTinyMarginBegin" visible="false">-->
+									<!--	<CheckBox text="{path:'oRetPeriodModel1>/returnPeriods/4/fy', formatter:'.formatter.Monthaxis'}" selected="{oRetPeriodModel1>/returnPeriods/4/select}" -->
+									<!--			visible="{path:'oRetPeriodModel1>/returnPeriods/4/fy', formatter:'.formatter.MonthCheckBox'}" select="MonthCheckSelect"/>-->
+									<!--	<CheckBox text="{path:'oRetPeriodModel1>/returnPeriods/5/fy', formatter:'.formatter.Monthaxis'}" selected="{oRetPeriodModel1>/returnPeriods/5/select}" -->
+									<!--				visible="{path:'oRetPeriodModel1>/returnPeriods/5/fy', formatter:'.formatter.MonthCheckBox'}" select="MonthCheckSelect"/>-->
+									<!--	<CheckBox text="{path:'oRetPeriodModel1>/returnPeriods/6/fy', formatter:'.formatter.Monthaxis'}" selected="{oRetPeriodModel1>/returnPeriods/6/select}"-->
+									<!--				visible="{path:'oRetPeriodModel1>/returnPeriods/6/fy', formatter:'.formatter.MonthCheckBox'}" select="MonthCheckSelect"/>-->
+									<!--</VBox>-->
+									<!--<VBox class="sapUiTinyMarginBegin" visible="false">-->
+									<!--	<CheckBox text="{path:'oRetPeriodModel1>/returnPeriods/7/fy', formatter:'.formatter.Monthaxis'}" selected="{oRetPeriodModel1>/returnPeriods/7/select}" -->
+									<!--				visible="{path:'oRetPeriodModel1>/returnPeriods/7/fy', formatter:'.formatter.MonthCheckBox'}" select="MonthCheckSelect"/>-->
+									<!--	<CheckBox text="{path:'oRetPeriodModel1>/returnPeriods/8/fy', formatter:'.formatter.Monthaxis'}" selected="{oRetPeriodModel1>/returnPeriods/8/select}" -->
+									<!--			visible="{path:'oRetPeriodModel1>/returnPeriods/8/fy', formatter:'.formatter.MonthCheckBox'}" select="MonthCheckSelect"/>-->
+									<!--	<CheckBox text="{path:'oRetPeriodModel1>/returnPeriods/9/fy', formatter:'.formatter.Monthaxis'}" selected="{oRetPeriodModel1>/returnPeriods/9/select}" -->
+									<!--			visible="{path:'oRetPeriodModel1>/returnPeriods/9/fy', formatter:'.formatter.MonthCheckBox'}" select="MonthCheckSelect"/>-->
+									<!--</VBox>-->
+									<!--<VBox class="sapUiTinyMarginBegin" visible="false">-->
+									<!--	<CheckBox text="{path:'oRetPeriodModel1>/returnPeriods/10/fy', formatter:'.formatter.Monthaxis'}" selected="{oRetPeriodModel1>/returnPeriods/10/select}"-->
+									<!--		visible="{path:'oRetPeriodModel1>/returnPeriods/10/fy', formatter:'.formatter.MonthCheckBox'}" select="MonthCheckSelect"/>-->
+									<!--	<CheckBox text="{path:'oRetPeriodModel1>/returnPeriods/11/fy', formatter:'.formatter.Monthaxis'}" selected="{oRetPeriodModel1>/returnPeriods/11/select}" -->
+									<!--		visible="{path:'oRetPeriodModel1>/returnPeriods/11/fy', formatter:'.formatter.MonthCheckBox'}" select="MonthCheckSelect"/>-->
+									<!--	<CheckBox text="{path:'oRetPeriodModel1>/returnPeriods/12/fy', formatter:'.formatter.Monthaxis'}" selected="{oRetPeriodModel1>/returnPeriods/12/select}" -->
+									<!--		visible="{path:'oRetPeriodModel1>/returnPeriods/12/fy', formatter:'.formatter.MonthCheckBox'}" select="MonthCheckSelect"/>-->
+									<!--</VBox>-->
+									<!--<VBox class="sapUiTinyMarginBegin" visible="false">-->
+									<!--	<CheckBox text="{oRetPeriodModel1>/returnPeriods/0/fy}" selected="{oRetPeriodModel1>/returnPeriods/0/select}" -->
+									<!--				visible="{path:'oRetPeriodModel1>/returnPeriods/0/fy', formatter:'.formatter.MonthCheckBox'}" select="MonthCheckSelectAll"/>-->
+									<!--</VBox>-->
+								</HBox>
+								<viz:Popover id="idPopOver1"></viz:Popover>
+								<viz:VizFrame id="vfBiDashLine" xmlns="sap.viz" vizType="line" class="cl_vizHeig2 sapUiTinyMarginTop" uiConfig="{applicationSet:'fiori'}">
+									<viz:dataset>
+										<viz.data:FlattenedDataset data="{oMonthTrendModel>/monthWiseAnalysis}">
+											<viz.data:dimensions>
+												<viz.data:DimensionDefinition name="Month" value="{path:'oMonthTrendModel>xAxis', formatter:'.formatter.Monthaxis'}"/>
+											</viz.data:dimensions>
+											<viz.data:measures>
+												<viz.data:MeasureDefinition name="Invoice Value" value="{oMonthTrendModel>yAxis}"/>
+												<viz.data:MeasureDefinition name="Taxable Value" value="{oMonthTrendModel>yAxis}"/>
+												<viz.data:MeasureDefinition name="Tax Amount" value="{oMonthTrendModel>yAxis}"/>
+												<viz.data:MeasureDefinition name="Credit Available" value=" {oMonthTrendModel>yAxis}"/>
+											</viz.data:measures>
+										</viz.data:FlattenedDataset>
+									</viz:dataset>
+									<viz:feeds>
+										<viz.feeds:FeedItem id='valueAxisFeed12' uid="valueAxis" type="Measure" values="Invoice Value"/>
+										<viz.feeds:FeedItem id='categoryAxisFeed1' uid="categoryAxis" type="Dimension" values="Month"/>
+									</viz:feeds>
+								</viz:VizFrame>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell width="2">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Top B2B Suppliers" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+									<core:Icon src="sap-icon://download" press="onDownloadTopCustomer"></core:Icon>
+								</Toolbar>
+								<viz:Popover id="idPopOver2"></viz:Popover>
+								<viz:VizFrame id="idVizFrameBar" uiConfig="{applicationSet:'fiori'}" vizType='bar' class="cl_vizHeig1">
+									<viz:dataset>
+										<viz.data:FlattenedDataset data="{oTopCustB2BModel>/topCustomers}">
+											<viz.data:dimensions>
+												<viz.data:DimensionDefinition name="GSTIN" value="{oTopCustB2BModel>xAxis}"/>
+											</viz.data:dimensions>
+											<viz.data:measures>
+												<viz.data:MeasureDefinition name="Invoice Value" value="{oTopCustB2BModel>yAxis}"/>
+											</viz.data:measures>
+										</viz.data:FlattenedDataset>
+									</viz:dataset>
+									<viz:feeds>
+										<viz.feeds:FeedItem id='valueAxisFeed' uid="valueAxis" type="Measure" values="Invoice Value"/>
+										<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="GSTIN"/>
+									</viz:feeds>
+								</viz:VizFrame>
+							</Panel>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+					<l:BlockLayoutRow accentCells="Accent1">
+						<l:BlockLayoutCell width="2">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Major Goods/Services Procured" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+									<core:Icon src="sap-icon://download" press="onDownloadMajorTax"></core:Icon>
+								</Toolbar>
+								<viz:Popover id="idPopOver3"></viz:Popover>
+								<viz:VizFrame id="idVizFrameBar1" uiConfig="{applicationSet:'fiori'}" vizType='bar' class="cl_vizHeig1">
+									<viz:dataset>
+										<viz.data:FlattenedDataset data="{oMajorTaxModel>/majTaxPayingProds}">
+											<viz.data:dimensions>
+												<viz.data:DimensionDefinition name="HSN/SAC Number" value="{oMajorTaxModel>xAxis}"/>
+											</viz.data:dimensions>
+											<viz.data:measures>
+												<viz.data:MeasureDefinition name="Total Value" value="{oMajorTaxModel>yAxis}"/>
+											</viz.data:measures>
+										</viz.data:FlattenedDataset>
+									</viz:dataset>
+									<viz:feeds>
+										<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Total Value"/>
+										<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="HSN/SAC Number"/>
+									</viz:feeds>
+								</viz:VizFrame>
+							</Panel>
+						</l:BlockLayoutCell >
+						<l:BlockLayoutCell width="4">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Tax Inward Details" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+								</Toolbar>
+								<!--<ui:Table rows="{oTaxLiabDetailsModel>/taxInwardDetails}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"-->
+								<!--	class="sapUiTinyMarginTop sapUiMediumMarginBottom" fixedColumnCount="1">-->
+								<!--	<ui:columns>-->
+								<!--		<ui:Column hAlign="Center" width="14rem">-->
+								<!--			<Label text="Transaction Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+								<!--			<ui:template>-->
+								<!--				<Text text="{oTaxLiabDetailsModel>transactionType}"/>-->
+								<!--			</ui:template>-->
+								<!--		</ui:Column>-->
+								<!--		<ui:Column hAlign="Center" width="12rem">-->
+								<!--			<Label text="Invoice Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+								<!--			<ui:template>-->
+								<!--				<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>invoiceValue' }], formatter : '.formatter.Denomination'}"/>-->
+								<!--			</ui:template>-->
+								<!--		</ui:Column>-->
+								<!--		<ui:Column hAlign="Center" width="12rem">-->
+								<!--			<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+								<!--			<ui:template>-->
+								<!--				<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>taxableValue' }], formatter : '.formatter.Denomination'}"/>-->
+								<!--			</ui:template>-->
+								<!--		</ui:Column>-->
+								<!--		<ui:Column hAlign="Center" width="12rem">-->
+								<!--			<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+								<!--			<ui:template>-->
+								<!--				<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>igst' }], formatter : '.formatter.Denomination'}"/>-->
+								<!--			</ui:template>-->
+								<!--		</ui:Column>-->
+								<!--		<ui:Column hAlign="Center" width="12rem">-->
+								<!--			<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+								<!--			<ui:template>-->
+								<!--				<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>cgst' }], formatter : '.formatter.Denomination'}"/>-->
+								<!--			</ui:template>-->
+								<!--		</ui:Column>-->
+								<!--		<ui:Column hAlign="Center" width="12rem">-->
+								<!--			<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+								<!--			<ui:template>-->
+								<!--				<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>sgst' }], formatter : '.formatter.Denomination'}"/>-->
+								<!--			</ui:template>-->
+								<!--		</ui:Column>-->
+								<!--		<ui:Column hAlign="Center" width="12rem">-->
+								<!--			<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+								<!--			<ui:template>-->
+								<!--				<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>cess' }], formatter : '.formatter.Denomination'}"/>-->
+								<!--			</ui:template>-->
+								<!--		</ui:Column>-->
+								<!--		<ui:Column hAlign="Center" width="12rem">-->
+								<!--			<Label text="IGST Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+								<!--			<ui:template>-->
+								<!--				<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>igstCredit' }], formatter : '.formatter.Denomination'}"/>-->
+								<!--			</ui:template>-->
+								<!--		</ui:Column>-->
+								<!--		<ui:Column hAlign="Center" width="12rem">-->
+								<!--			<Label text="CGST Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+								<!--			<ui:template>-->
+								<!--				<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>cgstCredit' }], formatter : '.formatter.Denomination'}"/>-->
+								<!--			</ui:template>-->
+								<!--		</ui:Column>-->
+								<!--		<ui:Column hAlign="Center" width="12rem">-->
+								<!--			<Label text="SGST Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+								<!--			<ui:template>-->
+								<!--				<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>sgstCredit' }], formatter : '.formatter.Denomination'}"/>-->
+								<!--			</ui:template>-->
+								<!--		</ui:Column>-->
+								<!--		<ui:Column hAlign="Center" width="12rem">-->
+								<!--			<Label text="Cess Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+								<!--			<ui:template>-->
+								<!--				<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>cessCredit' }], formatter : '.formatter.Denomination'}"/>-->
+								<!--			</ui:template>-->
+								<!--		</ui:Column>-->
+								<!--	</ui:columns>-->
+								<!--</ui:Table>-->
+								<!--======================code added by Arun on 15/12/2021=================================-->
+								<!--<ui:TreeTable rows="{path:'InwardDash>/InwardDashCatogories', parameters:{ arrayNames:['cat'], numberOfExpandedLevels:2 }}" visible="true"-->
+								<ui:TreeTable rows="{oTaxLiabDetailsModel>/}" visible="true" selectionMode="None" selectionBehavior="Row" fixedColumnCount="1"
+									enableSelectAll="false" class="sapUiTinyMarginBottom" visibleRowCount="17">
+									<ui:extension>
+										<Toolbar>
+											<!--<ui:Title id="title" text="Tax Inward Details"/>-->
+											<ToolbarSpacer/>
+										</Toolbar>
+									</ui:extension>
+									<ui:Column hAlign="Center" width="18rem">
+										<Label text="Transaction Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{oTaxLiabDetailsModel>transactionType}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="12rem">
+										<Label text="Invoice Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>invoiceValue' }], formatter : '.formatter.Denomination'}"/>
+											<!--<Text text="{oTaxLiabDetailsModel>invoiceValue}"/>-->
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="12rem">
+										<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>taxableValue' }], formatter : '.formatter.Denomination'}"/>
+											<!--<Text text="{oTaxLiabDetailsModel>taxableValue}"/>-->
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="12rem">
+										<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>igst' }], formatter : '.formatter.Denomination'}"/>
+											<!--<Text text="{oTaxLiabDetailsModel>igst}"/>-->
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="12rem">
+										<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>cgst' }], formatter : '.formatter.Denomination'}"/>
+											<!--<Text text="{oTaxLiabDetailsModel>cgst}"/>-->
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="12rem">
+										<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>sgst' }], formatter : '.formatter.Denomination'}"/>
+											<!--<Text text="{oTaxLiabDetailsModel>sgst}"/>-->
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="12rem">
+										<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>cess' }], formatter : '.formatter.Denomination'}"/>
+											<!--<Text text="{oTaxLiabDetailsModel>cess}"/>-->
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="12rem">
+										<Label text="IGST Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>igstCredit' }], formatter : '.formatter.Denomination'}"/>
+											<!--<Text text="{oTaxLiabDetailsModel>igstCredit}"/>-->
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="12rem">
+										<Label text="CGST Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>cgstCredit' }], formatter : '.formatter.Denomination'}"/>
+											<!--<Text text="{oTaxLiabDetailsModel>igstCredit}"/>-->
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="12rem">
+										<Label text="SGST Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>sgstCredit' }], formatter : '.formatter.Denomination'}"/>
+											<!--<Text text="{oTaxLiabDetailsModel>sgstCredit}"/>-->
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="12rem">
+										<Label text="Cess Credit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>cessCredit' }], formatter : '.formatter.Denomination'}"/>
+											<!--<Text text="{oTaxLiabDetailsModel>cessCredit}"/>-->
+										</ui:template>
+									</ui:Column>
+								</ui:TreeTable>
+								<!--================================code added by Arun on 15/12/2021==================================-->
+								<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin sapUiSmallMarginBottom">
+									<Text text="Kindly Note:" class="sapUiTinyMarginBottom"/>
+									<Text text="Amendment Transactions are not considered in calculation" class="sapUiLargeMarginBegin"/>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell >
+						<l:BlockLayoutCell width="2">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Tax Rate Wise Distribution" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+									<core:Icon src="sap-icon://download" press="onDownloadTotalRate"></core:Icon>
+								</Toolbar>
+								<viz:Popover id="idPopOver4"></viz:Popover>
+								<viz:VizFrame id="id_iddonut2" xmlns="sap.viz" vizType="donut" class="cl_vizHeigDonut" uiConfig="{applicationSet:'fiori'}" visible="true">
+									<viz:dataset>
+										<viz.data:FlattenedDataset data="{otaxwiseDistModel>/taxRateWise}">
+											<viz.data:dimensions>
+												<viz.data:DimensionDefinition name="Tax Rate" value="{otaxwiseDistModel>taxRate}"/>
+											</viz.data:dimensions>
+											<viz.data:measures>
+												<viz.data:MeasureDefinition name="Total Value" value="{otaxwiseDistModel>invoiceValue}"/>
+											</viz.data:measures>
+										</viz.data:FlattenedDataset>
+									</viz:dataset>
+									<viz:feeds>
+										<viz.feeds:FeedItem uid="size" type="Measure" values="Total Value"/>
+										<viz.feeds:FeedItem uid="color" type="Dimension" values="Tax Rate"/>
+									</viz:feeds>
+								</viz:VizFrame>
+							</Panel>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+			</l:VerticalLayout>
+		</content>
+	</Page>
+</mvc:View>

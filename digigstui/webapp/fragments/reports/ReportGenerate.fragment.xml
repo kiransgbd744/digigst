@@ -1,0 +1,104 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page id="outwardAnx1">
+		<l:BlockLayout class="sapUiSmallMargin">
+			<l:BlockLayoutRow class="sapUiNoContentPadding">
+				<l:BlockLayoutCell width="3" class="sapUiNoContentPadding sapUiTinyMarginEnd">
+					<l:VerticalLayout width="100%">
+						<Label text="{i18n>entity}:" design="Bold"/>
+						<Select id="slAnx1outwardEntity" items="{EntityModel>/}" change="onEntityChange" width="100%">
+							<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>
+						</Select>
+					</l:VerticalLayout>
+				</l:BlockLayoutCell>
+				<l:BlockLayoutCell width="3" class="sapUiNoContentPadding sapUiTinyMarginEnd">
+					<l:VerticalLayout width="100%">
+						<Label text="{i18n>gstin}:" design="Bold"/>
+						<MultiComboBox id="slAnx1outwardGstin" items="{DataSecurity>/gstin}" width="100%">
+							<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>
+						</MultiComboBox>
+					</l:VerticalLayout>
+				</l:BlockLayoutCell>
+				<l:BlockLayoutCell width="3" class="sapUiNoContentPadding sapUiTinyMarginEnd">
+					<l:VerticalLayout width="100%">
+						<Label text="{i18n>fiYear}:" design="Bold"/>
+						<Select id="slAnx1outwardFY" width="100%">
+							<core:Item key="" text="2018 - 2019"/>
+						</Select>
+					</l:VerticalLayout>
+				</l:BlockLayoutCell>
+				<l:BlockLayoutCell width="3" class="sapUiNoContentPadding sapUiTinyMarginEnd">
+					<l:VerticalLayout width="100%">
+						<Label text="{i18n>fromPeriod}:" design="Bold"/>
+						<DatePicker id="dtFromAnx1outward" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+					</l:VerticalLayout>
+				</l:BlockLayoutCell>
+				<l:BlockLayoutCell width="3" class="sapUiNoContentPadding sapUiTinyMarginEnd">
+					<l:VerticalLayout width="100%">
+						<Label text="{i18n>toPeriod}:" design="Bold"/>
+						<DatePicker id="dtToAnx1outward" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+					</l:VerticalLayout>
+				</l:BlockLayoutCell>
+				<l:BlockLayoutCell width="3" class="sapUiNoContentPadding sapUiTinyMarginEnd">
+					<l:VerticalLayout width="100%">
+						<Label text="{i18n>dataType}:" design="Bold"/>
+						<Select id="slAnx1outwardDataType" items="{Report>/dataType}" width="100%" change="onSelectChange">
+							<core:Item key="{Report>key}" text="{Report>text}"/>
+						</Select>
+					</l:VerticalLayout>
+				</l:BlockLayoutCell>
+				<l:BlockLayoutCell width="2" class="sapUiNoContentPadding">
+					<l:VerticalLayout width="100%">
+						<Label text=""/>
+						<HBox justifyContent="End">
+							<Button type="Emphasized" id="bOutwardAnx1" class="buttoncolorSec" text="{i18n>generateReport}" press="onPressGenerateReport"/>
+						</HBox>
+					</l:VerticalLayout>
+				</l:BlockLayoutCell>
+			</l:BlockLayoutRow>
+		</l:BlockLayout>
+		<l:BlockLayout id="lOutwardAnx1" background="Dashboard" class="sapUiSmallMarginTop">
+			<l:BlockLayoutRow class="sapUiNoContentPadding">
+				<l:BlockLayoutCell width="1" backgroundColorSet="ColorSet11" backgroundColorShade="ShadeA" class="sapUiNoContentPadding">
+					<List id="iAnx1OutwardDocType" items="{EntityListItem>/resp/docType/}" mode="MultiSelect" includeItemInSelection="true" growing="true" growingThreshold="50">
+						<headerToolbar>
+							<Toolbar>
+								<CheckBox selected="true" select="oncheckSelecte"   id="idDocType"/>
+								<ToolbarSpacer/>
+								<Label text="{i18n>docType}" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</headerToolbar>
+						<StandardListItem title="{EntityListItem>docTypeName}" selected="true"/>
+					</List>
+				</l:BlockLayoutCell>
+				<l:BlockLayoutCell width="1" backgroundColorSet="ColorSet11" backgroundColorShade="ShadeA" class="sapUiNoContentPadding">
+					<List id="iAnx1OutwardSupplType" items="{EntityListItem>/resp/supplyType/}" mode="MultiSelect" includeItemInSelection="true" growing="true" growingThreshold="50">
+						<headerToolbar>
+							<Toolbar>
+								<CheckBox selected="true" select="oncheckSelecte" id="idSupplyType"/>
+								<ToolbarSpacer/>
+								<Label text="{i18n>supplyType}" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</headerToolbar>
+						<StandardListItem title="{EntityListItem>supplyTypeName}" selected="true"/>
+					</List>
+				</l:BlockLayoutCell>
+				<l:BlockLayoutCell width="1" backgroundColorSet="ColorSet11" backgroundColorShade="ShadeA" class="sapUiNoContentPadding">
+					<List id="iAnx1OutwardAttr" items="{EntityListItem>/resp/attributes/}" mode="MultiSelect" includeItemInSelection="true" growing="true" growingThreshold="50">
+						<headerToolbar>
+							<Toolbar>
+								<CheckBox selected="true" select="oncheckSelecte"  id="idAttributes"/>
+								<ToolbarSpacer/>
+								<Label text="{i18n>attributes}" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</headerToolbar>
+						<StandardListItem title="{EntityListItem>attributesName}" selected="true"/>
+					</List>
+				</l:BlockLayoutCell>
+			</l:BlockLayoutRow>
+		</l:BlockLayout>
+	</Page>
+</core:FragmentDefinition>

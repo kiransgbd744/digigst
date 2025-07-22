@@ -1,0 +1,165 @@
+/**
+ * 
+ */
+package com.ey.advisory.app.services.reports;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
+
+import com.ey.advisory.app.data.views.client.Gstr1GstnAdvanceReceivedDto;
+import com.ey.advisory.app.docs.dto.GstnConsolidatedReqDto;
+import com.ey.advisory.common.GenUtil;
+import com.ey.advisory.core.search.SearchCriteria;
+import com.google.common.collect.Lists;
+
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * @author Sujith.Nanga
+ *
+ * 
+ */
+
+@Component("Gstr1GetATSummaryTablesDaoImpl")
+@Slf4j
+public class Gstr1GetATSummaryTablesDaoImpl implements Gstr1aGetDao {
+
+	@PersistenceContext(unitName = "clientDataUnit")
+	private EntityManager entityManager;
+
+	/*
+	 * @Autowired
+	 * 
+	 * @Qualifier("batchSaveStatusRepository") private Gstr1BatchRepository
+	 * gstr1BatchRepository;
+	 */
+
+	static Integer cutoffPeriod = null;
+	private static final String OLDFARMATTER = "yyyy-MM-dd";
+	private static final String NEWFARMATTER = "dd-MM-yyyy";
+
+	@Override
+	public List<Object> getGstnConsolidatedReports(SearchCriteria criteria) {
+		GstnConsolidatedReqDto request = (GstnConsolidatedReqDto) criteria;
+		String taxPeriod = request.getTaxPeriod();
+		List<String> gstr1aSections = request.getGstr1aSections();
+		String gstin = request.getGstin();
+
+		StringBuilder buildQuery = new StringBuilder();
+
+		if (StringUtils.isNotBlank(gstin)) {
+			buildQuery.append(" WHERE GSTIN IN :gstin");
+		}
+
+		if (CollectionUtils.isNotEmpty(gstr1aSections)) {
+			buildQuery.append(" AND TABLE_TYPE IN :gstr1aSections");
+		}
+
+		if (taxPeriod != null) {
+			buildQuery.append(" AND DERIVED_RET_PERIOD  = :taxPeriod ");
+		}
+
+		String queryStr = creategstnATQueryString(
+				buildQuery.toString());
+		Query q = entityManager.createNativeQuery(queryStr);
+
+		if (StringUtils.isNotBlank(gstin)) {
+			q.setParameter("gstin", Lists.newArrayList(gstin));
+		}
+		if (taxPeriod != null) {
+			int derivedRetPeriod = GenUtil
+					.convertTaxPeriodToInt(request.getTaxPeriod());
+			q.setParameter("taxPeriod", derivedRetPeriod);
+
+		}
+		if (CollectionUtils.isNotEmpty(gstr1aSections)) {
+			q.setParameter("gstr1aSections", gstr1aSections);
+		}
+
+		List<Object[]> list = q.getResultList();
+		return list.parallelStream().map(o -> convertgstnATSummary(o))
+				.collect(Collectors.toCollection(ArrayList::new));
+	}
+
+	private Gstr1GstnAdvanceReceivedDto convertgstnATSummary(Object[] arr) {
+		Gstr1GstnAdvanceReceivedDto obj = new Gstr1GstnAdvanceReceivedDto();
+
+		obj.setSupplierGSTIN(arr[1] != null ? arr[1].toString() : null);
+		obj.setReturnPeriod(arr[2] != null ? arr[2].toString() : null);
+		obj.setSupplyType(arr[3] != null ? arr[3].toString() : null);
+		obj.setStateName(arr[4] != null ? arr[4].toString() : null);
+		obj.setPos(arr[5] != null ? arr[5].toString() : null);
+		obj.setRateofTax(arr[6] != null ? arr[6].toString() : null);
+		obj.setGrossAdvanceReceived(arr[7] != null ? arr[7].toString() : null);
+		obj.setIgstAmount(arr[8] != null ? arr[8].toString() : null);
+		obj.setCgstAmount(arr[9] != null ? arr[9].toString() : null);
+		obj.setSgstUTGSTAmount(arr[10] != null ? arr[10].toString() : null);
+		obj.setCessAmount(arr[11] != null ? arr[11].toString() : null);
+		obj.setDifferentialPercentageRate(
+				arr[12] != null ? arr[12].toString() : null);
+		//obj.setIsFiled(arr[13] != null ? arr[13].toString() : null);
+		obj.setIsFiled(isDecimal(arr[13]));
+		obj.setSerialNo(arr[16] != null ? arr[16].toString() : null);
+		return obj;
+	}
+	
+	private String isDecimal(Object obj) {
+		try{
+		 if (obj == null)
+		        return "N";
+		    if (obj instanceof Long){
+		        if(Long.parseLong(obj.toString())==0){
+		            return "N";
+		        }else{
+		            return "Y";
+		        }
+		    }
+		
+		    if (obj instanceof Boolean) {
+		        Boolean b = (Boolean) obj;
+		        if(b){
+		            return "Y";
+		        }else{
+		            return "N";
+		        }
+		    }
+		    } catch (Exception e) {
+		    	
+		    }
+		return "N";
+	}
+
+	private String creategstnATQueryString(String buildQuery) {
+
+		return "select ID,GSTIN,RETURN_PERIOD,SUPPLY_TYPE,STATE_NAME,"
+				+ "POS,TAX_RATE,TAXABLE_VALUE,IGST_AMT,CGST_AMT,"
+				+ "SGST_AMT,CESS_AMT,DIFF_PERCENT,IS_FILED,DERIVED_RET_PERIOD,"
+				+ "TABLE_TYPE,(ROW_NUMBER () OVER (ORDER BY GSTIN)) AS  SNO "
+				+ " from (SELECT HDR.ID,HDR.GSTIN,HDR.RETURN_PERIOD,SUPPLY_TYPE,"
+				+ "MT.STATE_NAME,POS,ITM.TAX_RATE,"
+				+ "SUM(ITM.ADVREC_AMT) TAXABLE_VALUE,SUM(ITM.IGST_AMT) IGST_AMT,"
+				+ "SUM(ITM.CGST_AMT) CGST_AMT,SUM(ITM.SGST_AMT) SGST_AMT,"
+				+ "SUM(ITM.CESS_AMT) CESS_AMT,HDR.DIFF_PERCENT,BT.IS_FILED,"
+				+ "HDR.DERIVED_RET_PERIOD,"
+				+ " 'ADV REC' AS TABLE_TYPE "
+				+ "FROM GETGSTR1_AT_HEADER HDR INNER JOIN GETGSTR1_AT_ITEM ITM "
+				+ "ON HDR.ID = ITM.HEADER_ID AND "
+				+ "HDR.DERIVED_RET_PERIOD = ITM.DERIVED_RET_PERIOD "
+				+ "LEFT JOIN GETANX1_BATCH_TABLE BT ON HDR.BATCH_ID = BT.ID "
+				+ "LEFT JOIN MASTER_STATE MT "
+				+ "ON SUBSTR(HDR.GSTIN,1,2) = MT.STATE_CODE "
+				+ " WHERE HDR.IS_DELETE=FALSE " 
+				+ " GROUP BY HDR.ID,HDR.GSTIN,HDR.RETURN_PERIOD,SUPPLY_TYPE,"
+				+ "MT.STATE_NAME,POS,ITM.TAX_RATE,HDR.DIFF_PERCENT,BT.IS_FILED,HDR.DERIVED_RET_PERIOD)"
+				+buildQuery ;
+	}
+}

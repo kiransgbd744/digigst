@@ -1,0 +1,23 @@
+package com.ey.advisory.app.services.structuralvalidation.gstr7;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.ey.advisory.app.services.strcutvalidation.outward.ValidationRule;
+import com.ey.advisory.common.ProcessingResult;
+import com.ey.advisory.common.eyfileutils.tabular.TabularDataLayout;
+
+/**
+ * 
+ * @author Anand3.M
+ *
+ */
+public class Gstr7ContractNoValidationRule implements ValidationRule {
+
+	@Override
+	public List<ProcessingResult> isValid(int idx,Object obj, Object[] row,
+			TabularDataLayout layout) {
+		List<ProcessingResult> errors = new ArrayList<>();
+		return errors;
+	}
+}

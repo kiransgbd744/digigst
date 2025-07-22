@@ -1,0 +1,43 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout">
+	<Dialog title="Delete Unsaved IMS Action from DigiGST" type="Message" contentWidth="50rem" busyIndicatorDelay="0"
+		class="sapUiSizeCompact cl_saveHeader">
+		<buttons>
+			<Button text="Delete" class="buttoncolorSec" press="onCloseImsDelete('D')"/>
+			<Button text="Cancel" class="buttoncolorSec" press="onCloseImsDelete('C')"/>
+		</buttons>
+		<content>
+			<layout:VerticalLayout>
+				<layout:Grid defaultSpan="L12 M12 S12" hSpacing="0.5" vSpacing="0">
+					<HBox alignItems="Center">
+						<Label text="GSTIN:" design="Bold" class="sapUiTinyMarginEnd"/>
+						<Label text="{=${DeleteIMS>/gstins}.join(', ')}" wrapping="true"/>
+					</HBox>
+				</layout:Grid>
+				<CheckBox text="All Tables" selected="{DeleteIMS>/tabType/all}" select="onSelectDeleteAllTabTypeIMS"
+					class="cl_check clCheckBoxText sapUiSmallMarginTop"/>
+				<layout:Grid defaultSpan="L3 M3 S12" vSpacing="0">
+					<layout:content>
+						<CheckBox text="B2B" selected="{DeleteIMS>/tabType/b2b}" select="onSelectDeleteTabType"/>
+						<CheckBox text="B2BA" selected="{DeleteIMS>/tabType/b2ba}" select="onSelectDeleteTabType"/>
+						<CheckBox text="ECOM" selected="{DeleteIMS>/tabType/ecom}" select="onSelectDeleteTabType"/>
+						<CheckBox text="ECOMA" selected="{DeleteIMS>/tabType/ecoma}" select="onSelectDeleteTabType"/>
+						<CheckBox text="CN" selected="{DeleteIMS>/tabType/cn}" select="onSelectDeleteTabType"/>
+						<CheckBox text="CNA" selected="{DeleteIMS>/tabType/cna}" select="onSelectDeleteTabType"/>
+						<CheckBox text="DN" selected="{DeleteIMS>/tabType/dn}" select="onSelectDeleteTabType"/>
+						<CheckBox text="DNA" selected="{DeleteIMS>/tabType/dna}" select="onSelectDeleteTabType"/>
+					</layout:content>
+				</layout:Grid>
+				<CheckBox text="All IMS Action" selected="{DeleteIMS>/action/all}" select="onSelectDeleteAllActionIMS"
+					class="cl_check clCheckBoxText sapUiSmallMarginTop"/>
+				<layout:Grid defaultSpan="L3 M3 S12" vSpacing="0">
+					<layout:content>
+						<CheckBox text="No Action - Reset" selected="{DeleteIMS>/action/NE}" select="onSelectDeleteAction"/>
+						<CheckBox text="Accept" selected="{DeleteIMS>/action/A}" select="onSelectDeleteAction"/>
+						<CheckBox text="Reject" selected="{DeleteIMS>/action/R}" select="onSelectDeleteAction"/>
+						<CheckBox text="Pending" selected="{DeleteIMS>/action/P}" select="onSelectDeleteAction"/>
+					</layout:content>
+				</layout:Grid>
+			</layout:VerticalLayout>
+		</content>
+	</Dialog>
+</core:FragmentDefinition>

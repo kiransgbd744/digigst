@@ -1,0 +1,104 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:ui="sap.ui.table">
+	<ui:Table id="iditc04Tab" rows="{path:'ComplienceHistory>/resp'}" selectionMode="Multi" selectionBehavior="Row" visibleRowCount="20"
+		fixedColumnCount="1" rowSelectionChange="onRowSelectionChange2A" visible="false">
+		<ui:extension>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<MenuButton class="buttoncolorSec" text="Download Report">
+					<Menu itemSelected="onPressDownloadReport">
+						<MenuItem text="Summary Level" key="SL"/>
+						<MenuItem text="Transaction Level" key="TL"/>
+					</Menu>
+				</MenuButton>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column hAlign="Left" width="15rem">
+				<HBox>
+					<Label text="Entity Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<Link text="{ComplienceHistory>entityName}" press="handleLinkPressGetGSTINMain1"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" id="col1" visible="false">
+				<HBox>
+					<Label text="Q1 (Apr - Jun)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus
+							icon="{parts:[{path:'ComplienceHistory>q1FiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLIcon'}"
+							text="{parts:[{path:'ComplienceHistory>q1FiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus'}"
+							state="{parts:[{path:'ComplienceHistory>q1FiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus1'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" id="col2" visible="false">
+				<HBox>
+					<Label text="Q2 (Jul - Sep)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus
+							icon="{parts:[{path:'ComplienceHistory>q2FiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLIcon'}"
+							text="{parts:[{path:'ComplienceHistory>q2FiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus'}"
+							state="{parts:[{path:'ComplienceHistory>q2FiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus1'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" id="col3" visible="false">
+				<HBox>
+					<Label text="Q3 (Oct - Dec)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus
+							icon="{parts:[{path:'ComplienceHistory>q3FiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLIcon'}"
+							text="{parts:[{path:'ComplienceHistory>q3FiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus'}"
+							state="{parts:[{path:'ComplienceHistory>q3FiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus1'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" id="col4" visible="false">
+				<HBox>
+					<Label text="Q4 (Jan - Mar)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus
+							icon="{parts:[{path:'ComplienceHistory>q4FiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLIcon'}"
+							text="{parts:[{path:'ComplienceHistory>q4FiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus'}"
+							state="{parts:[{path:'ComplienceHistory>q4FiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus1'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" id="col5" visible="false">
+				<ui:multiLabels>
+					<Label text="H1(Apr-Sep)" design="Bold" class="sapUiTinyMarginTop"/>
+				</ui:multiLabels>
+				<ui:template>
+					<VBox>
+						<ObjectStatus
+							icon="{parts:[{path:'ComplienceHistory>h1FiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLIcon'}"
+							text="{parts:[{path:'ComplienceHistory>h1FiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus'}"
+							state="{parts:[{path:'ComplienceHistory>h1FiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus1'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" id="col6" visible="false">
+				<ui:multiLabels>
+					<Label text="H2(Oct-Mar)" design="Bold" class="sapUiTinyMarginTop"/>
+				</ui:multiLabels>
+				<ui:template>
+					<VBox>
+						<ObjectStatus
+							icon="{parts:[{path:'ComplienceHistory>h2FiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLIcon'}"
+							text="{parts:[{path:'ComplienceHistory>h2FiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus'}"
+							state="{parts:[{path:'ComplienceHistory>h2FiledCount'},{path:'ComplienceHistory>totalComplianceCount'}], formatter : '.formatter.GLStatus1'}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+	</ui:Table>
+</core:FragmentDefinition>

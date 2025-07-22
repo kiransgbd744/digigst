@@ -1,0 +1,40 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout">
+	<Dialog id="dSaveGstn" title="Save Data in ANX1" type="Message" draggable="true" contentWidth="60%" class="sapUiSizeCompact">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="{i18n>confirmAnx1Save}" design="Bold"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<content>
+			<layout:VerticalLayout>
+				<HBox>
+					<Label text="{i18n>selectTables}" design="Bold" class="sapUiTinyMarginTop sapUiTinyMarginEnd"/>
+					<CheckBox selected="{CheckStats>/select}" partiallySelected="{CheckStats>/partial}" select="onSelectTriState"/>
+				</HBox>
+				<layout:Grid defaultSpan="L3 M3 S12" vSpacing="0" class="sapUiTinyMarginTop">
+					<layout:content>
+						<CheckBox text="{i18n>anx1_3A}" selected="{CheckStats>/b2c}" select="onSelectSaveCheck"/>
+						<CheckBox text="{i18n>anx1_3B}" selected="{CheckStats>/b2b}" select="onSelectSaveCheck"/>
+						<CheckBox text="{i18n>anx1_3c_3d}" selected="{CheckStats>/expwp}" select="onSelectSaveCheck"/>
+						<CheckBox text="{i18n>anx1_3e_3f}" selected="{CheckStats>/sezwp}" select="onSelectSaveCheck"/>
+						<CheckBox text="{i18n>anx1_3G}" selected="{CheckStats>/de}" select="onSelectSaveCheck"/>
+						<CheckBox text="{i18n>anx1_3H}" selected="{CheckStats>/rev}" select="onSelectSaveCheck"/>
+						<CheckBox text="{i18n>anx1_3I}" selected="{CheckStats>/imps}" select="onSelectSaveCheck"/>
+						<CheckBox text="{i18n>anx1_3J}" selected="{CheckStats>/impg}" select="onSelectSaveCheck"/>
+						<CheckBox text="{i18n>anx1_3K}" selected="{CheckStats>/impgsez}" select="onSelectSaveCheck"/>
+						<CheckBox text="{i18n>anx1_3L}" selected="{CheckStats>/mis}" select="onSelectSaveCheck"/>
+						<CheckBox text="{i18n>anx1_4} (4)" selected="{CheckStats>/ecom}" select="onSelectSaveCheck"/>
+					</layout:content>
+				</layout:Grid>
+			</layout:VerticalLayout>
+		</content>
+		<beginButton>
+			<Button type="Ghost" text="{i18n>save}" tooltip="{CheckStats>/tooltip}" enabled="{CheckStats>/select}" press="onSaveToGstnData"/>
+		</beginButton>
+		<endButton>
+			<Button type="Ghost" text="{i18n>cancel}" press="onCloseSaveToGstn"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

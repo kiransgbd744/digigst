@@ -1,0 +1,40 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout">
+	<Dialog title="Email Reports" type="Message" class="sapUiSizeCompact cl_saveHeader">
+		<content>
+			<layout:VerticalLayout width="50rem">
+				<layout:Grid defaultSpan="L3 M3 S12" vSpacing="0" class="sapUiTinyMarginTop">
+					<layout:content>
+						<!--<VBox class="sapUiTinyMargin">
+							<Label text="Report Type"/>
+							<MultiComboBox width="15rem">
+								<core:Item key="EXA" text=" Exact Match"/>
+								<core:Item key="EXA" text=" Match with Tolerance "/>
+								<core:Item key="EXA" text=" Document date,Taxable Value, Tax amoun"/>
+								<core:Item key="EXA" text=" Document Number Mismatch "/>
+								<core:Item key="EXA" text=" Document Date Mismatch"/>
+								<core:Item key="EXA" text=" Potential - II (Dynamic) "/>
+								<core:Item key="EXA" text=" POS Mismatch "/>
+								<core:Item key="EXA" text=" Taxable Value Mismatch "/>
+								<core:Item key="EXA" text=" Exact Match "/>
+								<core:Item key="EXA" text=" Match with Tolerance "/>
+								<core:Item key="EXA" text=" Additional in PR "/>
+								<core:Item key="EXA" text=" Additional in ANX-2 "/>
+							</MultiComboBox>
+						</VBox>-->
+						<VBox class="sapUiTinyMargin">
+							<Label text="Email"/>
+							<Input/>
+						</VBox>
+						<VBox class="sapUiTinyMargin">
+							<Label text=""/>
+							<Button type="Emphasized" icon="sap-icon://download" text="Download"/>
+						</VBox>
+					</layout:content>
+				</layout:Grid>
+			</layout:VerticalLayout>
+		</content>
+		<endButton>
+			<Button text="Cancel" type="Default" press="fnCancelPress"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

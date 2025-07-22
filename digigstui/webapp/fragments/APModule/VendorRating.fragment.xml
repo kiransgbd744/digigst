@@ -1,0 +1,404 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout">
+	<Dialog type="Message" class="sapUiSizeCompact cl_saveHeader" showHeader="true" title="Rating Criteria">
+		<VBox>
+			<l:BlockLayout id="BlockLayout" background="Dashboard">
+				<l:BlockLayoutRow accentCells="Accent1" class="sapUiNoContentPadding">
+					<l:BlockLayoutCell width="1" class="sapUiTinyMarginBottom ">
+						<Toolbar class="colorToolbar sapUiTinyMarginBottom">
+							<ToolbarSpacer/>
+							<Label text="GSTR-1" class="sapUiTinyMarginBegin" design="Bold"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+						<HBox class="sapUiTinyMarginTop colorRating">
+							<HBox>
+								<VBox class="sapUiTinyMarginEnd sapUiTinyMarginBegin">
+									<Text/>
+									<Text/>
+									<Text/>
+									<Label text="Prior to Due Date" design="Bold"/>
+									<Text/>
+								</VBox>
+								<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+									<Label text="From Days"/>
+									<Input value="{VendorRatingCriteria>/0/fromDay}" enabled="false" maxLength="2"/>
+									<Input value="{VendorRatingCriteria>/1/fromDay}" enabled="false" maxLength="2"/>
+									<Input value="{VendorRatingCriteria>/2/fromDay}" enabled="false" maxLength="2"/>
+								</VBox>
+							</HBox>
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Label text="To Days"/>
+								<Input value="{VendorRatingCriteria>/0/toDay}" change="OnChanges('gstr1_1')" maxLength="2"/>
+								<Input value="{VendorRatingCriteria>/1/toDay}" change="OnChanges('gstr1_2')" maxLength="2"/>
+								<Input value="{VendorRatingCriteria>/2/toDay}" change="OnChanges('gstr1_3')" maxLength="2"/>
+							</VBox>
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Label text="Rate"/>
+								<Input value="{VendorRatingCriteria>/0/rating}" maxLength="1"/>
+								<Input value="{VendorRatingCriteria>/1/rating}" maxLength="1"/>
+								<Input value="{VendorRatingCriteria>/2/rating}" maxLength="1"/>
+							</VBox>
+						</HBox>
+					</l:BlockLayoutCell>
+					<l:BlockLayoutCell class="sapUiTinyMarginBottom">
+						<Toolbar class="colorToolbar sapUiTinyMarginBottom">
+							<ToolbarSpacer/>
+							<Label text="GSTR-3B" class="sapUiTinyMarginBegin" design="Bold"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+						<HBox class="sapUiTinyMarginTop colorRating">
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Label text="From Days"/>
+								<Input value="{VendorRatingCriteria>/9/fromDay}" enabled="false" maxLength="2"/>
+								<Input value="{VendorRatingCriteria>/10/fromDay}" enabled="false" maxLength="2"/>
+								<Input value="{VendorRatingCriteria>/11/fromDay}" enabled="false" maxLength="2"/>
+							</VBox>
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Label text="To Days"/>
+								<Input value="{VendorRatingCriteria>/9/toDay}" change="OnChanges('gstr3B_1')" maxLength="2"/>
+								<Input value="{VendorRatingCriteria>/10/toDay}" change="OnChanges('gstr3B_2')" maxLength="2"/>
+								<Input value="{VendorRatingCriteria>/11/toDay}" change="OnChanges('gstr3B_3')" maxLength="2"/>
+							</VBox>
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Label text="Rate"/>
+								<Input value="{VendorRatingCriteria>/9/rating}" maxLength="1"/>
+								<Input value="{VendorRatingCriteria>/10/rating}" maxLength="1"/>
+								<Input value="{VendorRatingCriteria>/11/rating}" maxLength="1"/>
+							</VBox>
+						</HBox>
+					</l:BlockLayoutCell>
+				</l:BlockLayoutRow>
+				<l:BlockLayoutRow accentCells="Accent1" class="sapUiNoContentPadding">
+					<l:BlockLayoutCell width="1" class="sapUiTinyMarginBottom sapUiTinyMarginTop">
+						<HBox class="colorRating1">
+							<HBox>
+								<VBox class="sapUiTinyMarginEnd sapUiTinyMarginBegin sapUiTinyMarginTop">
+									<Label text="On to Due Date " design="Bold"/>
+								</VBox>
+								<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+									<Input enabled="false"/>
+								</VBox>
+							</HBox>
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Input enabled="false"/>
+							</VBox>
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Input value="{VendorRatingCriteria>/3/rating}" maxLength="1"/>
+							</VBox>
+						</HBox>
+					</l:BlockLayoutCell>
+					<l:BlockLayoutCell class="sapUiTinyMarginBottom sapUiTinyMarginTop">
+						<HBox class="colorRating1">
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Input enabled="false"/>
+							</VBox>
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Input enabled="false"/>
+							</VBox>
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Input value="{VendorRatingCriteria>/12/rating}" maxLength="1"/>
+							</VBox>
+						</HBox>
+					</l:BlockLayoutCell>
+				</l:BlockLayoutRow>
+				<l:BlockLayoutRow accentCells="Accent1" class="sapUiNoContentPadding">
+					<l:BlockLayoutCell width="1" class="sapUiTinyMarginBottom">
+						<HBox class="sapUiTinyMarginTop colorRating2">
+							<HBox>
+								<VBox class="sapUiTinyMarginEnd sapUiTinyMarginBegin">
+									<Text/>
+									<Text/>
+									<Label text="After Due Date" design="Bold"/>
+									<Text/>
+								</VBox>
+								<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+									<Input value="{VendorRatingCriteria>/4/fromDay}" enabled="false" maxLength="2"/>
+									<Input value="{VendorRatingCriteria>/5/fromDay}" enabled="false" maxLength="2"/>
+									<Input value="{VendorRatingCriteria>/6/fromDay}" enabled="false" maxLength="2"/>
+								</VBox>
+							</HBox>
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Input value="{VendorRatingCriteria>/4/toDay}" change="OnChanges('gstr1_A_1')" maxLength="2"/>
+								<Input value="{VendorRatingCriteria>/5/toDay}" change="OnChanges('gstr1_A_2')" maxLength="2"/>
+								<Input value="{VendorRatingCriteria>/6/toDay}" change="OnChanges('gstr1_A_3')" maxLength="2"/>
+							</VBox>
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Input value="{VendorRatingCriteria>/4/rating}" maxLength="1"/>
+								<Input value="{VendorRatingCriteria>/5/rating}" maxLength="1"/>
+								<Input value="{VendorRatingCriteria>/6/rating}" maxLength="1"/>
+							</VBox>
+						</HBox>
+					</l:BlockLayoutCell>
+					<l:BlockLayoutCell class="sapUiTinyMarginBottom">
+						<HBox class="sapUiTinyMarginTop colorRating2">
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Input value="{VendorRatingCriteria>/13/fromDay}" enabled="false" maxLength="2"/>
+								<Input value="{VendorRatingCriteria>/14/fromDay}" enabled="false" maxLength="2"/>
+								<Input value="{VendorRatingCriteria>/15/fromDay}" enabled="false" maxLength="2"/>
+							</VBox>
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Input value="{VendorRatingCriteria>/13/toDay}" change="OnChanges('gstr3B_A_1')" maxLength="2"/>
+								<Input value="{VendorRatingCriteria>/14/toDay}" change="OnChanges('gstr3B_A_2')" maxLength="2"/>
+								<Input value="{VendorRatingCriteria>/15/toDay}" change="OnChanges('gstr3B_A_3')" maxLength="2"/>
+							</VBox>
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Input value="{VendorRatingCriteria>/13/rating}" maxLength="1"/>
+								<Input value="{VendorRatingCriteria>/14/rating}" maxLength="1"/>
+								<Input value="{VendorRatingCriteria>/15/rating}" maxLength="1"/>
+							</VBox>
+						</HBox>
+					</l:BlockLayoutCell>
+				</l:BlockLayoutRow>
+				<l:BlockLayoutRow accentCells="Accent1" class="sapUiNoContentPadding">
+					<l:BlockLayoutCell width="1" class="sapUiTinyMarginBottom sapUiTinyMarginTop">
+						<HBox class="colorRating3">
+							<HBox>
+								<VBox class="sapUiTinyMarginEnd sapUiTinyMarginBegin sapUiTinyMarginTop">
+									<Label text="If return filed after" design="Bold"/>
+								</VBox>
+								<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+									<Input editable="false"/>
+								</VBox>
+							</HBox>
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Input value="{VendorRatingCriteria>/7/fromDay}" enabled="false" maxLength="2"/>
+							</VBox>
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Input value="{VendorRatingCriteria>/7/rating}" maxLength="1"/>
+							</VBox>
+						</HBox>
+					</l:BlockLayoutCell>
+					<l:BlockLayoutCell class="sapUiTinyMarginBottom sapUiTinyMarginTop">
+						<HBox class="colorRating3">
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Input editable="false"/>
+							</VBox>
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Input value="{VendorRatingCriteria>/16/fromDay}" enabled="false" maxLength="2"/>
+							</VBox>
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Input value="{VendorRatingCriteria>/16/rating}" maxLength="1"/>
+							</VBox>
+						</HBox>
+					</l:BlockLayoutCell>
+				</l:BlockLayoutRow>
+				<l:BlockLayoutRow accentCells="Accent1" class="sapUiNoContentPadding">
+					<l:BlockLayoutCell width="1" class="sapUiTinyMarginBottom sapUiTinyMarginTop">
+						<HBox class="colorRating3">
+							<HBox>
+								<VBox class="sapUiTinyMarginEnd sapUiTinyMarginBegin sapUiTinyMarginTop">
+									<Label text="If Not Filed" design="Bold"/>
+								</VBox>
+								<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+									<Input enabled="false"/>
+								</VBox>
+							</HBox>
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Input enabled="false"/>
+							</VBox>
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<ComboBox selectedKey="{VendorRatingCriteria>/8/rating}">
+									<core:Item key="0.1" text="0.1"/>
+									<core:Item key="0.2" text="0.2"/>
+									<core:Item key="0.3" text="0.3"/>
+									<core:Item key="0.4" text="0.4"/>
+									<core:Item key="0.5" text="0.5"/>
+								</ComboBox>
+							</VBox>
+						</HBox>
+					</l:BlockLayoutCell>
+					<l:BlockLayoutCell class="sapUiTinyMarginBottom sapUiTinyMarginTop">
+						<HBox class="colorRating3">
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Input enabled="false"/>
+							</VBox>
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<Input enabled="false"/>
+							</VBox>
+							<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+								<ComboBox selectedKey="{VendorRatingCriteria>/17/rating}">
+									<core:Item key="0.1" text="0.1"/>
+									<core:Item key="0.2" text="0.2"/>
+									<core:Item key="0.3" text="0.3"/>
+									<core:Item key="0.4" text="0.4"/>
+									<core:Item key="0.5" text="0.5"/>
+								</ComboBox>
+							</VBox>
+						</HBox>
+					</l:BlockLayoutCell>
+				</l:BlockLayoutRow>
+			</l:BlockLayout>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Label id="TimeId"/>
+				<Button press="onSaveChanges" text="Save Changes" class="buttoncolorSec" enabled="{= ${userPermission>/appPermission/P24}}"/>
+				<Button press="onCancel" text="Close" class="buttoncolorSec" />
+			</Toolbar>
+		</VBox>
+		<!--<HBox>
+				<VBox class="sapUiTinyMarginEnd">
+					<Text/>
+					<Text/>
+					<Text/>
+					<Label text="Prior to Due Date"  class="sapUiTinyMarginTop"/>
+					<Text/>
+				</VBox>
+				<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+					<Label text="From Days"/>
+					<Input/>
+					<Input/>
+					<Input/>
+				</VBox>
+			</HBox>
+			<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+				<Label text="To Days"/>
+				<Input/>
+				<Input/>
+				<Input/>
+			</VBox>
+			<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+				<Label text="Rate"/>
+				<Input/>
+				<Input/>
+				<Input/>
+			</VBox>
+			<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+				<Label text="From Days"/>
+				<Input/>
+				<Input/>
+				<Input/>
+			</VBox>
+			<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+				<Label text="To Days"/>
+				<Input/>
+				<Input/>
+				<Input/>
+			</VBox>
+			<VBox alignContent="Center" justifyContent="Center" class="sapUiTinyMarginBegin sapUiTinyMarginEnd">
+				<Label text="Rate"/>
+				<Input/>
+				<Input/>
+				<Input/>
+			</VBox>-->
+		<!--<f:DynamicPage id="liablityId">
+			<f:title>
+				<f:DynamicPageTitle>
+					<f:heading>
+						<Title text="Rating Criteria"/>
+					</f:heading>
+				</f:DynamicPageTitle>
+			</f:title>
+			<f:content>
+				<Panel class="sapUiNoContentPadding">
+					<HBox>
+						<ui:Table rows="{Liabillity>/VCR}" selectionMode="None" selectionBehavior="Row" visibleRowCount="8" fixedRowCount="0" fixedColumnCount="0"
+							enableSelectAll="false">
+							<ui:Column headerSpan="4" hAlign="Center" width="12rem">
+								<ui:multiLabels>
+									<Label text="GSTR-1" design="Bold" textAlign="Center" width="100%"/>
+									<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Label text="{Liabillity>Particulars}" design="Bold"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="10rem">
+								<ui:multiLabels>
+									<Label text="" design="Bold"/>
+									<Label text="From Days"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Input value="{Liabillity>FromDay}"
+											visible="{=${Liabillity>Particulars} === 'On Due Date'?false:${Liabillity>Particulars} === 'If Not Filed'?false:true}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="10rem">
+								<ui:multiLabels>
+									<Label text="" design="Bold"/>
+									<Label text="To Days"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Input value="{Liabillity>ToDay}"
+											visible="{=${Liabillity>Particulars} === 'On Due Date'?false:${Liabillity>Particulars} === 'If Not Filed'?false:true}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="10rem">
+								<ui:multiLabels>
+									<Label text="" design="Bold"/>
+									<Label text="Rate"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Input value="{Liabillity>Rate}" visible="{=${Liabillity>Particulars} !== 'If Not Filed'?true:false}"/>
+										<ComboBox selectedKey="0.1" visible="{=${Liabillity>Particulars} === 'If Not Filed'?true:false}">
+											<core:Item key="0.1" text="0.1"/>
+											<core:Item key="0.2" text="0.2"/>
+											<core:Item key="0.3" text="0.3"/>
+											<core:Item key="0.4" text="0.4"/>
+											<core:Item key="0.5" text="0.5"/>
+										</ComboBox>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+						</ui:Table>
+						<ui:Table rows="{Liabillity>/VCR}" selectionMode="None" selectionBehavior="Row" visibleRowCount="8" fixedRowCount="0" fixedColumnCount="0"
+							enableSelectAll="false">
+							<ui:Column headerSpan="3" hAlign="Center" width="10rem">
+								<ui:multiLabels>
+									<Label text="GSTR-3B" design="Bold" textAlign="Center" width="100%"/>
+									<Label text="From Days"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Input value="{Liabillity>FromDay}"
+											visible="{=${Liabillity>Particulars} === 'On Due Date'?false:${Liabillity>Particulars} === 'If Not Filed'?false:true}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="10rem">
+								<ui:multiLabels>
+									<Label text="" design="Bold"/>
+									<Label text="To Days"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Input value="{Liabillity>ToDay}"
+											visible="{=${Liabillity>Particulars} === 'On Due Date'?false:${Liabillity>Particulars} === 'If Not Filed'?false:true}"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="Center" width="10rem">
+								<ui:multiLabels>
+									<Label text="" design="Bold"/>
+									<Label text="Rate"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Input value="{Liabillity>Rate}" visible="{=${Liabillity>Particulars} !== 'If Not Filed'?true:false}"/>
+										<ComboBox selectedKey="0.1" visible="{=${Liabillity>Particulars} === 'If Not Filed'?true:false}">
+											<core:Item key="0.1" text="0.1"/>
+											<core:Item key="0.2" text="0.2"/>
+											<core:Item key="0.3" text="0.3"/>
+											<core:Item key="0.4" text="0.4"/>
+											<core:Item key="0.5" text="0.5"/>
+										</ComboBox>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+						</ui:Table>
+					</HBox>
+					<Toolbar height="3.2rem">
+						<ToolbarSpacer/>
+						<Label text="Last Updated on - 2021-08-20T16:33:37.399"/>
+						<Button press="onLiaSaveChanges" text="Save Changes" type="Emphasized" enabled="{= ${userPermission>/appPermission/P4}}"/>
+						<Button press="onCancel" text="Close" type="Reject"/>
+					</Toolbar>
+				</Panel>
+			</f:content>
+		</f:DynamicPage>-->
+	</Dialog>
+</core:FragmentDefinition>

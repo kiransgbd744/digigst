@@ -1,0 +1,490 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table"
+	xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar">
+	<f:DynamicPage id="iPanelCP" visible="false">
+		<!--class="cl_dpScroll"-->
+		<!--<f:header>
+			<f:DynamicPageHeader class=" sapUiNoContentPadding">
+				<fb:FilterBar id="fbSummary1" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onSearch"
+					clear="onClearFilter" useToolbar="false" class="sapUiNoContentPadding" width="90%">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>entity}" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="slSummEntity1" items="{EntityList>/resp/entities}" width="100%" change="onEntitySummChange" forceSelection="false">
+									<core:Item key="{EntityList>id}" text="{EntityList>entityName}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slSummGstin1" width="100%" items="{CpSummGstnsList>/}">
+									<core:Item key="{CpSummGstnsList>gstin}" text="{CpSummGstnsList>gstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>taxPeriod}" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dtSummary1" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" id="fbStatusHbox1" width="10%">
+					<Button id="bSummaryFilter1" icon="sap-icon://filter" tooltip="Adapt Filters" press="onPressAdaptFilter"/>
+					<Button id="bSummaryClear1" text="Clear" class="sapUiTinyMarginBeginEnd" press="onSummClear"/>
+					<Button id="bSummaryGo1" text="Go" type="Emphasized" press="onCpSummaryGo"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>-->
+		<f:content>
+			<Panel>
+				<!--id="iPanelCP" visible="false"-->
+				<!--	<l:BlockLayout background="Dashboard" class="cl_shadow" visible="false">
+			<l:BlockLayoutRow class="sapUiNoContentPadding">
+				<l:BlockLayoutCell>
+					<Toolbar height="2.2rem" class="supplToolbar supplToolbarCol">
+						<Label text="Outward Supply" design="Bold" textAlign="Center" width="100%"/>
+					</Toolbar>
+					<HBox class="sapUiTinyMarginTopBottom">
+						<VBox alignItems="Center" width="16%">
+							<Text text="Outward Supply"/>
+							<Label text="0.00" design="Bold"/>
+						</VBox>
+						<VBox alignItems="Center" width="16%">
+							<Text text="Total Tax Payable"/>
+							<Label text="0.00" design="Bold"/>
+						</VBox>
+						<VBox alignItems="Center" width="16%">
+							<Text text="IGST"/>
+							<Label text="0.00" design="Bold"/>
+						</VBox>
+						<VBox alignItems="Center" width="16%">
+							<Text text="CGST"/>
+							<Label text="0.00" design="Bold"/>
+						</VBox>
+						<VBox alignItems="Center" width="16%">
+							<Text text="SGST"/>
+							<Label text="0.00" design="Bold"/>
+						</VBox>
+						<VBox alignItems="Center" width="16%">
+							<Text text="CESS"/>
+							<Label text="10000000.00" design="Bold"/>
+						</VBox>
+					</HBox>
+				</l:BlockLayoutCell>
+				<l:BlockLayoutCell>
+					<Toolbar height="2.2rem" class="supplToolbar supplToolbarCol">
+						<Label text="Inward Supply" design="Bold" textAlign="Center" width="100%"/>
+					</Toolbar>
+					<HBox class="sapUiTinyMarginTopBottom">
+						<VBox alignItems="Center" width="16%">
+							<Text text="Inward Supply"/>
+							<Label text="0.00" design="Bold"/>
+						</VBox>
+						<VBox alignItems="Center" width="16%">
+							<Text text="Total Tax Payable"/>
+							<Label text="0.00" design="Bold"/>
+						</VBox>
+						<VBox alignItems="Center" width="16%">
+							<Text text="IGST"/>
+							<Label text="0.00" design="Bold"/>
+						</VBox>
+						<VBox alignItems="Center" width="16%">
+							<Text text="CGST"/>
+							<Label text="0.00" design="Bold"/>
+						</VBox>
+						<VBox alignItems="Center" width="16%">
+							<Text text="SGST"/>
+							<Label text="0.00" design="Bold"/>
+						</VBox>
+						<VBox alignItems="Center" width="16%">
+							<Text text="CESS"/>
+							<Label text="10000000.00" design="Bold"/>
+						</VBox>
+					</HBox>
+				</l:BlockLayoutCell>
+			</l:BlockLayoutRow>
+		</l:BlockLayout>-->
+				<Toolbar class="sapUiTinyMarginBeginEnd">
+					<SegmentedButton id="sbSummaryCP" selectionChange="onSelectionChange">
+						<items>
+							<SegmentedButtonItem key="summary" text="Summary" width="7rem"/>
+							<SegmentedButtonItem key="details" text="Detailed" width="7rem"/>
+						</items>
+					</SegmentedButton>
+					<ToolbarSpacer/>
+					<!--<Button type="Reject" text="Delete"/>-->
+					<!--<Button type="Accept" text="Save"/>-->
+					<MultiComboBox id="slTableCP" width="12rem" placeholder="Tables" selectionFinish="onChangeTables">
+						<core:Item key="3B" text="B2B"/>
+						<core:Item key="3E" text="SEZWP"/>
+						<core:Item key="3F" text="SEZWOP"/>
+						<core:Item key="3G" text="DXP"/>
+						<!--<core:Item key="b2b" text="B2B (3B)"/>
+						<core:Item key="sezwp" text="SEZWP (3E)"/>
+						<core:Item key="sezwop" text="SEZWOP (3F)"/>
+						<core:Item key="de" text="DE (3G)"/>-->
+					</MultiComboBox>
+					<MultiComboBox id="slDocsCP" width="12rem" placeholder="Document Type" selectionFinish="onChangeDocType">
+						<core:Item key="INV" text="INV"/>
+						<core:Item key="DR" text="DR"/>
+						<core:Item key="CR" text="CR"/>
+						<core:Item key="INV - A" text="INV - A"/>
+						<core:Item key="DR - A" text="DR - A"/>
+						<core:Item key="CR - A" text="CR - A"/>
+					</MultiComboBox>
+					<Button type="Emphasized" text="Summary"/>
+					<MenuButton type="Emphasized" text="Download Reports">
+						<Menu itemSelected="onMenuItemSelect">
+							<MenuItem key="processed" text="Processed Records"/>
+							<MenuItem key="amandment" text="Records Available for Amendments"/>
+							<MenuItem key="detailed" text="Detailed Report"/>
+						</Menu>
+					</MenuButton>
+				</Toolbar>
+				<ui:Table id="tabSummaryCP" rows="{CpLinkSummInfo>/resp/det}" selectionMode="None">
+					<ui:columns>
+						<ui:Column width="14rem">
+							<Label text="Particulars" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{path:'CpLinkSummInfo>type', formatter:'.formatter.Particulars'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="%" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{CpLinkSummInfo>percent}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{CpLinkSummInfo>count}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{CpLinkSummInfo>taxableVal}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{CpLinkSummInfo>igst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{CpLinkSummInfo>cgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{CpLinkSummInfo>sgst}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="CESS" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{CpLinkSummInfo>cess}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Total Tax Payable" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{CpLinkSummInfo>taxPayable}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:Table>
+				<ui:Table id="tabSummaryDet" rows="{CntrPrtyLnkDtl>/resp/det}" selectionMode="None" visibleRowCount="9" visible="false">
+					<!--<ui:extension>-->
+					<!--	<Toolbar>-->
+					<!--		<ToolbarSpacer/>-->
+					<!--		<Button type="Reject" text="Delete"/>-->
+					<!--		<Button type="Accept" text="Save"/>-->
+					<!--		<Button type="Emphasized" text="Download"/>-->
+					<!--	</Toolbar>-->
+					<!--</ui:extension>-->
+					<ui:columns>
+						<ui:Column width="14rem" visible="false">
+							<Label text="GSTIN" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<HBox alignContent="Start" justifyContent="SpaceBetween" width="100%" displayInline="true">
+									<VBox>
+										<Text text="{CntrPrtyLnkDtl>state}"/>
+										<Label text="{CntrPrtyLnkDtl>gstin}" design="Bold"/>
+									</VBox>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem">
+							<Label text="Table Type" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{path:'CntrPrtyLnkDtl>type', formatter:'.formatter.Tabletype'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="6rem">
+							<Label text="Total Count" textAlign="Center" width="100%" design="Bold"/>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>totalCount}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="3" hAlign="End" width="6rem">
+							<ui:multiLabels>
+								<Label text="Not Saved To GSTN" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>notSavedCount}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="8rem">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>notSavedTaxableVal}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="8rem">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Tax Amount" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>notSavedTaxAmt}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="3" hAlign="End" width="6rem">
+							<ui:multiLabels>
+								<Label text="Saved To GSTN" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>savedCount}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="8rem">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>savedTaxableVal}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="8rem">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Tax Amount" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>savedTaxAmt}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="16,4,1" hAlign="End" width="4rem">
+							<ui:multiLabels>
+								<Label text="Actioned By Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Accept" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="%" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>acceptedPercent}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="6rem">
+							<ui:multiLabels>
+								<Label text="Actioned By Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Accept" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>acceptedCount}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="8rem">
+							<ui:multiLabels>
+								<Label text="Actioned By Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Accept" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>acceptedTaxableVal}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="8rem">
+							<ui:multiLabels>
+								<Label text="Actioned By Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Accept" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Tax Amount" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>acceptedTaxAmt}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="16,4,1" hAlign="End" width="4rem">
+							<ui:multiLabels>
+								<Label text="Actioned By Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Reject" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="%" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>rejectedPercent}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="6rem">
+							<ui:multiLabels>
+								<Label text="Actioned By Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Reject" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>rejectedCount}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="8rem">
+							<ui:multiLabels>
+								<Label text="Actioned By Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Reject" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>rejectedTaxableVal}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="8rem">
+							<ui:multiLabels>
+								<Label text="Actioned By Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Reject" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Tax Amount" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>rejectedTaxAmt}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="16,4,1" hAlign="End" width="4rem">
+							<ui:multiLabels>
+								<Label text="Actioned By Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Pending" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="%" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>pendingPercent}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="6rem">
+							<ui:multiLabels>
+								<Label text="Actioned By Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Pending" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>pendingTaxAmt}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="8rem">
+							<ui:multiLabels>
+								<Label text="Actioned By Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Pending" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>pendingTaxableVal}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="8rem">
+							<ui:multiLabels>
+								<Label text="Actioned By Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Pending" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Tax Amount" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>pendingTaxAmt}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="16,4,1" hAlign="End" width="4rem">
+							<ui:multiLabels>
+								<Label text="Actioned By Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Unlock" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="%" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>unlockedPercent}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="6rem">
+							<ui:multiLabels>
+								<Label text="Actioned By Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Pending" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>unlockedCount}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="8rem">
+							<ui:multiLabels>
+								<Label text="Actioned By Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Pending" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>unlockedTaxableVal}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="8rem">
+							<ui:multiLabels>
+								<Label text="Actioned By Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Pending" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Tax Amount" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>unlockedTaxAmt}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="3" hAlign="End" width="6rem">
+							<ui:multiLabels>
+								<Label text="Not Actioned By Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>noActionCount}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="8rem">
+							<ui:multiLabels>
+								<Label text="Not Actioned By Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>noActionTaxableVal}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="8rem">
+							<ui:multiLabels>
+								<Label text="Not Actioned By Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Tax Amount" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{CntrPrtyLnkDtl>noActionTaxAmt}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+					<!--<ui:footer>-->
+					<!--	<Toolbar>-->
+					<!--		<Label text="Note:" design="Bold"/>-->
+					<!--		<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>-->
+					<!--		<Text text="Auth Token Active"/>-->
+					<!--		<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>-->
+					<!--		<Text text="Auth Token Inactive"/>-->
+					<!--	</Toolbar>-->
+					<!--</ui:footer>-->
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

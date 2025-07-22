@@ -1,0 +1,175 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.GLRECON"
+	xmlns:ui="sap.ui.table" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:commons="sap.suite.ui.commons" busyIndicatorDelay="0">
+	<f:DynamicPage id="idDpGLSummary">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<Title text="GL Processed Summary" titleStyle="H3" class="tinyMarginTop"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onGoSummary" clear="onClearMainFilter"
+					useToolbar="false" class="sapUiNoContentPadding" width="90%">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="GSTINEntityID" width="100%" items="{oGSTIN>/resp/gstinDetails}" selectionChange="selectAll">
+									<core:Item key="{oGSTIN>gstin}" text="{oGSTIN>gstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>taxPeriod}" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="GLtaxDate" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Data Type" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="id_DataType" change="onDataTypeChange">
+									<core:Item key="O" text="Outward"/>
+									<core:Item key="I" text="Inward"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onClearMainFilter"/>
+					<Button text="Filter" press="onGoSummary" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer showFullScreen="false" autoAdjustHeight="false" class="sapUiTinyMarginBeginEnd cl_ChartConHeight" id="idCcSummary">
+				<commons:toolbar>
+					<OverflowToolbar class="colorToolbar toolbarHeight">
+						<ToolbarSpacer/>
+						<Button class="buttoncolorSec" text="Delete Data" enabled="false" press="onPressGLSumDelete"/>
+						<Button class="buttoncolorSec" text="Compute GL Data - DigiGST" press="onPressGLSumComputeData"
+							enabled="{= ${userPermission>/appPermission/P99}}"/>
+						<Button class="buttoncolorSec" text="Compute Differential" press="onPressGLSumInitRecon" enabled="{= ${userPermission>/appPermission/P99}}"/>
+						<MenuButton text="Download Report" class="sapUiTinyMarginBeginEnd buttoncolorSec" enabled="{= ${userPermission>/appPermission/P99}}">
+							<Menu id="bSummaryDownloadRpt" itemSelected="onPressDownloadReport($event,${$parameters>/item},'S')">
+								<MenuItem key="GlUploaded" text="GL Summary - Uploaded"/>
+								<MenuItem key="GlcomputedDigiGSTl" text="GL Summary - computed by DigiGST"/>
+								<MenuItem key="GlReconReport" text="GL Recon Report (Summary)"/>
+								<MenuItem key="GlOutward" text="Outward DigiGST Processed Records" visible="false"/>
+								<MenuItem key="GlInward" text="Inward DigiGST Processed Records " visible="false"/>
+							</Menu>
+						</MenuButton>
+						<Button type="Transparent" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="{=!${PrProperty>/summaryFullScreen}}"
+							press="onGstr2FullScreen('openSummary')"/>
+						<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="{PrProperty>/summaryFullScreen}"
+							press="onGstr2FullScreen('closeSummary')"/>
+						<commons:ChartContainerToolbarPlaceholder/>
+					</OverflowToolbar>
+				</commons:toolbar>
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table rows="{GLSummary>/resp}" enableColumnReordering="false" class="sapUiTinyMarginTop" id="id_GlSummaryTab" visibleRowCount="14">
+								<ui:columns>
+									<ui:Column>
+										<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<VBox>
+												<HBox>
+													<Text text="{GLSummary>stateName}" class="stateColor" width="8rem"/>
+													<Text text="{path:'GLSummary>regType',formatter:'.formatter.RegisterType'}" class="stateColor fontSmall"/>
+												</HBox>
+												<HBox alignContent="Start" justifyContent="SpaceBetween">
+													<Link text="{GLSummary>gstins}" emphasized="true" press="onPressGLGstin"/>
+													<core:Icon src="sap-icon://circle-task-2" visible="{=${GLSummary>stateName}===''?false:true}" size="0.8rem"
+														color="{=${GLSummary>auth}==='I'?'red':'#00ff00'}" press="onPressGenerateOTP"/>
+												</HBox>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column>
+										<Label text="Differential Computed Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<VBox>
+												<Text text="{path:'GLSummary>reconStatus',formatter:'.formatter.GlInitiateStatus'}"></Text>
+												<Text text="{path:'GLSummary>reconStatusDate',formatter:'.formatter.TimeStamp'}"></Text>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column >
+										<Label text="DigiGST Compute Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<VBox>
+												<Text text="{path:'GLSummary>digiGstCompStatus',formatter:'.formatter.GlComputeStatus'}"></Text>
+												<Text text="{path:'GLSummary>computeSatusDate',formatter:'.formatter.TimeStamp'}"></Text>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column headerSpan="2" hAlign="Center">
+										<ui:multiLabels>
+											<Label text="As per GL" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Label text="No. of GL" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path : 'GLSummary>noOfGl', formatter : '.formatter.Count1'}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Right">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path : 'GLSummary>amount', formatter : '.formatter.amountValue2'}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column headerSpan="2" hAlign="Center">
+										<ui:multiLabels>
+											<Label text="DigiGST Computed" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Label text="No. of GL" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path : 'GLSummary>digiNoOfGl', formatter : '.formatter.Count1'}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Right">
+										<ui:multiLabels>
+											<Label/>
+											<Label text="Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path : 'GLSummary>digiAmount', formatter : '.formatter.amountValue2'}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column headerSpan="1" hAlign="Right">
+										<ui:multiLabels>
+											<Label text="Difference" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Label text="Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path : 'GLSummary>diffAmount', formatter : '.formatter.amountValue2'}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent>
+				</commons:content>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+	<IconTabBar id="id_GlTabBar" expanded="true" select="handleIconTabBarSelect" class="sapUiNoContentPadding clOther"
+		backgroundDesign="Transparent" stretchContentHeight="true" selectedKey="GLData" expandable="false" visible="false">
+		<items>
+			<IconTabFilter text="GL Data" tooltip="GL Data" key="GLData">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.others.GLData" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="DigiGST Computed" tooltip="DigiGST Computed" key="DigiGST">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.others.DigiGST" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="GL Differential" tooltip="GL Differential" key="GLRecon">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.others.GLRecon" type="XML"/>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</mvc:View>

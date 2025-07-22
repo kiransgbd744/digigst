@@ -1,0 +1,155 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:lf="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:vm="sap.ui.comp.variants" xmlns:u="sap.ui.unified" xmlns:ux="sap.uxap" xmlns:ui="sap.ui.table"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<f:DynamicPage id="dymatchSummaryGSTRR2">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:content/>
+				<f:actions>
+					
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader>
+				<fb:FilterBar id="vfg"  showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false" class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="slEnity" items="{DropDown>/Entity}" change="onSelectionChange" width="100%">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Supplier GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="mcbSuma" items="{GSTIN>/}" change="onSelectChange" width="100%">
+									<core:Item key="{GSTIN>key}" text="{GSTIN>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1"   groupTitle="Basic" name="C" label="Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DateRangeSelection id="matchTaxPeriod" displayFormat="MMM yyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			
+			
+			
+			
+			<Panel class="sapUiNoContentPadding">
+			<ui:Table selectionMode="None" rows="{matchsummodel>/resp}" fixedColumnCount="1" selectionBehavior="Row" visibleRowCount="6"
+					enableSelectAll="false">
+				
+					<ui:columns>
+					
+						<ui:Column hAlign="Begin" width="15rem" >
+							<Label text="Particulars" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{matchsummodel>perticulars}"/>
+							</ui:template>
+						</ui:Column>
+						
+						
+						<ui:Column headerSpan="4" hAlign="End" width="12rem" >
+							<ui:multiLabels>
+								<Label text="Purchase Register" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Count of Transactions" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{matchsummodel>purchaseCountOfTransn}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="7rem">
+							<ui:multiLabels>
+								<Label text="Purchase Register" design="Bold"/>
+								<Label text="%" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Text text="{matchsummodel>purRegPercentage}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="7rem">
+							<ui:multiLabels>
+								<Label text="Purchase Register" design="Bold"/>
+								<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Text text="{matchsummodel>purchaseTaxableValue}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="7rem" >
+							<ui:multiLabels>
+								<Label text="Purchase Register" design="Bold"/>
+								<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Text text="{matchsummodel>purchaseTotalTax}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>	
+						
+						
+						<ui:Column headerSpan="4" hAlign="End" width="12rem" >
+							<ui:multiLabels>
+								<Label text="GSTR 2A" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Count of Transactions" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{matchsummodel>gstr2ACountOfTransactions}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="7rem">
+							<ui:multiLabels>
+								<Label text="GSTR 2A" design="Bold"/>
+								<Label text="%" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Text text="{matchsummodel>gstr2APercentage}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="7rem">
+							<ui:multiLabels>
+								<Label text="GSTR 2A" design="Bold"/>
+								<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Text text="{matchsummodel>gstr2AtaxableValue}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="7rem" >
+							<ui:multiLabels>
+								<Label text="GSTR 2A" design="Bold"/>
+								<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="End">
+									<Text text="{matchsummodel>gstr2ATotalTax}"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>	
+						
+						
+					
+					</ui:columns>
+				</ui:Table >
+			
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

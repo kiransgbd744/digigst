@@ -1,0 +1,34 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:fb="sap.ui.comp.filterbar">
+	<Dialog id="dAdapt" title="Adapt Filters" type="Message" class="sapUiSizeCompact" contentWidth="60%">
+		<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" hSpacing="0" vSpacing="0">
+			<fb:filterGroupItems>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Document Number" visibleInFilterBar="true">
+					<fb:control>
+						<MultiInput id="iDocNo" tokenUpdate="onTokenUpdate($event,'Document Number')" showValueHelp="false"/>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="IMS UniqueID" visibleInFilterBar="true">
+					<fb:control>
+						<MultiInput id="iUniqueID" tokenUpdate="onTokenUpdate($event,'IMS UniqueID')" showValueHelp="false"/>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Vendor PAN" visibleInFilterBar="true">
+					<fb:control>
+						<MultiInput id="iVenPan" tokenUpdate="onTokenUpdate($event,'Vendor PAN')" showValueHelp="false"/>
+					</fb:control>
+				</fb:FilterGroupItem>
+				<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Vendor GSTIN" visibleInFilterBar="true">
+					<fb:control>
+						<MultiInput id="iVenGstin" tokenUpdate="onTokenUpdate($event,'Vendor GSTIN')" showValueHelp="false"/>
+					</fb:control>
+				</fb:FilterGroupItem>
+			</fb:filterGroupItems>
+		</fb:FilterBar>
+		<beginButton>
+			<Button text="Apply" type="Default" class="buttoncolorSec" press="onPressGoIMSRecords('A')"/>
+		</beginButton>
+		<endButton>
+			<Button text="Cancel" type="Default" class="buttoncolorSec" press="onPressGoIMSRecords('C')"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

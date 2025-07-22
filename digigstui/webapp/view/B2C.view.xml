@@ -1,0 +1,62 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.B2C"
+	xmlns:l="sap.ui.layout" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table" xmlns:u="sap.ui.unified"
+	busyIndicatorDelay="0">
+	<f:DynamicPage >
+		<f:title>
+			<f:DynamicPageTitle>
+				<!--<f:heading>
+					<HBox>
+						<Label text="Entity :" class="sapUiTinyMarginTop" design="Bold" visible="true"/>
+						<Select items="{entity>/resp}" change="onSelectionChange" id="idEntityGeneral" showSecondaryValues="true" width="15rem" visible="true"
+							class="sapUiTinyMarginBegin">
+							<core:ListItem key="{entity>entityId}" text="{entity>entityName}"/>
+						</Select>
+					</HBox>
+				</f:heading>-->
+				<f:actions >
+					<Label text="Last Updated At :" design="Bold"/>
+					<Label id="labId" design="Bold" class="sapUiSmallMarginEnd sapUiTiniMarginTop"/>
+					<Button type="Emphasized" text="Save Changes" press="onSubmit"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<VBox>
+				<!--<Label text="1. Do you want to opt for generation of B2C QR?" design="Bold"/>
+				<RadioButtonGroup id="RB2" columns="4" width="100%" class="sapUiTinyMarginBottom" select="onSelectRB2">
+					<buttons>
+						<RadioButton id="RB2-1" text="Static QR"/>
+						<RadioButton id="RB2-2" text="Dynamic QR (Unsigned)"/>
+						<RadioButton id="RB2-3" text="Client to Provide (Self QR)"/>
+						<RadioButton id="RB2-4" text="None"/>
+					</buttons>
+				</RadioButtonGroup>-->
+				<Label text="1. Transaction Initiation Mode" design="Bold" class="sapUiTinyMarginBegin"/>
+				<RadioButtonGroup columns="2" width="100%" class="sapUiTinyMarginBottom sapUiTinyMarginBegin" id="RB31">
+					<buttons>
+						<RadioButton text="15= Dynamic QR Code (Offline) - For Other than E-com Taxpayer"/>
+						<RadioButton text="22 = Online Dynamic QR Code"/>
+					</buttons>
+				</RadioButtonGroup>
+				<Label text="2. Payee Address (UPI ID - Virtual Payment ID)" design="Bold" class="sapUiTinyMarginBegin"/>
+				<Input width="20%" id="payId" maxLength="255" class="sapUiTinyMarginBottom sapUiTinyMarginBegin"/>
+				<Label text="3. Payee Name" design="Bold" class="sapUiTinyMarginBegin sapUiTinyMarginTop"/>
+				<Input width="20%" id="payName" maxLength="99" class="sapUiTinyMarginBottom sapUiTinyMarginBegin"/>
+				<Label text="4. Payee Merchant Code" design="Bold" class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+				<Input width="20%" id="payMer" class="sapUiTinyMarginBottom sapUiTinyMarginBegin"/>
+				<Label text="5. Transaction QR Medium" design="Bold" class="sapUiTinyMarginBegin sapUiTinyMarginTop"/>
+				<RadioButtonGroup columns="5" width="100%" class="sapUiTinyMarginBottom sapUiTinyMarginBegin" select="onSelectRB7" id="RB4">
+					<buttons>
+						<RadioButton id="RB7-1" text="02 - APP"/>
+						<RadioButton id="RB7-2" text="03 - POS"/>
+						<RadioButton id="RB7-3" text="04 - Physical / Share Intent mode"/>
+						<RadioButton id="RB7-4" text="05 - ATM"/>
+						<RadioButton id="RB7-5" text="06 - WEB"/>
+					</buttons>
+				</RadioButtonGroup>
+				<Label text="6. QR Code Expiration Range (In Days)" design="Bold" class="sapUiTinyMarginBegin"/>
+				<Input width="20%" type="Number" id="QrId" class="sapUiTinyMarginBottom sapUiTinyMarginBegin"/>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

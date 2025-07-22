@@ -1,0 +1,25 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.EWB" xmlns:f="sap.f"
+	xmlns:l="sap.ui.layout" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table" busyIndicatorDelay="0">
+	<l:VerticalLayout width="99%" class="sapUiTinyMarginBegin">
+		<SegmentedButton selectedKey="docH" selectionChange="onSegDocument" width="100%" visible="true" id="idsegsetEwb" class="BackSeg seghieght"
+			enabled="false">
+			<items>
+				<SegmentedButtonItem text="Self Generated" key="docH" width="42.8%"/>
+				<SegmentedButtonItem text="Consignor Generated EWBs(Outside EWBMS)" key="docL" width="28.6%"/>
+				<SegmentedButtonItem text="Counter Party Generated" key="export" width="28.6%"/>
+			</items>
+		</SegmentedButton>
+		<SegmentedButton selectedKey="cewb" selectionChange="onSegEwb" width="100%" id="idsegEwb" visible="true">
+			<items>
+				<SegmentedButtonItem text="Outward" key="selfoutward"/>
+				<SegmentedButtonItem text="Inward" key="selfInward"/>
+				<SegmentedButtonItem text="CEWB" key="cewb"/>
+				<SegmentedButtonItem text="Outward" key="cOutward"/>
+				<SegmentedButtonItem text="Inward" key="cInward"/>
+				<SegmentedButtonItem text="Outward" key="cpOutward"/>
+				<SegmentedButtonItem text="Inward" key="cIInward"/>
+			</items>
+		</SegmentedButton>
+	</l:VerticalLayout>
+	<core:Fragment fragmentName="com.ey.digigst.fragments.EWB.CEWB" type="XML"/>
+</mvc:View>

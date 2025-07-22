@@ -1,0 +1,38 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog title="Recon Response Action" type="Standard" contentWidth="70%" contentHeight="15%" draggable="true" busyIndicatorDelay="0">
+		<buttons>
+			<Button text="Save" press="onWith3bLockSave"/>
+			<Button text="Cancel" press="onWith3bLockClose"/>
+		</buttons>
+		<HBox class="sapUiSmallMarginBegin" alignItems="Begin" justifyContent="Begin">
+			<VBox class="sapUiSmallMarginEnd">
+				<Label text="Tax Period for GSTR-3B" design="Bold" required="true"/>
+				<DatePicker id="tpid" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+			</VBox>
+			<VBox class="sapUiSmallMarginBegin sapUiSmallMarginEnd" visible="{Display>/RRVis}">
+				<Label text="Available IGST" design="Bold"/>
+				<Input id="AIid"/>
+			</VBox>
+			<VBox class="sapUiSmallMarginBegin sapUiSmallMarginEnd" visible="{Display>/RRVis}">
+				<Label text="Available CGST" design="Bold"/>
+				<Input id="ACid"/>
+			</VBox>
+			<VBox class="sapUiSmallMarginBegin sapUiSmallMarginEnd" visible="{Display>/RRVis}">
+				<Label text="Available SGST" design="Bold"/>
+				<Input id="ASid"/>
+			</VBox>
+			<VBox class="sapUiSmallMarginBegin sapUiSmallMarginEnd" visible="{Display>/RRVis}">
+				<Label text="Available CESS" design="Bold"/>
+				<Input id="ACEid"/>
+			</VBox>
+			<VBox class="sapUiSmallMarginBegin sapUiSmallMarginEnd" visible="{Display>/ITCVis}">
+				<Label text="ITC Reversal Identifier" design="Bold"/>
+				<Input id="ITCid"/>
+			</VBox>
+			<VBox class="sapUiSmallMarginBegin sapUiSmallMarginEnd">
+				<Label text="Response Remarks(Max 500 characters)" design="Bold"/>
+				<TextArea id="ATAid" maxLength="500" width="25rem" rows="3"/>
+			</VBox>
+		</HBox>
+	</Dialog>
+</core:FragmentDefinition>

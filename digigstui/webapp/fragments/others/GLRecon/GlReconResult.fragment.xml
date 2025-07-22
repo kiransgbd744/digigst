@@ -1,0 +1,871 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table">
+	<f:DynamicPage fitContent="true" class="ReconResponce">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="GL Recon Result" class="TitleColor dpTitlePadding"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Request Id" visibleInFilterBar="true">
+							<fb:control>
+								<Select items="">
+									<core:Item key="" text=""/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" press="onPressClear" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+					<Button text="Filter" class="buttoncolor" press="onSearch"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table rows="{GLReconResult>/}">
+				<ui:columns>
+					<ui:Column width="8rem">
+						<Label text="Transaction Type GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glTransactionType}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="6rem">
+						<Label text="Company Code GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glCompanyCode}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="5rem">
+						<Label text="Fiscal Year GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glFiscalYear}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Period GL (MMYYYY)" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glPeriod}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="6rem">
+						<Label text="Business Place GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glBusinessPlace}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Business Area GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glBusinessArea}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="GL Account GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glGLAccount}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="14rem">
+						<Label text="GL Description GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glGLDescription}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem">
+						<Label text="Text GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glText}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Assignment Number GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glAssignmentNumber}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="ERP Document Type GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glERPDocumentType}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Accounting Doc. Number GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glAccountingDocumentNumber}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Accounting Doc. Date GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glAccountingDocumentDate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Line Item GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glLineItemNumber}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Posting Key GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glPostingKey}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Posting Date GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glPostingDate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="Amount In Local Currency GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glAmountInLocalCurrency}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Local Currency Code GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glLocalCurrencyCode}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Clearing Doc. Number GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glClearingDocumentNumber}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Clearing Date GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glClearingDate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Customer Code GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glCustomerCode}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem">
+						<Label text="Customer Name GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glCustomerName}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="Customer GSTIN GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glCustomerGSTIN}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Vendor Code GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glVendorCode}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem">
+						<Label text="Vendor Name GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glVendorName}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="Vendor GSTIN GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glVendorGSTIN}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="6rem">
+						<Label text="Plant Code GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glPlantCode}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="6rem">
+						<Label text="Cost Center GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glCostCenter}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="6rem">
+						<Label text="Profit Center GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glProfitCenter}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Special GL Indicator GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glSpecialGLIndicator}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="6rem">
+						<Label text="Reference GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glReference}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Amounting Doc. Currency GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glAmountinDocumentCurrency}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Effective Exchange Rate GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glEffectiveExchangeRate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Document Currency Code GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glDocumentCurrencyCode}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Account Type GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glAccountType}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="6rem">
+						<Label text="Tax Code GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glTaxCode}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Withholding Tax Amount GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glWithholdingTaxAmount}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="Withholding Exempt Amount GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glWithholdingExemptAmount}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="Withholding TaxBase Amount GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glWithholdingTaxBaseAmount}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Invoice Reference GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glInvoiceReference}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Debit Credit Indicator GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glDebitCreditIndicator}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Payment Date GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glPaymentDate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Payment Block GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glPaymentBlock}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Payment Reference GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glPaymentReference}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Terms of Payment GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glTermsofPayment}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="6rem">
+						<Label text="Reference Key1 GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glReferenceKey1}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Offsetting Account Type GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glOffsettingAccountType}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Offsetting Account Number GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glOffsettingAccountNumber}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Document Header Text GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glDocumentHeaderText}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Billing Document Number GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glBillingDocumentNumber}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="6rem">
+						<Label text="Billing Doc. Date GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glBillingDocumentDate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="MIGO Number GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glMIGONumber}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="MIGO Date GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glMIGODate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="MIRO Number GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glMIRONumber}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="MIRO Date GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glMIRODate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Expense GL Mapping GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glExpenseGLMapping}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Segment GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glSegment}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Geo Level GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glGeoLevel}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="State Name GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glStateName}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="User Name GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glUserName}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Parked By GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glParkedBy}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Entry Date GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glEntryDate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Time of Entry GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glTimeofEntry}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="Remarks GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glRemarks}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="User Defined Field1 GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glUserDefinedField1}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="User Defined Field2 GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glUserDefinedField2}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="User Defined Field3 GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glUserDefinedField3}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="User Defined Field4 GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glUserDefinedField4}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="User Defined Field5 GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glUserDefinedField5}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="User Defined Field6 GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glUserDefinedField6}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="User Defined Field7 GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glUserDefinedField7}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="User Defined Field8 GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glUserDefinedField8}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="User Defined Field9 GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glUserDefinedField9}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="User Defined Field10 GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glUserDefinedField10}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="User Defined Field11 GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>glUserDefinedField11}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Return Period SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srReturnPeriod}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Document Type SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srDocumentType}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Supply Type SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srSupplyType}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Document Number SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srDocumentNumber}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Document Date SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srDocumentDate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Original Doc. Number SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srOriginalDocumentNumber}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Original Doc. Date SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srOriginalDocumentDate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem">
+						<Label text="Reason For Credit Debit Note SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srReasonForCreditDebitNote}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Supplier GSTIN SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srSupplierGSTIN}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Customer Code SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srCustomerCode}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="UIN or Composition SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srUINorComposition}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Customer GSTIN SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srCustomerGSTIN}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Original Customer GSTIN SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srOriginalCustomerGSTIN}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem">
+						<Label text="Customer Name SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srCustomerName}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Bill To State SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srBillToState}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="6rem">
+						<Label text="POS SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srPOS}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Ship To State SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srShipToState}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Line Number SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srLineNumber}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="HSN or SAC SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srHSNorSAC}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem">
+						<Label text="Product Description SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srProductDescription}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="6rem">
+						<Label text="Product Code SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srProductCode}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Category of Product SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srCategoryOfProduct}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="6rem">
+						<Label text="UoM SR" tooltip="Unit of Measurement SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srUnitOfMeasurement}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Quantity SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srQuantity}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Taxable Value SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srTaxableValue}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Integrated Tax Rate SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srIntegratedTaxRate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Integrated Tax Amount SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srIntegratedTaxAmount}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Central Tax Rate SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srCentralTaxRate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Central Tax Amount SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srCentralTaxAmount}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="State/UT Tax Rate SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srStateUTTaxRate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="State/UT Tax Amount SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srStateUTTaxAmount}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Cess Rate Advalorem SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srCessRateAdvalorem}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Cess Amount Advalorem SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srCessAmountAdvalorem}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Cess Rate Specific SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srCessRateSpecific}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Cess Amount Specific SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srCessAmountSpecific}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Invoice Value SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srInvoiceValue}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="6rem">
+						<Label text="Port Code SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srPortCode}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Shipping Bill Number SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srShippingBillNumber}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Shipping Bill Date SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srShippingBillDate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="FOB SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srFOB}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Export Duty SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srExportDuty}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="6rem">
+						<Label text="TCS Flag SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srTCSFlag}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Reverse Charge Flag SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srReverseChargeFlag}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="CR DR Pre GST SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srCRDRPreGST}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="E-Com GSTIN SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>sreComGSTIN}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="ITC Flag SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srITCFlag}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Source Identifier SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srSourceIdentifier}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="Source File Name SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srSourceFileName}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Plant Code SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srPlantCode}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Division SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srDivision}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Sub Division SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srSubDivision}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Profit Centre1 SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srProfitCentre1}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem">
+						<Label text="Profit Centre2 SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srProfitCentre2}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="GL Account Code SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srGLAccountCode}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Acc. Voucher Number SR" tooltip="Accounting Voucher Number SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srAccVoucherNumber}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="Acc.Voucher Date SR" tooltip="Accounting Voucher Date SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srAccVoucherDate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="User Defined Field1 SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srUserdefinedfield1}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="User Defined Field2 SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srUserdefinedfield2}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem">
+						<Label text="User Defined Field3 SR" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srUserdefinedfield3}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="6rem">
+						<Label text="SR vs GL" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srVsGl}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Difference in Taxable Amount" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srDiffTaxableAmount}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Difference in IGST Amount" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srDiffIgstAmount}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Difference in CGST Amount" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srDiffCgstAmount}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="Difference in SGST Amount" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+						<ui:template>
+							<Text text="{GLReconResult>srDiffSgstAmount}"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

@@ -1,0 +1,624 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table"
+	xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage visible="{=${ViewProperty>/btnSegment}==='IMSSummary'&amp;&amp;${ViewProperty>/imsSummTab}==='entity'}">
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" class="sapUiNoContentPadding"
+					width="90%">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox items="{userPermission>/respData/dataSecurity/gstin}" selectedKeys="{FilterModel>/sumEntityGstin}"
+									selectionChange="selectAll" width="100%">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Return Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dSumEntityPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy" value="{FilterModel>/sumEntityPeriod}"
+									maxDate="{FilterModel>/maxDate}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Return Type" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox selectedKey="{FilterModel>/sumEntityRetType}">
+									<core:Item key="All" text="ALL"/>
+									<core:Item key="GSTR1" text="GSTR-1"/>
+									<core:Item key="GSTR1A" text="GSTR-1A"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="{i18n>tableType}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox selectedKeys="{FilterModel>/sumEntityTabType}" selectionChange="selectAll">
+									<core:Item key="All" text="All"/>
+									<core:Item key="B2B" text="B2B"/>
+									<core:Item key="B2BA" text="B2BA"/>
+									<core:Item key="CDNR" text="CDNR"/>
+									<core:Item key="CDNRA" text="CDNRA"/>
+									<core:Item key="ECOM" text="ECOM"/>
+									<core:Item key="ECOMA" text="ECOMA"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" press="onClearSummary" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+					<Button text="Filter" press="onSearchSummary" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer id="idSummSuppIms" showFullScreen="false" autoAdjustHeight="false">
+				<commons:toolbar>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+						<!--<Button text="Generate Summary" class="buttoncolorSec" visible="{=${ViewProperty>/btnSubSegment}==='summary'}"/>-->
+						<Button text="Get GSTR-1/1A Summary" press="onGetGstr1n1ASummary('E')" visible="{=${ViewProperty>/btnSubSegment}==='summary'}"
+							class="buttoncolorSec"/>
+						<MenuButton text="Download Reports" visible="{=${ViewProperty>/btnSubSegment}==='summary'}" class="buttoncolorSec">
+							<Menu itemSelected="onDownloadImsSummReport('E',${$parameters>/item/mProperties/key})">
+								<MenuItem key="tableData" text="Table Data" press="onDownloadImsSummaryTabData"/>
+								<MenuItem text="Consildated Report - Action wise">
+									<MenuItem key="All" text="ALL"/>
+									<MenuItem key="A" text="Accepted"/>
+									<MenuItem key="R" text="Rejected"/>
+									<MenuItem key="P" text="Pending"/>
+									<MenuItem key="N" text="No Action"/>
+									<MenuItem key="NE" text="Not Eligible" visible="false"/>
+								</MenuItem>
+								<MenuItem key="gstr3bLiability" text="GSTR-3B Liability Report" visible="false"/>
+								<MenuItem key="detailReport" text="Detailed Summary Report"/>
+							</Menu>
+						</MenuButton>
+						<Button type="Transparent" icon="sap-icon://full-screen" press="onImsSummEntityFullscreen('O')" tooltip="{i18n>openFullScreen}"
+							visible="{=!${ViewProperty>/imsSummEntityFullScreen}}"/>
+						<Button type="Transparent" icon="sap-icon://exit-full-screen" press="onImsSummEntityFullscreen('C')" tooltip="{i18n>closeFullScreen}"
+							visible="{ViewProperty>/imsSummEntityFullScreen}"/>
+						<commons:ChartContainerToolbarPlaceholder/>
+					</OverflowToolbar>
+				</commons:toolbar>
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<Panel class="sapFDynamicPageAlignContent">
+								<ui:Table id="tabEntitySummary" rows="{EnitySummSupplierIms>/}" selectionBehavior="Row" class="sapUiTinyMarginTop cl_popupCheck"
+									fixedColumnCount="1" visibleRowCount="{ViewProperty>/imsSummEntityRows}" visible="{=${ViewProperty>/btnSubSegment}==='summary'}">
+									<ui:columns>
+										<ui:Column width="15rem">
+											<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<VBox>
+													<HBox>
+														<Text text="{EnitySummSupplierIms>state}" width="8rem" class="stateColor"/>
+														<Text text="{=${EnitySummSupplierIms>regType}==='REGULAR'?'':${EnitySummSupplierIms>regType}}" class="stateColor fontSmall"/>
+													</HBox>
+													<HBox justifyContent="SpaceBetween" width="100%">
+														<Link text="{EnitySummSupplierIms>gstin}" emphasized="true" press="onPressImsSummaryGstn"/>
+														<core:Icon src="sap-icon://circle-task-2" size="0.8rem" tooltip="{EnitySummSupplierIms>authTokenStatus}" class="sapUiTinyMarginBegin"
+															visible="{=!!${EnitySummSupplierIms>gstin}}"
+															press="onActivateAuthToken(${EnitySummSupplierIms>gstin},${EnitySummSupplierIms>authTokenStatus})">
+															<core:customData>
+																<core:CustomData key="authtoken" value="{=(${EnitySummSupplierIms>authTokenStatus}||'')}" writeToDom="true"/>
+															</core:customData>
+														</core:Icon>
+													</HBox>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="12rem">
+											<Label text="Get IMS Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<VBox alignItems="Center" width="100%">
+													<ObjectStatus text="{EnitySummSupplierIms>imsStatus}" state="{path:'EnitySummSupplierIms>imsStatus',formatter:'.statusClr'}"/>
+													<Text text="{EnitySummSupplierIms>imsTimeStamp}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<!--<ui:Column hAlign="Center" width="12rem">-->
+										<!--	<Label text="Generate Summary Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+										<!--	<ui:template>-->
+										<!--		<VBox alignItems="Center" width="100%">-->
+										<!--			<ObjectStatus text="{EnitySummSupplierIms>imsStatus}" state="{path:'EnitySummSupplierIms>getCountStatus',formatter:'.statusClr'}"/>-->
+										<!--			<Text text="{EnitySummSupplierIms>imsTimeStamp}" class="timeStmpClr"/>-->
+										<!--		</VBox>-->
+										<!--	</ui:template>-->
+										<!--</ui:Column>-->
+										<ui:Column hAlign="End">
+											<Label text="Total Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<Text text="{EnitySummSupplierIms>totalRecords}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label text="Accepted" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<Text text="{EnitySummSupplierIms>accepted}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label text="Pending" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<Text text="{EnitySummSupplierIms>pending}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label text="Rejected" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<Text text="{EnitySummSupplierIms>rejected}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label text="No Action" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<Text text="{EnitySummSupplierIms>noAction}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="8rem">
+											<Label text="Difference with GSTR-1 and 1A" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<HBox direction="Column">
+													<core:Icon src="sap-icon://sys-enter-2" color="#228B22" useIconTooltip="false" visible="{EnitySummSupplierIms>diffWithGstr1And1A}"/>
+													<core:Icon src="sap-icon://error" color="#B22222" useIconTooltip="false" visible="{=!${EnitySummSupplierIms>diffGstr1and1a}}"/>
+												</HBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label text="GSTR-1 Summary Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<VBox alignItems="Center" width="100%">
+													<ObjectStatus text="{EnitySummSupplierIms>gstr1SummaryStatus}"
+														state="{path:'EnitySummSupplierIms>gstr1SummaryStatus',formatter:'.statusClr'}"/>
+													<Text text="{EnitySummSupplierIms>gstr1SummaryStatusTimeStamp}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label text="GSTR-1A Summary Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<VBox alignItems="Center" width="100%">
+													<ObjectStatus text="{EnitySummSupplierIms>gstr1ASummaryStatus}"
+														state="{path:'EnitySummSupplierIms>gstr1ASummaryStatus',formatter:'.statusClr'}"/>
+													<Text text="{EnitySummSupplierIms>gstr1ASummaryStatusTimeStamp}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+								<ui:Table id="tabDetSummary" rows="{DetailSummSupplierIms>/}" selectionBehavior="Row" class="sapUiTinyMarginTop cl_popupCheck"
+									fixedColumnCount="1" visibleRowCount="{ViewProperty>/imsSummEntityRows}" visible="{=${ViewProperty>/btnSubSegment}==='details'}">
+									<ui:columns>
+										<ui:Column width="15rem">
+											<ui:multiLabels>
+												<Label/>
+												<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<VBox>
+													<HBox>
+														<Text text="{DetailSummSupplierIms>state}" width="8rem" class="stateColor"/>
+														<Text text="{=${DetailSummSupplierIms>regType}==='REGULAR'?'':${DetailSummSupplierIms>regType}}" class="stateColor fontSmall"/>
+													</HBox>
+													<HBox justifyContent="SpaceBetween" width="100%">
+														<Label text="{DetailSummSupplierIms>gstin}"/>
+														<core:Icon src="sap-icon://circle-task-2" size="0.8rem" tooltip="{DetailSummSupplierIms>authTokenStatus}"
+															visible="{=${DetailSummSupplierIms>gstin}===''?false:true}"
+															press="onActivateAuthToken(${DetailSummSupplierIms>gstin},${DetailSummSupplierIms>authTokenStatus})" class="sapUiTinyMarginBegin">
+															<core:customData>
+																<core:CustomData key="authtoken" value="{=(${DetailSummSupplierIms>authTokenStatus}||'')}" writeToDom="true"/>
+															</core:customData>
+														</core:Icon>
+													</HBox>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="10rem">
+											<ui:multiLabels>
+												<Label/>
+												<Label text="Get Count Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<VBox alignItems="Center" width="100%">
+													<ObjectStatus text="{DetailSummSupplierIms>getCountStatus}" state="{path:'DetailSummSupplierIms>getCountStatus',formatter:'.statusClr'}"/>
+													<Text text="{DetailSummSupplierIms>getCountStatusDateTime}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column headerSpan="3" hAlign="End" width="6rem">
+											<ui:multiLabels>
+												<Label text="Total Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{DetailSummSupplierIms>totalRecords/count}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Label text="Total Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{path:'DetailSummSupplierIms>totalRecords/totalTaxableValue', formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{path:'DetailSummSupplierIms>totalRecords/totalTax', formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column headerSpan="3" hAlign="End" width="6rem">
+											<ui:multiLabels>
+												<Label text="Accepted Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{DetailSummSupplierIms>acceptedRecords/count}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Label text="Total Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{path:'DetailSummSupplierIms>acceptedRecords/totalTaxableValue', formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{path:'DetailSummSupplierIms>acceptedRecords/totalTax', formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column headerSpan="3" hAlign="End" width="6rem">
+											<ui:multiLabels>
+												<Label text="Pending Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{DetailSummSupplierIms>pendingRecords/count}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Label text="Total Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{path:'DetailSummSupplierIms>pendingRecords/totalTaxableValue', formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{path:'DetailSummSupplierIms>pendingRecords/totalTax', formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column headerSpan="3" hAlign="End" width="6rem">
+											<ui:multiLabels>
+												<Label text="Rejected Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{DetailSummSupplierIms>rejectedRecords/count}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Label text="Total Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{path:'DetailSummSupplierIms>rejectedRecords/totalTaxableValue', formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{path:'DetailSummSupplierIms>rejectedRecords/totalTax', formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column headerSpan="3" hAlign="End" width="6rem">
+											<ui:multiLabels>
+												<Label text="No Action Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{DetailSummSupplierIms>noActionRecords/count}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Label text="Total Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{path:'DetailSummSupplierIms>noActionRecords/totalTaxableValue', formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{path:'DetailSummSupplierIms>noActionRecords/totalTax', formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="8rem">
+											<Label text="Difference with GSTR-1 and 1A" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<HBox direction="Column">
+													<core:Icon src="sap-icon://sys-enter-2" visible="{DetailSummSupplierIms>differenceWithGstr1And1A}" color="#228B22" useIconTooltip="false"/>
+													<core:Icon src="sap-icon://error" visible="{=!${DetailSummSupplierIms>differenceWithGstr1And1A}}" color="#B22222" useIconTooltip="false"/>
+												</HBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem">
+											<Label text="GSTR-1 Summary Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<VBox alignItems="Center">
+													<ObjectStatus text="{DetailSummSupplierIms>gstr1Summary/status}"
+														state="{path:'DetailSummSupplierIms>gstr1Summary/status',formatter:'.statusClr'}"/>
+													<Text text="{DetailSummSupplierIms>gstr1Summary/dateTime}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End" width="10rem">
+											<Label text="GSTR-1A Summary Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<VBox alignItems="Center">
+													<ObjectStatus text="{DetailSummSupplierIms>gstr1aSummary/status}"
+														state="{path:'DetailSummSupplierIms>gstr1aSummary/status',formatter:'.statusClr'}"/>
+													<Text text="{DetailSummSupplierIms>gstr1aSummary/dateTime}" class="timeStmpClr"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+							</Panel>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage visible="{=${ViewProperty>/btnSegment}==='IMSSummary'&amp;&amp;${ViewProperty>/imsSummTab}==='gstn'}">
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onGoSummary" clear="onClearMainFilter"
+					useToolbar="false" class="sapUiNoContentPadding" width="90%">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<Select items="{DataPermission>/respData/dataSecurity/gstin}" selectedKey="{FilterModel>/sumGstnGstin}" selectionChange="selectAll"
+									width="100%">
+									<core:Item key="{DataPermission>value}" text="{DataPermission>value}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Return Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dSumGstnPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy" value="{FilterModel>/sumGstnPeriod}"
+									maxDate="{FilterModel>/maxDate}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" press="onClearGstnSummary" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+					<Button text="Filter" press="onSearchGstnSummary" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer id="ccImsSummGstn" showFullScreen="false" autoAdjustHeight="false">
+				<commons:toolbar>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+						<!--<Button text="Generate Summary" class="buttoncolorSec" visible="{=${ViewProperty>/btnSubSegment}==='summary'}"/>-->
+						<Button text="Get GSTR-1/1A Summary" press="onGetGstr1n1ASummary('S')" visible="{=${ViewProperty>/btnSubSegment}==='summary'}"
+							class="buttoncolorSec"/>
+						<MenuButton text="Download Reports" class="buttoncolorSec">
+							<Menu itemSelected="onDownloadImsSummReport('G',${$parameters>/item/mProperties/key})">
+								<MenuItem text="Consildated Report - Action wise">
+									<MenuItem key="All" text="ALL"/>
+									<MenuItem key="A" text="Accepted"/>
+									<MenuItem key="R" text="Rejected"/>
+									<MenuItem key="P" text="Pending"/>
+									<MenuItem key="N" text="No Action"/>
+									<MenuItem key="NE" text="Not Eligible" visible="false"/>
+								</MenuItem>
+								<MenuItem key="gstr3bLiability" text="GSTR-3B Liability Report" visible="false"/>
+								<MenuItem key="detailReport" text="Detailed Summary Report"/>
+							</Menu>
+						</MenuButton>
+						<Button icon="sap-icon://expand-all" tooltip="{i18n>expand}" press="onExpandCollapseImsSummary('E')" class="buttoncolorSec"/>
+						<Button icon="sap-icon://collapse-all" tooltip="{i18n>collapse}" press="onExpandCollapseImsSummary('C')" class="buttoncolorSec"/>
+						<Button type="Transparent" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" press="onImsSummGstnFullscreen('O')"
+							visible="{=!${ViewProperty>/imsSummGstnFullScreen}}"/>
+						<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" press="onImsSummGstnFullscreen('C')"
+							visible="{ViewProperty>/imsSummGstnFullScreen}"/>
+						<commons:ChartContainerToolbarPlaceholder/>
+					</OverflowToolbar>
+				</commons:toolbar>
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:TreeTable id="tabImsSummGstn" rows="{GstnImsSummary>/}" selectionMode="None" visibleRowCount="{ViewProperty>/imsSummGstnRows}"
+								fixedColumnCount="1" class="sapUiTinyMarginTop cl_popupCheck">
+								<ui:columns>
+									<ui:Column width="10rem">
+										<Label text="Table Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{GstnImsSummary>tableType}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column headerSpan="7" hAlign="End" width="6rem">
+										<ui:multiLabels>
+											<HBox justifyContent="Center" width="100%">
+												<Label text="IMS" design="Bold" class="sapUiTinyMarginEnd"/>
+												<Text text="{ViewProperty>/gstnSummDate}" visible="false" class="cl_NoteText"/>
+											</HBox>
+											<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{GstnImsSummary>imsCount}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="Total Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'GstnImsSummary>imsTaxableValue', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'GstnImsSummary>imsTotalTax', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'GstnImsSummary>imsIgst', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'GstnImsSummary>imsCgst', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'GstnImsSummary>imsSgst', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'GstnImsSummary>imsCess', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column headerSpan="7" hAlign="End" width="6rem">
+										<ui:multiLabels>
+											<HBox justifyContent="Center" width="100%">
+												<Label text="GSTR-1 and 1A" design="Bold"/>
+												<Text text="{ViewProperty>/gstnSummDate}" visible="false" class="sapUiTinyMarginBeginEnd cl_NoteText"/>
+												<core:Icon src="sap-icon://refresh" size="0.8rem" visible="false"/>
+											</HBox>
+											<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{GstnImsSummary>gstr1and1ACount}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="Total Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'GstnImsSummary>gstr1and1ATaxableValue', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'GstnImsSummary>gstr1and1ATotalTax', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'GstnImsSummary>gstr1and1AIgst', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'GstnImsSummary>gstr1and1ACgst', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'GstnImsSummary>gstr1and1ASgst', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path:'GstnImsSummary>gstr1and1ACess', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="6rem">
+										<ui:multiLabels>
+											<Label text=""/>
+											<Label text="Difference" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										</ui:multiLabels>
+										<ui:template>
+											<core:Icon src="sap-icon://show" size="1.5rem" tooltip="View Differential Data" press="onDiffImsSummaryGstn" class="clsIcon"
+												visible="{=${GstnImsSummary>type}==='P'}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:TreeTable>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

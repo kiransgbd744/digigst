@@ -1,0 +1,279 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar" controllerName="com.ey.digigst.controller.InvoiceManage" displayBlock="true" busyIndicatorDelay="0">
+	<f:DynamicPage id="dpInvManage">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<FlexBox class="sapUiNoMargin sapUiNoContentpadding">
+						<Button type="Transparent" id="bManageBack" icon="sap-icon://nav-back" tooltip="Back" class="sapUiNoContentpadding" visible="false"
+							press="onPressBack"/>
+						<Title text="Invoice Management" class="sapUiTinyMarginBegin"/>
+					</FlexBox>
+				</f:heading>
+				<f:actions>
+					<SegmentedButton id="sbInvType" selectedKey="ASP" selectionChange="onChangeSegment" class="sapUiTinyMarginBegin">
+						<items>
+							<SegmentedButtonItem text="ASP" key="asp" width="6rem"/>
+							<SegmentedButtonItem text="GSTN" key="gstn" width="6rem"/>
+						</items>
+					</SegmentedButton>
+					<SegmentedButton id="sbManage" selectedKey="Process" selectionChange="onChangeSegment" class="sapUiTinyMarginBegin">
+						<items>
+							<SegmentedButtonItem text="Processed" key="process" width="6rem"/>
+							<SegmentedButtonItem text="Error" key="error" width="6rem"/>
+						</items>
+					</SegmentedButton>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader id="dpHeader">
+				<fb:FilterBar id="fbManage" width="100%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onSearch"
+					clear="onClearFilter" useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>dataType}" visibleInFilterBar="true"
+							visible="{Properties>/aspView}">
+							<fb:control>
+								<Select id="slInvDataType" forceSelection="true" change="onSelectChange" width="100%">
+									<core:Item key="outward" text="Outward"/>
+									<core:Item key="inward" text="Inward"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>criteria}" visibleInFilterBar="true"
+							visible="{Properties>/aspView}">
+							<fb:control>
+								<Select id="slInvCriteria" forceSelection="false" selectedKey="{DropDown>/criteria/0/key}" change="onChangeCriteria"
+									items="{path:'DropDown>/criteria'}" width="100%">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>fromDate}" visibleInFilterBar="true"
+							visible="{=!${Properties>/returnPeriod} &amp;&amp; ${Properties>/aspView}}">
+							<fb:control>
+								<DatePicker id="iFromDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="{i18n>toDate}" visibleInFilterBar="true"
+							visible="{=!${Properties>/returnPeriod} &amp;&amp; ${Properties>/aspView}}">
+							<fb:control>
+								<DatePicker id="iToDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" change="onChangeValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="{i18n>fromPeriod}" visibleInFilterBar="true"
+							visible="{=${Properties>/returnPeriod} &amp;&amp; ${Properties>/aspView}}">
+							<fb:control>
+								<DatePicker id="iFromPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="{i18n>toPeriod}" visibleInFilterBar="true"
+							visible="{=${Properties>/returnPeriod} &amp;&amp; ${Properties>/aspView}}">
+							<fb:control>
+								<DatePicker id="iToPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="onChangeValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="{i18n>entity}" visibleInFilterBar="true"-->
+						<!--	visible="{Properties>/aspView}">-->
+						<!--	<fb:control>-->
+						<!--		<Select id="slInvEntity" items="{EntityModel>/}" selectedKey="{EntityModel>/0/entityId}" forceSelection="false" change="onEntityChange"-->
+						<!--			width="100%">-->
+						<!--			<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>-->
+						<!--		</Select>-->
+						<!--	</fb:control>-->
+						<!--</fb:FilterGroupItem>-->
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="H" label="{i18n>gstin}" visibleInFilterBar="true"
+							visible="{Properties>/aspView}">
+							<fb:control>
+								<MultiComboBox id="slInvGstin" items="{userPermission>/respData/dataSecurity/gstin}" change="onChangeValue">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="I" label="{i18n>returnType}" visibleInFilterBar="true" id="fiReturnType"
+							visible="{=${Properties>/returnType} &amp;&amp; ${Properties>/aspView}}">
+							<fb:control>
+								<ComboBox id="slReturnType" items="{path:'ReturnType>/'}" selectionChange="onChangeReturnType" width="100%">
+									<core:Item key="{ReturnType>key}" text="{ReturnType>text}"/>
+								</ComboBox>
+								<!--	<Select id="slReturnType" items="{ReturnType>/}" forceSelection="true" change="onChangeReturnType" width="100%">
+									<core:Item key="{ReturnType>key}" text="{ReturnType>text}"/>
+								</Select>-->
+							</fb:control>
+						</fb:FilterGroupItem>
+						<!--	<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="I" label="{i18n>dataCategory}" visibleInFilterBar="true" id="fiDataCateg">
+							<fb:control>
+								<MultiComboBox id="slDataCateg" items="{path:'DataCategory>/'}" width="100%">
+									<core:Item key="{DataCategory>key}" text="{DataCategory>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>-->
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="J" label="{i18n>tableNumber}" visibleInFilterBar="true" id="fiTableNo"
+							visible="{=${Properties>/tableNo} &amp;&amp; ${Properties>/aspView}}">
+							<fb:control>
+								<MultiComboBox id="slTabNumber" items="{path:'TableNumber>/'}" width="100%" change="onChangeValue">
+									<core:Item key="{TableNumber>key}" text="{TableNumber>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="K" label="{i18n>docType}" visibleInFilterBar="true"
+							visible="{Properties>/aspView}">
+							<fb:control>
+								<MultiComboBox id="slDocType" items="{path:'DocType>/'}" width="100%" change="onChangeValue">
+									<core:Item key="{DocType>key}" text="{DocType>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="L" label="{i18n>docNo}" visibleInFilterBar="true"
+							visible="{Properties>/aspView}">
+							<fb:control>
+								<Input id="idInvDocNo" value="" maxLength="16" change="onChangeValue" liveChange="onLiveChange"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="M" label="{i18n>gstnStatus}" visibleInFilterBar="true" id="fiStatus"
+							visible="{=${Properties>/gstnStatus} &amp;&amp; ${Properties>/aspView}}">
+							<fb:control>
+								<MultiComboBox id="slGstnStatus" width="100%" change="onChangeValue">
+									<core:Item key="saved" text="Saved"/>
+									<core:Item key="notSaved" text="Not Saved"/>
+									<core:Item key="error" text="Error"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="N" label="{i18n>counterPartyGstin}" visibleInFilterBar="true"
+							visible="{Properties>/aspView}">
+							<fb:control>
+								<MultiComboBox id="slCpGstin" width="100%" change="onChangeValue">
+									<!--<core:Item key="" text=""/>-->
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="O" label="{i18n>counterPartyAction}" visibleInFilterBar="true" id="fiActionCP"
+							visible="{=${Properties>/cpAction} &amp;&amp; ${Properties>/aspView}}">
+							<fb:control>
+								<MultiComboBox id="slCpAction" items="{path:'DropDown>/counterPartyAction'}" width="100%" change="onChangeValue">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="P" label="{i18n>validation}" visibleInFilterBar="true"
+							visible="{=${Properties>/validation} &amp;&amp; ${Properties>/aspView}}">
+							<fb:control>
+								<Select id="slValidation" items="{path:'DropDown>/validation'}" width="100%" change="onChangeValue">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="S" label="{i18n>dataCategory}" visibleInFilterBar="true">-->
+						<!--	<fb:control>-->
+						<!--		<MultiComboBox items="{path:'DataCategory>/'}" width="100%">-->
+						<!--			<core:Item key="{DataCategory>key}" text="{DataCategory>text}"/>-->
+						<!--		</MultiComboBox>-->
+						<!--	</fb:control>-->
+						<!--</fb:FilterGroupItem>-->
+						<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="T" label="{i18n>tableNumber}" visibleInFilterBar="true"-->
+						<!--	visible="{Properties>/tableNo}">-->
+						<!--	<fb:control>-->
+						<!--		<MultiComboBox items="{path:'TableNumber>/'}" width="100%">-->
+						<!--			<core:Item key="{TableNumber>key}" text="{TableNumber>text}"/>-->
+						<!--		</MultiComboBox>-->
+						<!--	</fb:control>-->
+						<!--</fb:FilterGroupItem>-->
+						<fb:FilterGroupItem groupName="G2" groupTitle="GSTN" name="G1" label="{i18n>dataType}" visibleInFilterBar="true"
+							visible="{=!${Properties>/aspView}}">
+							<fb:control>
+								<Select id="slGstnDataType" items="{DropDown>/dataType1}" forceSelection="false" change="onSelectChange">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<!--<fb:FilterGroupItem groupName="G2" groupTitle="GSTN" name="G2" label="{i18n>entity}" visibleInFilterBar="true"-->
+						<!--	visible="{=!${Properties>/aspView}}">-->
+						<!--	<fb:control>-->
+						<!--		<Select id="slGstnEntity" items="{EntityModel>/}" forceSelection="false" change="onChangeGstnEntity" width="100%">-->
+						<!--			<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>-->
+						<!--		</Select>-->
+						<!--	</fb:control>-->
+						<!--</fb:FilterGroupItem>-->
+						<fb:FilterGroupItem groupName="G2" groupTitle="GSTN" name="G3" label="{i18n>gstin}" visibleInFilterBar="true"
+							visible="{=!${Properties>/aspView}}">
+							<fb:control>
+								<MultiComboBox id="slGstnGstin" items="{userPermission>/respData/dataSecurity/gstin}">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G2" groupTitle="GSTN" name="G4" label="{i18n>fromPeriod}" visibleInFilterBar="true"
+							visible="{=!${Properties>/aspView}}">
+							<fb:control>
+								<DatePicker id="gFromPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G2" groupTitle="GSTN" name="G5" label="{i18n>toPeriod}" visibleInFilterBar="true"
+							visible="{=!${Properties>/aspView}}">
+							<fb:control>
+								<DatePicker id="gToPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G2" groupTitle="GSTN" name="G6" label="{i18n>returnType}" visibleInFilterBar="true"
+							visible="{=!${Properties>/aspView}}">
+							<fb:control>
+								<ComboBox id="slGstnReturnType" items="{path:'ReturnType>/'}" selectionChange="onChangeReturnType" width="100%">
+									<core:Item key="{ReturnType>key}" text="{ReturnType>text}"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G2" groupTitle="GSTN" name="G7" label="{i18n>tableNumber}" visibleInFilterBar="true"
+							visible="{=!${Properties>/aspView}}">
+							<fb:control>
+								<MultiComboBox id="slGstnTabNumber" items="{path:'TableNumber>/'}" width="100%">
+									<core:Item key="{TableNumber>key}" text="{TableNumber>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G2" groupTitle="GSTN" name="G8" label="{i18n>docType}" visibleInFilterBar="true"
+							visible="{=!${Properties>/aspView}}">
+							<fb:control>
+								<MultiComboBox id="slGstnDocType" items="{path:'DocType>/'}" width="100%">
+									<core:Item key="{DocType>key}" text="{DocType>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G2" groupTitle="GSTN" name="G9" label=" {i18n>docNo}" visibleInFilterBar="true"
+							visible="{=!${Properties>/aspView}}">
+							<fb:control>
+								<Input id="idGstnDocNo" value="" maxLength="16" change="onChange" liveChange="onLiveChange"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G2" groupTitle="GSTN" name="G10" label=" {i18n>refId}" visibleInFilterBar="true"
+							visible="{=!${Properties>/aspView}}">
+							<fb:control>
+								<Input id="idGstnRefId" value="" maxLength="50" change="onChange" liveChange="onLiveChange"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End">
+					<Button icon="sap-icon://filter" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilter"/>
+					<Button text="{i18n>clear}" press="onPressClear" class="sapUiTinyMarginBeginEnd"/>
+					<Button text="{i18n>go}" type="Emphasized" press="onSearch"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiTinyMarginTop sapUiNoContentPadding">
+				<Toolbar id="iInvoiceToolbar" class="sapUiTinyMarginEnd">
+					<Title id="txtRecords" level="H3"/>
+					<ToolbarSpacer/>
+					<Button type="Emphasized" id="bCounterParty" text="Counter-Party Action" visible="false"/>
+					<Button type="Emphasized" id="bEditProcess" text="Edit" visible="false"/>
+					<Button type="Emphasized" id="bTrail" text="Change Trail" enabled="false"/>
+					<Button type="Emphasized" icon="sap-icon://download" id="idPRdownloadInv" tooltip="{i18n>download}" press="onPressDownload" enabled="false"/>
+				</Toolbar>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.invManage.Process" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.invManage.Errors" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.invManage.EditInvoice" type="XML"/>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

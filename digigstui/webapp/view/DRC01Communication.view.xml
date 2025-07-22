@@ -1,0 +1,17 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.DRC01Communication"
+	busyIndicatorDelay="0">
+	<IconTabBar expandable="false" expanded="true" backgroundDesign="Transparent" stretchContentHeight="true"
+		selectedKey="{FilterModel>/selectedKey}" select="handleIconTabBarSelect" class="sapUiNoContentPadding sapUiNoMargin">
+		<items>
+			<IconTabFilter text="DRC01 Communication" tooltip="DRC01 Communication" key="drcCommunication" class="sapUiSmallMarginEnd">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr3b.drcComm.DrcCommunication" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Scheduling Frequency" tooltip="Scheduling Frequency" key="scheduleFrequency">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr3b.drcComm.SchedulingFrequency" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="View E-mail" tooltip="View E-mail" key="viewEmail">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.gstr3b.drcComm.ViewEmail" type="XML"/>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</mvc:View>

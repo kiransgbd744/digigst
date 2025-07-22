@@ -1,0 +1,358 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage id="dpGstr7Summary" class="cl_dpScroll" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" class="sapUiTinyMarginEnd" tooltip="{i18>back}" press="onPressBack"/>
+						<Title text="GSTR - 7 (Summary)" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar id="fbSummaryRecord" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idSummaryGstin" items="{path:'TDSGstin>/'}">
+									<core:Item key="{TDSGstin>value}" text="{TDSGstin>value}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>taxPeriod}" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="idSummarytaxPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" id="fbSummaryHbox" width="10%">
+					<!--<Button id="bSummaryFilter" icon="sap-icon://filter" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilter"/>-->
+					<Button id="bSummaryClear" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onPressClear"/>
+					<Button id="bSummaryGo" text="Filter" class="buttoncolor" press="onSearch"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer showFullScreen="false" showZoom="true" showPersonalization="false" autoAdjustHeight="false" visible="true">
+				<commons:toolbar>
+					<OverflowToolbar height="3.2rem">
+						<ToolbarSpacer/>
+						<VBox>
+							<Text text=""/>
+							<HBox>
+								<Button class="buttoncolorSec" text="{i18n>gstr7detail}" press="onPressGstr7GetDetails('S')" visible="false"/>
+								<Button text="{i18n>saveStatus}" press="onPressSaveStatus($event,'S')" enabled="{= ${userPermission>/appPermission/P6}}"
+									class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+								<Button text="{i18n>onlineErrorCorr}" press="onPressErrorCorrection('S')" enabled="{= ${userPermission>/appPermission/P6}}"
+									class="sapUiTinyMarginEnd buttoncolorSec" visible="false"/>
+								<MenuButton text="{i18n>downReport}" class="sapUiTinyMarginEnd buttoncolorSec" enabled="{= ${userPermission>/appPermission/P6}}">
+									<Menu id="bSDownloadRpt" itemSelected="onPressDownloadReport($event,${$parameters>/item},'S')">
+										<MenuItem key="gstr7AsUploaded" text="{i18n>aspUploaded}"/>
+										<MenuItem key="gstr7AspError" text="{i18n>aspError}"/>
+										<MenuItem key="gstr7GstnError" text="{i18n>gstnError}"/>
+									</Menu>
+								</MenuButton>
+								<Button id="bSApprovalRequest" text="{i18n>requestApproval}" class="sapUiTinyMarginEnd buttoncolorSec" press="onPressApprovalRequest"
+									enabled="false"/>
+								<Button id="bSDeleteGstn" text="{i18n>deleteData}" class="sapUiTinyMarginEnd buttoncolorSec" press="onPressDeleteData" enabled="false"/>
+								<Button text="{i18n>submit}" class="sapUiTinyMarginEnd buttoncolorSec" press="onPressSubmit('P')" enabled="false"/>
+								<Button text="{i18n>signFile}" class="sapUiTinyMarginEnd buttoncolorSec" enabled="false"/>
+							</HBox>
+						</VBox>
+						<VBox>
+							<HBox>
+								<ObjectStatus id="tSummSave" state="Warning"/>
+								<Text text=""/>
+							</HBox>
+							<HBox>
+								<Button id="bSSaveToGstn" text="{i18n>saveGstn}" press="onPressSaveGstn" enabled="{= ${userPermission>/appPermission/P6}}"
+									class="sapUiTinyMarginEnd buttoncolorSec"/>
+							</HBox>
+						</VBox>
+						<VBox>
+							<HBox>
+								<ObjectStatus id="tSummUpdate" state="Warning"/>
+								<Text text=""/>
+							</HBox>
+							<HBox>
+								<Button class="buttoncolorSec" id="bSummUpdate" text="{i18n>updataGstnData}" enabled="{= ${userPermission>/appPermission/P6}}"
+									press="onUpdateGstnData($event,'S')"/>
+							</HBox>
+						</VBox>
+						<HBox class="sapUiTinyMarginBegin sapUiTinyMarginTop">
+							<Text text=""/>
+							<HBox>
+								<Button type="Transparent" icon="sap-icon://excel-attachment" enabled="false" tooltip="{i18n>downExcel}" press="onExportExcel('S')"/>
+								<MenuButton icon="sap-icon://pdf-attachment" type="Transparent" enabled="{= ${userPermission>/appPermission/P6}}" class="cl_dropgstr1"
+									tooltip="{i18n>downPdf}">
+									<Menu>
+										<MenuItem text="As per DigiGST Values" key="delete1" press="onPressDownloadPdf(true)"/>
+										<MenuItem text="As per GSTN Values" key="delete2" press="onPressDownloadPdf(false)"/>
+									</Menu>
+								</MenuButton>
+							</HBox>
+						</HBox>
+						<commons:ChartContainerToolbarPlaceholder/>
+					</OverflowToolbar>
+				</commons:toolbar>
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<Panel class="sapUiNoContentPadding">
+								<l:BlockLayout background="Dashboard" id="id_BlockLayoutgstr1" class="cl_shadow">
+									<l:BlockLayoutRow class="sapUiNoContentPadding">
+										<l:BlockLayoutCell id="id_BlCellgstr1" width="13">
+											<Toolbar height="2.2rem" class="supplToolbar supplToolbarCol">
+												<Label text="Summary" design="Bold" textAlign="Center" width="100%"/>
+											</Toolbar>
+											<HBox class="sapUiTinyMarginTopBottom">
+												<VBox width="4rem">
+													<Text/>
+													<Label text="DigiGST" class="sapUiTinyMarginBegin sapUiTinyMarginTop" design="Bold"/>
+												</VBox>
+												<VBox alignItems="Center" width="20%">
+													<Label text="Count" design="Bold"/>
+													<Text text="{HeaderSummary>/ASP/count}" class="sapUiTinyMarginTop"/>
+												</VBox>
+												<VBox alignItems="Center" width="20%">
+													<Label text="Total Amount" design="Bold"/>
+													<Text text="{path:'HeaderSummary>/ASP/totalTax', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+												</VBox>
+												<VBox alignItems="Center" width="20%">
+													<Label text="IGST" design="Bold"/>
+													<Text text="{path:'HeaderSummary>/ASP/igst', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+												</VBox>
+												<VBox alignItems="Center" width="20%">
+													<Label text="CGST" design="Bold"/>
+													<Text text="{path:'HeaderSummary>/ASP/cgst', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+												</VBox>
+												<VBox alignItems="Center" width="20%">
+													<Label text="SGST" design="Bold"/>
+													<Text text="{path:'HeaderSummary>/ASP/sgst', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+												</VBox>
+											</HBox>
+											<HBox class="sapUiTinyMarginTopBottom">
+												<VBox width="4rem">
+													<Label text="GSTN" class="sapUiTinyMarginBegin" design="Bold"/>
+												</VBox>
+												<VBox alignItems="Center" width="20%">
+													<Text text="{HeaderSummary>/GSTN/count}" class="sapUiTinyMarginTop"/>
+												</VBox>
+												<VBox alignItems="Center" width="20%">
+													<Text text="{path:'HeaderSummary>/GSTN/totalTax', formatter:'.formatter.amountValue'}"/>
+												</VBox>
+												<VBox alignItems="Center" width="20%">
+													<Text text="{path:'HeaderSummary>/GSTN/igst', formatter:'.formatter.amountValue'}"/>
+												</VBox>
+												<VBox alignItems="Center" width="20%">
+													<Text text="{path:'HeaderSummary>/GSTN/cgst', formatter:'.formatter.amountValue'}"/>
+												</VBox>
+												<VBox alignItems="Center" width="20%">
+													<Text text="{path:'HeaderSummary>/GSTN/sgst', formatter:'.formatter.amountValue'}"/>
+												</VBox>
+											</HBox>
+											<HBox class="sapUiTinyMarginTopBottom">
+												<VBox width="4rem">
+													<Label text="Diff" class="sapUiTinyMarginBegin" design="Bold"/>
+												</VBox>
+												<VBox alignItems="Center" width="20%">
+													<Text text="{HeaderSummary>/DIFF/count}" class="sapUiTinyMarginTop"/>
+												</VBox>
+												<VBox alignItems="Center" width="20%">
+													<Text text="{path:'HeaderSummary>/DIFF/totalTax', formatter:'.formatter.amountValue'}"/>
+												</VBox>
+												<VBox alignItems="Center" width="20%">
+													<Text text="{path:'HeaderSummary>/DIFF/igst', formatter:'.formatter.amountValue'}"/>
+												</VBox>
+												<VBox alignItems="Center" width="20%">
+													<Text text="{path:'HeaderSummary>/DIFF/cgst', formatter:'.formatter.amountValue'}"/>
+												</VBox>
+												<VBox alignItems="Center" width="20%">
+													<Text text="{path:'HeaderSummary>/DIFF/sgst', formatter:'.formatter.amountValue'}"/>
+												</VBox>
+											</HBox>
+										</l:BlockLayoutCell>
+									</l:BlockLayoutRow>
+								</l:BlockLayout>
+								<ui:Table id="tabOutward" rows="{ProcessSummary>/response/}" selectionMode="None" fixedColumnCount="1" visibleRowCount="2">
+									<ui:extension>
+										<Toolbar>
+											<Label text="Showing:" design="Bold"/>
+											<CheckBox text="DigiGST" selected="{visiSummAnx1>/asp}" editable="{=!${visiSummAnx1>/enableAsp}}" select="onSelectCheckBox"/>
+											<CheckBox text="{i18n>gstn}" selected="{visiSummAnx1>/gstn}" editable="{=!${visiSummAnx1>/enableGstn}}" select="onSelectCheckBox"/>
+											<CheckBox text="{i18n>difference}" selected="{visiSummAnx1>/diff}" editable="{=!${visiSummAnx1>/enableDiff}}" select="onSelectCheckBox"/>
+											<ToolbarSpacer/>
+										</Toolbar>
+									</ui:extension>
+									<ui:columns>
+										<ui:Column width="18rem">
+											<Label text="Table Section" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<HBox justifyContent="SpaceBetween" alignItems="End" width="100%" height="100%">
+													<HBox>
+														<!--<Text text="{path:'ProcessSummary>section', formatter:'.formatter.sectionFormatgstr7'}"/>-->
+														<Link text="{path:'ProcessSummary>section', formatter:'.formatter.sectionFormatgstr7'}" emphasized="true"
+															press="onPressGstr7TableTypeLink(${ProcessSummary>section})"/>
+														<!--<Label text=" *" design="Bold" visible="{=(${ProcessSummary>taxDocType}==='B2B'||${ProcessSummary>taxDocType}==='B2BA')?true:false}"/>-->
+													</HBox>
+													<!--<core:Icon src="sap-icon://download" tooltip="{i18n>downReport}" size="0.8rem" visible="false"/>-->
+												</HBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="120" headerSpan="5" hAlign="End" visible="{visiSummAnx1>/asp}">
+											<ui:multiLabels>
+												<Label text="{i18n>DigiGST}" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="{i18n>count}" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<HBox justifyContent="End" width="100%">
+													<!--<core:Icon src="sap-icon://edit" tooltip="Edit" size="0.8rem" visible="true" press="onPressEdit($event, ${ProcessSummary>section})"
+														class="sapUiSmallMarginEnd"/>-->
+													<Text text="{ProcessSummary>aspCount}"/>
+												</HBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/asp}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="{i18n>totalAmount}" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path:'ProcessSummary>aspTotalAmount'}], formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/asp}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="{i18n>igst}" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path:'ProcessSummary>aspIgst'}], formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/asp}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="{i18n>cgst}" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path:'ProcessSummary>aspCgst'}], formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/asp}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="{i18n>sgst}" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path:'ProcessSummary>aspSgst'}], formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="120" headerSpan="5" hAlign="End" visible="{visiSummAnx1>/gstn}">
+											<ui:multiLabels>
+												<Label text="{i18n>gstn}" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="{i18n>count}" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{ProcessSummary>gstnCount}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/gstn}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="{i18n>totalAmount}" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path:'ProcessSummary>gstnTotalAmount'}], formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/gstn}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="{i18n>igst}" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path:'ProcessSummary>gstnIgst'}], formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/gstn}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="{i18n>cgst}" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path:'ProcessSummary>gstnCgst'}], formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/gstn}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="{i18n>sgst}" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path:'ProcessSummary>gstnSgst'}], formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="120" headerSpan="5" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text="{i18n>difference}" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="{i18n>count}" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{ProcessSummary>diffCount}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="{i18n>totalAmount}" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path:'ProcessSummary>diffTotalAmount'}], formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="{i18n>igst}" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path:'ProcessSummary>diffIgst'}], formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="{i18n>cgst}" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path:'ProcessSummary>diffCgst'}], formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="160" hAlign="End" visible="{visiSummAnx1>/diff}">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="{i18n>sgst}" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts:[{path:'ProcessSummary>diffSgst'}], formatter:'.formatter.amountValue'}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<!--<ui:footer>
+										<ObjectStatus text="{i18n>noteGstr1Outward}" state="Error"/>
+									</ui:footer>-->
+								</ui:Table>
+							</Panel>
+						</commons:content>
+					</commons:ChartContainerContent>
+				</commons:content>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

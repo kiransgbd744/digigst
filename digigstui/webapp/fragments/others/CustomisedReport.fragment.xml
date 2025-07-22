@@ -1,0 +1,725 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:layout="sap.ui.layout" height="100%"
+	xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table"
+	xmlns:form="sap.ui.layout.form" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data" xmlns:viz="sap.viz.ui5.controls">
+	<f:DynamicPage id="idSplitDtl2A" visible="true">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Customize Report"/>
+				</f:heading>
+				<f:actions>
+					<ToolbarSpacer/>
+					<Label text="Last Saved by: {timeStamp>/emailId} ({timeStamp>/timeStamp})" class="sapUiTinyMarginBegin"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Page showHeader="false" class="clMDIntiatRecon">
+				<content>
+					<SplitApp id="splitcheking2A" initialDetail="detail" initialMaster="master" orientationChange="onOrientationChange">
+						<detailPages>
+							<Page showHeader="false" class="">
+								<content>
+									<Toolbar height="3rem" class="supplToolbarInAnx2 supplToolbarColInAnx2 sapUiTinyMarginBegin">
+										<Label text="Last Saved at: {timeStamp>/timeStamp}" class="sapUiTinyMarginBegin"/>
+										<ToolbarSpacer/>
+										<Button text="Save changes" class="buttoncolor" press="onPressSaveChanges" enabled="{userPermission>/appPermission/P34}"/>
+										<Button text="Select all" class="buttoncolorSec" press="onSelectAll" enabled="{userPermission>/appPermission/P34}"/>
+										<Button text="Deselect all" class="buttoncolorSec" press="onDeSelectAll" enabled="{userPermission>/appPermission/P34}"/>
+										<Button text="Selection applicable to" class="sapUiSmallMargin buttoncolorSec" press="onButtonPress" ariaHasPopup="Menu">
+											<dependents>
+												<core:Fragment fragmentName="com.ey.digigst.fragments.others.SelectOption" type="XML"/>
+											</dependents>
+										</Button>
+										<!--<MenuButton type="Emphasized" text="Selection applicable to" enabled="{userPermission>/appPermission/P34}">
+											<Menu itemSelected="onMenuItemPressAnx1down" id="menuId">
+												<MenuItem text="GSTR1 processed records" key="GSTR1_TRANS_LEVEL"/>
+												<MenuItem text="GSTR3B processed records" key="processRate"/>
+												<MenuItem text="Invoice Management records" key="INV_MANAGMENT_REPORT"/>
+											</Menu>
+										</MenuButton>-->
+									</Toolbar>
+									<l:BlockLayout class="cl_Contentpading1">
+										<l:BlockLayoutRow accentCells="Accent1">
+											<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd sapUiSmallMarginTop" width="3">
+												<Toolbar class="cl_borderBOTTOM panColor1">
+													<ToolbarSpacer></ToolbarSpacer>
+													<Label id="labId" design="Bold" class="titleFont"/>
+													<ToolbarSpacer></ToolbarSpacer>
+												</Toolbar>
+												<Panel id="Basic_Details" height="80%" class="panColor" visible="true">
+													<VBox>
+														<HBox class="sapUiTinyMarginBegin">
+															<CheckBox id="NonPANCheckId" select="onSelectBD" enabled="{userPermission>/appPermission/P34}"/>
+															<Title text="All" level="H1" class="sapUiTinyMarginTop"/>
+														</HBox>
+														<List mode="None" items="{Reports>/Basic_Details}">
+															<!--<StandardListItem title="{Reports>field}"/>-->
+															<CustomListItem>
+																<HBox justifyContent="Start" class="sapUiTinyMarginBegin">
+																	<CheckBox select="onSelectSingle" selected="{Reports>visible}"/>
+																	<Label text="{Reports>field}" class="sapUiTinyMarginTop"/>
+																</HBox>
+															</CustomListItem>
+														</List>
+													</VBox>
+												</Panel>
+												<Panel height="88%" class="panColor" visible="false" id="tab2">
+													<VBox>
+														<HBox class="sapUiTinyMarginBegin">
+															<CheckBox id="PiId" select="onSelectPI" enabled="{userPermission>/appPermission/P34}"/>
+															<Title text="All" level="H1" class="sapUiTinyMarginTop"/>
+														</HBox>
+														<List mode="None" items="{Reports>/Parties_Inv}">
+															<!--<StandardListItem title="{Reports>field}"/>-->
+															<CustomListItem>
+																<HBox justifyContent="Start" class="sapUiTinyMarginBegin">
+																	<CheckBox select="onSingleSelectPI" selected="{Reports>visible}"/>
+																	<Label text="{Reports>field}" class="sapUiTinyMarginTop"/>
+																</HBox>
+															</CustomListItem>
+														</List>
+													</VBox>
+												</Panel>
+												<Panel height="88%" class="panColor" visible="false" id="tab3">
+													<VBox>
+														<HBox class="sapUiTinyMarginBegin">
+															<CheckBox id="EDid" select="onSelectExpDet"/>
+															<Title text="All" level="H1" class="sapUiTinyMarginTop"/>
+														</HBox>
+														<List mode="None" items="{Reports>/Export_Details}">
+															<!--<StandardListItem title="{Reports>field}"/>-->
+															<CustomListItem>
+																<HBox justifyContent="Start" class="sapUiTinyMarginBegin">
+																	<CheckBox select="onSingleSelectED" selected="{Reports>visible}" enabled="{userPermission>/appPermission/P34}"/>
+																	<Label text="{Reports>field}" class="sapUiTinyMarginTop"/>
+																</HBox>
+															</CustomListItem>
+														</List>
+													</VBox>
+												</Panel>
+												<Panel height="88%" class="panColor" visible="false" id="tab4">
+													<VBox>
+														<HBox class="sapUiTinyMarginBegin">
+															<CheckBox id="LIid" select="onSelectItmDet"/>
+															<Title text="All" level="H1" class="sapUiTinyMarginTop"/>
+														</HBox>
+														<List mode="None" items="{Reports>/ItemVal_Details}">
+															<!--<StandardListItem title="{Reports>field}"/>-->
+															<CustomListItem>
+																<HBox justifyContent="Start" class="sapUiTinyMarginBegin">
+																	<CheckBox select="onSingleSelectID" selected="{Reports>visible}" enabled="{userPermission>/appPermission/P34}"/>
+																	<Label text="{Reports>field}" class="sapUiTinyMarginTop"/>
+																</HBox>
+															</CustomListItem>
+														</List>
+													</VBox>
+												</Panel>
+												<Panel height="88%" class="panColor" visible="false" id="tab5">
+													<VBox>
+														<HBox class="sapUiTinyMarginBegin">
+															<CheckBox id="TCSid" select="onSelectITDet" enabled="{userPermission>/appPermission/P34}"/>
+															<Title text="All" level="H1" class="sapUiTinyMarginTop"/>
+														</HBox>
+														<List mode="None" items="{Reports>/IncTax_Details}">
+															<!--<StandardListItem title="{Reports>field}"/>-->
+															<CustomListItem>
+																<HBox justifyContent="Start" class="sapUiTinyMarginBegin">
+																	<CheckBox select="onSingleSelectITDet" selected="{Reports>visible}" enabled="{userPermission>/appPermission/P34}"/>
+																	<Label text="{Reports>field}" class="sapUiTinyMarginTop"/>
+																</HBox>
+															</CustomListItem>
+														</List>
+													</VBox>
+												</Panel>
+												<Panel height="88%" class="panColor" visible="false" id="tab6">
+													<VBox>
+														<HBox class="sapUiTinyMarginBegin">
+															<CheckBox id="Odid" select="onSelectOthDet" enabled="{userPermission>/appPermission/P34}"/>
+															<Title text="All" level="H1" class="sapUiTinyMarginTop"/>
+														</HBox>
+														<List mode="None" items="{Reports>/Other_Details}">
+															<!--<StandardListItem title="{Reports>field}"/>-->
+															<CustomListItem>
+																<HBox justifyContent="Start" class="sapUiTinyMarginBegin">
+																	<CheckBox select="onSingleSelectOthDet" selected="{Reports>visible}" enabled="{userPermission>/appPermission/P34}"/>
+																	<Label text="{Reports>field}" class="sapUiTinyMarginTop"/>
+																</HBox>
+															</CustomListItem>
+														</List>
+													</VBox>
+												</Panel>
+												<Panel height="88%" class="panColor" visible="false" id="tab7">
+													<VBox>
+														<HBox class="sapUiTinyMarginBegin">
+															<CheckBox id="OrdId" select="onSelectOrdDet" enabled="{userPermission>/appPermission/P34}"/>
+															<Title text="All" level="H1" class="sapUiTinyMarginTop"/>
+														</HBox>
+														<List mode="None" items="{Reports>/OrderRef_Details}">
+															<!--<StandardListItem title="{Reports>field}"/>-->
+															<CustomListItem>
+																<HBox justifyContent="Start" class="sapUiTinyMarginBegin">
+																	<CheckBox select="onSingleSelectOrdDet" selected="{Reports>visible}" enabled="{userPermission>/appPermission/P34}"/>
+																	<Label text="{Reports>field}" class="sapUiTinyMarginTop"/>
+																</HBox>
+															</CustomListItem>
+														</List>
+													</VBox>
+												</Panel>
+												<Panel height="88%" class="panColor" visible="false" id="tab8">
+													<VBox>
+														<HBox class="sapUiTinyMarginBegin">
+															<CheckBox id="UdfID" select="onSelectUsrDet" enabled="{userPermission>/appPermission/P34}"/>
+															<Title text="All" level="H1" class="sapUiTinyMarginTop"/>
+														</HBox>
+														<List mode="None" items="{Reports>/UserDef_Details}">
+															<!--<StandardListItem title="{Reports>field}"/>-->
+															<CustomListItem>
+																<HBox justifyContent="Start" class="sapUiTinyMarginBegin">
+																	<CheckBox select="onSingleSelectUsrDet" selected="{Reports>visible}" enabled="{userPermission>/appPermission/P34}"/>
+																	<Label text="{Reports>field}" class="sapUiTinyMarginTop"/>
+																</HBox>
+															</CustomListItem>
+														</List>
+													</VBox>
+												</Panel>
+												<Panel height="88%" class="panColor" visible="false" id="tab9">
+													<VBox>
+														<HBox class="sapUiTinyMarginBegin">
+															<CheckBox id="Ohid" select="onSelectOrgDet" enabled="{userPermission>/appPermission/P34}"/>
+															<Title text="All" level="H1" class="sapUiTinyMarginTop"/>
+														</HBox>
+														<List mode="None" items="{Reports>/OrgHei_Details}">
+															<!--<StandardListItem title="{Reports>field}"/>-->
+															<CustomListItem>
+																<HBox justifyContent="Start" class="sapUiTinyMarginBegin">
+																	<CheckBox select="onSingleSelectOrgDet" selected="{Reports>visible}" enabled="{userPermission>/appPermission/P34}"/>
+																	<Label text="{Reports>field}" class="sapUiTinyMarginTop"/>
+																</HBox>
+															</CustomListItem>
+														</List>
+													</VBox>
+												</Panel>
+												<Panel height="88%" class="panColor" visible="false" id="tab10">
+													<VBox>
+														<HBox class="sapUiTinyMarginBegin">
+															<CheckBox id="GLid" select="onSelectGLDet" enabled="{userPermission>/appPermission/P34}"/>
+															<Title text="All" level="H1" class="sapUiTinyMarginTop"/>
+														</HBox>
+														<List mode="None" items="{Reports>/GL_Details}">
+															<!--<StandardListItem title="{Reports>field}"/>-->
+															<CustomListItem>
+																<HBox justifyContent="Start" class="sapUiTinyMarginBegin">
+																	<CheckBox select="onSingleSelectGLDet" selected="{Reports>visible}" enabled="{userPermission>/appPermission/P34}"/>
+																	<Label text="{Reports>field}" class="sapUiTinyMarginTop"/>
+																</HBox>
+															</CustomListItem>
+														</List>
+													</VBox>
+												</Panel>
+												<Panel height="88%" class="panColor" visible="false" id="tab11">
+													<VBox>
+														<HBox class="sapUiTinyMarginBegin">
+															<CheckBox id="EinvId" select="onSelectEnvResp" enabled="{userPermission>/appPermission/P34}"/>
+															<Title text="All" level="H1" class="sapUiTinyMarginTop"/>
+														</HBox>
+														<List mode="None" items="{Reports>/EinvEwbGstResp}">
+															<!--<StandardListItem title="{Reports>field}"/>-->
+															<CustomListItem>
+																<HBox justifyContent="Start" class="sapUiTinyMarginBegin">
+																	<CheckBox select="onSingleSelectEnv" selected="{Reports>visible}" enabled="{userPermission>/appPermission/P34}"/>
+																	<Label text="{Reports>field}" class="sapUiTinyMarginTop"/>
+																</HBox>
+															</CustomListItem>
+														</List>
+													</VBox>
+												</Panel>
+												<Panel height="88%" class="panColor" visible="false" id="tab12">
+													<VBox>
+														<HBox class="sapUiTinyMarginBegin">
+															<CheckBox id="DSFid" select="onSelectDigiSpec" enabled="{userPermission>/appPermission/P34}"/>
+															<Title text="All" level="H1" class="sapUiTinyMarginTop"/>
+														</HBox>
+														<List mode="None" items="{Reports>/DigiGst_Spec}">
+															<!--<StandardListItem title="{Reports>field}"/>-->
+															<CustomListItem>
+																<HBox justifyContent="Start" class="sapUiTinyMarginBegin">
+																	<CheckBox select="onSingleSelectDigi" selected="{Reports>visible}" enabled="{userPermission>/appPermission/P34}"/>
+																	<Label text="{Reports>field}" class="sapUiTinyMarginTop"/>
+																</HBox>
+															</CustomListItem>
+														</List>
+													</VBox>
+												</Panel>
+												<Panel height="88%" class="panColor" visible="false" id="tab13">
+													<VBox>
+														<HBox class="sapUiTinyMarginBegin">
+															<CheckBox id="TDid" select="onSelectTrans" enabled="{userPermission>/appPermission/P34}"/>
+															<Title text="All" level="H1" class="sapUiTinyMarginTop"/>
+														</HBox>
+														<List mode="None" items="{Reports>/Trans_Details}">
+															<!--<StandardListItem title="{Reports>field}"/>-->
+															<CustomListItem>
+																<HBox justifyContent="Start" class="sapUiTinyMarginBegin">
+																	<CheckBox select="onSingleSelectTans" selected="{Reports>visible}" enabled="{userPermission>/appPermission/P34}"/>
+																	<Label text="{Reports>field}" class="sapUiTinyMarginTop"/>
+																</HBox>
+															</CustomListItem>
+														</List>
+													</VBox>
+												</Panel>
+											</l:BlockLayoutCell>
+											<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd sapUiSmallMarginTop" width="3">
+												<Toolbar class="cl_borderBOTTOM panColor1">
+													<ToolbarSpacer></ToolbarSpacer>
+													<Label text="Report Template" design="Bold" class="titleFont"/>
+													<ToolbarSpacer></ToolbarSpacer>
+												</Toolbar>
+												<Panel height="88%" class="panColor">
+													<VBox>
+														<List mode="None" items="{ReportTemplate>/}" growing="true" growingThreshold="600">
+															<StandardListItem title="{ReportTemplate>field}"/>
+														</List>
+													</VBox>
+												</Panel>
+											</l:BlockLayoutCell>
+										</l:BlockLayoutRow>
+									</l:BlockLayout>
+								</content>
+							</Page>
+						</detailPages>
+						<masterPages>
+							<Page showHeader="false">
+								<content>
+									<List headerText="Customize Reports" items="{InvoiceCheck>/CReport}">
+										<StandardListItem title="{InvoiceCheck>reportType}" type="Navigation" press="onPress"/>
+									</List>
+								</content>
+							</Page>
+						</masterPages>
+					</SplitApp>
+				</content>
+			</Page>
+		</f:content>
+	</f:DynamicPage>
+	<!--<f:DynamicPage id="idSplitDtl2A" visible="true">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Customize Report"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Page showHeader="false" class="clMDIntiatRecon">
+				<content>
+					<SplitApp id="splitcheking2A" initialDetail="detail" initialMaster="master" orientationChange="onOrientationChange">
+						<detailPages>
+							<Page showHeader="false" class="">
+								<content>
+									<Toolbar height="3rem" class="supplToolbarInAnx2 supplToolbarColInAnx2 sapUiTinyMarginBegin">
+										<Label id="labId" design="Bold" textAlign="Center" class="fontSize sapUiTinyMarginBegin"/>
+										<Label text="Last Saved as: DDMMYYYY | HH:MM:SS" class="Fontstyle sapUiTinyMarginBegin"/>
+										<ToolbarSpacer/>
+										<Button text="Selected Reports" press="onPressClear9"/>
+										<Button text="Save changes" press="onPressClear9"/>
+										<Button text="Select all" type="Emphasized" press="EntityTabBind"/>
+										<Button text="Deselect all" type="Emphasized" press="EntityTabBind"/>
+										<MenuButton type="Emphasized" text="Selection applicable to" enabled="{userPermission>/appPermission/P99}">
+											<Menu itemSelected="onMenuItemPressAnx1down">
+												<MenuItem text="GSTR1 processed records" key="processLineItem"/>
+												<MenuItem text="GSTR3B processed records" key="processRate"/>
+												<MenuItem text="Invoice Management records" key="submitted"/>
+											</Menu>
+										</MenuButton>
+									</Toolbar>
+									<Panel>
+										<VBox>
+											<HBox class="sapUiTinyMarginBegin">
+												<CheckBox id="NonPANCheckId" select="onSelect"/>
+												<Title text="All" level="H1" class="sapUiTinyMarginTop"/>
+											</HBox>
+											<List mode="MultiSelect" items="{InvoiceCheck>/einvoice}">
+												<StandardListItem title="{InvoiceCheck>reportType}"/>
+											</List>
+										</VBox>
+									</Panel>
+								</content>
+							</Page>
+						</detailPages>
+						<masterPages>
+							<Page showHeader="false">
+								<content>
+									<List headerText="Customize Reports" items="{InvoiceCheck>/CReport}">
+										<StandardListItem title="{InvoiceCheck>reportType}" type="Navigation" press="onPress"/>
+									</List>
+								</content>
+							</Page>
+						</masterPages>
+					</SplitApp>
+				</content>
+			</Page>
+		</f:content>
+	</f:DynamicPage>-->
+	<!--<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Validated Data" titleStyle="H3" class="tinyMarginTop"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<VBox>
+				<Toolbar height="3rem" class="toolbar2 sapUiTinyMarginBottom">
+					<Label design="Bold" text="Last Saved as: DDMMYYYY | HH:MM:SS"/>
+					<Input placeholder="Search Data Field" width="25%"/>
+					<ToolbarSpacer/>
+					<Button text="Save changes" class="sapUiTinyMarginBeginEnd" press="onPressClear9"/>
+					<Button text="Select all" type="Emphasized" press="EntityTabBind"/>
+					<Button text="Deselect all" type="Emphasized" press="EntityTabBind"/>
+					<MenuButton type="Emphasized" text="Selection applicable to" enabled="{userPermission>/appPermission/P99}">
+						<Menu itemSelected="onMenuItemPressAnx1down">
+							<MenuItem text="GSTR1 processed records" key="processLineItem"/>
+							<MenuItem text="GSTR3B processed records" key="processRate"/>
+							<MenuItem text="Invoice Management records" key="submitted"/>
+						</Menu>
+					</MenuButton>
+				</Toolbar>
+				<l:BlockLayout class="cl_Contentpading">
+					<l:BlockLayoutRow accentCells="Accent1">
+						<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Basic Details" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTop"></HBox>
+								<ui:Table rows="{InvoiceCheck>/einvoice}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+									class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+									<ui:columns>
+										<ui:Column hAlign="Center" width="8rem">
+											<CheckBox text="Select All" selected="true"/>
+											<ui:template>
+												<CheckBox selected="true"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="Report Type" textAlign="Center" design="Bold"/>
+											<ui:template>
+												<Text text="{InvoiceCheck>reportType}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Parties Involved" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTop"></HBox>
+								<ui:Table rows="{ConsolidatedData>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+									class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+									<ui:columns>
+										<ui:Column hAlign="Center" width="8rem">
+											<CheckBox text="Select All" selected="true"/>
+											<ui:template>
+												<CheckBox selected="true"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="Report Type" textAlign="Center" design="Bold"/>
+											<ui:template>
+												<Text text="{ConsolidatedData>invoices}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Exports Details" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTop"></HBox>
+								<ui:Table rows="{ConsolidatedData>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+									class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+									<ui:columns>
+										<ui:Column hAlign="Center" width="8rem">
+											<CheckBox text="Select All" selected="true"/>
+											<ui:template>
+												<CheckBox selected="true"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="Report Type" textAlign="Center" design="Bold"/>
+											<ui:template>
+												<Text text="{ConsolidatedData>invoices}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Line Item &amp; value details" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTop"></HBox>
+								<ui:Table rows="{ConsolidatedData>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+									class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+									<ui:columns>
+										<ui:Column hAlign="Center" width="8rem">
+											<CheckBox text="Select All" selected="true"/>
+											<ui:template>
+												<CheckBox selected="true"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="Report Type" textAlign="Center" design="Bold"/>
+											<ui:template>
+												<Text text="{ConsolidatedData>invoices}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+							</Panel>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+					<l:BlockLayoutRow accentCells="Accent1">
+						<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="TCS / TDS (Income-Tax)" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTop"></HBox>
+								<ui:Table rows="{ConsolidatedData>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+									class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+									<ui:columns>
+										<ui:Column hAlign="Center" width="8rem">
+											<CheckBox text="Select All" selected="true"/>
+											<ui:template>
+												<CheckBox selected="true"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="Report Type" textAlign="Center" design="Bold"/>
+											<ui:template>
+												<Text text="{ConsolidatedData>invoices}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Other details" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTop"></HBox>
+								<ui:Table rows="{ConsolidatedData>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+									class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+									<ui:columns>
+										<ui:Column hAlign="Center" width="8rem">
+											<CheckBox text="Select All" selected="true"/>
+											<ui:template>
+												<CheckBox selected="true"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="Report Type" textAlign="Center" design="Bold"/>
+											<ui:template>
+												<Text text="{ConsolidatedData>invoices}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Order Reference details" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTop"></HBox>
+								<ui:Table rows="{ConsolidatedData>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+									class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+									<ui:columns>
+										<ui:Column hAlign="Center" width="8rem">
+											<CheckBox text="Select All" selected="true"/>
+											<ui:template>
+												<CheckBox selected="true"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="Report Type" textAlign="Center" design="Bold"/>
+											<ui:template>
+												<Text text="{ConsolidatedData>invoices}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="User Defined fields" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTop"></HBox>
+								<ui:Table rows="{ConsolidatedData>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+									class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+									<ui:columns>
+										<ui:Column hAlign="Center" width="8rem">
+											<CheckBox text="Select All" selected="true"/>
+											<ui:template>
+												<CheckBox selected="true"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="Report Type" textAlign="Center" design="Bold"/>
+											<ui:template>
+												<Text text="{ConsolidatedData>invoices}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+							</Panel>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+					<l:BlockLayoutRow accentCells="Accent1">
+						<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Org. heirarchy" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTop"></HBox>
+								<ui:Table rows="{ConsolidatedData>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+									class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+									<ui:columns>
+										<ui:Column hAlign="Center" width="8rem">
+											<CheckBox text="Select All" selected="true"/>
+											<ui:template>
+												<CheckBox selected="true"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="Report Type" textAlign="Center" design="Bold"/>
+											<ui:template>
+												<Text text="{ConsolidatedData>invoices}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="GL Details" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTop"></HBox>
+								<ui:Table rows="{ConsolidatedData>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+									class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+									<ui:columns>
+										<ui:Column hAlign="Center" width="8rem">
+											<CheckBox text="Select All" selected="true"/>
+											<ui:template>
+												<CheckBox selected="true"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="Report Type" textAlign="Center" design="Bold"/>
+											<ui:template>
+												<Text text="{ConsolidatedData>invoices}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="EINV, EWB, GST Return responses" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTop"></HBox>
+								<ui:Table rows="{ConsolidatedData>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+									class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+									<ui:columns>
+										<ui:Column hAlign="Center" width="8rem">
+											<CheckBox text="Select All" selected="true"/>
+											<ui:template>
+												<CheckBox selected="true"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="Report Type" textAlign="Center" design="Bold"/>
+											<ui:template>
+												<Text text="{ConsolidatedData>invoices}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="3">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="DigiGST Specific fields" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTop"></HBox>
+								<ui:Table rows="{ConsolidatedData>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+									class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+									<ui:columns>
+										<ui:Column hAlign="Center" width="8rem">
+											<CheckBox text="Select All" selected="true"/>
+											<ui:template>
+												<CheckBox selected="true"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="Report Type" textAlign="Center" design="Bold"/>
+											<ui:template>
+												<Text text="{ConsolidatedData>invoices}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+							</Panel>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>-->
+</core:FragmentDefinition>

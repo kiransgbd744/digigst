@@ -1,0 +1,681 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons" xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:l="sap.ui.layout">
+	<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false" id="tabUientriesStatus"
+		visible="false">
+		<commons:content>
+			<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+				<commons:content>
+					<ui:Table id="tabDataUientries3" rows="{DataStatusAPI>/resp2}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="12"
+						fixedRowCount="1" enableSelectAll="false" visible="true">
+						<ui:columns>
+							<ui:Column width="10rem">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="User" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignContent="Start" justifyContent="SpaceBetween" width="100%" displayInline="true">
+										<HBox>
+											<Link text="{DataStatusAPI>date}" emphasized="true" press="onPressDetail2" visible="{DataStatusAPI>link}"/>
+											<!--<ObjectStatus text=" {DataStatusAPI>date}"  press="fnTableSCPress"
+												visible="{=!${DataStatusAPI>link}}"/>-->
+										</HBox>
+										<!--<core:Icon src="sap-icon://circle-task-2" color="{=${DataStatusAPI>authToken}==='Active'?'#00FF00':'#FF0000'}" size="0.8rem"
+											tooltip="{Summary>authToken}" press="onDetailDatastatustoken" visible="{DataStatusAPI>visi}"/>-->
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="10rem">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Action" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignContent="Start" justifyContent="SpaceBetween" width="100%" displayInline="true">
+										<HBox>
+											<Link text="{DataStatusAPI>date}" emphasized="true" press="onPressDetail2" visible="{DataStatusAPI>link}"/>
+											<!--<ObjectStatus text=" {DataStatusAPI>date}"  press="fnTableSCPress"
+												visible="{=!${DataStatusAPI>link}}"/>-->
+										</HBox>
+										<!--<core:Icon src="sap-icon://circle-task-2" color="{=${DataStatusAPI>authToken}==='Active'?'#00FF00':'#FF0000'}" size="0.8rem"
+											tooltip="{Summary>authToken}" press="onDetailDatastatustoken" visible="{DataStatusAPI>visi}"/>-->
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="10rem">
+								<ui:multiLabels>
+									<Label text=""/>
+									<Label text="Reference" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignContent="Start" justifyContent="SpaceBetween" width="100%" displayInline="true">
+										<HBox>
+											<Link text="{DataStatusAPI>date}" emphasized="true" press="onPressDetail2" visible="{DataStatusAPI>link}"/>
+											<!--<ObjectStatus text=" {DataStatusAPI>date}"  press="fnTableSCPress"
+												visible="{=!${DataStatusAPI>link}}"/>-->
+										</HBox>
+										<!--<core:Icon src="sap-icon://circle-task-2" color="{=${DataStatusAPI>authToken}==='Active'?'#00FF00':'#FF0000'}" size="0.8rem"
+											tooltip="{Summary>authToken}" press="onDetailDatastatustoken" visible="{DataStatusAPI>visi}"/>-->
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="9rem">
+								<ui:multiLabels>
+									<Label text=""/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Total Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox justifyContent="End" width="100%">
+										<Text text="{DataStatusAPI>aspTotal}"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="2" hAlign="End" width="9rem">
+								<ui:multiLabels>
+									<Label text="Processed" textAlign="Center" width="100%" design="Bold"/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Active" textAlign="Center" width="100%" design="Bold"/>
+										<Label text="*" textAlign="Center" width="100%" design="Bold" class="cl_star"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>processeActive}" press="onPressStatsLink">
+											<dependents>
+												<Text text="1"/>
+											</dependents>
+										</Link>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="9rem">
+								<ui:multiLabels>
+									<Label text="Processed" textAlign="Center" width="100%" design="Bold"/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Inactive" textAlign="Center" width="100%" design="Bold"/>
+										<Label text="*" textAlign="Center" width="100%" design="Bold" class="cl_star"/>
+										<!--<Label text="(All Modules)" textAlign="Center" width="100%" design="Bold"/>-->
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>processeInactive}" press="onPressStatsLink">
+											<dependents>
+												<Text text="1"/>
+											</dependents>
+										</Link>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="2" hAlign="End" width="9rem">
+								<ui:multiLabels>
+									<HBox justifyContent="Center" width="100%">
+										<Label text="Error" textAlign="Center" width="100%" design="Bold"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Active" textAlign="Center" width="100%" design="Bold"/>
+										<Label text=" **" textAlign="Center" width="100%" design="Bold" class="cl_star"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>errorActive}" press="onPressStatsLink">
+											<dependents>
+												<Text text="1"/>
+											</dependents>
+										</Link>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="9rem">
+								<ui:multiLabels>
+									<Label text="Error" textAlign="Center" width="100%" design="Bold"/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Inactive" textAlign="Center" width="100%" design="Bold"/>
+										<Label text=" **" textAlign="Center" width="100%" design="Bold" class="cl_star"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>errorInactive}" press="onPressStatsLink">
+											<dependents>
+												<Text text="1"/>
+											</dependents>
+										</Link>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="6" hAlign="End" width="9rem" visible="{visiSummDataStatus2>/einv}">
+								<ui:multiLabels>
+									<Label text="E-Invoice" textAlign="Center" width="100%" design="Bold"/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Not Applicable" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>EinvNA}" press="onPressStatsLink">
+											<dependents>
+												<Text text="1"/>
+											</dependents>
+										</Link>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="10rem" visible="{visiSummDataStatus2>/einv}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Error (DigiGST)" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>EinvProcessed}"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="12rem" visible="{visiSummDataStatus2>/einv}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="ASP Process" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>EinvProcessed}"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="12rem" visible="{visiSummDataStatus2>/einv}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="INR Initiated" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>EinvProcessed}"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<!--<ui:Column hAlign="End" width="9rem" visible="{visiSummDataStatus2>/einv}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Pushed to IRP" textAlign="Center" width="100%" design="Bold"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>EinvProcessed}"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>-->
+							<ui:Column hAlign="End" width="9rem" visible="{visiSummDataStatus2>/einv}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="IRN Generated" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>EinvProcessed}"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="9rem" visible="{visiSummDataStatus2>/einv}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Errors (IRP)" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>EinvError}"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="6" hAlign="End" width="9rem" visible="{visiSummDataStatus2>/ewb}">
+								<ui:multiLabels>
+									<Label text="EWB" textAlign="Center" width="100%" design="Bold"/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Not Applicable" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>EWBNA}" press="onPressStatsLink">
+											<dependents>
+												<Text text="2"/>
+											</dependents>
+										</Link>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="10rem" visible="{visiSummDataStatus2>/ewb}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Errors (DigiGST)" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>EWBProcessed}"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="12rem" visible="{visiSummDataStatus2>/ewb}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="ASP Process" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>EWBProcessed}"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="12rem" visible="{visiSummDataStatus2>/ewb}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="EWB Initiated" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>EWBProcessed}"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<!--<ui:Column hAlign="End" width="9rem" visible="{visiSummDataStatus2>/ewb}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Pushed to NIC" textAlign="Center" width="100%" design="Bold"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>EWBError}"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>-->
+							<ui:Column hAlign="End" width="9rem" visible="{visiSummDataStatus2>/ewb}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="EWB Generated" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>EWBError}"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="9rem" visible="{visiSummDataStatus2>/ewb}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Errors (NIC)" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>EWBError}"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="6" hAlign="End" width="9rem" visible="{visiSummDataStatus2>/gst}">
+								<ui:multiLabels>
+									<Label text="GST Returns" textAlign="Center" width="100%" design="Bold"/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Not Applicable" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>GSTNNA}"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="10rem" visible="{visiSummDataStatus2>/gst}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Errors (DigiGST)" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>GSTNErrorGigiGST}"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="11rem" visible="{visiSummDataStatus2>/gst}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="ASP Process" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>GSTNProcessed}"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="11rem" visible="{visiSummDataStatus2>/gst}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Save Initiated" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>GSTNProcessed}"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<!--<ui:Column hAlign="End" width="10rem" visible="{visiSummDataStatus2>/gst}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Pushed to GSTN" textAlign="Center" width="100%" design="Bold"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>GstrProcessed}"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>-->
+							<ui:Column hAlign="End" width="9rem" visible="{visiSummDataStatus2>/gst}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Saved to GSTN" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>GSTNGenerated}"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column hAlign="End" width="9rem" visible="{visiSummDataStatus2>/gst}">
+								<ui:multiLabels>
+									<Label/>
+									<HBox justifyContent="End" width="100%">
+										<Label text="Errors (GSTN)" textAlign="Center" width="100%" design="Bold"/>
+									</HBox>
+								</ui:multiLabels>
+								<ui:template>
+									<HBox alignItems="Start" justifyContent="End">
+										<Link text="{DataStatusAPI>GSTNError}"/>
+										<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+											press="onpressdowndatastatus"/>
+									</HBox>
+								</ui:template>
+							</ui:Column>
+							<!--<ui:Column width="9rem" visible="{visiSummDataStatus2>/addon}">
+								<Label text="Add on Module" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Link text="{DataStatusAPI>Status}" press="onPressDetail"/>
+									<core:Icon src="sap-icon://download" size="0.75rem" tooltip="Download Error Catalogue" class="sapUiTinyMarginBegin"
+										press="onpressdowndatastatus"/>
+								</ui:template>
+							</ui:Column>-->
+						</ui:columns>
+						<ui:footer>
+							<Toolbar class="cl_toolbar">
+								<VBox>
+									<HBox>
+										<Text text="*" class="cl_star1"/>
+										<Text text="Records processed in all the applicable modules"/>
+									</HBox>
+									<HBox>
+										<Text text="**" class="cl_star1 sapUiTinyMarginTop"/>
+										<Text text="Records errored in any of the applicable modules" class="sapUiTinyMarginTop"/>
+									</HBox>
+									<!--<ObjectStatus text="* Records processed in all the applicable modules" state="Error"/>-->
+									<!--<ObjectStatus text="** Records errored in any of the applicable modules" state="Error"/>-->
+								</VBox>
+								<ToolbarSpacer/>
+								<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="Previous" enabled="false" press="onPressPagination"/>
+								<Input type="Number" value="1" textAlign="End" width="4rem" submit="onSubmitPagination" enabled="false"/>
+								<Text text="/ 1"/>
+								<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="Next" enabled="false" press="onPressPagination"/>
+								<Label text="Records Per Page"/>
+								<ComboBox selectedKey="50" width="5rem" selectionChange="ChangeRecordpage">
+									<core:Item key="50" text="10"/>
+									<core:Item key="100" text="20"/>
+									<core:Item key="200" text="30"/>
+									<core:Item key="500" text="40"/>
+									<core:Item key="600" text="50"/>
+								</ComboBox>
+								<ToolbarSpacer/>
+								<VBox>
+									<HBox>
+										<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+										<Text text="Auth Token Active" class="cl_auth"/>
+										<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem" class="cl_auth sapUiTinyMarginBegin"/>
+										<Text text="Auth Token Inactive" class="cl_auth"/>
+									</HBox>
+									<Text text="Click on Date to view Date wise Summary" class="cl_auth sapUiTinyMarginTop"/>
+									<!--<ObjectStatus text="Click on Date to view Date wise Summary" state="Error"/>-->
+								</VBox>
+								<!--<ObjectStatus text="**Records errored in any of the applicable modules" state="Error"/>-->
+							</Toolbar>
+						</ui:footer>
+					</ui:Table>
+				</commons:content>
+			</commons:ChartContainerContent>
+		</commons:content>
+		<commons:toolbar>
+			<OverflowToolbar>
+				<Label text="Showing:" design="Bold"/>
+				<CheckBox selected="{visiSummDataStatus2>/einv}" text="E-Invoice"/>
+				<CheckBox selected="{visiSummDataStatus2>/ewb}" text="E-Way Bill"/>
+				<CheckBox selected="{visiSummDataStatus2>/gst}" text="GST Returns"/>
+				<ToolbarSpacer/>
+				<Button class="buttoncolorSec" id="bStatsSummuiEntries3" text="View Compliance Summary" press="onPressDetail2"/>
+				<Button class="buttoncolorSec" text="Download" press="onButtonPress" visible="true"/>
+				<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+			</OverflowToolbar>
+		</commons:toolbar>
+	</commons:ChartContainer>
+	<!--<ui:Table id="tabSftpStatus" rows="{FileStatus>/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10" visible="false"-->
+	<!--	enableSelectAll="false" class="sapUiSmallMarginBeginEnd">-->
+	<!--	<ui:extension>-->
+	<!--		<Toolbar>-->
+	<!--			<ToolbarSpacer/>-->
+	<!--			<Button type="Emphasized" text="Summary" press="onPressSummary"/>-->
+	<!--			<Button type="Emphasized" text="Request for Approval" press="onPressReqForApproval"/>-->
+	<!--			<Button type="Accept" text="Save to GSTN" press="onPressSave"/>-->
+	<!--			<Button type="Reject" text="Delete Data" press="onMessageInformationDialogPress"/>-->
+	<!--		</Toolbar>-->
+	<!--	</ui:extension>-->
+	<!--	<ui:columns>-->
+	<!--		<ui:Column>-->
+	<!--			<Label text="Date of Upload" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+	<!--			<ui:template>-->
+	<!--				<Text text="{FileStatus>Date}"/>-->
+	<!--			</ui:template>-->
+	<!--		</ui:Column>-->
+	<!--		<ui:Column>-->
+	<!--			<Label text="Uploaded by" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+	<!--			<ui:template>-->
+	<!--				<Text text="{FileStatus>UploadBy}"/>-->
+	<!--			</ui:template>-->
+	<!--		</ui:Column>-->
+	<!--		<ui:Column>-->
+	<!--			<Label text="Data Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+	<!--			<ui:template>-->
+	<!--				<Text text="{FileStatus>UploadBy}"/>-->
+	<!--			</ui:template>-->
+	<!--		</ui:Column>-->
+	<!--		<ui:Column>-->
+	<!--			<Label text="File Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+	<!--			<ui:template>-->
+	<!--				<Text text="{FileStatus>FileType}"/>-->
+	<!--			</ui:template>-->
+	<!--		</ui:Column>-->
+	<!--		<ui:Column>-->
+	<!--			<Label text="File Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+	<!--			<ui:template>-->
+	<!--				<Text text="{FileStatus>FileName}"/>-->
+	<!--			</ui:template>-->
+	<!--		</ui:Column>-->
+	<!--		<ui:Column>-->
+	<!--			<Label text="File Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+	<!--			<ui:template>-->
+	<!--				<Text text="{FileStatus>FileStatus}"/>-->
+	<!--			</ui:template>-->
+	<!--		</ui:Column>-->
+	<!--		<ui:Column hAlign="End">-->
+	<!--			<Label text="Total Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+	<!--			<ui:template>-->
+	<!--				<HBox alignItems="Start" justifyContent="End">-->
+	<!--					<Text text="{FileStatus>Total}"/>-->
+	<!--					<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" alt="Download"/>-->
+	<!--				</HBox>-->
+	<!--			</ui:template>-->
+	<!--		</ui:Column>-->
+	<!--		<ui:Column hAlign="End">-->
+	<!--			<Label text="Processed Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+	<!--			<ui:template>-->
+	<!--				<HBox alignItems="Start" justifyContent="End">-->
+	<!--					<Text text="{FileStatus>ProcessASP}"/>-->
+	<!--					<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>-->
+	<!--				</HBox>-->
+	<!--			</ui:template>-->
+	<!--		</ui:Column>-->
+	<!--		<ui:Column hAlign="End">-->
+	<!--			<HBox width="100%">-->
+	<!--				<Label text="Error (ASP)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+	<!--				<core:Icon src="sap-icon://download" size="0.75rem" press="onDownloadCatalog" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"/>-->
+	<!--			</HBox>-->
+	<!--			<ui:template>-->
+	<!--				<HBox alignItems="Start" justifyContent="End">-->
+	<!--					<Link text="{FileStatus>ErrorASP}" press="onFileAspErrorPress"/>-->
+	<!--					<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>-->
+	<!--				</HBox>-->
+	<!--			</ui:template>-->
+	<!--		</ui:Column>-->
+	<!--		<ui:Column hAlign="End">-->
+	<!--			<HBox width="100%">-->
+	<!--				<Label text="Information" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+	<!--				<core:Icon src="sap-icon://download" size="0.75rem" press="onDownloadCatalog" tooltip="Download Error Catalog" class="sapUiTinyMarginBegin"/>-->
+	<!--			</HBox>-->
+	<!--			<ui:template>-->
+	<!--				<HBox alignItems="Start" justifyContent="End">-->
+	<!--					<Text text="{FileStatus>Info}"/>-->
+	<!--					<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>-->
+	<!--				</HBox>-->
+	<!--			</ui:template>-->
+	<!--		</ui:Column>-->
+	<!--		<ui:Column hAlign="End">-->
+	<!--			<Label text="Save Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+	<!--			<ui:template>-->
+	<!--				<Text text=""/>-->
+	<!--<core:Icon src="sap-icon://save" class="sapUiTinyMarginBegin" alt="Download"/>-->
+	<!--			</ui:template>-->
+	<!--		</ui:Column>-->
+	<!--		<ui:Column hAlign="End" visible="false">-->
+	<!--			<Label text="Processed (GSTIN)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+	<!--			<ui:template>-->
+	<!--				<HBox alignItems="Start" justifyContent="End">-->
+	<!--					<Text text="{FileStatus>ProcessGSTN}"/>-->
+	<!--					<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin"/>-->
+	<!--				</HBox>-->
+	<!--			</ui:template>-->
+	<!--		</ui:Column>-->
+	<!--		<ui:Column hAlign="End" visible="false">-->
+	<!--			<HBox alignItems="Start" justifyContent="Center">-->
+	<!--				<Label text="Error (GSTIN)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+	<!--				<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" alt="Download"/>-->
+	<!--			</HBox>-->
+	<!--			<ui:template>-->
+	<!--				<HBox alignItems="Start" justifyContent="End">-->
+	<!--					<Text text="{FileStatus>ErrorGSTN}"/>-->
+	<!--					<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" alt="Download"/>-->
+	<!--				</HBox>-->
+	<!--			</ui:template>-->
+	<!--		</ui:Column>-->
+	<!--	</ui:columns>-->
+	<!--	<ui:footer>-->
+	<!--		<ObjectStatus text="* Click on Date to view File wise Summary" state="Error"/>-->
+	<!--	</ui:footer>-->
+	<!--</ui:Table>-->
+</core:FragmentDefinition>

@@ -1,0 +1,19 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.ThreeWayRecon"
+	busyIndicatorDelay="0">
+	<IconTabBar expanded="true" id="idReconReports" select="handleIconTabBarSelect" class="sapUiNoContentPadding clOther"
+		backgroundDesign="Transparent" stretchContentHeight="true" selectedKey="ManageAuthToken" expandable="false">
+		<items>
+			<IconTabFilter id="APMid" text="Get EWB Data" tooltip="Get EWB Data" key="EWBGetData">
+				<!--enabled="{= ${userPermission>/appPermission/P35}}"-->
+				<core:Fragment fragmentName="com.ey.digigst.fragments.3wayRecon.EWBGetData" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter id="itfComplianceHistory" text="Initiate Recon" tooltip="Initiate Recon" key="InitiateRecon">
+				<!--enabled="{= ${userPermission>/appPermission/P35}}"-->
+				<core:Fragment fragmentName="com.ey.digigst.fragments.3wayRecon.InitiateRecon" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Post Recon Summary" tooltip="Post Recon Summary" key="PostReconSummary" visible="false">
+				<!--enabled="{= ${userPermission>/appPermission/P35}}"-->
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</mvc:View>

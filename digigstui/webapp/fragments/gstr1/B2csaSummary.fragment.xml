@@ -1,0 +1,700 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<Dialog title="{i18n>gstr1_b2csa}" type="Message" class="sapUiSizeCompact" contentWidth="100%">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="{i18n>gstr1_b2csa}" design="Bold"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<beginButton>
+			<Button text="{i18n>close}" class="buttoncolorSec" press="onCloseDialog('b2csa')"/>
+		</beginButton>
+		<Toolbar class="sapUiTinyMarginTop">
+			<Label text="{i18n>gstin}:" design="Bold"/>
+			<Text text="{Payload>/dataSecAttrs/GSTIN/0}"/>
+			<Label text="{i18n>taxPeriod}:" design="Bold" class="sapUiSmallMarginBegin"/>
+			<Text text="{path:'Payload>/taxPeriod',formatter:'.formatter.periodFormat'}"/>
+			<ToolbarSpacer/>
+			<SegmentedButton selectedKey="{Property>/segment}" id="Id_B2csa">
+				<items>
+					<SegmentedButtonItem text="{i18n>summary}" key="summary" width="6rem"/>
+					<SegmentedButtonItem text="{i18n>verticalData}" key="detail" width="6rem"/>
+				</items>
+			</SegmentedButton>
+		</Toolbar>
+		<ui:Table rows="{path:'AspVertical>/summary/'}" selectionMode="None" enableColumnReordering="false" visibleRowCount="1"
+			class="sapUiSmallMarginTop" visible="{=${Property>/segment}==='summary'?true:false}">
+			<ui:columns>
+				<ui:Column width="14rem">
+					<Label text="{i18n>gstr1_b2csa}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Link text="{AspVertical>type}" emphasized="true" press="onVerticalLink('b2csa')"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>count}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{AspVertical>count}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>invoiceValue}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>invoiceValue',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>taxableVal}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>taxableValue',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>igst}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>igst',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>cgst}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>cgst',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>sgst}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>sgst',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>cess}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>cess',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+		<ui:Table rows="{path:'AspVertical>/gstnView/'}" selectionMode="None" enableColumnReordering="false" visibleRowCount="8"
+			class="sapUiMediumMarginTop" visible="{=${Property>/segment}==='summary'?true:false}">
+			<ui:extension>
+				<Toolbar>
+					<Label text="{i18n>gstnView}" design="Bold" class="titleFont"/>
+					<ToolbarSpacer/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column width="14rem">
+					<Label text="{i18n>pos}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{AspVertical>pos}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column >
+					<Label text="{i18n>TransType}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{AspVertical>transType}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="8rem" visible="false">
+					<Label text="{i18n>rate}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>rate',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>taxableVal}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>taxableValue',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>igst}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>igst',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>cgst}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>cgst',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>sgst}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>sgst',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>cess}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'AspVertical>cess',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+		<ui:Table id="tabB2csaDetails" rows="{path:'AspVertical>/verticalData/',templateShareable:false}" selectionBehavior="Row"
+			enableColumnReordering="false" class="sapUiTinyMarginTop" visible="{=${Property>/segment}==='summary'?false:true}">
+			<ui:extension>
+				<Toolbar>
+					<ToolbarSpacer/>
+					<Button class="buttoncolorSec" text="Save" press="onPressSaveAsp('b2csa')" enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" icon="sap-icon://delete" tooltip="{i18n>delete}" press="onPressDeleteAsp('b2csa')"
+						enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" icon="sap-icon://edit" tooltip="{i18n>edit}" press="onPressEditAsp('b2csa')"
+						enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" icon="sap-icon://add" tooltip="{i18n>add}" press="onPressAddAsp('b2csa')" enabled="{buttonVis>/dataEditable}"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column width="9rem">
+					<Label text="{i18n>transactionType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>transType}" visible="{=!${AspVertical>visi}}"/>
+							<Select selectedKey="{AspVertical>transType}" visible="{AspVertical>visi}">
+								<core:Item key="N" text="N"/>
+								<core:Item key="L65" text="L65"/>
+							</Select>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="8rem" headerSpan="9" hAlign="End">
+					<ui:multiLabels>
+						<Label text="{i18n>orgDetails}" textAlign="Center" design="Bold" width="100%"/>
+						<Label text="{i18n>month}" textAlign="Center" textDirection="RTL" design="Bold" required="true" width="100%"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox width="100%">
+							<Text text="{path:'AspVertical>month',formatter:'.formatter.periodFormat'}" visible="{=!${AspVertical>visi}}"/>
+							<DatePicker value="{AspVertical>month}" displayFormat="MMM yyyy" valueFormat="MMyyyy" maxDate="{Property>/maxDate}" placeholder="month"
+								valueState="{AspVertical>monthState}" valueStateText="{AspVertical>monthStateText}" visible="{AspVertical>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="14rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>orgPos}" textAlign="Center" textDirection="RTL" design="Bold" required="true" width="100%"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>orgPos} - {AspVertical>orgStateName}" visible="{=!${AspVertical>visi}}"/>
+							<ComboBox items="{path:'PosMaster>/',sorter:{path:'stateCode'},templateShareable:false}" selectedKey="{AspVertical>orgPos}"
+								valueState="{AspVertical>orgPosState}" valueStateText="{AspVertical>orgPosStateText}" visible="{AspVertical>visi}">
+								<core:Item key="{PosMaster>stateCode}" text="{PosMaster>stateCode} - {PosMaster>stateName}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="9rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>orgHsnOrSac}" textAlign="Center" design="Bold" wrapping="true" width="100%"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>orgHsnOrSac}" visible="{=!${AspVertical>visi}}"/>
+							<Input value="{AspVertical>orgHsnOrSac}" valueState="{AspVertical>orgHsnOrSacState}" valueStateText="{AspVertical>orgHsnOrSacStateText}"
+								visible="{AspVertical>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>orgUoM}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>orgUom}" visible="{=!${AspVertical>visi}}"/>
+							<ComboBox items="{path:'UomMaster>/',sorter:{path:'uqc'},templateShareable:false}" selectedKey="{AspVertical>orgUom}"
+								valueState="{AspVertical>orgUomState}" valueStateText="{AspVertical>orgUomStateText}" visible="{AspVertical>visi}">
+								<core:Item key="{UomMaster>uqc}" text="{UomMaster>uqc} - {UomMaster>uqcDesc}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="8rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>orgQnty}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{AspVertical>orgQunty}" visible="{=!${AspVertical>visi}}"/>
+							<Input value="{AspVertical>orgQunty}" textAlign="End" valueState="{AspVertical>orgQuntyState}"
+								valueStateText="{AspVertical>orgQuntyStateText}" visible="{AspVertical>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="7rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>orgRate}" textAlign="Center" textDirection="RTL" design="Bold" required="true" width="100%"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{AspVertical>orgRate}" visible="{=!${AspVertical>visi}}"/>
+							<ComboBox items="{path:'RateMaster>/',sorter:{path:'value'},templateShareable:false}" selectedKey="{AspVertical>orgRate}"
+								valueState="{AspVertical>orgRateState}" valueStateText="{AspVertical>orgRateStateText}" visible="{AspVertical>visi}">
+								<core:Item key="{RateMaster>value}" text="{RateMaster>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>orgTaxableValue}" textAlign="Center" design="Bold" width="100%"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{AspVertical>orgTaxableValue}" visible="{=!${AspVertical>visi}}"/>
+							<Input value="{AspVertical>orgTaxableValue}" textAlign="End" valueState="{AspVertical>orgTaxableValueState}"
+								valueStateText="{AspVertical>orgTaxableValueStateText}" visible="{AspVertical>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>orgEcomGstin}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>orgEcomGstin}" visible="{=!${AspVertical>visi}}"/>
+							<Input value="{AspVertical>orgEcomGstin}" valueState="{AspVertical>orgEcomGstinState}" valueStateText="{AspVertical>orgEcomGstinStateText}"
+								visible="{AspVertical>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>orgEcomSupply}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{AspVertical>orgEcomSupplValue}" visible="{=!${AspVertical>visi}}"/>
+							<Input value="{AspVertical>orgEcomSupplValue}" textAlign="End" valueState="{AspVertical>orgEcomSupplValueState}"
+								valueStateText="{AspVertical>orgEcomSupplValueStateText}" visible="{AspVertical>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="14rem" headerSpan="8" hAlign="Center">
+					<ui:multiLabels>
+						<Label text="{i18n>newDetails}" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="{i18n>newPos}" textAlign="Center" textDirection="RTL" design="Bold" required="true" width="100%"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>newPos} - {AspVertical>newStateName}" visible="{=!${AspVertical>visi}}"/>
+							<ComboBox items="{path:'PosMaster>/',sorter:{path:'stateCode'},templateShareable:false}" selectedKey="{AspVertical>newPos}"
+								valueState="{AspVertical>newPosState}" valueStateText="{AspVertical>newPosStateText}" visible="{AspVertical>visi}">
+								<core:Item key="{PosMaster>stateCode}" text="{PosMaster>stateCode} - {PosMaster>stateName}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="9rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>newHsnOrSac}" textAlign="Center" textDirection="RTL" design="Bold" required="true" width="100%"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>newHsnOrSac}" visible="{=!${AspVertical>visi}}"/>
+							<Input value="{AspVertical>newHsnOrSac}" valueState="{AspVertical>newHsnOrSacState}" valueStateText="{AspVertical>newHsnOrSacStateText}"
+								visible="{AspVertical>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>newUoM}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>newUom}" visible="{=!${AspVertical>visi}}"/>
+							<ComboBox items="{path:'UomMaster>/',sorter:{path:'uqc'},templateShareable:false}" selectedKey="{AspVertical>newUom}"
+								valueState="{AspVertical>newUomState}" valueStateText="{AspVertical>newUomStateText}" visible="{AspVertical>visi}">
+								<core:Item key="{UomMaster>uqc}" text="{UomMaster>uqc} - {UomMaster>uqcDesc}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="8rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>newQnty}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{AspVertical>newQunty}" visible="{=!${AspVertical>visi}}"/>
+							<Input value="{AspVertical>newQunty}" textAlign="End" valueState="{AspVertical>newQuntyState}"
+								valueStateText="{AspVertical>newQuntyStateText}" visible="{AspVertical>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="8rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>newRate}" textAlign="Center" textDirection="RTL" design="Bold" required="true" width="100%"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{AspVertical>newRate}" visible="{=!${AspVertical>visi}}"/>
+							<ComboBox items="{path:'RateMaster>/',sorter:{path:'value'},templateShareable:false}" selectedKey="{AspVertical>newRate}"
+								valueState="{AspVertical>newRateState}" valueStateText="{AspVertical>newRateStateText}" visible="{AspVertical>visi}">
+								<core:Item key="{RateMaster>value}" text="{RateMaster>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>newTaxableValue}" textAlign="Center" textDirection="RTL" design="Bold" required="true" width="100%"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{AspVertical>newTaxableValue}" visible="{=!${AspVertical>visi}}"/>
+							<Input value="{AspVertical>newTaxableValue}" textAlign="End" valueState="{AspVertical>newTaxableValueState}"
+								valueStateText="{AspVertical>newTaxableValueStateText}" visible="{AspVertical>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>newEcomGstin}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>newEcomGstin}" visible="{=!${AspVertical>visi}}"/>
+							<Input value="{AspVertical>newEcomGstin}" valueState="{AspVertical>newEcomGstinState}" valueStateText="{AspVertical>newEcomGstinStateText}"
+								visible="{AspVertical>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="11rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>newEcomSupply}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{AspVertical>newEcomSupplValue}" visible="{=!${AspVertical>visi}}"/>
+							<Input value="{AspVertical>newEcomSupplValue}" textAlign="End" valueState="{AspVertical>newEcomSupplValueState}"
+								valueStateText="{AspVertical>newEcomSupplValueStateText}" visible="{AspVertical>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem" headerSpan="5" hAlign="Center">
+					<ui:multiLabels>
+						<Label text="{i18n>amount}" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="{i18n>igst}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{AspVertical>igst}" visible="{=!${AspVertical>visi}}"/>
+							<Input value="{AspVertical>igst}" textAlign="End" valueState="{AspVertical>igstState}" valueStateText="{AspVertical>igstStateText}"
+								visible="{AspVertical>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>cgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{AspVertical>cgst}" visible="{=!${AspVertical>visi}}"/>
+							<Input value="{AspVertical>cgst}" textAlign="End" valueState="{AspVertical>cgstState}" valueStateText="{AspVertical>cgstStateText}"
+								visible="{AspVertical>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>sgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{AspVertical>sgst}" visible="{=!${AspVertical>visi}}"/>
+							<Input value="{AspVertical>sgst}" textAlign="End" valueState="{AspVertical>sgstState}" valueStateText="{AspVertical>sgstStateText}"
+								visible="{AspVertical>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>cess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{AspVertical>cess}" visible="{=!${AspVertical>visi}}"/>
+							<Input value="{AspVertical>cess}" textAlign="End" valueState="{AspVertical>cessState}" valueStateText="{AspVertical>cessStateText}"
+								visible="{AspVertical>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>totalValue}" textAlign="Center" textDirection="RTL" design="Bold" required="true" width="100%"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{AspVertical>totalValue}" visible="{=!${AspVertical>visi}}"/>
+							<Input value="{AspVertical>totalValue}" textAlign="End" valueState="{AspVertical>totalValueState}"
+								valueStateText="{AspVertical>totalValueStateText}" visible="{AspVertical>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" headerSpan="15" hAlign="Center">
+					<ui:multiLabels>
+						<Label text="{i18n>orgHierarchy}" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="{i18n>profitCentre}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>profitCntr}" visible="{=!${AspVertical>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/profitCenter',templateShareable:false}" selectedKey="{AspVertical>profitCntr}"
+								visible="{AspVertical>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>plantCode}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>plant}" visible="{=!${AspVertical>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/plant',templateShareable:false}" selectedKey="{AspVertical>plant}"
+								visible="{AspVertical>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>division}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>division}" visible="{=!${AspVertical>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/division',templateShareable:false}" selectedKey="{AspVertical>division}"
+								visible="{AspVertical>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>location}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>location}" visible="{=!${AspVertical>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/location',templateShareable:false}" selectedKey="{AspVertical>location}"
+								visible="{AspVertical>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>salesOrgnization}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>salesOrg}" visible="{=!${AspVertical>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/salesOrg',templateShareable:false}" selectedKey="{AspVertical>salesOrg}"
+								visible="{AspVertical>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>distChannel}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>distrChannel}" visible="{=!${AspVertical>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/distChannel',templateShareable:false}"
+								selectedKey="{AspVertical>distrChannel}" visible="{AspVertical>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>userAccess1}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>usrAccess1}" visible="{=!${AspVertical>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess1',templateShareable:false}" selectedKey="{AspVertical>usrAccess1}"
+								visible="{AspVertical>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>userAccess2}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>usrAccess2}" visible="{=!${AspVertical>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess2',templateShareable:false}" selectedKey="{AspVertical>userAccess2}"
+								visible="{AspVertical>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>userAccess3}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>usrAccess3}" visible="{=!${AspVertical>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess3',templateShareable:false}" selectedKey="{AspVertical>userAccess3}"
+								visible="{AspVertical>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>userAccess4}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>usrAccess4}" visible="{=!${AspVertical>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess4',templateShareable:false}" selectedKey="{AspVertical>userAccess4}"
+								visible="{AspVertical>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>userAccess5}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>usrAccess5}" visible="{=!${AspVertical>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess5',templateShareable:false}" selectedKey="{AspVertical>userAccess5}"
+								visible="{AspVertical>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>userAccess6}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>usrAccess6}" visible="{=!${AspVertical>visi}}"/>
+							<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess6',templateShareable:false}" selectedKey="{AspVertical>userAccess6}"
+								visible="{AspVertical>visi}">
+								<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>userDefinedField1}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>usrDefined1}" visible="{=!${AspVertical>visi}}"/>
+							<Input value="{AspVertical>usrDefined1}" visible="{AspVertical>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>userDefinedField2}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>usrDefined2}" visible="{=!${AspVertical>visi}}"/>
+							<Input value="{AspVertical>usrDefined2}" visible="{AspVertical>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<ui:multiLabels>
+						<Label/>
+						<Label text="{i18n>userDefinedField3}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox>
+							<Text text="{AspVertical>usrDefined3}" visible="{=!${AspVertical>visi}}"/>
+							<Input value="{AspVertical>usrDefined3}" visible="{AspVertical>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+			<!--<ui:footer>-->
+			<!--	<Toolbar width="100%">-->
+			<!--		<ToolbarSpacer/>-->
+			<!--		<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="Previous" enabled="false" press="onPressPagination"/>-->
+			<!--		<Input type="Number" value="1" textAlign="End" width="4rem" submit="onSubmitPagination" enabled="false"/>-->
+			<!--		<Text text="/ 1"/>-->
+			<!--		<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="Next" enabled="false" press="onPressPagination"/>-->
+			<!--		<Label text="Records Per Page"/>-->
+			<!--		<ComboBox selectedKey="50" width="5rem" selectionChange="ChangeRecordpage">-->
+			<!--			<core:Item key="50" text="50"/>-->
+			<!--			<core:Item key="100" text="100"/>-->
+			<!--			<core:Item key="200" text="200"/>-->
+			<!--			<core:Item key="500" text="500"/>-->
+			<!--		</ComboBox>-->
+			<!--		<ToolbarSpacer/>-->
+			<!--	</Toolbar>-->
+			<!--</ui:footer>-->
+		</ui:Table>
+	</Dialog>
+</core:FragmentDefinition>

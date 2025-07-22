@@ -1,0 +1,506 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:commons="sap.suite.ui.commons">
+	<Page showHeader="false" id="idSplitDtl" visible="true" class="clMDIntiatRecon">
+		<content>
+			<SplitApp id="splitcheking" initialDetail="detail" initialMaster="master" orientationChange="onOrientationChange">
+				<detailPages>
+					<Page showHeader="false" class="sapUiStdPage">
+						<content>
+							<Toolbar class="clVerticalLayoutColor">
+								<Title text="Initiate Recon" class="sapUiSmallMarginBegin sapUiSmallMarginBottom"/>
+								<ToolbarSpacer/>
+								<Link text="Configurations" press="onPressConfigurations" class="sapUiSmallMarginBeginEnd sapUiSmallMarginBottom"/>
+								<Link text="Request ID wise" press="onPressRequestIDwise" class="sapUiSmallMarginBeginEnd sapUiSmallMarginBottom"/>
+							</Toolbar>
+							<Toolbar class="sapUiTinyMarginTop">
+								<CheckBox text="Include records uploaded by Vendor after cut off " selected="false" class="clCheckBoxText"/>
+								<ToolbarSpacer/>
+								<Button type="Default" text="Dynamic Matching" press="onDynamicMatchingPress"/>
+								<Button icon="sap-icon://accept" type="Emphasized" text="Initiate Matching" press="fnIntiniateBtnPress"/>
+							</Toolbar>
+							<l:BlockLayout background="Dashboard" class="cl_shadow" visible="true">
+								<l:BlockLayoutRow class="sapUiNoContentPadding">
+									<l:BlockLayoutCell width="20">
+										<Toolbar height="3rem" class="supplToolbarInAnx2 supplToolbarColInAnx2">
+											<core:Icon id="iMoreIniat" src="sap-icon://navigation-down-arrow" tooltip="More" press="fnPressDownInit" color="black"/>
+											<core:Icon id="iLessIniat" src="sap-icon://slim-arrow-right" tooltip="Less" press="fnPressRightInit" visible="false" color="black"/>
+											<Label text="Report Selection" design="Bold" textAlign="Center" class="fontSize"/>
+											<ToolbarSpacer/>
+										</Toolbar>
+										<VBox>
+											<Label text="Action Report" design="Bold" class="sapUiSmallMarginBegin sapUiSmallMarginTop" id="idvbox1"/>
+										</VBox>
+										<l:Grid defaultSpan="L3 M3 S12" vSpacing="0" id="idGrid1">
+											<l:content>
+												<CheckBox text="Exact Match" selected="true" select="OnselctChekInit" editable="false"/>
+												<CheckBox text="Match upto Tolerance" selected="true" select="OnselctChekInit" editable="false"/>
+												<CheckBox text="Value Mismatch" selected="true" select="OnselctChekInit" editable="false"/>
+												<CheckBox text="POS Mismatch" selected="true" select="OnselctChekInit" editable="false"/>
+												<CheckBox text="Document Date Mismatch" selected="true" select="OnselctChekInit" editable="false"/>
+												<CheckBox text="Multi-Mismatch" selected="true" select="OnselctChekInit" editable="false"/>
+												<CheckBox text="Document Type Mismatch" selected="true" select="OnselctChekInit" editable="false"/>
+												<CheckBox text="Fuzzy Match" selected="true" select="OnselctChekInit" editable="false"/>
+												<CheckBox text="Addition in ANX-2" selected="true" select="OnselctChekInit" editable="false"/>
+												<CheckBox text="Addition in PR" selected="true" select="OnselctChekInit" editable="false"/>
+												<!--<CheckBox text="Exact Match" selected="true" select="OnselctChekInit"/>
+												<CheckBox text="Match With Tolerance" selected="true" select="OnselctChekInit"/>
+												<CheckBox text="Value Mismatch" selected="true" select="OnselctChekInit"/>
+												<CheckBox text="POS Mismatch" selected="true" select="OnselctChekInit"/>
+												<CheckBox text="Doc Date Mismatch" selected="true" select="OnselctChekInit"/>
+												<CheckBox text="Doc Date &amp; Value Mismatch" selected="true" select="OnselctChekInit"/>
+												<CheckBox text="Doc Type Mismatch" selected="true" select="OnselctChekInit"/>
+												<CheckBox text="Probable - I" selected="true" select="OnselctChekInit"/>
+												<CheckBox text="Probable - II" selected="true" select="OnselctChekInit"/>
+												<CheckBox text="Fuzzy Match" selected="true" select="OnselctChekInit"/>
+												<CheckBox text="Additional in ANX 2" selected="true" select="OnselctChekInit"/>
+												<CheckBox text="Additional in PR" selected="true" select="OnselctChekInit"/>-->
+											</l:content>
+										</l:Grid>
+										<VBox id="idvbox2">
+											<Label text=" Information Report" design="Bold" class="sapUiSmallMarginBegin sapUiSmallMarginTop"></Label>
+										</VBox>
+										<l:Grid defaultSpan="L3 M3 S12" vSpacing="0" id="idGrid2">
+											<l:content>
+												<CheckBox id="oIdPoteMatch" text="Potential Match"/>
+												<CheckBox id="oIReconSummary" text="Recon Summary"/>
+												<CheckBox id="oIdVendorStat" text="Vendor Statement"/>
+												<CheckBox id="oIdDropOut" text="Drop Out Records"/>
+											</l:content>
+										</l:Grid>
+									</l:BlockLayoutCell>
+								</l:BlockLayoutRow>
+							</l:BlockLayout>
+							<l:BlockLayout background="Dashboard" class="cl_shadow" visible="true">
+								<l:BlockLayoutRow class="sapUiNoContentPadding">
+									<l:BlockLayoutCell width="20">
+										<Toolbar height="3rem" class="supplToolbarInAnx2 supplToolbarColInAnx2">
+											<core:Icon id="iMoreIniatR" src="sap-icon://navigation-down-arrow" tooltip="More" press="fnPressDownInitR" color="black"/>
+											<core:Icon id="iLessIniatR" src="sap-icon://slim-arrow-right" tooltip="Less" press="fnPressRightInitR" visible="false" color="black"/>
+											<Label text="Data for Recon" design="Bold" textAlign="Center" class="fontSize"/>
+											<ToolbarSpacer/>
+											<Button type="Emphasized" text="Generate Summary" press="onPressReconResultAction"/>
+											<Button type="Transparent" icon="sap-icon://download" press="onConfigExtractPress"/>
+										</Toolbar>
+										<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false" id="id2APRSummaryTable1"
+											visible="true" class="sapUiContentPadding">
+											<commons:content>
+												<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+													<commons:content>
+														<ui:TreeTable rows="{path:'InitiateRecon>/resp', parameters:{ arrayNames:['items'], numberOfExpandedLevels:1 }}" class=""
+															selectionMode="None" selectionBehavior="Row" visibleRowCount="7" fixedColumnCount="2" enableSelectAll="false">
+															<ui:Column width="12rem">
+																<ui:multiLabels>
+																	<Label text="" design="Bold"/>
+																	<Label text="Showing" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<HBox>
+																		<Text text="{InitiateRecon>Showing}"/>
+																		<core:Icon src="sap-icon://message-information" visible="{= ${InitiateRecon>Showing}=== 'Data for Recon' ? true:false }"
+																			class="sapUiTinyMarginBegin" color="#000000" tooltip="Including Rollover"/>
+																		<core:Icon src="sap-icon://message-information" visible="{= ${InitiateRecon>Showing}=== 'Rolled Over Data' ? true:false }"
+																			class="sapUiTinyMarginBegin" color="#000000" tooltip="Based on Response provided in previous period"/>
+																	</HBox>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="7rem">
+																<ui:multiLabels>
+																	<Label text="" design="Bold"/>
+																	<Label text="Section" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{InitiateRecon>section}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column headerSpan="6" hAlign="End" width="8rem" id="idDCRCol8">
+																<ui:multiLabels>
+																	<Label text="PR" design="Bold" textAlign="Center" width="100%"/>
+																	<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<HBox alignItems="Start" justifyContent="End">
+																		<Text text="{InitiateRecon>prCount}"/>
+																	</HBox>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" width="9rem" id="idDCRCol9">
+																<ui:multiLabels>
+																	<Label text="" design="Bold" textAlign="Center"/>
+																	<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<HBox alignItems="Start" justifyContent="End">
+																		<Text text="{path : 'InitiateRecon>prTaxableValue', formatter : '.formatter.amountValue'}"/>
+																	</HBox>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" width="9rem" id="idDCRCol10">
+																<ui:multiLabels>
+																	<Label text="" design="Bold" textAlign="Center"/>
+																	<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<HBox alignItems="Start" justifyContent="End">
+																		<Text text="{path : 'InitiateRecon>prIGST', formatter : '.formatter.amountValue'}"/>
+																	</HBox>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" width="9rem" id="idDCRCol11">
+																<ui:multiLabels>
+																	<Label text="" design="Bold" textAlign="Center"/>
+																	<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<HBox alignItems="Start" justifyContent="End">
+																		<Text text="{path : 'InitiateRecon>prCGST', formatter : '.formatter.amountValue'}"/>
+																	</HBox>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" width="9rem" id="idDCRCol12">
+																<ui:multiLabels>
+																	<Label text="" design="Bold" textAlign="Center"/>
+																	<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<HBox alignItems="Start" justifyContent="End">
+																		<Text text="{path : 'InitiateRecon>prSGST', formatter : '.formatter.amountValue'}"/>
+																	</HBox>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" width="9rem" id="idDCRCol13">
+																<ui:multiLabels>
+																	<Label text="" design="Bold" textAlign="Center"/>
+																	<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<HBox alignItems="Start" justifyContent="End">
+																		<Text text="{path : 'InitiateRecon>prCess', formatter : '.formatter.amountValue'}"/>
+																	</HBox>
+																</ui:template>
+															</ui:Column>
+															<ui:Column headerSpan="6" hAlign="End" width="8rem" id="idDCRCol2">
+																<ui:multiLabels>
+																	<Label text="ANX - 2" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<HBox alignItems="Start" justifyContent="End">
+																		<Text text="{InitiateRecon>anx2Count}"/>
+																	</HBox>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" width="9rem" id="idDCRCol3">
+																<ui:multiLabels>
+																	<Label text="" design="Bold"/>
+																	<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<HBox alignItems="Start" justifyContent="End">
+																		<Text text="{path : 'InitiateRecon>anx2TaxableValue', formatter : '.formatter.amountValue'}"/>
+																	</HBox>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" width="9rem" id="idDCRCol4">
+																<ui:multiLabels>
+																	<Label text="" width="100%" design="Bold"/>
+																	<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<HBox alignItems="Start" justifyContent="End">
+																		<Text text="{path : 'InitiateRecon>anx2IGST', formatter : '.formatter.amountValue'}"/>
+																	</HBox>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" width="9rem" id="idDCRCol5">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<HBox alignItems="Start" justifyContent="End">
+																		<Text text="{path : 'InitiateRecon>anx2CGST', formatter : '.formatter.amountValue'}"/>
+																	</HBox>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" width="9rem" id="idDCRCol6">
+																<ui:multiLabels>
+																	<Label text="" textAlign="Center" width="100%" design="Bold"/>
+																	<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold" tooltip="Rectified"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<HBox alignItems="Start" justifyContent="End">
+																		<Text text="{path : 'InitiateRecon>anx2SGST', formatter : '.formatter.amountValue'}"/>
+																	</HBox>
+																</ui:template>
+															</ui:Column>
+															<ui:Column width="9rem" hAlign="End" id="idDCRCol7">
+																<ui:multiLabels>
+																	<Label text="" design="Bold"/>
+																	<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<Text text="{path : 'InitiateRecon>anx2Cess', formatter : '.formatter.amountValue'}"/>
+																</ui:template>
+															</ui:Column>
+															<ui:Column headerSpan="4" hAlign="End" width="8rem">
+																<ui:multiLabels>
+																	<Label text="PR Available" design="Bold" textAlign="Center" width="100%"/>
+																	<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																</ui:multiLabels>
+																<ui:template>
+																	<HBox alignItems="Start" justifyContent="End">
+																		<Text text="{path : 'InitiateRecon>avIGST', formatter : '.formatter.amountValue'}"/>
+																	</HBox>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" width="9rem">
+																<ui:multiLabels>
+																	<Label text="" design="Bold" textAlign="Center"/>
+																	<HBox alignItems="Start" justifyContent="Center">
+																		<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																	</HBox>
+																</ui:multiLabels>
+																<ui:template>
+																	<HBox alignItems="Start" justifyContent="End">
+																		<Text text="{path : 'InitiateRecon>avCGST', formatter : '.formatter.amountValue'}"/>
+																	</HBox>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" width="9rem">
+																<ui:multiLabels>
+																	<Label text="" design="Bold" textAlign="Center"/>
+																	<HBox alignItems="Start" justifyContent="Center">
+																		<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																	</HBox>
+																</ui:multiLabels>
+																<ui:template>
+																	<HBox alignItems="Start" justifyContent="End">
+																		<Text text="{path : 'InitiateRecon>avSGST', formatter : '.formatter.amountValue'}"/>
+																	</HBox>
+																</ui:template>
+															</ui:Column>
+															<ui:Column hAlign="End" width="9rem">
+																<ui:multiLabels>
+																	<Label text="" design="Bold" textAlign="Center"/>
+																	<HBox alignItems="Start" justifyContent="Center">
+																		<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+																	</HBox>
+																</ui:multiLabels>
+																<ui:template>
+																	<HBox alignItems="Start" justifyContent="End">
+																		<Text text="{path : 'InitiateRecon>avCess', formatter : '.formatter.amountValue'}"/>
+																	</HBox>
+																</ui:template>
+															</ui:Column>
+														</ui:TreeTable>
+													</commons:content>
+												</commons:ChartContainerContent >
+											</commons:content>
+											<commons:toolbar>
+												<OverflowToolbar>
+													<CheckBox text="Recon Across GSTINs" selected="false" class="clCheckBoxText"/>
+													<CheckBox text="Include Records Uploaded After 10th by the Vendor " selected="false" class="clCheckBoxText"/>
+													<ToolbarSpacer/>
+													<!--<Button type="Emphasized" text="Generate Summary" press="onGenerateSummary" />
+										<Button type="Default" text="Dynamic Matching" press="onDynamicMatchingPress"/>
+										<Button icon="sap-icon://accept" type="Emphasized" text="Initiate Matching"/>-->
+													<Button type="Transparent" icon="sap-icon://download" press="onConfigExtractPress"/>
+													<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+												</OverflowToolbar>
+											</commons:toolbar>
+										</commons:ChartContainer>
+									</l:BlockLayoutCell>
+								</l:BlockLayoutRow>
+							</l:BlockLayout>
+						</content>
+					</Page>
+				</detailPages>
+				<masterPages>
+					<Page showHeader="false">
+						<content>
+							<Toolbar height="6rem" class="clVerticalLayoutColor">
+								<VBox class="sapUiSmallMarginBegin">
+									
+									<Label text="Period :" class="sapUiTinyMarginBegin sapUiTinyMarginTop"/>
+									<HBox>
+										<DatePicker displayFormat="MMM yyyy" id="idInitiateReconPeriod" valueFormat="MMyyyy" width="14rem" class="input sapUiTinyMarginBegin"/>
+										<Button text="GO" type="Emphasized" press="onPressGoForGSTIN" class="input sapUiTinyMarginBegin"/>
+									</HBox>
+								</VBox>
+							</Toolbar>
+							<List mode="MultiSelect" id="idInitiateReconList" headerText="List of GSTIN" items="{GSTIN>/}" selectionChange="onSelectionChange1">
+								<headerToolbar>
+									<OverflowToolbar>
+										<content>
+											<CheckBox selected="true" select="onSelectallGSTIN"/>
+											<Title text="List of GSTIN" level="H2"/>
+											<ToolbarSpacer/>
+										</content>
+									</OverflowToolbar>
+								</headerToolbar>
+								<CustomListItem>
+									<HBox justifyContent="SpaceBetween">
+										<VBox class="sapUiTinyMarginBegin sapUiTinyMarginTopBottom">
+											<Label text="{GSTIN>state}" tooltip="Latest Date"/>
+											<Link text="{GSTIN>gstin}" press="handlePress"/>
+										</VBox>
+										<VBox class="sapUiTinyMarginBegin sapUiTinyMarginTopBottom">
+											<Label text="{GSTIN>status}" tooltip="ANX-2 Status"/>
+											<Label text="{GSTIN>statusdate}" tooltip="Latest Date" class="clTextSize50"/>
+										</VBox>
+									</HBox>
+								</CustomListItem>
+							</List>
+						</content>
+					</Page>
+				</masterPages>
+			</SplitApp>
+		</content>
+	</Page>
+	<f:DynamicPage id="idRequestIDwisePage" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button icon="sap-icon://nav-back" type="Transparent" press="onPressRequestIDwiseBack"/>
+						<Title text="Request ID wise" class="sapUiSmallMarginBegin clTitleMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" visible="false">
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Request ID" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<ComboBox >
+									<core:Item key="Demo Entity" text="092019050791"/>
+									<core:Item key="Demo Entity 1" text="092019050792"/>
+									<core:Item key="Demo Entity 2" text="092019050793"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Tax Period" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<DatePicker value="Oct 2019" displayFormat="MMM yyyy" valueFormat="dd-MM-yyyy" change="handleChange" width="12rem"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<!--	<MultiComboBox width="100%" items="{path:'NewReturns>/catalog1'}" id="idfgiGSINTComboMain">
+									<core:Item key="{NewReturns>GSTIN}" text="{NewReturns>GSTIN}"/>
+								</MultiComboBox>-->
+								<MultiComboBox width="100%" items="{path:'Anx2>/ProcessedData2/'}">
+									<core:Item key="{Anx2>state}" text="{Anx2>GSTIN}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Initiation" visibleInFilterBar="true">
+							<fb:control>
+								<DateTimePicker id="DTP1" width="100%" placeholder="Enter Date &amp; Time ..."/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Initiated By" visibleInFilterBar="true">
+							<fb:control>
+								<Input value="{}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button icon="sap-icon://filter" type="Default" tooltip="Adapt Filters" press="onPressAdaptFilters" class="sapUiTinyMarginBegin"/>
+					<Button text="Go" type="Emphasized" press="onSearch" class="sapUiTinyMarginBegin"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false">
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table rows="{path:'ReqWiseData>/resp/requestDetails', sorter: {path: 'requestId',descending:true}}" class="sapUiTinyMarginBegin"
+								selectionMode="None" selectionBehavior="Row" visibleRowCount="10" fixedColumnCount="0" enableSelectAll="false">
+								<ui:Column>
+									<Label design="Bold" text="Request ID"/>
+									<ui:template>
+										<Text text="{ReqWiseData>requestId}"/>
+										<!-- NewReturns-->
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="">
+									<Label design="Bold" text="No. of GSTIN"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Link text="{ReqWiseData>gstinCount}" press="onPressGSTIN"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="">
+									<Label design="Bold" text="Tax Period"/>
+									<ui:template>
+										<Text text="{ReqWiseData>taxPeriod}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="">
+									<Label design="Bold" text="Initiation"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{ReqWiseData>initiatedOn}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="">
+									<Label design="Bold" text="Initiated By"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{ReqWiseData>initiatedBy}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="">
+									<Label design="Bold" text="Completion"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{ReqWiseData>completionOn}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="">
+									<Label design="Bold" text="Download"/>
+									<ui:template>
+										<HBox alignItems="Start" justifyContent="Center">
+											<core:Icon src="sap-icon://download" tooltip="Download" press="onConfigExtractPress" size="0.75rem" class="sapUiTinyMarginBegin"
+												visible="{=${ReqWiseData>status}==='REPORT_GENERATED'}">
+												<!--<core:dependents>
+													<Text text="{ReqWiseData>status}"/>
+												</core:dependents>-->
+											</core:Icon>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="">
+									<Label design="Bold" text="Status"/>
+									<ui:template>
+										<Text text="{ReqWiseData>status}"/>
+										<!--<Link text="{ReqWiseData>image}" press="onPressImage"/>-->
+									</ui:template>
+								</ui:Column>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+				<commons:toolbar>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+						<Button type="Emphasized" text="Refresh" press="onRefreshRequestIDwise"/>
+						<Button type="Transparent" icon="sap-icon://download" tooltip="Download Summary" press="onDownloadSummary" visible="false"/>
+						<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+					</OverflowToolbar>
+				</commons:toolbar>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

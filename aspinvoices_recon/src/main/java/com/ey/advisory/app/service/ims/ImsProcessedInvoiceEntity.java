@@ -1,0 +1,211 @@
+/**
+ * 
+ */
+package com.ey.advisory.app.service.ims;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Date;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+
+import lombok.Data;
+
+/**
+ * @author vishal.verma
+ *
+ */
+
+@Entity
+@Table(name = "TBL_GETIMS_PROCESSED")
+@Data
+public class ImsProcessedInvoiceEntity {
+
+	@Id
+	@SequenceGenerator(name = "sequence", sequenceName = "TBL_GETIMS_PROCESSED_SEQ", allocationSize = 100)
+	@GeneratedValue(generator = "sequence", strategy = GenerationType.SEQUENCE)
+	@Column(name = "ID")
+	private Long id;
+
+	@Column(name = "RECIPIENT_GSTIN")
+	private String recipientGstin;
+
+	@Column(name = "SUPPLIER_GSTIN")
+	private String supplierGstin;
+
+	@Column(name = "IMS_UNIQUE_ID")
+	private String ImsUniqueId;
+
+	@Column(name = "INVOICE_NUMBER")
+	private String invoiceNumber;
+
+	@Column(name = "INVOICE_TYPE")
+	private String invoiceType;
+
+	@Column(name = "INVOICE_DATE")
+	private Date invoiceDate;
+
+	@Column(name = "RETURN_PERIOD")
+	private String returnPeriod;
+
+	@Column(name = "DERIVED_RET_PERIOD")
+	private Long derivedRetPeriod;
+
+	@Column(name = "ACTION_RESPONSE")
+	private String actionResponse;
+
+	@Column(name = "RESPONSE_REMARKS")
+	private String responseRemarks;
+
+	@Column(name = "IS_PENDING_ACTION_BLOCKED")
+	private String isPendingActionBlocked;
+
+	@Column(name = "FORM_TYPE")
+	private String formType;
+
+	@Column(name = "GSTR1_FILING_STATUS")
+	private String filingStatus;
+
+	@Column(name = "INVOICE_VALUE")
+	private BigDecimal invoiceValue;
+
+	@Column(name = "TAXABLE_VALUE")
+	private BigDecimal taxableValue;
+
+	@Column(name = "IGST_AMT")
+	private BigDecimal igstAmt;
+
+	@Column(name = "CGST_AMT")
+	private BigDecimal cgstAmt;
+
+	@Column(name = "SGST_AMT")
+	private BigDecimal sgstAmt;
+
+	@Column(name = "CESS_AMT")
+	private BigDecimal cessAmt;
+
+	@Column(name = "POS")
+	private String pos;
+
+	@Column(name = "CHKSUM")
+	private String chksum;
+
+	@Column(name = "DOC_KEY")
+	private String docKey;
+
+	@Column(name = "BATCH_ID")
+	private Long batchId;
+
+	@Column(name = "IS_DELETE")
+	private Boolean isDelete;
+
+	@Column(name = "CREATED_BY")
+	private String createdBy;
+
+	@Column(name = "CREATED_ON")
+	private LocalDateTime createdOn;
+
+	@Column(name = "MODIFIED_BY")
+	private String modifiedBy;
+
+	@Column(name = "MODIFIED_ON")
+	private LocalDateTime modifiedOn;
+
+	@Column(name = "IS_SAVED_TO_GSTIN")
+	private Boolean isSavedToGstin;
+
+	@Column(name = "IS_SENT_TO_GSTIN")
+	private Boolean isSentToGstin;
+
+	@Column(name = "REF_ID")
+	private String refId;
+
+	@Column(name = "SAVE_BATCH_ID")
+	private Long saveBatchId;
+
+	@Column(name = "FILE_ID")
+	private Long fileId;
+
+	//
+	@Column(name = "ACTION_GSTN")
+	private String actionGstn;
+
+	@Column(name = "ACTION_DIGIGST_DATE_TIME")
+	private LocalDateTime digiActionDateTime;
+
+	@Column(name = "SUPPLIER_LEGAL_NAME")
+	private String supplierLegalName;
+
+	@Column(name = "SUPPLIER_TRADE_NAME")
+	private String supplierTradeName;
+
+	@Column(name = "TOTAL_TAX")
+	private BigDecimal totalTax;
+
+	@Column(name = "ORG_DOC_NUM")
+	private String orgDocNum;
+
+	@Column(name = "GETCALL_DATE_TIME")
+	private LocalDateTime getCallDateTime;
+
+	@Column(name = "ORG_DOC_DATE")
+	private Date orgDocDate;
+
+	@Column(name = "TABLE_TYPE")
+	private String tableType;
+
+	@Column(name = "ACTION_DIGI")
+	private String actionDigi;
+
+	@Column(name = "AVAILABLE_IN_IMS")
+	private boolean availableInIms = true;
+
+	@Column(name = "SENT_TO_GSTIN_DATE")
+	private LocalDateTime gstnSentDateTime;
+
+	@Column(name = "SAVED_TO_GSTIN_DATE")
+	private LocalDateTime gstnSavedDateTime;
+
+	@Column(name = "GSTIN_ERROR_CODE")
+	private String gstnErrorCode;
+
+	@Column(name = "GSTIN_ERROR_DESC")
+	private String gstnErrorDesc;
+
+	// @Transient
+	@Column(name = "GSTN_SAVE_DOCKEY")
+	private String gstnSaveDockey;
+
+	@Column(name = "GSTN_INV_TYPE")
+	private String gstnInvType;
+
+	@Column(name = "LINKING_DOC_KEY")
+	private String lnkingDocKey;
+
+	// v1.1
+	@Column(name = "ITC_RED_REQ")
+	private String itcRedReq;
+
+	@Column(name = "DECLARED_IGST")
+	private BigDecimal declIgst;
+
+	@Column(name = "DECLARED_SGST")
+	private BigDecimal declSgst;
+
+	@Column(name = "DECLARED_CGST")
+	private BigDecimal declCgst;
+
+	@Column(name = "DECLARED_CESS")
+	private BigDecimal declCess;
+
+	@Column(name = "IS_MANUAL_DELETE")
+	private Boolean isManualDelete;
+
+}

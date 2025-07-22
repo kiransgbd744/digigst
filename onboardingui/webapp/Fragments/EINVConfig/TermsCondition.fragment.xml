@@ -1,0 +1,74 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="dynamicTM">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Label text="Entity :" class="sapUiTinyMarginTop" design="Bold"/>
+						<Select items="{entityUser>/resp}" change="onSelectionChangeEntity" width="15rem" id="idEntityTC" class="sapUiTinyMarginBegin">
+							<core:Item key="{entityUser>entityId}" text="{entityUser>entityName}"/>
+						</Select>
+						<Label text="GSTIN :" class="sapUiTinyMarginTop sapUiLargeMarginBegin" design="Bold"/>
+						<MultiComboBox items="{TermsCondition>/gstins/}" id="idtcGSTIN" class="sapUiTinyMarginBegin" width="15rem">
+							<core:ListItem key="{TermsCondition>id}" text="{TermsCondition>gstin}"/>
+						</MultiComboBox>
+						<Label text="Terms &amp; Conditions :" class="sapUiTinyMarginTop sapUiLargeMarginBegin" design="Bold"/>
+						<Input class="sapUiTinyMarginBegin" id="idtermsAndCond" width="30rem"/>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<Button type="Emphasized" icon="sap-icon://save" text="Submit" id="idTCSubmit" press="onSubmit" enabled="true"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<ui:Table id="idTableTC" rows="{TermsCondition>/items/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10"
+				fixedRowCount="0" fixedColumnCount="0" enableSelectAll="true">
+				<ui:extension>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<!--<Button type="Accept" icon="sap-icon://edit" tooltip="Edit rows" id="idTMEditRows" press="onEditRows"/>-->
+						<!--<Button type="Accept" icon="sap-icon://add" tooltip="Add row" id="idUCAddrow" press="onAddrow"/>-->
+						<Button type="Reject" icon="sap-icon://delete" tooltip="Delete rows" id="idTMDeleteRows" press="onDeleteRows"/>
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="6rem" headerSpan="0">
+						<ui:multiLabels>
+							<Label text="S.No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{TermsCondition>sno}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="15rem">
+						<ui:multiLabels>
+							<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{TermsCondition>gstin}"/>
+							<!--<MultiComboBox items="{TermsCondition>/gstins/}" selectedKeys="{dataPermission>gstinIds}" enabled="false" width="100%">-->
+							<!--	<core:ListItem key="{TermsCondition>id}" text="{TermsCondition>gstin}"/>-->
+							<!--</MultiComboBox>-->
+							<!--<MultiComboBox items="{dataF4>/gstin/}" selectedKeys="{dataPermission>gstinIds}" editable="{dataPermission>edit}"-->
+							<!--	selectionChange="onSelectionChangeMCB" width="100%">-->
+							<!--	<core:ListItem key="{dataF4>id}" text="{dataF4>supplierGstin}"/>-->
+							<!--</MultiComboBox>-->
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<ui:multiLabels>
+							<Label text="Terms &amp; Conditions" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{TermsCondition>termsCond}"/>
+							<!--<Input value="{terms>firstName}" editable="{terms>edit}"/>-->
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

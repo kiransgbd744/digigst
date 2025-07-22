@@ -1,0 +1,289 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.GDashboardLiability"
+	xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data" xmlns:viz="sap.viz.ui5.controls"
+	xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" busyIndicatorDelay="0">
+	<Page>
+		<customHeader>
+			<Bar class="header colorToolbar">
+				<contentLeft>
+					<MenuButton id="idDimension" text="{i18n>rupeesIn} {i18n>K}" width="13rem" class="sapUiTinyMarginBegin buttoncolorSec">
+						<Menu id="idDimensionMenu" items="{oDinomtion>/}" itemSelected="onChangeDinomination">
+							<MenuItem key="{oDinomtion>Key}" text="{oDinomtion>Value}"/>
+						</Menu>
+					</MenuButton>
+				</contentLeft>
+				<contentMiddle>
+					<Title class="title sapUiSmallMarginEnd" text="Liability Payment"/>
+					<Title text="1/1"/>
+				</contentMiddle>
+				<contentRight>
+					<Label text="Last Updated On :" class="sapUiTinyMarginEnd" design="Bold"/>
+					<Text text="{oMonthTrendModel>/refreshedOn}"/>
+				</contentRight>
+			</Bar>
+		</customHeader>
+		<content>
+			<l:VerticalLayout width="100%">
+				<l:BlockLayout background="Dashboard" class="cl_Contentpading">
+					<l:BlockLayoutRow accentCells="Accent1">
+						<l:BlockLayoutCell width="2" class="cl_Blockout cl_blockBg">
+							<Panel>
+								<Toolbar class="cl_borderBOTTOM" height="2.5rem">
+									<VBox alignContent="Center" alignItems="Center">
+										<Text text="{parts: [{path:'oDmModel>/Key'},{path:'oMonthTrendModel>/totalLiab'}], formatter:'.formatter.Denomination'}"
+											class="cl_textNumber"/>
+										<Label text="Total Liability" design="Bold"/>
+									</VBox>
+									<ToolbarSpacer/>
+									<VBox alignContent="Center" alignItems="Center">
+										<Text text="{parts: [{path:'oDmModel>/Key'},{path:'oMonthTrendModel>/liabCash'}], formatter:'.formatter.Denomination'}"
+											class="cl_textNumber"/>
+										<Label text="Paid Through Cash" design="Bold"/>
+									</VBox>
+								</Toolbar>
+								<Toolbar class="cl_borderBOTTOM" height="2.5rem">
+									<ToolbarSpacer/>
+									<VBox alignContent="Center" alignItems="Center">
+										<Text text="{parts: [{path:'oDmModel>/Key'},{path:'oMonthTrendModel>/liabItc'}], formatter:'.formatter.Denomination'}" class="cl_textNumber"/>
+										<Label text="Paid Through ITC" design="Bold"/>
+									</VBox>
+									<ToolbarSpacer/>
+								</Toolbar>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="cl_Blockout cl_blockBg">
+							<Panel class="cl_toolbarstate">
+								<VBox>
+									<Label text="FINANCIAL YEAR" class="cl_lebsta" design="Bold"/>
+									<Select id="idFinance" items="{oFyModel>/finYears}" change="onFyChange" width="100%" class="sapUiSmallMarginTop">
+										<core:Item key="{oFyModel>fy}" text="{oFyModel>fy}"/>
+									</Select>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="cl_Blockout cl_blockBg">
+							<Panel class="cl_toolbarstate">
+								<VBox>
+									<Label text="ENTITY NAME" class="cl_lebsta" design="Bold"/>
+									<MultiComboBox id="idEntityGOutward1" items="{entityAll>/}" selectedKeys="{GloblePayload>/entity}" selectionChange="selectEntity"
+										class="sapUiSmallMarginTop">
+										<core:Item key="{entityAll>entityId}" text="{entityAll>entityName}"/>
+									</MultiComboBox>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="cl_Blockout cl_blockBg">
+							<Panel>
+								<VBox>
+									<Label text="SUPPLIER GSTIN" design="Bold"/>
+									<MultiComboBox id="idSupplier" items="{oGstinModel>/gstins}" selectionChange="selectAll" width="100%" showSecondaryValues="true"
+										class="sapUiSmallMarginTop">
+										<core:Item key="{oGstinModel>gstin}" text="{oGstinModel>gstin} {=!${oGstinModel>stateName}?'':'-'} {oGstinModel>stateName}"/>
+									</MultiComboBox>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="cl_Blockout cl_blockBg">
+							<Panel>
+								<VBox>
+									<Label text="RETURN PERIOD" design="Bold"/>
+									<MultiComboBox id="idReturn" items="{oRetPeriodModel>/returnPeriods}" selectionChange="selectAll" width="100%" class="sapUiSmallMarginTop">
+										<core:Item key="{oRetPeriodModel>fy}" text="{oRetPeriodModel>fy}"/>
+									</MultiComboBox>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+				<Toolbar class="cl_borderBOTTOM">
+					<ToolbarSpacer/>
+					<Button text="Filter" class="sapUiSmallMarginEnd buttoncolor" press="onGoSelect"></Button>
+				</Toolbar>
+				<l:BlockLayout background="Dashboard" class="cl_Contentpading">
+					<l:BlockLayoutRow accentCells="Accent1">
+						<l:BlockLayoutCell>
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer/>
+									<Label text="Month Wise Trend Analysis" design="Bold" class="titleFont"/>
+									<ToolbarSpacer/>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTop">
+									<RadioButtonGroup id="idRdValue" selectedIndex="0" select="onSelectTrendValue" columns="3" class="sapUiTinyMarginBegin sapUiSmallMarginEnd">
+										<RadioButton text="Total liability"/>
+										<RadioButton text="Liability paid through ITC"/>
+										<RadioButton text="Liability paid through Cash"/>
+									</RadioButtonGroup>
+								</HBox>
+								<viz:Popover id="idPopOver1"></viz:Popover>
+								<viz:VizFrame id="vfBiDashLine" xmlns="sap.viz" vizType="line" class="cl_vizHeig2 sapUiTinyMarginTop" uiConfig="{applicationSet:'fiori'}">
+									<viz:dataset>
+										<viz.data:FlattenedDataset data="{oMonthTrendModel>/displayList}">
+											<viz.data:dimensions>
+												<viz.data:DimensionDefinition name="Month" value="{path:'oMonthTrendModel>xAxis', formatter:'.formatter.Monthaxis'}"/>
+											</viz.data:dimensions>
+											<viz.data:measures>
+												<viz.data:MeasureDefinition name="Total liability" value="{oMonthTrendModel>yAxis}"/>
+												<viz.data:MeasureDefinition name="Liability paid through ITC" value="{oMonthTrendModel>yAxis}"/>
+												<viz.data:MeasureDefinition name="Liability paid through Cash" value="{oMonthTrendModel>yAxis}"/>
+											</viz.data:measures>
+										</viz.data:FlattenedDataset>
+									</viz:dataset>
+									<viz:feeds>
+										<viz.feeds:FeedItem id='valueAxisFeed1' uid="valueAxis" type="Measure" values="Total liability"/>
+										<viz.feeds:FeedItem id='categoryAxisFeed1' uid="categoryAxis" type="Dimension" values="Month"/>
+									</viz:feeds>
+								</viz:VizFrame>
+							</Panel>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+					<l:BlockLayoutRow>
+						<l:BlockLayoutCell >
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer/>
+									<Label text="Liability paid Details" design="Bold" class="titleFont"/>
+									<ToolbarSpacer/>
+									<core:Icon src="sap-icon://download" press="onDownloadMonthe"/>
+								</Toolbar>
+								<ui:Table rows="{oTaxLiabDetailsModel>/resp}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+									class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+									<ui:columns>
+										<ui:Column width="12rem" hAlign="Center">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="Supplier GSTIN no." textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<ObjectIdentifier title="{oTaxLiabDetailsModel>suppGstin}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column headerSpan="4,4" hAlign="End">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="Tax payable" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts: [{path:'oDmModel>/Key'},{path:'oTaxLiabDetailsModel>taxPayIgst'}], formatter:'.formatter.Denomination'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text=""/>
+												<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts: [{path:'oDmModel>/Key'},{path:'oTaxLiabDetailsModel>taxPayCgst'}], formatter:'.formatter.Denomination'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text=""/>
+												<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts: [{path:'oDmModel>/Key'},{path:'oTaxLiabDetailsModel>taxPaySgst'}], formatter:'.formatter.Denomination'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text=""/>
+												<Label text="Total" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts: [{path:'oDmModel>/Key'},{path:'oTaxLiabDetailsModel>taxPayTotal'}], formatter:'.formatter.Denomination'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column headerSpan="8,4" hAlign="End">
+											<ui:multiLabels>
+												<Label text="Liability paid through" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Label text="ITC" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts: [{path:'oDmModel>/Key'},{path:'oTaxLiabDetailsModel>itcIgst'}], formatter:'.formatter.Denomination'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column headerSpan="8,4" hAlign="End">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text=""/>
+												<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts: [{path:'oDmModel>/Key'},{path:'oTaxLiabDetailsModel>itcCgst'}], formatter:'.formatter.Denomination'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column headerSpan="8,4" hAlign="End">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text=""/>
+												<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts: [{path:'oDmModel>/Key'},{path:'oTaxLiabDetailsModel>itcSgst'}], formatter:'.formatter.Denomination'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column headerSpan="8,4" hAlign="End">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text=""/>
+												<Label text="Total" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts: [{path:'oDmModel>/Key'},{path:'oTaxLiabDetailsModel>itcTotal'}], formatter:'.formatter.Denomination'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column headerSpan="8,4" hAlign="End">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text="Cash" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts: [{path:'oDmModel>/Key'},{path:'oTaxLiabDetailsModel>cashIgst'}], formatter:'.formatter.Denomination'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column headerSpan="8,4" hAlign="End">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text=""/>
+												<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts: [{path:'oDmModel>/Key'},{path:'oTaxLiabDetailsModel>cashCgst'}], formatter:'.formatter.Denomination'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column headerSpan="8,4" hAlign="End">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text=""/>
+												<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts: [{path:'oDmModel>/Key'},{path:'oTaxLiabDetailsModel>cashSgst'}], formatter:'.formatter.Denomination'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column headerSpan="8,4" hAlign="End">
+											<ui:multiLabels>
+												<Label text=""/>
+												<Label text=""/>
+												<Label text="Total" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{parts: [{path:'oDmModel>/Key'},{path:'oTaxLiabDetailsModel>cashTotal'}], formatter:'.formatter.Denomination'}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+							</Panel>
+						</l:BlockLayoutCell >
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+			</l:VerticalLayout>
+		</content>
+	</Page>
+</mvc:View>

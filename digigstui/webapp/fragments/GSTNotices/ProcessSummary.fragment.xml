@@ -1,0 +1,192 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage visible="{=${ViewProperty>/btnSubSegment}==='details'}" class="clDataStatusAPI">
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox id="idSGstin" selectedKey="{sfilter>/gstins}" width="100%" items="{path:'GstinModel>/'}">
+									<core:Item key="{GstinModel>gstin}" text="{GstinModel>gstin}"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Selection Criteria" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="slSCriteria" selectedKey="{sfilter>/selectionCriteria}" forceSelection="true" change="onSelectCriteria">
+									<core:Item key="Datewise" text="Date wise"/>
+									<core:Item key="TaxPeriod" text="Tax Period wise"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="From Date" visibleInFilterBar="true"
+							visible="{=${sfilter>/selectionCriteria}==='Datewise'}">
+							<fb:control>
+								<DatePicker id="iSFromDate" value="{sfilter>/fromDate}" displayFormat="MMM dd, yyyy" valueFormat="dd-MM-yyyy" change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="To Date" visibleInFilterBar="true"
+							visible="{=${sfilter>/selectionCriteria}==='Datewise'}">
+							<fb:control>
+								<DatePicker id="iSToDate" value="{sfilter>/toDate}" displayFormat="MMM dd, yyyy" valueFormat="dd-MM-yyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="From Tax Period" visibleInFilterBar="true"
+							visible="{=${sfilter>/selectionCriteria}==='TaxPeriod'}">
+							<fb:control>
+								<DatePicker id="idSFromtaxPeriod" value="{sfilter>/fromTaxPeriod}" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="To Tax Period" visibleInFilterBar="true"
+							visible="{=${sfilter>/selectionCriteria}==='TaxPeriod'}">
+							<fb:control>
+								<DatePicker id="idSTotaxPeriod" value="{sfilter>/toTaxPeriod}" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<!--<Button id="bProcessFilter" icon="sap-icon://filter" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilter" class="buttoncolorSec"/>-->
+					<Button id="bDetailsClear" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onPressClear('S','C')"/>
+					<Button id="bDetailsGo" text="Filter" press="onSearch('S')" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<!--<Toolbar height="5.5rem" class="cl_removeBoderTool" visible="false">-->
+				<!--	<ToolbarSpacer/>-->
+				<!--	<HBox width="100%" alignItems="Center" justifyContent="Center">-->
+				<!--		<VBox alignItems="Center" justifyContent="Center" width="12%" class="actionColor sapUiSmallMarginEnd">-->
+				<!--			<Label text="21" class="fontSize25"/>-->
+				<!--			<Label text="Total Notices"/>-->
+				<!--		</VBox>-->
+				<!--		<VBox alignItems="Center" justifyContent="Center" width="12%" class="actionColor sapUiSmallMarginEnd">-->
+				<!--			<Label text="8" class="fontSize25"/>-->
+				<!--			<Label text="Responded Notices"/>-->
+				<!--		</VBox>-->
+				<!--		<VBox alignItems="Center" justifyContent="Center" width="12%" class="actionColor sapUiSmallMarginEnd">-->
+				<!--			<Label text="14" class="fontSize25"/>-->
+				<!--			<Label text="Pending Response"/>-->
+				<!--		</VBox>-->
+				<!--		<VBox alignItems="Center" justifyContent="Center" width="20%" class="actionColor sapUiSmallMarginEnd">-->
+				<!--			<Label text="18,90,12,338.00" class="fontSize25"/>-->
+				<!--			<Label text="Tax Amount Involved"/>-->
+				<!--		</VBox>-->
+				<!--	</HBox>-->
+				<!--	<ToolbarSpacer/>-->
+				<!--</Toolbar>-->
+				<ui:Table id="tabDetails" rows="{Details>/}" class="sapUiTinyMarginTop" selectionMode="MultiToggle" visibleRowCount="12"
+					fixedColumnCount="0" rowSelectionChange="onRowSelectionChange">
+					<ui:extension>
+						<OverflowToolbar >
+							<ToolbarSpacer/>
+							<!--<Button text="Fetch Notices" press="FetchNotices($event,'P')" class="buttoncolorSec"/>-->
+							<MenuButton text="Download Report" class="buttoncolorSec" tooltip="Download Reports">
+								<Menu>
+									<MenuItem text="Download Detailed report" key="R1" press="onDownloadDetailed('S')"/>
+									<MenuItem text="Download Notice PDFs" key="R2" press="onDownloadNoticePDFs" visible="false"/>
+								</Menu>
+							</MenuButton>
+							<Button text="Set Frequency" press="SetFrequency($event,'S')" class="buttoncolorSec" visible="false"/>
+						</OverflowToolbar>
+					</ui:extension>
+					<ui:columns>
+						<!--<ui:Column width="10rem">-->
+						<!--	<Label text="GSTIN ID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+						<!--	<ui:template>-->
+						<!--		<Text text="{Details>GSTIN_ID}"/>-->
+						<!--	</ui:template>-->
+						<!--</ui:Column>-->
+						<ui:Column width="10rem">
+							<Label text="Notice ID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{Details>noticeId}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="10rem">
+							<Label text="Date of Notice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{Details>dateOfIssue}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="10rem">
+							<Label text="Due Date of Response" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{Details>dueDateOfResponse}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="10rem">
+							<Label text="Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<!--<Text text="{path:'Details>Status', formatter:'.formatter.statusNotices'}"/>-->
+								<ObjectStatus text="{Details>status}" active="false" state="{path:'Details>Status', formatter:'.formatter.statusNotices'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="10rem">
+							<Label text="Date of Response" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{Details>dateOfResponse}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="13rem">
+							<Label text="Time left for Response" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<!--<Text text="{Details>Time_Left}"/>-->
+								<ObjectStatus text="{Details>timeLeft}" active="false" state="{path:'Details>Status', formatter:'.formatter.statusNotices'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="10rem">
+							<Label text="Amount of tax involved" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{path:'Details>amountTaxInvolved', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="30rem">
+							<Label text="Category of Notice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{Details>categoryOfNotice}" />
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="35rem">
+							<Label text="Type of Notice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{Details>typeOfNotice}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<Label text="Period Range" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{Details>periodRange}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+					<ui:footer>
+						<HBox justifyContent="Center">
+							<Button type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" enabled="{ViewProperty>/bFirst}"
+								press="onPressPagination('F')" class="sapUiTinyMarginBeginEnd"/>
+							<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="{ViewProperty>/bPrev}"
+								press="onPressPagination('P')"/>
+							<Input type="Number" textAlign="End" width="4rem" submit="onSubmitPagination('I')" enabled="{ViewProperty>/ePageNo}"
+								value="{ViewProperty>/pageNo}" class="sapUiTinyMarginBegin"/>
+							<Text text="/ {ViewProperty>/pgTotal}" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+							<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="{ViewProperty>/bNext}"
+								press="onPressPagination('N')"/>
+							<Button type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" enabled="{ViewProperty>/bLast}"
+								press="onPressPagination('L')" class="sapUiTinyMarginBeginEnd"/>
+							<Select selectedKey="{ViewProperty>/pgSize}" change="onSubmitPagination('S')" forceSelection="true" width="10%">
+								<core:Item key="10" text="10"/>
+								<core:Item key="25" text="25"/>
+								<core:Item key="50" text="50"/>
+								<core:Item key="75" text="75"/>
+								<core:Item key="100" text="100"/>
+							</Select>
+						</HBox>
+					</ui:footer>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

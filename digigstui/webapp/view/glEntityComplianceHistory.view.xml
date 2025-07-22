@@ -1,0 +1,100 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.f"
+	controllerName="com.ey.digigst.controller.glEntityComplianceHistory" xmlns:fb="sap.ui.comp.filterbar" xmlns:vm="sap.ui.comp.variants"
+	xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons" busyIndicatorDelay="0">
+	<f:DynamicPage id="idDPComplianceHistory">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onPressBack"/>
+						<Title text="Compliance History" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<SegmentedButton id="sbComplianceHistory" selectedKey="GSTR1" selectionChange="onChangeSegment" class="sapUiTinyMarginBegin" enabled="true">
+						<items>
+							<SegmentedButtonItem text="GSTR-1" key="GSTR1" enabled="true"/>
+							<SegmentedButtonItem text="GSTR-3B" key="GSTR3B" enabled="true"/>
+							<SegmentedButtonItem text="GSTR-6" key="GSTR6" enabled="true"/>
+							<SegmentedButtonItem text="GSTR-7" key="GSTR7" enabled="true"/>
+							<SegmentedButtonItem text="ITC-04" key="ITC04" enabled="true"/>
+							<SegmentedButtonItem text="GSTR-9" key="GSTR9" enabled="true"/>
+						</items>
+					</SegmentedButton>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header >
+			<f:DynamicPageHeader class="sapUiNoContentPadding" id="dpNewHeader" pinnable="false">
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slGet2aProcessGstinNew" items="{path:'GSTIN>/'}" selectionChange="selectAll">
+									<core:Item key="{GSTIN>gstin}" text="{GSTIN>gstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Financial Year" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<Select width="100%" id="dtFinYearGstrNew" items="{oFyModel>/finYears}" forceSelection="true">
+									<core:Item key="{oFyModel>fy}" text="{oFyModel>fy}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button class="buttoncolor" press="onPressGo" text="Filter"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiTinyMarginTop">
+				<l:BlockLayout background="Dashboard" class="sapUiTinyMarginBottom">
+					<l:BlockLayoutRow class="sapUiNoContentPadding">
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Daily API call limit" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ApiLimit>/limit}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="API calls used" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ApiLimit>/usage}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="API calls remaining" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ApiLimit>/remainingCnt}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.GLcomplianceHistory.gstr1E" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.GLcomplianceHistory.itc04E" type="XML"/>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.GLcomplianceHistory.gstr9E" type="XML"/>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

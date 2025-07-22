@@ -1,0 +1,46 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form">
+	<Dialog id="bulkSaveID" title="Data to be considered for reconciliation" type="Message" class="sapUiSizeCompact cl_saveHeader"
+		showHeader="true">
+		<buttons>
+			<Button text="Cancel" class="buttoncolorSec" press="onCloseDialogI"/>
+			<Button text="Okay" class="buttoncolorSec" press="onInitiPress1"/>
+		</buttons>
+		<Table noDataText="No Products">
+			<columns>
+				<Column hAlign="Center">
+					<Text text="Data for recon"/>
+				</Column>
+				<Column hAlign="Center">
+					<Text text="Get call data from NIC/GSTN"/>
+				</Column>
+				<Column hAlign="Center">
+					<Text text="Processed data / File upload"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem vAlign="Middle">
+					<cells>
+						<Text text="E-Invoice"/>
+						<CheckBox selected="true" editable="false"/>
+						<CheckBox editable="false"/>
+					</cells>
+				</ColumnListItem>
+				<ColumnListItem vAlign="Middle">
+					<cells>
+						<Text text="E-Way Bill"/>
+						<CheckBox selected="true" editable="false"/>
+						<CheckBox selected="true" editable="false"/>
+					</cells>
+				</ColumnListItem>
+				<ColumnListItem vAlign="Middle">
+					<cells>
+						<Text text="GSTR-1"/>
+						<CheckBox editable="false"/>
+						<CheckBox selected="true" editable="false"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</Dialog>
+</core:FragmentDefinition>

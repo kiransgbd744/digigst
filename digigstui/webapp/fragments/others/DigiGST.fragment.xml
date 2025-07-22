@@ -1,0 +1,152 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:commons="sap.suite.ui.commons"
+	xmlns:u="sap.ui.unified" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:ui="sap.ui.table" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar">
+	<f:DynamicPage >
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onPressBackGlSummary"/>
+						<Title text="DigiGST Computed" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onDigiGSTGo" clear="onClearDigiGST"
+					useToolbar="false" class="sapUiNoContentPadding" width="90%">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<!--<Input  id="idDigiGSTGstn" width="100%" ></Input>-->
+								<Select id="idDigiGSTGstn" width="100%" items="{oGSTIN>/resp/gstinDetails}" forceSelection="false">
+									<core:Item key="{oGSTIN>gstin}" text="{oGSTIN>gstin}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>taxPeriod}" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="idDigiGSTTaxPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Data Type" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="id_DigiGSTDataTy" width="100%" change="onDataTypeChange">
+									<core:Item key="O" text="Outward"/>
+									<core:Item key="I" text="Inward"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onClearDigiGST"/>
+					<Button text="Filter" press="onDigiGSTGo" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer showFullScreen="false" autoAdjustHeight="false" class="sapUiTinyMarginBeginEnd cl_ChartConHeight" id="idCcDigiGST">
+				<commons:toolbar>
+					<OverflowToolbar class="colorToolbar toolbarHeight">
+						<Text text="Last Updated at : " class="sapUiTinyMarginBegin"></Text>
+						<Text id="id_DigiGSTupdateText" text="{path : 'oDigiGSTModel>/resp/0/createdOn', formatter : '.formatter.TimeStamp'}"
+							class="sapUiTinyMarginBegin"></Text>
+						<ToolbarSpacer/>
+						<Button class="buttoncolorSec" text="Compute GL Data - DigiGST" press="onPressDigiGSTCompute" visible="false"/>
+						<Button class="buttoncolorSec" text="Compute Differential" press="onPressDigiGSTInitRecon" visible="false"/>
+						<MenuButton text="Download Report" class="sapUiTinyMarginBeginEnd buttoncolorSec" enabled="{= ${userPermission>/appPermission/P99}}">
+							<Menu id="bDigiGSTDownloadRpt" itemSelected="onPressDownloadReport($event,${$parameters>/item},'D')">
+								<MenuItem key="GlUploaded" text="GL Summary - Uploaded"/>
+								<MenuItem key="GlcomputedDigiGSTl" text="GL Summary - computed by DigiGST"/>
+								<MenuItem key="GlReconReport" text="GL Recon Report (Summary)"/>
+								<MenuItem key="GlOutward" text="Outward DigiGST Processed Records" visible="false"/>
+								<MenuItem key="GlInward" text="Inward DigiGST Processed Records " visible="false"/>
+							</Menu>
+						</MenuButton>
+						<Button type="Transparent" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="{=!${PrProperty>/DigiGSTFullScreen}}"
+							press="onGstr2FullScreen('openDigiGST')"/>
+						<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="{PrProperty>/DigiGSTFullScreen}"
+							press="onGstr2FullScreen('closeDigiGST')"/>
+						<commons:ChartContainerToolbarPlaceholder/>
+					</OverflowToolbar>
+				</commons:toolbar>
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table id="idDigiGSTTab" rows="{oDigiGSTModel>/resp/}" enableColumnReordering="false" class="sapUiTinyMarginTop" selectionMode="None"
+								visibleRowCount="14">
+								<!--<ui:extension>-->
+								<!--	<Toolbar>-->
+								<!--	</Toolbar>-->
+								<!--</ui:extension>-->
+								<ui:columns>
+									<ui:Column headerSpan="1" hAlign="Center">
+										<ui:multiLabels>
+											<Label text="GL Code - DigiGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Label/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{oDigiGSTModel>glCode}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<!--<ui:Column  hAlign="Center">-->
+									<!--	<ui:multiLabels>-->
+									<!--		<Label text="GL Code - DigiGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+									<!--		<Label />-->
+									<!--	</ui:multiLabels>-->
+									<!--	<ui:template>-->
+									<!--		<Text text="{parts:[{path : 'LinkTabGSTN1>computedTaxableVal'}], formatter : '.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>-->
+									<!--	</ui:template>-->
+									<!--</ui:Column>-->
+									<ui:Column headerSpan="1" hAlign="Center">
+										<ui:multiLabels>
+											<Label text="GL Description - DigiGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Label/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{oDigiGSTModel>glDesciption}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<!--<ui:Column  hAlign="Center">-->
+									<!--	<ui:multiLabels>-->
+									<!--		<Label text="GLCode-DigiGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+									<!--		<Label />-->
+									<!--	</ui:multiLabels>-->
+									<!--	<ui:template>-->
+									<!--		<Text text="{parts:[{path : 'LinkTabGSTN1>computedTaxableVal'}], formatter : '.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>-->
+									<!--	</ui:template>-->
+									<!--</ui:Column>-->
+									<ui:Column headerSpan="1" hAlign="Center">
+										<ui:multiLabels>
+											<Label text="Total Amount - DigiGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<Label/>
+										</ui:multiLabels>
+										<ui:template>
+											<Text text="{path : 'oDigiGSTModel>glTotalAmnt', formatter : '.formatter.amountValue2'}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<!--<ui:Column headerSpan="2" hAlign="Center">-->
+									<!--	<ui:multiLabels>-->
+									<!--		<Label text="Total Amount - DigiGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+									<!--		<Label />-->
+									<!--	</ui:multiLabels>-->
+									<!--	<ui:template>-->
+									<!--		<Text text="{parts:[{path : 'LinkTabGSTN1>computedTaxableVal'}], formatter : '.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>-->
+									<!--	</ui:template>-->
+									<!--</ui:Column>-->
+									<ui:Column headerSpan="2" hAlign="Center">
+										<Label text="Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{oDigiGSTModel>status}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent>
+				</commons:content>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

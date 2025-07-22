@@ -1,0 +1,165 @@
+/**
+ * 
+ */
+package com.ey.advisory.app.inward.einvoice;
+
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * @author Ravindra V S
+ *
+ */
+
+@Getter
+@Setter	
+public class EinvoiceDetailedLineItemReportDto {
+
+	 private String iRNGenerationPeriod;
+	 private String iRNStatus;
+	 private String iRNNumber;
+	 private String iRNDate;
+	 private String acknowledgmentNumber;
+	 private String iRNCancellationDate;
+	 private String cancellationReason;
+	 private String cancellationRemarks;
+	 private String eWayBillNumber;
+	 private String eWayBillDate;
+	 private String validUpto;
+	 private String taxScheme;
+	 private String supplyType;
+	 private String documentType;
+	 private String documentNumber;
+	 private String documentDate;
+	 private String reverseChargeFlag;
+	 private String supplierGSTIN;
+	 private String supplierTradeName;
+	 private String supplierLegalName;
+	 private String supplierAddress1;
+	 private String supplierAddress2;
+	 private String supplierLocation;
+	 private String supplierPincode;
+	 private String supplierStateCode;
+	 private String supplierPhone;
+	 private String supplierEmail;
+	 private String customerGSTIN;
+	 private String customerTradeName;
+	 private String customerLegalName;
+	 private String customerAddress1;
+	 private String customerAddress2;
+	 private String customerLocation;
+	 private String customerPincode;
+	 private String customerStateCode;
+	 private String billingPOS;
+	 private String customerPhone;
+	 private String customerEmail;
+	 private String dispatcherTradeName;
+	 private String dispatcherAddress1;
+	 private String dispatcherAddress2;
+	 private String dispatcherLocation;
+	 private String dispatcherPincode;
+	 private String dispatcherStateCode;
+	 private String shipToGSTIN;
+	 private String shipToTradeName;
+	 private String shipToLegalName;
+	 private String shipToAddress1;
+	 private String shipToAddress2;
+	 private String shipToLocation;
+	 private String shipToPincode;
+	 private String shipToStateCode;
+	 private String itemSerialNumber;
+	 private String productSerialNumber;
+	 private String productDescription;
+	 private String isService;
+	 private String hSN;
+	 private String barcode;
+	 private String batchName;
+	 private String batchExpiryDate;
+	 private String warrantyDate;
+	 private String orderLineReference;
+	 private String attributeName;
+	 private String attributeValue;
+	 private String originCountry;
+	 private String uQC;
+	 private String quantity;
+	 private String freeQuantity;
+	 private String unitPrice;
+	 private String itemAmount;
+	 private String itemDiscount;
+	 private String preTaxAmount;
+	 private String itemAssessableAmount;
+	 private String iGSTRate;
+	 private String iGSTAmount;
+	 private String cGSTRate;
+	 private String cGSTAmount;
+	 private String sGSTRate;
+	 private String sGSTAmount;
+	 private String cessAdvaloremRate;
+	 private String cessAdvaloremAmount;
+	 private String cessSpecificAmount;
+	 private String stateCessAdvaloremRate;
+	 private String stateCessAdvaloremAmount;
+	 private String stateCessSpecificAmount;
+	 private String itemOtherCharges;
+	 private String totalItemAmount;
+	 private String invoiceOtherCharges;
+	 private String invoiceAssessableAmount;
+	 private String invoiceIGSTAmount;
+	 private String invoiceCGSTAmount;
+	 private String invoiceSGSTAmount;
+	 private String invoiceCessAdvaloremAmount;
+	 private String invoiceCessSpecificAmount;
+	 private String invoiceStateCessAdvaloremAmount;
+	 private String invoiceStateCessSpecificAmount;
+	 private String invoiceDiscount;
+	 private String invoiceValue;
+	 private String roundOff;
+	 private String currencyCode;
+	 private String countryCode;
+	 private String invoiceValueFC;
+	 private String portCode;
+	 private String shippingBillNumber;
+	 private String shippingBillDate;
+	 private String invoiceRemarks;
+	 private String invoicePeriodStartDate;
+	 private String invoicePeriodEndDate;
+	 private String preceedingInvoiceNumber;
+	 private String preceedingInvoiceDate;
+	 private String otherReference;
+	 private String receiptAdviceReference;
+	 private String receiptAdviceDate;
+	 private String tenderReference;
+	 private String contractReference;
+	 private String externalReference;
+	 private String projectReference;
+	 private String customerPOReferenceNumber;
+	 private String customerPOReferenceDate;
+	 private String payeeName;
+	 private String modeOfPayment;
+	 private String branchOrIFSCCode;
+	 private String paymentTerms;
+	 private String paymentInstruction;
+	 private String creditTransfer;
+	 private String directDebit;
+	 private String creditDays;
+	 private String paidAmount;
+	 private String balanceAmount;
+	 private String accountDetail;
+	 private String ecomGSTIN;
+	 private String supportingDocURL;
+	 private String supportingDocument;
+	 private String additionalInformation;
+	 private String transporterID;
+	 private String transporterName;
+	 private String transportMode;
+	 private String transportDocNo;
+	 private String transportDocDate;
+	 private String distance;
+	 private String vehicleNo;
+	 private String vehicleType;
+	 private String section7OfIGSTFlag;
+	 private String claimRefundFlag;
+	 private String exportDuty;
+	 private String iRNGetCallDateTime;
+	 private String irpName;
+}

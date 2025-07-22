@@ -1,0 +1,328 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<Dialog title="{i18n>NIL}" type="Message" class="sapUiSizeCompact" contentWidth="75%">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Label text="{i18n>NIL}" design="Bold"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<beginButton>
+			<Button text="{i18n>close}" class="buttoncolorSec" press="onCloseDialog('nilExempt')"/>
+		</beginButton>
+		<Toolbar>
+			<Label text="{i18n>gstin}:" design="Bold"/>
+			<Text text="{Payload>/dataSecAttrs/GSTIN/0}"/>
+			<Label text="{i18n>taxPeriod}:" design="Bold" class="sapUiSmallMarginBegin"/>
+			<Text text="{path:'Payload>/taxPeriod',formatter:'.formatter.periodFormat'}"/>
+			<ToolbarSpacer/>
+			<SegmentedButton selectedKey="{Property>/segment}">
+				<items>
+					<SegmentedButtonItem text="{i18n>summary}" key="summary" width="6rem"/>
+					<SegmentedButtonItem text="{i18n>verticalData}" key="detail" width="6rem"/>
+				</items>
+			</SegmentedButton>
+		</Toolbar>
+		<ui:Table rows="{path:'NilExempt>/summary/'}" selectionMode="None" enableColumnReordering="false" visibleRowCount="3"
+			class="sapUiSmallMarginTop" visible="{=${Property>/segment}==='summary'?true:false}">
+			<ui:columns>
+				<ui:Column>
+					<Label text="{i18n>NIL}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Label text="{NilExempt>type}" design="Bold" visible="{=${NilExempt>type}==='TOTAL'?true:false}"/>
+							<Link text="{NilExempt>type}" emphasized="true" press="onNilExemptLink(${NilExempt>type})"
+								visible="{=${NilExempt>type}==='TOTAL'?false:true}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End" width="7rem">
+					<Label text="{i18n>count}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{NilExempt>count}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>nilAmount}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'NilExempt>nilAmount',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>exemptAmount}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'NilExempt>extAmount',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<Label text="{i18n>nonAmount}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{path:'NilExempt>nonAmount',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+		<ui:Table id="tabNilExempt" rows="{NilExempt>/gstnView/}" selectionMode="None" visibleRowCount="4" fixedColumnCount="4"
+			class="sapUiTinyMarginTop" visible="{=${Property>/segment}==='summary'?true:false}">
+			<ui:extension>
+				<Toolbar>
+					<ToolbarSpacer/>
+					<Button class="buttoncolorSec" text="{i18n>moveAspToUser}" press="onMoveNilComputedToUser" enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" text="{i18n>save}" press="onSaveNillExempt" enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" text="{i18n>cancel}" press="onCancelNilExempt" enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" icon="sap-icon://edit" tooltip="{i18n>edit}" press="onEditNilExempt" enabled="{buttonVis>/dataEditable}"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column width="20rem">
+					<Label text="{i18n>description}" textAlign="Center" width="100%" design="Bold"/>
+					<ui:template>
+						<Text text="{NilExempt>desc}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column headerSpan="3" hAlign="End">
+					<ui:multiLabels>
+						<Label text="{i18n>eyComputed}" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="{i18n>nilRated}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{path:'NilExempt>aspNilRated',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<ui:multiLabels>
+						<Label text=""/>
+						<Label text="{i18n>exemptSupplies}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{path:'NilExempt>aspExempted',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<ui:multiLabels>
+						<Label text=""/>
+						<Label text="{i18n>nonGstSupplies}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Text text="{path:'NilExempt>aspNonGst',formatter:'.formatter.amountValue'}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column headerSpan="3">
+					<ui:multiLabels>
+						<Label text="{i18n>userEdit}" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="{i18n>nilRated}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{path:'NilExempt>usrNilRated',formatter:'.formatter.amountValue'}" visible="{=!${NilExempt>visi}}"/>
+							<Input value="{NilExempt>usrNilRated}" textAlign="End" visible="{NilExempt>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column >
+					<ui:multiLabels>
+						<Label text=""/>
+						<Label text="{i18n>exemptSupplies}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{path:'NilExempt>usrExempted',formatter:'.formatter.amountValue'}" visible="{=!${NilExempt>visi}}"/>
+							<Input value="{NilExempt>usrExempted}" textAlign="End" visible="{NilExempt>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="End">
+					<ui:multiLabels>
+						<Label text=""/>
+						<Label text="{i18n>nonGstSupplies}" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<HBox justifyContent="End" width="100%">
+							<Text text="{path:'NilExempt>usrNonGst',formatter:'.formatter.amountValue'}" visible="{=!${NilExempt>visi}}"/>
+							<Input value="{NilExempt>usrNonGst}" textAlign="End" visible="{NilExempt>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+			<ui:footer>
+				<ObjectStatus text="{i18n>noteNilExempt}" state="Error"/>
+			</ui:footer>
+		</ui:Table>
+		<ui:Table id="tabNilDetails" rows="{NilExempt>/verticalData/}" selectionBehavior="Row" enableColumnReordering="false"
+			visible="{=${Property>/segment}==='summary'?false:true}" class="sapUiTinyMarginTop">
+			<ui:extension>
+				<Toolbar>
+					<ToolbarSpacer/>
+					<Button class="buttoncolorSec" text="Save" press="onPressSaveNilExempt" enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" icon="sap-icon://delete" tooltip="{i18n>delete}" press="onPressDeleteNilExempt"
+						enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" icon="sap-icon://edit" tooltip="{i18n>edit}" press="onPressEditNilExempt" enabled="{buttonVis>/dataEditable}"/>
+					<Button class="buttoncolorSec" icon="sap-icon://add" tooltip="{i18n>add}" press="onPressAddNilExempt" enabled="{buttonVis>/dataEditable}"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column width="8rem">
+					<Label text="{i18n>hsn}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{NilExempt>hsn}" visible="{=!${NilExempt>visi}}"/>
+							<Input value="{NilExempt>hsn}" valueState="{NilExempt>hsnState}" valueStateText="{NilExempt>hsnStateText}" visible="{NilExempt>visi}"
+								change="onChangeHsnValue"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<Label text="{i18n>description}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{NilExempt>desc}" visible="{=!${NilExempt>visi}}"/>
+							<Input value="{NilExempt>desc}" valueState="{NilExempt>descState}" valueStateText="{NilExempt>descStateText}" visible="{NilExempt>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<Label text="{i18n>uqc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox>
+							<Text text="{NilExempt>uqc}" visible="{=!${NilExempt>visi}}"/>
+							<ComboBox items="{path:'UomMaster>/',sorter:{path:'uqc'},templateShareable:false}" selectedKey="{NilExempt>uqc}"
+								valueState="{NilExempt>uqcState}" valueStateText="{NilExempt>uqcStateText}" visible="{NilExempt>visi}" change="onChangeHsnValue">
+								<core:Item key="{UomMaster>uqc}" text="{UomMaster>uqc} - {UomMaster>uqcDesc}"/>
+							</ComboBox>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="8rem">
+					<Label text="{i18n>newQnty}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End">
+							<Text text="{path:'NilExempt>qunty'}" visible="{=!${NilExempt>visi}}"/>
+							<Input value="{NilExempt>qunty}" textAlign="End" liveChange="positiveDecimal" valueState="{NilExempt>quntyState}"
+								valueStateText="{NilExempt>quntyStateText}" visible="{NilExempt>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="9rem">
+					<Label text="{i18n>nilInterReg}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End">
+							<Text text="{path:'NilExempt>nilInterReg',formatter:'.formatter.amountValue'}" visible="{=!${NilExempt>visi}}"/>
+							<Input value="{NilExempt>nilInterReg}" textAlign="End" liveChange="anyDecimalValue" valueState="{NilExempt>nilInterRegState}"
+								valueStateText="{NilExempt>nilInterRegStateText}" visible="{NilExempt>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="9rem">
+					<Label text="{i18n>nilIntraReg}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End">
+							<Text text="{path:'NilExempt>nilIntraReg',formatter:'.formatter.amountValue'}" visible="{=!${NilExempt>visi}}"/>
+							<Input value="{NilExempt>nilIntraReg}" textAlign="End" liveChange="anyDecimalValue" valueState="{NilExempt>nilIntraRegState}"
+								valueStateText="{NilExempt>nilIntraRegStateText}" visible="{NilExempt>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>nilInterUnreg}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End">
+							<Text text="{path:'NilExempt>nilInterUnreg',formatter:'.formatter.amountValue'}" visible="{=!${NilExempt>visi}}"/>
+							<Input value="{NilExempt>nilInterUnreg}" textAlign="End" liveChange="anyDecimalValue" valueState="{NilExempt>nilInterUnregState}"
+								valueStateText="{NilExempt>nilInterUnregStateText}" visible="{NilExempt>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>nilIntraUnreg}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End">
+							<Text text="{path:'NilExempt>nilIntraUnreg',formatter:'.formatter.amountValue'}" visible="{=!${NilExempt>visi}}"/>
+							<Input value="{NilExempt>nilIntraUnreg}" textAlign="End" liveChange="anyDecimalValue" valueState="{NilExempt>nilIntraUnregState}"
+								valueStateText="{NilExempt>nilIntraUnregStateText}" visible="{NilExempt>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="9rem">
+					<Label text="{i18n>extInterReg}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End">
+							<Text text="{path:'NilExempt>extInterReg',formatter:'.formatter.amountValue'}" visible="{=!${NilExempt>visi}}"/>
+							<Input value="{NilExempt>extInterReg}" textAlign="End" liveChange="anyDecimalValue" valueState="{NilExempt>extInterRegState}"
+								valueStateText="{NilExempt>extInterRegStateText}" visible="{NilExempt>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="9rem">
+					<Label text="{i18n>extIntraReg}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End">
+							<Text text="{path:'NilExempt>extIntraReg',formatter:'.formatter.amountValue'}" visible="{=!${NilExempt>visi}}"/>
+							<Input value="{NilExempt>extIntraReg}" textAlign="End" liveChange="anyDecimalValue" valueState="{NilExempt>extIntraRegState}"
+								valueStateText="{NilExempt>extIntraRegStateText}" visible="{NilExempt>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>extInterUnreg}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End">
+							<Text text="{path:'NilExempt>extInterUnreg',formatter:'.formatter.amountValue'}" visible="{=!${NilExempt>visi}}"/>
+							<Input value="{NilExempt>extInterUnreg}" textAlign="End" liveChange="anyDecimalValue" valueState="{NilExempt>extInterUnregState}"
+								valueStateText="{NilExempt>extInterUnregStateText}" visible="{NilExempt>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>extIntraUnreg}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End">
+							<Text text="{path:'NilExempt>extIntraUnreg',formatter:'.formatter.amountValue'}" visible="{=!${NilExempt>visi}}"/>
+							<Input value="{NilExempt>extIntraUnreg}" textAlign="End" liveChange="anyDecimalValue" valueState="{NilExempt>extIntraUnregState}"
+								valueStateText="{NilExempt>extIntraUnregStateText}" visible="{NilExempt>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>nonInterReg}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End">
+							<Text text="{path:'NilExempt>nonInterReg',formatter:'.formatter.amountValue'}" visible="{=!${NilExempt>visi}}"/>
+							<Input value="{NilExempt>nonInterReg}" textAlign="End" liveChange="anyDecimalValue" valueState="{NilExempt>nonInterRegState}"
+								valueStateText="{NilExempt>nonInterRegStateText}" visible="{NilExempt>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>nonIntraReg}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End">
+							<Text text="{path:'NilExempt>nonIntraReg',formatter:'.formatter.amountValue'}" visible="{=!${NilExempt>visi}}"/>
+							<Input value="{NilExempt>nonIntraReg}" textAlign="End" valueState="{NilExempt>nonIntraRegState}"
+								valueStateText="{NilExempt>nonIntraRegStateText}" visible="{NilExempt>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>nonInterUnreg}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End">
+							<Text text="{path:'NilExempt>nonInterUnreg',formatter:'.formatter.amountValue'}" visible="{=!${NilExempt>visi}}"/>
+							<Input value="{NilExempt>nonInterUnreg}" textAlign="End" liveChange="anyDecimalValue" valueState="{NilExempt>nonInterUnregState}"
+								valueStateText="{NilExempt>nonInterUnregStateText}" visible="{NilExempt>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem">
+					<Label text="{i18n>nonIntraUnreg}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="End">
+							<Text text="{path:'NilExempt>nonIntraUnreg',formatter:'.formatter.amountValue'}" visible="{=!${NilExempt>visi}}"/>
+							<Input value="{NilExempt>nonIntraUnreg}" textAlign="End" liveChange="anyDecimalValue" valueState="{NilExempt>nonIntraUnregState}"
+								valueStateText="{NilExempt>nonIntraUnregStateText}" visible="{NilExempt>visi}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+	</Dialog>
+</core:FragmentDefinition>

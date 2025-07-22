@@ -1,0 +1,327 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table" xmlns:f="sap.f"
+	xmlns:layout="sap.ui.layout" xmlns:fb="sap.ui.comp.filterbar">
+	<f:DynamicPage id="dpRecipntRespDtl" visible="false">
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding">
+				<fb:FilterBar id="fbResponseDetl" showGoOnFB="false" showClearOnFB="false" width="90%" showFilterConfiguration="false" search="onSearch"
+					clear="onClearFilter" useToolbar="false" class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="false">
+							<fb:control>
+								<Select id="responseDtlEntity" items="{EntityModel>/}" change="onRespDtlEntyChng" width="100%">
+									<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="responseDtlGstin" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}"
+									selectionFinish="onRespDtlGstin">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Recipient PAN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="responseDtlPAN" width="100%" items="{RespDtlGstinsList1>/}" selectionFinish="onRespDetPAN">
+									<core:Item key="{RespDtlGstinsList1>cpan}" text="{RespDtlGstinsList1>cpan}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Recipient GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="responseDtlRGstin" width="100%" items="{RespDtlGstinsList>/}">
+									<core:Item key="{RespDtlGstinsList>cgstin}" text="{RespDtlGstinsList>cgstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Date of Upload to GSTN" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="RecptDtlUpldDate" forceSelection="false" items="{DropDown>/uploadGstn}" change="onSelectChange">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dtResponseDtl" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" id="fbResDtlStatusHboxRS" width="10%">
+					<Button id="bResDtlFilter" icon="sap-icon://filter" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilter"/>
+					<Button id="bResDtlClear" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd" press="onRespDtlClear"/>
+					<Button id="bResDtlGo" text="{i18n>go}" type="Emphasized" press="onRespeDtlGo"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+	</f:DynamicPage>
+	<ui:TreeTable id="tabRespDetails" rows="{path:'RespnseDtlTable>/', parameters:{arrayNames:['level2','level3'], numberOfExpandedLevels:1}}"
+		selectionMode="None" fixedColumnCount="1" visible="false">
+		<!--rows="{path:'Annexure1>/respDetails/'}" -->
+		<ui:extension>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<MenuButton type="Emphasized" text="Download Report">
+					<Menu itemSelected="onMenuItemPress">
+						<MenuItem text="Processed Records (Line Item Level)" key="processLineItem"/>
+						<MenuItem text="Processed Records (HSN / Rate Level)" key="processRate"/>
+						<MenuItem text="Tax Amount Recon" key="taxAmtRecon"/>
+						<MenuItem text="Counter Party Response" key="cpResopnse"/>
+						<MenuItem text="Submitted Records" key="submitted"/>
+						<MenuItem text="Entity Level Summary" key="entityLevel"/>
+						<MenuItem text="Records available for Amendment" key="amendRecord"/>
+						<MenuItem text="Consolidate DigiGST Error" key="digiError"/>
+						<MenuItem text="Consolidate GSTN Error" key="gstnError"/>
+					</Menu>
+				</MenuButton>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="10rem">
+				<Label text="Recipient PAN" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{RespnseDtlTable>cPan}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="14rem">
+				<Label text="Recpient Name" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{RespnseDtlTable>cName}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="14rem">
+				<Label text="Recipient GSTIN" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{RespnseDtlTable>cgstin}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="6rem">
+				<Label text="Table Type" textAlign="Center" width="100%" design="Bold"/>
+				<ui:template>
+					<Text text="{RespnseDtlTable>tableType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="4" width="4rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text="Not Saved to GSTN" textAlign="Center" width="100%" design="Bold"/>
+					<Label text="%" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>notSavedPercent}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="5rem" hAlign="End">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>notSavedcount}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>notSavedTaxableVal}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Tax Amount" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>notSavedTaxAmt}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="4" width="4rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text="Saved to GSTN" textAlign="Center" width="100%" design="Bold"/>
+					<Label text="%" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>savedPercent}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="5rem" hAlign="End">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>savedCount}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>savedTaxableVal}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Tax Amount" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>savedTaxAmt}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="12,4,1" width="4rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text="Actioned by Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+					<Label text="Accept" textAlign="Center" width="100%" design="Bold"/>
+					<Label text="%" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>acceptedPercent}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="5rem" hAlign="End">
+				<ui:multiLabels>
+					<Label/>
+					<Label/>
+					<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>acceptedCount}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label/>
+					<Label/>
+					<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>acceptedTaxableVal}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label/>
+					<Label/>
+					<Label text="Tax Amount" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>acceptedTaxAmt}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="12,4,1" width="4rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text="Actioned by Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+					<Label text="Reject" textAlign="Center" width="100%" design="Bold"/>
+					<Label text="%" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>rejectedPercent}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="5rem" hAlign="End">
+				<ui:multiLabels>
+					<Label/>
+					<Label/>
+					<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>rejectedCount}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label/>
+					<Label/>
+					<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>rejectedTaxableVal}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label/>
+					<Label/>
+					<Label text="Tax Amount" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>rejectedTaxAmt}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="12,4,1" width="4rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text="Actioned by Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+					<Label text="Pending" textAlign="Center" width="100%" design="Bold"/>
+					<Label text="%" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>pendingPercent}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="5rem" hAlign="End">
+				<ui:multiLabels>
+					<Label/>
+					<Label/>
+					<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>pendingCount}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label/>
+					<Label/>
+					<Label text="Taxable Value" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>pendingTaxableVal}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label/>
+					<Label/>
+					<Label text="Tax Amount" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>pendingTaxAmt}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="3" width="4rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text="Not Actioned By Counter-Party" textAlign="Center" width="100%" design="Bold"/>
+					<Label text="Count" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>noActionCount}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Tax Value" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>noActionTaxableVal}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label/>
+					<Label text="Tax Amount" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{RespnseDtlTable>noActionTaxAmt}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+	</ui:TreeTable>
+</core:FragmentDefinition>

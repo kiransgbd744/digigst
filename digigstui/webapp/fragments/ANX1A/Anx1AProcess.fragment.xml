@@ -1,0 +1,221 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table">
+	<f:DynamicPage id="dpProcessAnx1APage" class="sapUiNoContentPadding sapUiNoMargin" visible="true">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="{i18n>ProcessedRecords}" titleStyle="H3"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader>
+				<fb:FilterBar id="fbAnx1aSaveFilterGstn" width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false"
+					search="onSearch" clear="onClearFilter" useToolbar="false">
+					<fb:filterGroupItems>
+						<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>entity}" visibleInFilterBar="true" mandatory="true">-->
+						<!--	<fb:control>-->
+						<!--		<Select id="slAnx1aEntityDataSave" items="{EntityModel>/}" change="onEntityChange" width="100%">-->
+						<!--			<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>-->
+						<!--		</Select>-->
+						<!--	</fb:control>-->
+						<!--</fb:FilterGroupItem>-->
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" id="idfgiGSINDataAnax1">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>taxPeriod}" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<DatePicker id="drsAnx1aPeriodOn" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="onDateChange"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="{i18n>view}" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<Select id="slAnx1aBulkViewSel" change="onSelectChangeanx1a">
+									<core:Item key="all" text="All"/>
+									<core:Item key="outward" text="Outward Supplies Data"/>
+									<core:Item key="inward" text="Inward Supplies Data"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button icon="sap-icon://filter" type="Default" tooltip="Adapt Filters" id="bProcessFilterAnx1A" press="onPressAdaptFiltersAnx1A"
+						class="sapUiTinyMarginBegin"/>
+					<Button text="Clear" class="sapUiTinyMarginBeginEnd" press="clearAdpatFilter"/>
+					<Button text="{i18n>go}" type="Emphasized" press="onSearchAnx1AprocessGo"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel>
+				<ui:Table id="tabAnx1aProcess" rows="{ProcessRecordAnx1A>/}" selectionMode="MultiToggle" visibleRowCount="8" fixedColumnCount="1">
+					<ui:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<MenuButton text="Online Error Correction" type="Emphasized">
+								<menu>
+									<Menu id="bErrorCorranx1A" itemSelected="onPressErrorCorrection">
+										<items>
+											<MenuItem text="ASP (Error Count: 152)" key="asp"/>
+											<MenuItem text="GSTN (Error Count: 108)" key="gstn"/>
+										</items>
+									</Menu>
+								</menu>
+							</MenuButton>
+							<MenuButton type="Emphasized" text="Download Report">
+								<Menu itemSelected="onMenuItemSelect">
+									<MenuItem text="ASP Processed Data(As Uploaded)" key="processLineItem" enabled="false"/>
+									<MenuItem text="ASP Proceessed Data(Save-able)" key="processRate" enabled="false"/>
+									<MenuItem text="Saved / Submitted Records" key="submitted" enabled="false"/>
+									<MenuItem text="Entity Level Summary" key="entityLevel" enabled="false"/>
+									<MenuItem text="Records available for Amendment" key="amendRecord" enabled="false"/>
+									<MenuItem text="Consolidated ASP Error" key="digiError" enabled="false"/>
+									<MenuItem text="Consolidated GSTN Error" key="gstnError" enabled="false"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Emphasized" text="Request for Approval" press="fnsPressgstr1Request" enabled="false"/>
+							<Button type="Reject" text="Delete Data" press="onButtonDeleteInAnx1a" enabled="false"/>
+							<Button type="Accept" text="Save to GSTN" press="onSaveGstn1DialogPress" enabled="false"/>
+							<MenuButton type="Emphasized" text="{i18n>rupeesIn} {i18n>A}" id="bRupeesView">
+								<Menu itemSelected="onMenuItemPressAnx1down">
+									<MenuItem key="A" text="Absolute"/>
+									<MenuItem key="L" text="Lakhs"/>
+									<MenuItem key="C" text="Crores"/>
+									<MenuItem key="M" text="Millions"/>
+									<MenuItem key="B" text="Billions"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" press="onExportExcel" enabled="false"/>
+							<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="Download Pdf" class="sapUiTinyMarginEnd" enabled="false"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="14rem">
+							<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<VBox>
+									<HBox>
+										<Text text="{ProcessRecordAnx1A>state}" width="8rem" class="stateColor"/>
+										<Text text="{ProcessRecordAnx1A>regType}" class="stateColor fontSmall"/>
+									</HBox>
+									<HBox alignContent="Start" justifyContent="SpaceBetween">
+										<Link text="{ProcessRecordAnx1A>gstin}" emphasized="true" press="onPressAnx1aSummary">
+											<dependents>
+												<Text text="Processed"/>
+											</dependents>
+										</Link>
+										<core:Icon src="sap-icon://circle-task-2" visible="{=${ProcessRecordAnx1A>state}===''?false:true}" size="0.8rem"
+											color="{=${ProcessRecordAnx1A>authToken}==='Active'?'#00ff00':'#ff0000'}" press="onPressGenerateOTP"/>
+									</HBox>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column >
+							<Label text="Save Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<VBox width="100%">
+									<ObjectStatus text="{ProcessRecordAnx1A>status}" state="{path:'ProcessRecordAnx1A>status', formatter:'.formatter.statusClr'}" active="true"
+										press="fnTableSavPress"/>
+									<Text text="{ProcessRecordAnx1A>timeStamp}" class="timeStmpClr"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column>
+							<Label text="Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<VBox>
+									<Text text="Outward" visible="{Visi>/outward}"/>
+									<Text text="Inward" visible="{Visi>/inward}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<VBox>
+									<Text text="{ProcessRecordAnx1A>outCount}" visible="{Visi>/outward}"/>
+									<Text text="{ProcessRecordAnx1A>inCount}" visible="{Visi>/inward}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="{Visi>/colText}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<VBox>
+									<Text text="{parts:[{path : 'ProcessRecordAnx1A>outSupplies'}], formatter : '.formatter.amountValue'}" visible="{Visi>/outward}"/>
+									<Text text="{parts:[{path : 'ProcessRecordAnx1A>inSupplies'}], formatter : '.formatter.amountValue'}" visible="{Visi>/inward}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<VBox>
+									<Text text="{parts:[{path : 'ProcessRecordAnx1A>outIgst'}], formatter : '.formatter.amountValue'}" visible="{Visi>/outward}"/>
+									<Text text="{parts:[{path : 'ProcessRecordAnx1A>inIgst'}], formatter : '.formatter.amountValue'}" visible="{Visi>/inward}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<VBox>
+									<Text text="{parts:[{path : 'ProcessRecordAnx1A>outCgst'}], formatter : '.formatter.amountValue'}" visible="{Visi>/outward}"/>
+									<Text text="{parts:[{path : 'ProcessRecordAnx1A>inCgst'}], formatter : '.formatter.amountValue'}" visible="{Visi>/inward}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<VBox>
+									<Text text="{parts:[{path : 'ProcessRecordAnx1A>outSgst'}], formatter : '.formatter.amountValue'}" visible="{Visi>/outward}"/>
+									<Text text="{parts:[{path : 'ProcessRecordAnx1A>inSgst'}], formatter : '.formatter.amountValue'}" visible="{Visi>/inward}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<VBox>
+									<Text text="{parts:[{path : 'ProcessRecordAnx1A>outCess'}], formatter : '.formatter.amountValue'}" visible="{Visi>/outward}"/>
+									<Text text="{parts:[{path : 'ProcessRecordAnx1A>inCess'}], formatter : '.formatter.amountValue'}" visible="{Visi>/inward}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column visible="false">
+							<Label text="Rupees In Absolute" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox alignContent="Start" justifyContent="Center">
+									<Link text="Reset" tooltip="Reset Chunk" class="sapUiTinyMarginEnd"/>
+									<Link text="Diff" tooltip="View Differential Data" press="onPressDifference"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<Label text="Difference" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox justifyContent="Center">
+									<core:Icon src="sap-icon://show" size="1.5rem" tooltip="View Differential Data" color="#5496cd" press="onPressDifferenceanx1a"/>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+					<ui:footer>
+						<Toolbar>
+							<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+							<Text text="Auth Token Active"/>
+							<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+							<Text text="Auth Token Inactive"/>
+						</Toolbar>
+					</ui:footer>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

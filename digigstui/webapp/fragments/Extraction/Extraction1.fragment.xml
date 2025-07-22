@@ -1,0 +1,43 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified" xmlns:C="sap.ui.codeeditor">
+	<f:DynamicPage class="sapUiSizeCompact">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Extraction Result" titleStyle="H3" class="tinyMarginTop"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Template Name" visibleInFilterBar="true">
+							<fb:control>
+								<Input id="TempId"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="GET JSON" type="Emphasized" press="extractionResult" class="input sapUiTinyMarginBegin"/>
+					<Button text="GET XML" type="Emphasized" press="extractionResult1" class="input sapUiTinyMarginBegin"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<VBox>
+				<VBox>
+					<Label text="JSON Result" design="Bold"/>
+					<C:CodeEditor type="json" id="code" height="200px" class="sapUiTinyMarginTop"/>
+				</VBox>
+				<VBox>
+					<Label text="XML Result" design="Bold"/>
+					<C:CodeEditor type="json" id="code1" height="200px" class="sapUiTinyMarginTop"/>
+				</VBox>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

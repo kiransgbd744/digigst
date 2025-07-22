@@ -1,0 +1,212 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table">
+	<f:DynamicPage id="dpTaxRecon">
+		<f:title/>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding">
+				<fb:FilterBar id="fbTaxRecon" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" width="90%" search="onSearch"
+					clear="onClearFilter" useToolbar="false" class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="false">
+							<fb:control>
+								<Select id="taxReconEntity" items="{EntityModel>/}" change="onTaxRecnEntyChng" width="100%">
+									<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="taxReconGstin" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dtTaxRecon" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" id="fbStatusHboxTR" width="10%">
+					<Button id="bReconFilter" icon="sap-icon://filter" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilter"/>
+					<Button id="bReconClear" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd" press="onTaxRecClear"/>
+					<Button id="bReconGo" text="{i18n>go}" type="Emphasized" press="onSearch"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel>
+				<Toolbar height="4.5rem" class="cl_removeBoderTool">
+					<ToolbarSpacer></ToolbarSpacer>
+					<HBox width="25rem" class="clBlockLayoutTax" alignContent="Center" alignItems="Center">
+						<Label text="RET-1" class="sapUiTinyMarginTop sapUiSmallMarginBegin cl_OutLab"/>
+						<Label text="Impact (Table 3A8)" class="sapUiTinyMarginTop cl_OutLab"/>
+					</HBox>
+					<VBox width="15rem" class="clBlockLayoutTax" alignContent="Center" alignItems="Center">
+						<Label text="IGST" class="cl_lebsta" design="Bold"/>
+						<Label text="{TaxReconInfo>/resp/ret1/retTotalIgstAmt}" design="Bold"/>
+					</VBox>
+					<VBox width="15rem" class="clBlockLayoutTax" alignContent="Center" alignItems="Center">
+						<Label text="CGST" design="Bold"/>
+						<Label text="{TaxReconInfo>/resp/ret1/retTotalCgstAmt}" design="Bold"/>
+					</VBox>
+					<VBox width="15rem" class="clBlockLayoutTax" alignContent="Center" alignItems="Center">
+						<Label text="SGST" design="Bold"/>
+						<Label text="{TaxReconInfo>/resp/ret1/retTotalSgstAmt}" design="Bold"/>
+					</VBox>
+					<Button icon="sap-icon://begin" press="fnBeinBtnPress" type="Transparent"/>
+					<ToolbarSpacer></ToolbarSpacer>
+				</Toolbar>
+				<ui:Table id="tabTaxRecon" rows="{TaxReconInfo>/resp/det}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="13">
+					<ui:extension>
+						<!--<Toolbar class="supplToolbar sapUiTinyMarginBottom">
+							<Title text="RET-1 Impact (Table 3A8)" titleStyle="H4"/>
+							<Text text="IGST:" class="sapUiMediumMarginBegin"/>
+							<Label text="0.00" design="Bold"/>
+							<Text text="CGST:" class="sapUiSmallMarginBegin"/>
+							<Label text="0.00" design="Bold"/>
+							<Text text="SGST:" class="sapUiSmallMarginBegin"/>
+							<Label text="0.00" design="Bold"/>
+							<ToolbarSpacer/>
+							<MenuButton type="Emphasized" text="Download Report">
+								<Menu itemSelected="onMenuItemPress">
+									<MenuItem text="Tax Amount Recon" key="TaxAmtRecon"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Emphasized" text="Download"/>
+						</Toolbar>-->
+						<Toolbar class="cl_removeBoderTool sapUiTinyMarginBottom">
+							<ToolbarSpacer/>
+							<MenuButton type="Emphasized" text="Download Report">
+								<Menu itemSelected="onMenuItemPress">
+									<MenuItem text="Tax Amount Recon" key="TaxAmtRecon"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" id="idANX1TaxRecon" press="onExportExcel"/>
+							<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="Download Pdf" class="sapUiTinyMarginEnd"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="14rem">
+							<ui:multiLabels>
+								<Label text="GSTIN" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<VBox>
+									<HBox>
+										<Text text="{TaxReconInfo>stateName}" width="8rem" class="stateColor"/>
+										<!--<Text text="{TaxReconInfo>regType}" class="stateColor fontSmall"/>-->
+									</HBox>
+									<HBox alignContent="Start" justifyContent="SpaceBetween">
+										<Link text="{TaxReconInfo>gstin}" emphasized="true" press="onPressTaxRecLink">
+											<!---->
+											<dependents>
+												<Text text="TaxRecon"/>
+											</dependents>
+										</Link>
+										<core:Icon src="sap-icon://circle-task-2" visible="{=${TaxReconInfo>state}===''?false:true}" size="0.8rem"
+											color="{=${TaxReconInfo>authTokenStatus}==='I'?'#ff0000':'#00ff00'}"/>
+									</HBox>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="3" hAlign="End">
+							<ui:multiLabels>
+								<Label text="Uploaded at ASP" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{TaxReconInfo>updIgstAmt}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{TaxReconInfo>updCgstAmt}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{TaxReconInfo>updSgstAmt}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="3" hAlign="Center">
+							<ui:multiLabels>
+								<HBox alignContent="Center" alignItems="Center">
+									<Label text="Memo Value (As per GSTN logic)" width="100%" design="Bold"/>
+									<core:Icon src="sap-icon://favorite" size="0.45rem" class="sapUiTinyMarginBegin sapUiSmallMarginBottom" color="red"/>
+								</HBox>
+								<!--<Label text="Memo Value (As per GSTN logic)" textAlign="Center" width="100%" design="Bold"/>-->
+								<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{TaxReconInfo>memoIgstAmt}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{TaxReconInfo>memoCgstAmt}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{TaxReconInfo>memoSgstAmt}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="3" hAlign="End">
+							<ui:multiLabels>
+								<Label text="RET-1 Impact" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{TaxReconInfo>retIgstAmt}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{TaxReconInfo>retCgstAmt}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{TaxReconInfo>retSgstAmt}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+					<ui:footer>
+						<HBox>
+							<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+							<Text text="Auth Token Active" class="sapUiTinyMarginBegin"/>
+							<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem" class="sapUiSmallMarginBegin"/>
+							<Text text="Auth Token Inactive" class="sapUiTinyMarginBegin"/>
+						</HBox>
+					</ui:footer>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

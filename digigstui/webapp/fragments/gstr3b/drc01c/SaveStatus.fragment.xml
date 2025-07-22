@@ -1,0 +1,89 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.ui.layout.form">
+	<Dialog id="dSaveStatus" title="Save Status" type="Message" contentWidth="100%" class="sapUiSizeCompact" draggable="true">
+		<beginButton>
+			<Button text="{i18n>ok}" class="buttoncolorSec" press="onDialogCloseSaveStatus"/>
+		</beginButton>
+		<f:Form editable="true">
+			<f:layout>
+				<f:ResponsiveGridLayout columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="true"/>
+			</f:layout>
+			<f:formContainers>
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement label="{i18n>gstin}">
+							<f:fields>
+								<Select id="slSaveStatsGstin" items="{DataPermission>/respData/dataSecurity/gstin}">
+									<core:Item key="{DataPermission>value}" text="{DataPermission>value}"/>
+								</Select>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement label="{i18n>taxPeriod}">
+							<f:fields>
+								<DatePicker id="dtSaveStats" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+				<f:FormContainer>
+					<f:formElements>
+						<f:FormElement label="">
+							<Label/>
+						</f:FormElement>
+						<f:FormElement label=""></f:FormElement>
+						<f:FormElement label=""></f:FormElement>
+						<f:FormElement>
+							<HBox alignItems="Center">
+								<Button text="Filter" press="getSaveStatus" class="sapUiMediumMarginBegin buttoncolorSec buttoncolor"/>
+							</HBox>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+		<ScrollContainer horizontal="false" vertical="true" height="24rem" class="sapUiNoMargin sapUiNoContentPadding">
+			<Table items="{SaveStatus>/details}" id="tabSaveStatus" noDataText="No Products">
+				<columns>
+					<Column hAlign="Center">
+						<Text text="S.No" class="cl_text1"/>
+					</Column>
+					<Column hAlign="Center">
+						<Text text="Action" class="cl_text1"/>
+					</Column>
+					<Column width="16rem" hAlign="Center">
+						<Text text="Date &amp; Time" class="cl_text1" id="id_ID"/>
+					</Column>
+					<!--<Column width="20rem" hAlign="Center">-->
+					<!--	<Text text="Reference ID"/>-->
+					<!--</Column>-->
+					<Column hAlign="Center">
+						<Text text="Status"/>
+					</Column>
+					<Column hAlign="Center">
+						<Text text="Error Count"/>
+					</Column>
+					<Column hAlign="Center" width="12rem">
+						<Text text="Download Error Report"/>
+					</Column>
+					<Column hAlign="Center" width="12rem">
+						<Text text="Save JSON"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem vAlign="Middle">
+						<cells>
+							<Text text="{SaveStatus>sno}" wrapping="false"/>
+							<Text text="{SaveStatus>action}" wrapping="false"/>
+							<Text text="{SaveStatus>createdTime}" wrapping="false"/>
+							<!--<Text text="{SaveStatus>refId}"/>-->
+							<Text text="{SaveStatus>status}"/>
+							<Text text="{SaveStatus>errorCnt}"/>
+							<core:Icon src="sap-icon://download" press="onSaveStatusDownload(${SaveStatus>createdOn},'ErrorSaveStatus')"
+								visible="{SaveStatus>isErrorDownloadFlag}"/>
+							<core:Icon src="sap-icon://download" press="onSaveStatusDownload(${SaveStatus>createdOn},'SaveStatus')"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</ScrollContainer>
+	</Dialog>
+</core:FragmentDefinition>

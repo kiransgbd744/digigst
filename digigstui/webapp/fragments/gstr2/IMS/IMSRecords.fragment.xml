@@ -1,0 +1,350 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage visible="{=(${ViewProperty>/btnSegment}==='IMSRecords' &amp;&amp; ${ViewProperty>/imsRecords}==='entity')}"
+		class="clDataStatusAPI">
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onGoSummary" clear="onClearMainFilter"
+					useToolbar="false" class="sapUiNoContentPadding" width="90%">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox items="{path:'userPermission>/respData/dataSecurity/gstin'}" selectedKeys="{StatusFilter>/gstin}" selectionChange="selectAll">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="From Date" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="iFromDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" dateValue="{StatusFilter>/fromDate}"
+									maxDate="{StatusFilter>/maxDate}" change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="To Date" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="iToDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" dateValue="{StatusFilter>/toDate}"
+									maxDate="{StatusFilter>/maxDate}" minDate="{StatusFilter>/fromDate}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Action (GSTN)" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox selectedKeys="{StatusFilter>/actionGstn}" selectionChange="selectAll">
+									<core:Item key="All" text="All"/>
+									<core:Item key="N" text="No Action"/>
+									<core:Item key="A" text="Accepted"/>
+									<core:Item key="R" text="Rejected"/>
+									<core:Item key="P" text="Pending"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Action (DigiGST)" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox selectedKeys="{StatusFilter>/actionDigiGST}" selectionChange="selectAll">
+									<core:Item key="All" text="All"/>
+									<core:Item key="N" text="No Action"/>
+									<core:Item key="A" text="Accepted"/>
+									<core:Item key="R" text="Rejected"/>
+									<core:Item key="P" text="Pending"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="Table Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox selectedKeys="{StatusFilter>/tableType}" selectionChange="selectAll">
+									<core:Item key="All" text="All"/>
+									<core:Item key="B2B" text="B2B"/>
+									<core:Item key="B2BA" text="B2BA"/>
+									<core:Item key="CDN" text="CDN"/>
+									<core:Item key="CDNA" text="CDNA"/>
+									<core:Item key="ECOM" text="ECOM"/>
+									<core:Item key="ECOMA" text="ECOMA"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="Doc Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox selectedKeys="{StatusFilter>/docType}" selectionChange="selectAll">
+									<core:Item key="All" text="All"/>
+									<core:Item key="INV" text="INV"/>
+									<core:Item key="CR" text="CR"/>
+									<core:Item key="DR" text="DR"/>
+									<core:Item key="RNV" text="RNV"/>
+									<core:Item key="RCR" text="RCR"/>
+									<core:Item key="RDR" text="RDR"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button icon="sap-icon://filter" tooltip="Adapt Filters" press="onPressAdaptFilter" class="buttoncolorSec"/>
+					<Button text="{i18n>clear}" press="onPressClearIMSRecords" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+					<Button text="Filter" press="onPressGoIMSRecords('A')" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table id="tabImsRecords" rows="{IMSStatus>/resp}" visibleRowCount="10" selectionMode="MultiToggle" selectionBehavior="Row"
+				enableSelectAll="true" fixedColumnCount="0" visible="true" class="sapUiTinyMarginTop ">
+				<ui:extension>
+					<Toolbar>
+						<Title id="txtIMSStatusRecords" level="H3"/>
+						<ToolbarSpacer width="1rem"/>
+						<ToolbarSpacer/>
+						<MenuButton text="Action" class="buttoncolorSec">
+							<Menu itemSelected="onAction">
+								<MenuItem key="A" text="Accept"/>
+								<MenuItem key="R" text="Reject"/>
+								<MenuItem key="P" text="Pending"/>
+								<MenuItem key="N" text="No Action"/>
+							</Menu>
+						</MenuButton>
+						<Button text="IMS Response Status" class="buttoncolorSec" press="onRequestStatus"/>
+						<Button text="Download Report" press="onDownloadImsRecords" class="buttoncolorSec"/>
+					</Toolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column hAlign="Left" width="15rem">
+						<Label text="Action (GSTN)" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<HBox>
+								<VBox width="100%">
+									<ObjectStatus text="{path:'IMSStatus>actionGstn', formatter:'.formatter.IMSText'}"
+										state="{path:'IMSStatus>actionGstn', formatter:'.formatter.IMSStatus'}" active="false"/>
+									<Text text="{IMSStatus>actionGstnTimestamp}" class="timeStmpClr"/>
+								</VBox>
+								<Button text="Trail" visible="{=${IMSStatus>actionGstn}=== undefind ? false : true}"
+									press="onPressTrailGSTN($event,${IMSStatus>docNumber},${IMSStatus>docDate},${IMSStatus>imsUniqueId},${IMSStatus>docKey})"
+									class="buttoncolorSec"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="15rem">
+						<Label text="Action (DigiGST)" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<HBox>
+								<VBox width="100%">
+									<ObjectStatus text="{path:'IMSStatus>actionDigiGst', formatter:'.formatter.IMSText'}"
+										state="{path:'IMSStatus>actionDigiGst', formatter:'.formatter.IMSStatus'}" active="false"/>
+									<Text text="{IMSStatus>actionDigiGstTimestamp}" class="timeStmpClr"/>
+								</VBox>
+								<Button text="Trail"
+									press="onPressTrailDigiGST($event,${IMSStatus>docNumber},${IMSStatus>docDate},${IMSStatus>imsUniqueId},${IMSStatus>docKey})"
+									class="buttoncolorSec"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="20rem">
+						<Label text="IMS Response Remarks" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<ExpandableText text="{IMSStatus>imsResponseRemarks}" maxCharacters="50" overflowMode="Popover"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="10rem">
+						<Label text="Recipient GSTIN" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>gstinRecipient}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="10rem">
+						<Label text="Supplier GSTIN" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>gstinSupplier}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<Label text="Document Type" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>docType}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="10rem">
+						<Label text="Document Number" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>docNumber}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Left" width="12rem">
+						<Label text="Document Date" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>docDate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="12rem">
+						<Label text="IMS UniqueID" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>imsUniqueId}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="10rem">
+						<Label text="Table Type" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>tableType}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="10rem">
+						<Label text="Taxable Value " textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>taxableValue}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="10rem">
+						<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>igst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="10rem">
+						<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>cgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="10rem">
+						<Label text="SGST" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>sgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="10rem">
+						<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>cess}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="10rem">
+						<Label text="Total Tax" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>totalTax}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="10rem">
+						<Label text="Invoice Value" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>invoiceValue}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="10rem">
+						<Label text="POS" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>pos}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="10rem">
+						<Label text="Supplier Legal Name" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>supplierLegalName}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="10rem">
+						<Label text="Supplier Trade Name" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>supplierTradeName}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="10rem">
+						<Label text="Form Type" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>formType}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="10rem">
+						<Label text="GSTR1-Filing Status" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>gstr1FillingStatus}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="10rem">
+						<Label text="GSTR1-Filing Period" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>gstr1FillingPeriod}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="14rem">
+						<Label text="ITC Reduction Required" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>itcReductionRequired}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="14rem">
+						<Label text="IGST Declared to reduce ITC" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>igstDeclToReduceItc}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="14rem">
+						<Label text="CGST Declared to reduce ITC" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>cgstDeclToReduceItc}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="14rem">
+						<Label text="SGST Declared to reduce ITC" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>sgstDeclToReduceItc}"/>
+						</ui:template>
+					</ui:Column><ui:Column hAlign="Begin" width="14rem">
+						<Label text="Cess Declared to reduce ITC" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>cessDeclToReduceItc}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="13rem">
+						<Label text="Original Document Number" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>orgDocNumber}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="12rem">
+						<Label text="Original Document Date" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>orgDocDate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="12rem">
+						<Label text="Pending Action Blocked" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>pendingActionBlocked}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="20rem">
+						<Label text="Checksum" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>checkSum}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Begin" width="12rem">
+						<Label text="Get Call Date Time" textAlign="Center" design="Bold" width="100%"/>
+						<ui:template>
+							<Text text="{IMSStatus>getCallDateTime}"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+				<ui:footer>
+					<VBox>
+						<HBox width="100%" justifyContent="Center">
+							<Button id="btnFirstN" type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" class="sapUiTinyMarginBeginEnd"
+								enabled="false" press="onPressPagination"/>
+							<Button id="btnPrevN" type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="false"
+								press="onPressPagination"/>
+							<Input id="inPageNoN" type="Number" textAlign="End" width="4rem" submit="onSubmitPagination" enabled="false" class="sapUiTinyMarginBegin"
+								value="0"/>
+							<Text id="txtPageNoN" text="/ 0" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+							<Button id="btnNextN" type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="false" press="onPressPagination"/>
+							<Button id="btnLastN" type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" class="sapUiTinyMarginBeginEnd" enabled="false"
+								press="onPressPagination"/>
+							<Select id="idPageN" change="onPNChange" selectedKey="10" forceSelection="true" width="10%">
+								<core:Item key="10" text="10"/>
+								<core:Item key="25" text="25"/>
+								<core:Item key="50" text="50"/>
+								<core:Item key="75" text="75"/>
+								<core:Item key="100" text="100"/>
+							</Select>
+						</HBox>
+						<Text text="Note : 1. This screen captures only those IMS records which are available on GSTN portal."/>
+					</VBox>
+				</ui:footer>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

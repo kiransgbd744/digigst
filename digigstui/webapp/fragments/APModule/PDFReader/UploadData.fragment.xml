@@ -1,0 +1,1523 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.f" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table"
+	xmlns:u="sap.ui.unified" xmlns:fb="sap.ui.comp.filterbar" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:commons="sap.suite.ui.commons"
+	xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data" xmlns:viz="sap.viz.ui5.controls">
+	<f:DynamicPage visible="true" id="viewId">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Upload Data" class="sapUiSmallMarginBegin clTitleMarginTop"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<commons:ChartContainer id="nonId" showFullScreen="false" showZoom="true" showPersonalization="false" autoAdjustHeight="false">
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table id="table1" rows="{path:'PDFCode>/data', sorter: {path: 'fileId',descending:true}}" rowSelectionChange="onSelectionConsolMatch"
+								enableSelectAll="false" fixedBottomRowCount="0" fixedColumnCount="0" visibleRowCount="18" selectionMode="None">
+								<!--<ui:extension>-->
+								<!--	<OverflowToolbar>-->
+								<!--		<Title text="Feature - {PDFCode>/feature}" titleStyle="H3" class="sapUiTinyMarginBegin redLabel"/>-->
+								<!--	</OverflowToolbar>-->
+								<!--</ui:extension>-->
+								<ui:columns>
+									<ui:Column hAlign="Center" width="8rem">
+										<Label design="Bold" text="Sl.No"/>
+										<ui:template>
+											<Text text="{PDFCode>fileId}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="12rem">
+										<Label design="Bold" text="Uploaded By" textAlign="Center" width="100%" wrapping="true"/>
+										<ui:template>
+											<Text text="{PDFCode>uploadedBy}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="12rem">
+										<Label design="Bold" text="Date of Upload" textAlign="Center" width="100%" wrapping="true"/>
+										<ui:template>
+											<Text text="{PDFCode>createdOn}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<Label design="Bold" text="File Name" textAlign="Center" width="100%" wrapping="true"/>
+										<ui:template>
+											<Text text="{PDFCode>fileName}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="11rem">
+										<Label text="File Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{PDFCode>fileStatus}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="11rem">
+										<Label text="Total Uploaded Documents" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{PDFCode>totUplDoc}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="11rem">
+										<Label text="Download" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<core:Icon src="sap-icon://download" class="sapUiTinyMarginTop sapUiTinyMarginBegin" press="DownloadFile"
+												visible="{=${PDFCode>fileStatus} === 'COMPLETED'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center" width="11rem">
+										<Label text="Result Summary" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Link text="View" press="onResultSummaryView" enabled="false" visible="{=${PDFCode>fileStatus} === 'COMPLETED'}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent>
+				</commons:content>
+				<commons:toolbar class="cl_toolbar1">
+					<OverflowToolbar height="9rem" class="cl_toolbar1">
+						<HBox>
+							<Label text="Upload File:" design="Bold" class="sapUiTinyMarginEnd buttoncolorSec sapUiTinyMarginTop"/>
+							<u:FileUploader id="FileUploadid" name="file" fileType="pdf,zip" sameFilenameAllowed="false" sendXHR="true" width="30rem"
+								uploadComplete="onUploadComplete" enabled="{= ${userPermission>/appPermission/P23}}" class="buttoncolorSec"/>
+							<Button text="{i18n>upload}" press="onUpload" class="sapUiTinyMarginBegin buttoncolor" enabled="{= ${userPermission>/appPermission/P23}}"/>
+						</HBox>
+						<ToolbarSpacer/>
+						<Button class="buttoncolorSec" text="Refresh" press="onRefresh" enabled="{= ${userPermission>/appPermission/P23}}"/>
+						<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+					</OverflowToolbar>
+				</commons:toolbar>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage visible="false" id="viewId1">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onPressBack"/>
+						<Title text="View Summary" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<VBox>
+				<l:BlockLayout background="Dashboard" class="sapUiTinyMarginBottom">
+					<l:BlockLayoutRow class="sapUiNoContentPadding">
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Total Invoice(s) Uploaded" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ViewSummDetails>/qrUploadCounts/totalDoc}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Total Errored Out Invoices" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ViewSummDetails>/qrUploadCounts/errMatch}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Processed with QR" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ViewSummDetails>/qrUploadCounts/qrProc}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Signature Mis-Match" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ViewSummDetails>/qrUploadCounts/sigMisMatch}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Full Match" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ViewSummDetails>/qrUploadCounts/fullMatch}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+				<l:BlockLayout class="cl_Contentpading">
+					<l:BlockLayoutRow accentCells="Accent1">
+						<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="4">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Count/Type of Mismatches" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+								</Toolbar>
+								<viz:Popover id="idPopOver1"></viz:Popover>
+								<viz:VizFrame id="idVizFrame1" xmlns="sap.viz" uiConfig="{applicationSet:'fiori'}" vizType='column' class="cl_vizHeig2 sapUiTinyMarginTop">
+									<viz:dataset>
+										<viz.data:FlattenedDataset data="{ViewSummDetails>/misMatchCounts}">
+											<viz.data:dimensions>
+												<viz.data:DimensionDefinition name="Report Type" value="{ViewSummDetails>reportType}"/>
+											</viz.data:dimensions>
+											<viz.data:measures>
+												<viz.data:MeasureDefinition name="Count" value="{ViewSummDetails>mismatCount}"/>
+											</viz.data:measures>
+										</viz.data:FlattenedDataset>
+									</viz:dataset>
+									<viz:feeds>
+										<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Count"/>
+										<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Report Type"/>
+									</viz:feeds>
+								</viz:VizFrame>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="2.5">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Supplier GSTIN-wise Statistics" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+								</Toolbar>
+								<ui:Table id="GSTNwiseId" rows="{ViewSummDetails>/gstinStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+									class="sapUiTinyMarginTop">
+									<ui:columns>
+										<ui:Column hAlign="Center">
+											<VBox>
+												<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Input placeholder="filter column" liveChange="onSearchGstinTab"/>
+											</VBox>
+											<ui:template>
+												<Text text="{ViewSummDetails>gstin}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<VBox>
+												<Label text="Invoice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Input placeholder="filter column" liveChange="onSearchGstinTab"/>
+											</VBox>
+											<ui:template>
+												<Text text="{ViewSummDetails>invoices}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<VBox>
+												<Label text="Full Match %" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Input placeholder="filter column" liveChange="onSearchGstinTab"/>
+											</VBox>
+											<ui:template>
+												<Text text="{ViewSummDetails>match}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="2.5">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Supplier PAN-wise Statistics" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+								</Toolbar>
+								<ui:Table id="panTabId" rows="{ViewSummDetails>/panStats}" enableColumnReordering="false" visibleRowCount="10" selectionMode="None"
+									class="sapUiTinyMarginTop">
+									<ui:columns>
+										<ui:Column hAlign="Center">
+											<VBox>
+												<Label text="PAN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Input placeholder="filter column" liveChange="onSearchPANTab"/>
+											</VBox>
+											<ui:template>
+												<Text text="{ViewSummDetails>gstin}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<VBox>
+												<Label text="Invoice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Input placeholder="filter column" liveChange="onSearchPANTab"/>
+											</VBox>
+											<ui:template>
+												<Text text="{ViewSummDetails>invoices}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<VBox>
+												<Label text="Full Match %" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<Input placeholder="filter column" liveChange="onSearchPANTab"/>
+											</VBox>
+											<ui:template>
+												<Text text="{ViewSummDetails>match}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+							</Panel>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+					<l:BlockLayoutRow accentCells="Accent1" visible="{=['B','C'].includes(${PropDetail>/optionOpted})}">
+						<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="5">
+							<Text text=" "/>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="sapUiTinyMarginBegin sapUiMediumMarginEnd" width="4">
+							<HBox>
+								<Text text="Note: " class="sapUiTinyMarginEnd boldFont redLink"/>
+								<Text text="Supplier GSTIN/PAN wise statistics summary has been calculated based on Supplier GSTIN (QR)"
+									visible="{=${PropDetail>/optionOpted}==='B'}" class="redLink"/>
+								<Text text="Supplier GSTIN/PAN wise statistics summary has been calculated based on Supplier GSTIN (JSON)"
+									visible="{=${PropDetail>/optionOpted}==='C'}" class="redLink"/>
+							</HBox>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+					<l:BlockLayoutRow accentCells="Accent1">
+						<l:BlockLayoutCell visible="{=${PropDetail>/optionOpted}==='A'}">
+							<commons:ChartContainer fullScreen="{PropDetail>/fullScreenA}" showFullScreen="false" showZoom="true" showPersonalization="false"
+								autoAdjustHeight="false">
+								<commons:content>
+									<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+										<commons:content>
+											<ui:Table id="qrSummaryTab" rows="{ViewSummTableDetails>/qrSummaryData}" enableColumnReordering="false" selectionMode="None"
+												visibleRowCount="{=${PropDetail>/fullScreenA}?20:10}" class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+												<ui:columns>
+													<ui:Column hAlign="Center" width="5rem">
+														<VBox>
+															<Label text="Sr No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>slNo}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="File Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>File Name}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="Validated Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>Validated_Date}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="Recipient GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>BuyerGstin}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="Supplier GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>SellerGstin}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="Document Number" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>DocNo}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="Document Date " textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>DocDt}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="Document Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>DocTyp}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="Total Invoice Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>TotInvVal}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="Item Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>ItemCnt}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="Main HSN Code" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>MainHsnCode}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="IRN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>Irn}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="IRN Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>IrnDt}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="Signature" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>Signature}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{ViewSummTableDetails>Signature}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="Recipient GSTIN-Match" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>BuyerGstin_Match}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{ViewSummTableDetails>BuyerGstin_Match}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="Supplier GSTIN-Match" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>SellerGstin_Match}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{ViewSummTableDetails>SellerGstin_Match}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="Document Number-Match" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>DocNo_Match}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{ViewSummTableDetails>DocNo_Match}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="Document Date-Match" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>DocDt_Match}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{ViewSummTableDetails>DocDt_Match}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="Document Type-Match" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>DocTyp_Match}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{ViewSummTableDetails>DocTyp_Match}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="Total Invoice Value-Match" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>TotInvVal_Match}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{ViewSummTableDetails>TotInvVal_Match}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="Main HSN Code-Match" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>MainHsnCode_Match}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{ViewSummTableDetails>MainHsnCode_Match}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="IRN-Match" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>Irn_Match}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{ViewSummTableDetails>Irn_Match}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="Match Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>Match_Count}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="Mismatch Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>Mismatch_Count}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{=${ViewSummTableDetails>Mismatch_Count}>0?'R':''}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="15rem">
+														<VBox>
+															<Label text="Declaration - Rule 48 (4)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'A')"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>Declaration_Rule48_(4)}"/>
+														</ui:template>
+													</ui:Column>
+												</ui:columns>
+												<ui:footer>
+													<HBox justifyContent="Center">
+														<Button type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" enabled="{PropDetail>/bFirstA}"
+															press="onUploadDataPagination('A','F')"/>
+														<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="{PropDetail>/bPrevA}"
+															press="onUploadDataPagination('A','P')" class="sapUiTinyMarginBegin"/>
+														<Input type="Number" textAlign="End" value="{PropDetail>/pageNoA}" enabled="{PropDetail>/ePageNoA}" width="4rem"
+															submit="onUpDataPaginationSubmit('A','I')" class="sapUiTinyMarginBegin"/>
+														<Text text="/ {PropDetail>/pgTotalA}" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+														<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="{PropDetail>/bNextA}"
+															press="onUploadDataPagination('A','N')"/>
+														<Button type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" enabled="{PropDetail>/bLastA}"
+															class="sapUiTinyMarginBeginEnd" press="onUploadDataPagination('A','L')"/>
+														<Select selectedKey="{PropDetail>/pgSizeA}" change="onUpDataPaginationSubmit('A','S')" width="10%">
+															<core:Item key="10" text="10"/>
+															<core:Item key="25" text="25"/>
+															<core:Item key="50" text="50"/>
+															<core:Item key="75" text="75"/>
+															<core:Item key="100" text="100"/>
+														</Select>
+													</HBox>
+												</ui:footer>
+											</ui:Table>
+										</commons:content>
+									</commons:ChartContainerContent>
+								</commons:content>
+								<commons:toolbar>
+									<OverflowToolbar height="9rem">
+										<Label text="Result Summary" design="Bold" class="titleFont"/>
+										<ToolbarSpacer/>
+										<Button type="Transparent" icon="sap-icon://full-screen" tooltip="openFullScreen" visible="{=!${PropDetail>/fullScreenA}}"
+											press="onDetailFullScreen('A','open')"/>
+										<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="closeFullScreen" visible="{PropDetail>/fullScreenA}"
+											press="onDetailFullScreen('A','close')"/>
+										<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+									</OverflowToolbar>
+								</commons:toolbar>
+							</commons:ChartContainer>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell visible="{=${PropDetail>/optionOpted}==='B'}">
+							<commons:ChartContainer fullScreen="{PropDetail>/fullScreenB}" showFullScreen="false" showZoom="true" showPersonalization="false"
+								autoAdjustHeight="false">
+								<commons:content>
+									<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+										<commons:content>
+											<ui:Table id="qrPdfSummaryTab" rows="{ViewSummTableDetails>/qrpdfSummaryData}" enableColumnReordering="false" selectionMode="None"
+												visibleRowCount="{=${PropDetail>/fullScreenB}?20:10}" class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+												<ui:columns>
+													<ui:Column hAlign="Center" width="5rem">
+														<VBox width="100%">
+															<Label text="Sr No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>slNo}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Report Category" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>reportCategory}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="24rem">
+														<VBox width="100%">
+															<Label text="Match Reasons" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>matchReasons}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="24rem">
+														<VBox width="100%">
+															<Label text="Mismatch Reasons" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>misMatchReasons}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{=${ViewSummTableDetails>mismatchCount}>0?'R':''}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<VBox width="100%">
+															<Label text="Match Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>matchCount}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="9rem">
+														<VBox width="100%">
+															<Label text="Mismatch Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>mismatchCount}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{=${ViewSummTableDetails>mismatchCount}>0?'R':''}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Recipient GSTIN (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>buyerGstinQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Recipient GSTIN (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>buyerGstinPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Supplier GSTIN (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>sellerGstinQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Supplier GSTIN (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>sellerGstinPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Document Number (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>docNoQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Document Number (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>docNoPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="Document Date (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>docDtQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Document Date (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>docDtPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Document Type (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>docTypeQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Document Type (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>docTypePDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Total Invoice Value (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>totInvValQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Total Invoice Value (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>totInvValPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="9rem">
+														<VBox width="100%">
+															<Label text="Item Count (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>itemCntQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="Main HSN Code (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>mainHsnCodeQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Main HSN Code (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>mainHsnCodePDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="22rem">
+														<VBox width="100%">
+															<Label text="IRN (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>irnQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="22rem">
+														<VBox width="100%">
+															<Label text="IRN (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>irnPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="IRN Date (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>irnDateQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="IRN Date (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>irnDatePDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<VBox width="100%">
+															<Label text="Signature" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>signatureQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="30rem">
+														<VBox width="100%">
+															<Label text="File Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>Filename}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<VBox width="100%">
+															<Label text="Validated Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>validatedDate}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Declaration - Rule 48 (4)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>declaration}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="E-Invoice Applicability" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'B')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>einvAppli}"/>
+														</ui:template>
+													</ui:Column>
+												</ui:columns>
+												<ui:footer>
+													<HBox justifyContent="Center">
+														<Button type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" enabled="{PropDetail>/bFirstB}"
+															press="onUploadDataPagination('B','F')"/>
+														<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="{PropDetail>/bPrevB}"
+															press="onUploadDataPagination('B','P')" class="sapUiTinyMarginBegin"/>
+														<Input type="Number" textAlign="End" value="{PropDetail>/pageNoB}" enabled="{PropDetail>/ePageNoB}" width="4rem"
+															submit="onUpDataPaginationSubmit('B','I')" class="sapUiTinyMarginBegin"/>
+														<Text text="/ {PropDetail>/pgTotalB}" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+														<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="{PropDetail>/bNextB}"
+															press="onUploadDataPagination('B','N')"/>
+														<Button type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" enabled="{PropDetail>/bLastB}"
+															press="onUploadDataPagination('B','L')" class="sapUiTinyMarginBeginEnd"/>
+														<Select selectedKey="{PropDetail>/pgSizeB}" change="onUpDataPaginationSubmit('B','S')" width="10%">
+															<core:Item key="10" text="10"/>
+															<core:Item key="25" text="25"/>
+															<core:Item key="50" text="50"/>
+															<core:Item key="75" text="75"/>
+															<core:Item key="100" text="100"/>
+														</Select>
+													</HBox>
+												</ui:footer>
+											</ui:Table>
+										</commons:content>
+									</commons:ChartContainerContent>
+								</commons:content>
+								<commons:toolbar>
+									<OverflowToolbar height="9rem">
+										<Label text="Result Summary" design="Bold" class="titleFont"/>
+										<ToolbarSpacer/>
+										<Button type="Transparent" icon="sap-icon://full-screen" tooltip="openFullScreen" visible="{=!${PropDetail>/fullScreenB}}"
+											press="onDetailFullScreen('B','open')"/>
+										<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="closeFullScreen" visible="{PropDetail>/fullScreenB}"
+											press="onDetailFullScreen('B','close')"/>
+										<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+									</OverflowToolbar>
+								</commons:toolbar>
+							</commons:ChartContainer>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell visible="{=${PropDetail>/optionOpted}==='C'}">
+							<commons:ChartContainer fullScreen="{PropDetail>/fullScreenC}" showFullScreen="false" showZoom="true" showPersonalization="false"
+								autoAdjustHeight="false">
+								<commons:content>
+									<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+										<commons:content>
+											<ui:Table id="qrPdfJsonSummaryTab" rows="{ViewSummTableDetails>/qrpdfJsonSummaryData}" enableColumnReordering="false" selectionMode="None"
+												visibleRowCount="{=${PropDetail>/fullScreenC}?20:10}" class="sapUiTinyMarginTop sapUiMediumMarginBottom">
+												<ui:columns>
+													<ui:Column hAlign="Center" width="5rem">
+														<VBox width="100%">
+															<Label text="Sr No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>slNo}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Report Category" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>reportCategory}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="24rem">
+														<VBox width="100%">
+															<Label text="Match Reasons" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>matchReasons}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="24rem">
+														<VBox width="100%">
+															<Label text="Mismatch Reasons" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>misMatchReasons}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{=${ViewSummTableDetails>mismatchCount}>0?'R':''}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<VBox width="100%">
+															<Label text="Match Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>matchCount}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="9rem">
+														<VBox width="100%">
+															<Label text="Mismatch Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>mismatchCount}">
+																<customData>
+																	<core:CustomData key="mismatch" value="{=${ViewSummTableDetails>mismatchCount}>0?'R':''}" writeToDom="true"/>
+																</customData>
+															</Text>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Recipient GSTIN (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>buyerGstinJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Recipient GSTIN (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>buyerGstinPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Supplier GSTIN (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>sellerGstinJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Supplier GSTIN (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>sellerGstinPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="13rem">
+														<VBox width="100%">
+															<Label text="Document Number (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>docNoJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Document Number (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>docNoJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Document Date (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>docDtJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Document Date (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>docDtPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Document Type (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>docTypeJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Document Type (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>docTypePDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="13rem">
+														<VBox width="100%">
+															<Label text="Total Invoice Value (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>totInvValJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Total Invoice Value (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>totInvValPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="9rem">
+														<VBox width="100%">
+															<Label text="Item Count (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>itemCntJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="9rem">
+														<VBox width="100%">
+															<Label text="Item Count (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>itemCntPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Main HSN Code (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>mainHsnCodeJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Main HSN Code (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>mainHsnCodePDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<VBox width="100%">
+															<Label text="Signature (QR)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>signatureQR}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="22rem">
+														<VBox width="100%">
+															<Label text="IRN (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>irnJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="22rem">
+														<VBox width="100%">
+															<Label text="IRN (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>irnPDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="IRN Date (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>irnDateJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="IRN Date (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>irnDatePDF}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="IRN Status (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>irnStatusJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="14rem">
+														<VBox width="100%">
+															<Label text="IRN Cancellation Date (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>irnCancellationDateJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="POS (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>posJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="POS (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>posPdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="Taxable Value (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>taxableValueJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="Taxable Value (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>taxableValuePdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="IGST (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>igstJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="IGST (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>igstPdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="CGST (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>cgstJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="CGST (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>cgstPdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="SGST/UTGST (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>sgstUtgstJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="SGST/UTGST (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>sgstUtgstPdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="CESS (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>cessJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="CESS (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>cessPdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="Total Tax (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>totalTaxJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="10rem">
+														<VBox width="100%">
+															<Label text="Total Tax (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>totalTaxPdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Reverse Charge (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>reverseChargeJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="Reverse Charge (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>reverseChargePdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="13rem">
+														<VBox width="100%">
+															<Label text="Purchase Order No (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>purchaseOrderNoJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Purchase Order No (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>purchaseOrderNoPdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="14rem">
+														<VBox width="100%">
+															<Label text="Quantity (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>quantityJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="14rem">
+														<VBox width="100%">
+															<Label text="Quantity (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>quantityPdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="13rem">
+														<VBox width="100%">
+															<Label text="Unit Price (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>unitPriceJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="13rem">
+														<VBox width="100%">
+															<Label text="Unit Price (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>unitPricePdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="14rem">
+														<VBox width="100%">
+															<Label text="Line Item Amount (JSON)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>lineItemAmountJson}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="14rem">
+														<VBox width="100%">
+															<Label text="Line Item Amount (PDF)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>lineItemAmountPdf}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="18rem">
+														<VBox width="100%">
+															<Label text="File Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>Filename}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="8rem">
+														<VBox width="100%">
+															<Label text="Validated Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>validatedDate}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="12rem">
+														<VBox width="100%">
+															<Label text="Declaration - Rule 48 (4)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>declaration}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="E-Invoice Applicability" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+															<Input placeholder="filter column" liveChange="onSummaryTabSearch($event,'C')" width="100%"/>
+														</VBox>
+														<ui:template>
+															<Text text="{ViewSummTableDetails>einvAppli}"/>
+														</ui:template>
+													</ui:Column>
+													<ui:Column hAlign="Center" width="11rem">
+														<VBox width="100%">
+															<Label text="JSON Download" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+														</VBox>
+														<ui:template>
+															<Button type="Emphasized" text="Download" enabled="{=${ViewSummTableDetails>jsonResponse} === undefined ? false : true}"
+																press="onDownloadJSON(${ViewSummTableDetails>jsonResponse})" width="5.5rem"/>
+														</ui:template>
+													</ui:Column>
+												</ui:columns>
+												<ui:footer>
+													<HBox justifyContent="Center">
+														<Button type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" enabled="{PropDetail>/bFirstC}"
+															press="onUploadDataPagination('C','F')"/>
+														<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="{PropDetail>/bPrevC}"
+															press="onUploadDataPagination('C','P')" class="sapUiTinyMarginBegin"/>
+														<Input type="Number" textAlign="End" value="{PropDetail>/pageNoC}" enabled="{PropDetail>/ePageNoC}" width="4rem"
+															submit="onUpDataPaginationSubmit('C','I')" class="sapUiTinyMarginBegin"/>
+														<Text text="/ {PropDetail>/pgTotalC}" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+														<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="{PropDetail>/bNextC}"
+															press="onUploadDataPagination('C','N')"/>
+														<Button type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" enabled="{PropDetail>/bLastC}"
+															press="onUploadDataPagination('C','L')" class="sapUiTinyMarginBeginEnd"/>
+														<Select selectedKey="{PropDetail>/pgSizeC}" change="onUpDataPaginationSubmit('C','S')" width="10%">
+															<core:Item key="10" text="10"/>
+															<core:Item key="25" text="25"/>
+															<core:Item key="50" text="50"/>
+															<core:Item key="75" text="75"/>
+															<core:Item key="100" text="100"/>
+														</Select>
+													</HBox>
+												</ui:footer>
+											</ui:Table>
+										</commons:content>
+									</commons:ChartContainerContent>
+								</commons:content>
+								<commons:toolbar>
+									<OverflowToolbar height="9rem">
+										<Label text="Result Summary" design="Bold" class="titleFont"/>
+										<ToolbarSpacer/>
+										<Button type="Transparent" icon="sap-icon://full-screen" tooltip="openFullScreen" visible="{=!${PropDetail>/fullScreenC}}"
+											press="onDetailFullScreen('C','open')"/>
+										<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="closeFullScreen" visible="{PropDetail>/fullScreenC}"
+											press="onDetailFullScreen('C','close')"/>
+										<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+									</OverflowToolbar>
+								</commons:toolbar>
+							</commons:ChartContainer>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

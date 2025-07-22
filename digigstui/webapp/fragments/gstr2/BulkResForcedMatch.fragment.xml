@@ -1,0 +1,85 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog title="Bulk Recon Response Action" type="Standard" class="sapUiSizeCompact" contentWidth="55rem" contentHeight="16rem"
+		draggable="true" busyIndicatorDelay="0">
+		<VBox class="sapUiSmallMarginBegin" alignItems="Begin" justifyContent="Begin">
+			<HBox renderType="Bare" class="sapUiTinyMarginTop">
+				<VBox width="11rem">
+					<Label text="Recon Type" design="Bold" required="true"/>
+					<Select id="idBRFReconType" selectedKey="{ForceMatch>/reconType}" enabled="false" width="100%" class="input">
+						<core:Item key="2A_PR" text="GSTR-2A/6A Vs PR"/>
+						<core:Item key="2B_PR" text="GSTR-2B Vs PR"/>
+					</Select>
+				</VBox>
+				<VBox class="sapUiSmallMarginBegin">
+					<Label text="Tax Period Base" design="Bold" required="true"/>
+					<Select id="sTaxBaseWo3bLock" selectedKey="{ForceMatch>/taxBase}" width="15rem" class="input">
+						<core:Item key="PR" text="PR"/>
+						<core:Item key="{Display>/LabelRR}" text="{Display>/LabelRR}"/>
+						<core:Item key="Both" text="Both PR &amp; {Display>/LabelRR}"/>
+					</Select>
+				</VBox>
+				<VBox width="12rem" class="sapUiSmallMarginBeginEnd">
+					<Label text="From Tax Period" design="Bold" required="true"/>
+					<DatePicker id="dtFr3bLockWo" displayFormat="MMM yyyy" valueFormat="yyyyMM" dateValue="{ForceMatch>/frDate}" maxDate="{ForceMatch>/maxDate}"
+						change="onBulkRespDateChange($event,'wo3B')"/>
+				</VBox>
+				<VBox width="12rem">
+					<Label text="To Tax Period" design="Bold" required="true"/>
+					<DatePicker id="dtTo3bLockWo" displayFormat="MMM yyyy" valueFormat="yyyyMM" dateValue="{ForceMatch>/toDate}" maxDate="{ForceMatch>/maxDate}"
+						minDate="{ForceMatch>/frDate}"/>
+				</VBox>
+			</HBox>
+			<HBox renderType="Bare" class="sapUiSmallMarginTop">
+				<VBox width="11rem">
+					<Label text="Vendor PAN" design="Bold"/>
+					<Input id="iWo3bLockVenPan" value="{ForceMatch>/vendorPan}" maxLength="10" liveChange="alphaNumericCaps"/>
+				</VBox>
+				<VBox width="15rem" class="sapUiSmallMarginBegin">
+					<Label text="Vendor GSTIN" design="Bold"/>
+					<MultiInput id="iWo3bLockVenGstin" change="onMultiInputChange" maxLength="15" showValueHelp="false"/>
+				</VBox>
+				<VBox width="15rem" class="sapUiSmallMarginBegin">
+					<Label text="Recipient GSTIN" design="Bold" required="true"/>
+					<MultiComboBox id="idBRFGstins" items="{path:'ReconResultGstin>/'}" selectedKeys="{ForceMatch>/gstin}" selectionChange="selectAll"
+						width="100%">
+						<core:Item key="{ReconResultGstin>gstin}" text="{ReconResultGstin>gstin}"/>
+					</MultiComboBox>
+				</VBox>
+			</HBox>
+			<HBox renderType="Bare" class="sapUiSmallMarginTop">
+				<VBox width="11rem">
+					<Label text="Recon Criteria" design="Bold"/>
+					<Select id="sFmCriteria" selectedKey="{ForceMatch>/reconCriteria}" enabled="false" width="100%" class="input">
+						<core:Item key="Regular" text="Regular"/>
+						<core:Item key="Import" text="Import"/>
+						<core:Item key="ISD" text="ISD"/>
+					</Select>
+				</VBox>
+				<VBox width="15rem" class="sapUiSmallMarginBeginEnd">
+					<Label text="Report Type" design="Bold" required="true"/>
+					<MultiComboBox id="idBRFReptType" items="{FmReportType>/}" selectedKeys="{ForceMatch>/reportType}"
+						selectionChange="onRepTypeSelection($event,'FmReportType')" width="100%">
+						<core:Item key="{FmReportType>key}" text="{FmReportType>text}">
+							<core:customData>
+								<core:CustomData key="listDisable" value="{FmReportType>select}" writeToDom="true"/>
+							</core:customData>
+						</core:Item>
+					</MultiComboBox>
+					<Label text="Mismatch Reason" design="Bold" required="true" class="sapUiTinyMarginTop"/>
+					<MultiComboBox selectedKeys="{ForceMatch>/mismatchReason}" enabled="{ForceMatch>/eMismatch}" width="100%">
+						<core:Item key="Document Date (Same Month)" text="Document Date (Same Month)"/>
+						<core:Item key="Document Date (Different Month)" text="Document Date (Different Month)"/>
+					</MultiComboBox>
+				</VBox>
+				<VBox>
+					<Label text="Response Remarks(Max 500 characters)" design="Bold"/>
+					<TextArea id="TABRFid" value="{ForceMatch>/remarks}" maxLength="500" rows="4" width="25rem"/>
+				</VBox>
+			</HBox>
+		</VBox>
+		<buttons>
+			<Button text="Save" press="onFMSave"/>
+			<Button text="Cancel" press="onBulkRRClose"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

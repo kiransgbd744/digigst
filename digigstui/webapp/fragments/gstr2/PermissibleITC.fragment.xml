@@ -1,0 +1,342 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Title text="Permissible ITC" class="sapUiSmallMarginBegin clTitleMarginTop"/>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<SegmentedButton id="segId" selectedKey="Summary" selectionChange="onChangeSegmentPerITC" class="sapUiSmallMarginEnd">
+						<items>
+							<SegmentedButtonItem key="Summary" text="Summary" width="6rem"/>
+							<SegmentedButtonItem key="Detail" text="Detail" width="6rem"/>
+						</items>
+					</SegmentedButton>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar showFilterConfiguration="false" useToolbar="false" class="sapUiNoContentPadding" width="90%" showGoOnFB="false"
+					showClearOnFB="false" visible="true" id="SummFilterId">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Recon Type" visibleInFilterBar="false">
+							<fb:control>
+								<Select id="idReconTypePI" class="input" forceSelection="true" change="onRecontypeChange1">
+									<core:Item key="2A_PR" text="GSTR-2A/6A Vs PR"/>
+									<core:Item key="2B_PR" text="GSTR-2B Vs PR"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idPIGstins" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" selectionChange="selectAll">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Tax Period From" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dtPI" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="handleChangePISumm" width="12rem"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="z" label="Tax Period To" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dtPITo" displayFormat="MMM yyyy" valueFormat="MMyyyy" width="12rem"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Document Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="DocTypeIDPI" selectionChange="onRRDocTypCHange">
+									<core:Item key="R" text="INV"/>
+									<!--<core:Item key="C" text="CR"/>-->
+									<core:Item key="D" text="DR"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%" visible="true" id="SummHFilterId">
+					<Button text="Clear" class="sapUiTinyMarginEnd buttoncolorSec" press="onPressClearPI"/>
+					<Button class="buttoncolor" press="ItcPermGo" text="Filter"/>
+				</HBox>
+				<fb:FilterBar showFilterConfiguration="false" useToolbar="false" class="sapUiNoContentPadding" width="90%" showGoOnFB="false"
+					showClearOnFB="false" visible="false" id="DetailFilterId">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idPIGstinsDet" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" selectionChange="selectAll">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Tax Period From" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dtPIDet" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="handleChangePIDet" width="12rem"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="i" label="Tax Period To" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dtPIDetTo" displayFormat="MMM yyyy" valueFormat="MMyyyy" width="12rem"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Document Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="DocTypeIDPIDet" selectionChange="onRRDocTypCHange">
+									<core:Item key="R" text="INV"/>
+									<!--<core:Item key="C" text="CR"/>-->
+									<core:Item key="D" text="DR"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%" visible="false" id="DetailHId">
+					<Button type="Ghost" text="Clear" class="sapUiTinyMarginEnd buttoncolorSec" press="onPressClearPIDetail"/>
+					<Button class="buttoncolor" press="DetailPermissible" text="Filter"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapFDynamicPageAlignContent">
+				<commons:ChartContainer id="TabId" visible="true" showFullScreen="false" showZoom="true" showPersonalization="false"
+					autoAdjustHeight="false">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<ui:Table rowSelectionChange="onSelectionConsolMatch" rows="{path:'summaryPermissible>/'}" enableSelectAll="false" fixedBottomRowCount="0"
+									fixedColumnCount="2" visibleRowCount="9" selectionMode="None" id="sumTab">
+									<ui:columns>
+										<ui:Column hAlign="Left">
+											<Label design="Bold" text="GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{summaryPermissible>gstin}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<VBox>
+												<Label design="Bold" id="labID" textAlign="Center" width="100%" wrapping="true"/>
+												<Label design="Bold" text="(1)" textAlign="Center"/>
+												<!--text="Tax Amount as per GSTR 2B"-->
+											</VBox>
+											<ui:template>
+												<Text text="{summaryPermissible>tx2a}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<VBox>
+												<Label design="Bold" text="PR Tax Amount" textAlign="Center" width="100%" wrapping="true"/>
+												<Label design="Bold" text="(2)" textAlign="Center"/>
+											</VBox>
+											<ui:template>
+												<Text text="{summaryPermissible>txPr}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<VBox>
+												<Label design="Bold" text="PR Tax Available Amount" textAlign="Center" width="100%" wrapping="true"/>
+												<Label design="Bold" text="(3)" textAlign="Center"/>
+											</VBox>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTopBottom">
+													<Text text="{summaryPermissible>txAbvlPr}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<VBox>
+												<Label design="Bold" text="Total ITC availed (as per Responses)" textAlign="Center" width="100%" wrapping="true"/>
+												<Label design="Bold" text="(4)" textAlign="Center"/>
+											</VBox>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTopBottom">
+													<Text text="{summaryPermissible>totalItcAvl}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<VBox>
+												<Label design="Bold" text="Eligible Credit [For calculating 36(4) limit]" textAlign="Center" width="100%" wrapping="true"/>
+												<Label design="Bold" text="(5)" textAlign="Center"/>
+											</VBox>
+											<ui:template>
+												<VBox>
+													<Text text="{summaryPermissible>eligibleCrd}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<VBox>
+												<Label design="Bold" text="{onLoadPer>/egCrPerc} % of Eligible Credit" textAlign="Center" width="100%" wrapping="true"/>
+												<Label design="Bold" text="(5*{onLoadPer>/egCrPerc}%=6)" textAlign="Center"/>
+											</VBox>
+											<ui:template>
+												<VBox>
+													<Text text="{summaryPermissible>eligibleCrdPerc}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<VBox>
+												<Label design="Bold" text="Maximum Permissible ITC" textAlign="Center" width="100%" wrapping="true"/>
+												<Label design="Bold" text="(5+6=7)" textAlign="Center"/>
+											</VBox>
+											<ui:template>
+												<VBox>
+													<Text text="{summaryPermissible>maxPermItc}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<VBox>
+												<Label design="Bold" text="Excess Credit availed" textAlign="Center" width="100%" wrapping="true"/>
+												<Label design="Bold" text="(4-7=8)" textAlign="Center"/>
+											</VBox>
+											<ui:template>
+												<VBox>
+													<Text text="{path : 'summaryPermissible>exsCrdAvl', formatter : '.formatter.amountValue'}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar>
+							<ToolbarSpacer/>
+							<MenuButton class="buttoncolorSec" text="Download Reports" enabled="{= ${userPermission>/appPermission/P8}}">
+								<Menu itemSelected="onMenuItemPressSavePI">
+									<MenuItem text="Download Summary level" key="Download Summary level"/>
+									<MenuItem text="Download Transactional level" key="Download Tranctional level" enabled="false"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Transparent" id="openbutPITC" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="true"
+								press="onPITCFullScreen('open')"/>
+							<Button type="Transparent" id="closebutPITC" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="false"
+								press="onPITCFullScreen('close')"/>
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+				<commons:ChartContainer id="Tab2Id" visible="false" showFullScreen="false" showZoom="true" showPersonalization="false"
+					autoAdjustHeight="false">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<ui:TreeTable rowSelectionChange="onSelectionExactMatch"
+									rows="{path:'DetailPermissible>/', parameters:{ arrayNames:['taxBreakUpDetails'], numberOfExpandedLevels:1}}" visibleRowCount="9"
+									enableSelectAll="false" fixedBottomRowCount="0" fixedColumnCount="2" selectionMode="None" id="detTab">
+									<ui:columns>
+										<ui:Column width="12rem">
+											<Label design="Bold" text="GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{DetailPermissible>gstin}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column>
+											<Label design="Bold" id="labId1" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Text text="{DetailPermissible>prTaxAmt2A}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label design="Bold" text="PR Tax Amount" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox class="sapUiTinyMarginTopBottom">
+													<Text text="{DetailPermissible>prTaxValue}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label design="Bold" text="PR Tax Available Amount" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox>
+													<Text text="{DetailPermissible>prTaxAvlValue}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label design="Bold" text="Total ITC availed (as per Responses)" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox>
+													<Text text="{DetailPermissible>totalItcAvl}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label design="Bold" text="Eligible Credit [For calculating 36(4) limit]" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox>
+													<Text text="{DetailPermissible>eligibleCrd}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<VBox>
+												<Label design="Bold" text="{onLoadPer>/egCrPerc} % of Eligible Credit" textAlign="Center" width="100%" wrapping="true"/>
+												<Label design="Bold" text="(5*{onLoadPer>/egCrPerc}%=6)" textAlign="Center"/>
+											</VBox>
+											<ui:template>
+												<VBox>
+													<Text text="{DetailPermissible>eligibleCRDPerc}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label design="Bold" text="Maximum Permissible ITC" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox>
+													<Text text="{path : 'DetailPermissible>maxPermItc', formatter : '.formatter.amountValue'}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label design="Bold" text="Excess Credit availed" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<VBox>
+													<Text text="{path : 'DetailPermissible>exsCreditAvl', formatter : '.formatter.amountValue'}"/>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<!--<ui:footer>
+										<Toolbar>
+											<core:Icon src="sap-icon://circle-task-2" color="#0187f7" size="0.8rem"/>
+											<Text text="PR"/>
+											<core:Icon src="sap-icon://circle-task-2" color="#333333" size="0.8rem"/>
+											<Text text="ANX - 2"/>
+											<ToolbarSpacer/>
+										</Toolbar>
+									</ui:footer>-->
+								</ui:TreeTable>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar>
+							<ToolbarSpacer/>
+							<MenuButton class="buttoncolorSec" text="Download Reports" enabled="{= ${userPermission>/appPermission/P8}}">
+								<Menu itemSelected="onMenuItemPressSavePI">
+									<MenuItem text="Download Summary level" key="Download Summary level"/>
+									<MenuItem text="Download Transactional level" key="Download Tranctional level" enabled="false"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Transparent" id="openbutPITCD" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="true"
+								press="onPITCDFullScreen('open')"/>
+							<Button type="Transparent" id="closebutPITCD" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="false"
+								press="onPITCDFullScreen('close')"/>
+							<Button id="expandPI" icon="sap-icon://expand-all" press="onExpandPI"/>
+							<Button icon="sap-icon://collapse-all" press="onExpandPI"/>
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

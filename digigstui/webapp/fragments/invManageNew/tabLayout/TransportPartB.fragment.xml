@@ -1,0 +1,184 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table" xmlns:form="sap.ui.layout.form">
+	<ui:Table rows="{PartBHistoryDetails>/resp/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="8"
+		id="idtabTransportPartB">
+		<ui:extension>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button type="Emphasized" text="Refresh" enabled="true" press="getPartBHistoryDetails"/>
+				<Button type="Emphasized" text="Update Part-B" enabled="true" press="onPressUpdatePartB"/>
+				<!--<Button type="Reject" icon="sap-icon://delete" enabled="false" press="onPressDeleteProduct"/>-->
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Line Number" tooltip="Line Number" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{PartBHistoryDetails>sno}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Document Number" tooltip="Document Number" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{PartBHistoryDetails>docNum}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="EWB Number" tooltip="EWB Number" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{PartBHistoryDetails>ewbNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="EWB Date" tooltip="EWB Date" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{PartBHistoryDetails>ewbDate}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Supplier GSTIN" tooltip="Supplier GSTIN" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{PartBHistoryDetails>gstin}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Transport Mode" tooltip="Transport Mode" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{PartBHistoryDetails>transMode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Transporter ID" tooltip="Transporter ID" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{PartBHistoryDetails>transporterId}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Transport Doc No." tooltip="Transport Doc No." textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{PartBHistoryDetails>transDocNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Transport Doc Date" tooltip="Transport Doc Date" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{PartBHistoryDetails>transDocDate}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Distance" tooltip="Distance" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{PartBHistoryDetails>distance}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="NIC Distance" tooltip="NIC Distance" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{PartBHistoryDetails>nicDistance}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Vehicle No." tooltip="Vehicle No." textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{PartBHistoryDetails>vehicleNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Vehicle Type" tooltip="Vehicle Type" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{PartBHistoryDetails>vehicleType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Transfer From" tooltip="Transfer From" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{PartBHistoryDetails>transFrom}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="15rem">
+				<ui:multiLabels>
+					<Label text="Transfer From State" tooltip="Transfer From State" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{PartBHistoryDetails>transFromState}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Transport Reason" tooltip="Transport Reason" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{PartBHistoryDetails>transReason}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem">
+				<ui:multiLabels>
+					<Label text="Reason Others" tooltip="Reason Others" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{PartBHistoryDetails>reasonOthers}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="15rem">
+				<ui:multiLabels>
+					<Label text="Update Part-B Date" tooltip="Update Part-B Date" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{PartBHistoryDetails>updatePartBdate}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="25rem">
+				<ui:multiLabels>
+					<Label text="Vehicle Update" tooltip="Vehicle Update" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{PartBHistoryDetails>vehicleUpdate}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="15rem">
+				<ui:multiLabels>
+					<Label text="Error Code" tooltip="Error Code" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{PartBHistoryDetails>errorCode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="25rem">
+				<ui:multiLabels>
+					<Label text="Error Message" tooltip="Error Message" textAlign="Center" width="100%" design="Bold"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{PartBHistoryDetails>errorDesc}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+	</ui:Table>
+</core:FragmentDefinition>

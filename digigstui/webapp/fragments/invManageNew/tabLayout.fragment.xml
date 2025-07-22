@@ -1,0 +1,207 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table" xmlns:form="sap.ui.layout.form">
+	<VBox id="tabLayoutEdit" class="cltabLayout" visible="false">
+		<l:BlockLayout background="Dashboard">
+			<l:BlockLayoutRow class="sapUiNoContentPadding">
+				<l:BlockLayoutCell class="clBlockLayout1" width="2">
+					<Toolbar class="colorToolbar">
+						<Label text="Document Details :" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+						<Text text="{InvoiceItemModel>/fileId1}" class="sapUiTinyMarginBegin"/>
+						<ToolbarSpacer/>
+					</Toolbar>
+					<l:Grid defaultSpan="L6" hSpacing="1" vSpacing="1" class="sapUiTinyMarginTop">
+						<VBox>
+							<Label text="{i18n>SupplierGSTIN}" class=" titleFontEinv" design="Bold"/>
+							<Text text="{InvoiceItemModel>/suppGstin}" class=""/>
+						</VBox>
+						<VBox>
+							<Label text="{i18n>docType}" class=" titleFontEinv" design="Bold"/>
+							<Text text="{InvoiceItemModel>/docType}" class=""/>
+						</VBox>
+						<VBox>
+							<Label text="{i18n>docNo}" class=" titleFontEinv" design="Bold"/>
+							<Text text="{InvoiceItemModel>/docNo}" class=""/>
+						</VBox>
+						<VBox>
+							<Label text="{i18n>docDate}" class=" titleFontEinv" design="Bold"/>
+							<Text text="{InvoiceItemModel>/docDate}" class=""/>
+						</VBox>
+					</l:Grid>
+				</l:BlockLayoutCell>
+				<l:BlockLayoutCell class="clBlockLayout1" width="2">
+					<Toolbar class="colorToolbar">
+						<Label text="IRN :" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+						<Text text="{InvoiceItemModel>/fileId1}" class="sapUiTinyMarginBegin"/>
+						<ToolbarSpacer/>
+					</Toolbar>
+					<l:Grid defaultSpan="L12" hSpacing="1" vSpacing="1" class="sapUiTinyMarginTop">
+						<VBox>
+							<Label text="{i18n>irn}" class=" titleFontEinv" design="Bold"/>
+							<Text text="{InvoiceItemModel>/irnResponse}" class=""/>
+						</VBox>
+						<VBox>
+							<Label text="{i18n>irnDate}" class=" titleFontEinv" design="Bold"/>
+							<Text text="{InvoiceItemModel>/ackDate}" class=""/>
+						</VBox>
+					</l:Grid>
+				</l:BlockLayoutCell>
+				<l:BlockLayoutCell class="clBlockLayout1" width="2">
+					<Toolbar class="colorToolbar">
+						<Label text="EWB :" class=" titleFontEinv" design="Bold"/>
+						<Text text="{InvoiceItemModel>/fileId1}" class=""/>
+						<ToolbarSpacer/>
+					</Toolbar>
+					<l:Grid defaultSpan="L6" hSpacing="1" vSpacing="1" class="sapUiTinyMarginTop">
+						<VBox >
+							<Label text="EWB Number" class=" titleFontEinv" design="Bold"/>
+							<Text text="{InvoiceItemModel>/ewbNoresp}" class=""/>
+						</VBox>
+						<VBox >
+							<Label text="EWB Date &amp; Time" class=" titleFontEinv" design="Bold"/>
+							<Text text="{InvoiceItemModel>/ewbDateResp}" class=""/>
+						</VBox>
+						<VBox>
+							<Label text="{i18n>transporterID}" class=" titleFontEinv" design="Bold"/>
+							<Text text="{InvoiceItemModel>/transporterID}" class=""/>
+						</VBox>
+					</l:Grid>
+				</l:BlockLayoutCell>
+				<l:BlockLayoutCell class="clBlockLayout1" width="3">
+					<Toolbar class="colorToolbar">
+						<Label text="Value :" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+						<Text text="{InvoiceItemModel>/fileId1}" class="sapUiTinyMarginBegin"/>
+						<ToolbarSpacer/>
+					</Toolbar>
+					<l:Grid defaultSpan="L4" hSpacing="1" vSpacing="1" class="sapUiTinyMarginTop">
+						<VBox>
+							<Label text="{i18n>invoiceValue}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+							<Text text="{path:'InvoiceItemModel>/docAmt', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginBegin"/>
+						</VBox>
+						<VBox>
+							<Label text="{i18n>assessableValue}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+							<Text text="{path:'InvoiceItemModel>/invAssessableAmt', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginBegin"/>
+						</VBox>
+						<VBox>
+							<Label text="{i18n>totalTax}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+							<Text text="{path:'InvoiceItemModel>/taxPayable', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginBegin"/>
+						</VBox>
+					</l:Grid>
+					<l:Grid defaultSpan="L3" hSpacing="1" vSpacing="1" class="sapUiTinyMarginTop">
+						<VBox>
+							<Label text="{i18n>IGST}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+							<Text text="{path:'InvoiceItemModel>/invIgstAmt', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginBegin"/>
+						</VBox>
+						<VBox>
+							<Label text="{i18n>CGST}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+							<Text text="{path:'InvoiceItemModel>/invCgstAmt', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginBegin"/>
+						</VBox>
+						<VBox>
+							<Label text="{i18n>SGST}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+							<Text text="{path:'InvoiceItemModel>/invSgstAmt', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginBegin"/>
+						</VBox>
+						<VBox>
+							<Label text="{i18n>CESS}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+							<Text text="{path:'InvoiceItemModel>/totalCess', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginBegin"/>
+						</VBox>
+					</l:Grid>
+				</l:BlockLayoutCell>
+			</l:BlockLayoutRow>
+		</l:BlockLayout>
+		<l:BlockLayout background="Dashboard">
+			<l:BlockLayoutRow class="sapUiNoContentPadding">
+				<l:BlockLayoutCell width="8" class="clBlockLayout1">
+					<!--<Toolbar class="colorToolbar">
+						<Title text="{InvoiceItemModel>/suppGstin}" titleStyle="H3" class="sapUiSmallMarginBegin"/>
+						<core:Icon src="sap-icon://arrow-right" class="sapUiTinyMarginBegin"/>
+						<Title text="{InvoiceItemModel>/docNo}" titleStyle="H3" class="sapUiSmallMarginBegin"/>
+						<ToolbarSpacer/>
+					</Toolbar>-->
+					<Toolbar height="8rem" width="100%">
+						<l:VerticalLayout class="contentAlign" width="20%">
+							<Label text="Data Status" design="Bold" class="labelHclass"/>
+							<CheckBox selected="{= ${InvoiceItemModel>/aspInvoiceStatus} ===2 ? true : false}" class="" enabled="true"/>
+							<Label text="{= ${InvoiceItemModel>/aspInvoiceStatus} ===2 ? 'Processed' : 'Error'}" design="Bold" class="labelHclass2"/>
+							<Text text="{InvoiceItemModel>/javaBeforeSavingOn}" class="timeStmpClr"/>
+						</l:VerticalLayout>
+						<ToolbarSpacer/>
+						<l:VerticalLayout class="contentAlign" width="20%">
+							<Label text="E-Invoice Status" design="Bold" class="labelHclass"/>
+							<CheckBox
+								selected="{= (${InvoiceItemModel>/irnStatus} ===5 || ${InvoiceItemModel>/irnStatus} ===13 || ${InvoiceItemModel>/irnStatus} ===14) ? true : false}"
+								class="" enabled="true"/>
+							<Label text="{path : 'InvoiceItemModel>/irnStatus', formatter : '.formatter.einvStatus'}" design="Bold" class="labelHclass2"/>
+							<Text text="{InvoiceItemModel>/ackDate}" class="timeStmpClr"/>
+						</l:VerticalLayout>
+						<ToolbarSpacer/>
+						<l:VerticalLayout class="contentAlign" width="20%">
+							<Label text="EWB Status" design="Bold" class="labelHclass"/>
+							<CheckBox
+								selected="{= (${InvoiceItemModel>/ewbStatus} ===4 || ${InvoiceItemModel>/ewbStatus} ===5 || ${InvoiceItemModel>/ewbStatus} ===13) ? true : false}"
+								class="" enabled="true"/>
+							<Label text="{path : 'InvoiceItemModel>/ewbStatus', formatter : '.formatter.ewbStatus'}" design="Bold" class="labelHclass2"/>
+							<Text text="{InvoiceItemModel>/ewbDateResp}" class="timeStmpClr"/>
+						</l:VerticalLayout>
+						<!--<ToolbarSpacer/>
+						<l:VerticalLayout class="sapUiLargeMarginBegin endmarginInvS" width="16%">
+							<Label text="EWB Part-B" design="Bold" class="sapUiTinyMarginBegin labelHclass"/>
+							<CheckBox selected="{= ${InvoiceItemModel>/ewbStatus} ===5 ? true : false}" class="sapUiMediumMarginBegin" enabled="true"/>
+							<Label text="{= ${InvoiceItemModel>/ewbStatus} ===5 ? 'EWB Active' : ''}" design="Bold" class="sapUiTinyMarginBegin labelHclass2"/>
+							<Text text="{InvoiceItemModel>/ewbPartBUpdated}" class="timeStmpClr"/>
+						</l:VerticalLayout>-->
+						<ToolbarSpacer/>
+						<l:VerticalLayout class="contentAlign" width="20%">
+							<Label text="GSTR-1 Status" design="Bold" class="labelHclass"/>
+							<CheckBox selected="{InvoiceItemModel>/gstr1FilingStatus}" class="" enabled="true"/>
+							<Label text="{= ${InvoiceItemModel>/gstr1FilingStatus} === true ? 'Filed' : 'Not Filed'}" design="Bold" class="labelHclass2"/>
+							<Text text="{InvoiceItemModel>/gstr1FilingDate}" class="timeStmpClr"/>
+							<!--<Text text="{InvoiceItemModel>/refId}" class="timeStmpClr"/>-->
+						</l:VerticalLayout>
+						<l:VerticalLayout class="contentAlign" width="20%">
+							<Label text="GSTR-3B Status" design="Bold" class="labelHclass"/>
+							<CheckBox selected="{InvoiceItemModel>/gstr3bFilingStatus}" class="" enabled="true"/>
+							<Label text="{= ${InvoiceItemModel>/gstr3bFilingStatus} === true ? 'Filed' : 'Not Filed'}" design="Bold" class="labelHclass2"/>
+							<Text text="{InvoiceItemModel>/gstr3bFilingDate}" class="timeStmpClr"/>
+						</l:VerticalLayout>
+					</Toolbar>
+				</l:BlockLayoutCell>
+			</l:BlockLayoutRow>
+		</l:BlockLayout>
+		<l:BlockLayout background="Dashboard">
+			<l:BlockLayoutRow class="sapUiNoContentPadding">
+				<l:BlockLayoutCell class="clBlockLayout1">
+					<VBox>
+						<IconTabBar expanded="true" id="iditbTablayout" select="handleIconTabBarSelectINV" class="sapUiNoContentPadding sapUiSmallMarginBottom"
+							backgroundDesign="Transparent" stretchContentHeight="false" selectedKey="DDHeader" expandable="false">
+							<items>
+								<IconTabFilter text="Document Details Header" tooltip="Document Details Header" key="DDHeader">
+									<core:Fragment fragmentName="com.ey.digigst.fragments.invManageNew.tabLayout.DDHeader" type="XML"/>
+								</IconTabFilter>
+								<IconTabFilter text="Document Details Line" tooltip="Document Details Line" key="DDLine">
+									<core:Fragment fragmentName="com.ey.digigst.fragments.invManageNew.tabLayout.DDLine" type="XML"/>
+								</IconTabFilter>
+								<IconTabFilter text="Export Details" tooltip="Export Details" key="ExportDetails">
+									<core:Fragment fragmentName="com.ey.digigst.fragments.invManageNew.tabLayout.ExportDetails" type="XML"/>
+								</IconTabFilter>
+								<IconTabFilter text="Transport, Part-B" tooltip="Transport Part-B" key="TransportPartB">
+									<core:Fragment fragmentName="com.ey.digigst.fragments.invManageNew.tabLayout.TransportPartB" type="XML"/>
+								</IconTabFilter>
+								<IconTabFilter text="Multi Vehicle Information" tooltip="Multi Vehicle Information" key="MVInformation">
+									<core:Fragment fragmentName="com.ey.digigst.fragments.invManageNew.tabLayout.MVInformation" type="XML"/>
+								</IconTabFilter>
+								<IconTabFilter text="Payment &amp; Ref. Details" tooltip="Payment &amp; Ref. Details" key="PaymentDetails">
+									<core:Fragment fragmentName="com.ey.digigst.fragments.invManageNew.tabLayout.PaymentDetails" type="XML"/>
+								</IconTabFilter>
+								<IconTabFilter text="Organisation" tooltip="Organisation" key="Organisation">
+									<core:Fragment fragmentName="com.ey.digigst.fragments.invManageNew.tabLayout.Organisation" type="XML"/>
+								</IconTabFilter>
+								<IconTabFilter text="Parties Involved" tooltip="Parties Involved" key="PartiesInvolved">
+									<core:Fragment fragmentName="com.ey.digigst.fragments.invManageNew.tabLayout.PartiesInvolved" type="XML"/>
+								</IconTabFilter>
+							</items>
+						</IconTabBar>
+					</VBox>
+				</l:BlockLayoutCell>
+			</l:BlockLayoutRow>
+		</l:BlockLayout>
+	</VBox>
+</core:FragmentDefinition>

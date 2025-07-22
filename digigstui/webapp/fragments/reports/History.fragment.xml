@@ -1,0 +1,126 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<f:DynamicPage>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar id="fbProcessRecord" showGoOnFB="false" showClearOnFB="false" width="90%" showFilterConfiguration="false" search="onSearch"
+					clear="onClearFilter" useToolbar="false" class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>requestId}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slRequestId" width="100%">
+									<core:Item key="" text=""/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>fileCategory}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slFileCategory" width="100%">
+									<core:Item key="" text=""/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button type="Emphasized" id="bHistoryGo" class="buttoncolorSec" text="Filter" press="onSearch"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table rows="{ReportHistory>/reporthistory}" selectionMode="None" selectionBehavior="Row" visibleRowCount="10" fixedRowCount="0"
+				fixedColumnCount="0" enableSelectAll="true">
+				<ui:columns>
+					<ui:Column width="4rem" hAlign="Center">
+						<ui:multiLabels>
+							<Label text="{i18n>sNo}" design="Bold" textAlign="Center" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ReportHistory>sno}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" hAlign="Center">
+						<ui:multiLabels>
+							<Label text="{i18n>requestId}" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ReportHistory>requestId}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<ui:multiLabels>
+							<Label text="{i18n>fileCategory}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ReportHistory>fileCategory}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<ui:multiLabels>
+							<Label text="{i18n>gstinCount}" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Link text="{ReportHistory>gstinCount}" press="onPressGstinCounts"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<ui:multiLabels>
+							<Label text="{i18n>taxPeriod}(s)" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Link text="{ReportHistory>taxPeriods}" press="onPressTaxPeriod"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<ui:multiLabels>
+							<Label text="{i18n>initiation}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ReportHistory>initiatedDate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<ui:multiLabels>
+							<Label text="{i18n>initiatedBy}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ReportHistory>initiatedBy}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<ui:multiLabels>
+							<Label text="{i18n>completion}" textAlign="Center" wrapping="true" design="Bold" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ReportHistory>completion}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<ui:multiLabels>
+							<Label text="{i18n>dateTime}" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ReportHistory>dateTime}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<ui:multiLabels>
+							<Label text="{i18n>status}" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{ReportHistory>status}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<ui:multiLabels>
+							<Label text="{i18n>download}" wrapping="true" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<core:Icon src="sap-icon://download" tooltip="{i18n>download}" size="0.75rem"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

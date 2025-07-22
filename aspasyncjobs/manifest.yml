@@ -1,0 +1,21 @@
+applications:
+  - name: aspasyncjobs
+    timeout: 600
+    health-check-type: process
+    memory: 16384M
+    disk_quota: 10240M
+    # random-route: true
+    type: java
+    routes:
+      - route: aspasyncjobs.cert.cfapps.in30.hana.ondemand.com
+    path: ./target/aspasyncjobs-1.1.0-SNAPSHOT.jar
+    env:
+      TARGET_RUNTIME: tomcat
+      JAVA_OPTS: "-XX:MaxMetaspaceSize=1024m -XX:MaxDirectMemorySize=1024m"
+      JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 21.+ }}'
+    buildpacks:
+      - java_buildpack
+    services:
+      - cloudLogJava
+      - uatuaa
+      - dmsSrv

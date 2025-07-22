@@ -1,0 +1,135 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog title="Check Status" type="Messages" showHeader="true" contentWidth="60%" busyIndicatorDelay="0"
+		class="sapUiSizeCompact cl_saveHeader">
+		<beginButton>
+			<Button text="Close" class="buttoncolorSec" press="onCloseCheckStatus"/>
+		</beginButton>
+		<subHeader>
+			<Toolbar>
+				<Label text="GSTIN : " design="Bold" class="sapUiTinyMarginBeginEnd"/>
+				<Text text="{CheckStatusProperty>/gstin}"/>
+				<ToolbarSpacer/>
+				<Button icon="sap-icon://refresh" tooltip="Refresh" press="onSegmentBtnCSChange" class="buttoncolorSec"/>
+				<SegmentedButton id="idCSSegButton" selectedKey="{CheckStatusProperty>/csbtnSegment}" select="onSegmentBtnCSChange" width="18rem">
+					<items>
+						<SegmentedButtonItem text="Ongoing Save" key="OngoingSave"/>
+						<SegmentedButtonItem text="Queued Save" key="QueueStatus"/>
+					</items>
+				</SegmentedButton>
+			</Toolbar>
+		</subHeader>
+		<Table items="{CheckStatus>/resp}" sticky="ColumnHeaders" visible="{=${CheckStatusProperty>/csbtnSegment}==='OngoingSave'}">
+			<columns>
+				<Column width="11rem">
+					<Label text="Date/Time" design="Bold" textAlign="Center" width="100%"/>
+				</Column>
+				<Column hAlign="Center" width="7rem">
+					<Label text="Request Type" design="Bold"/>
+				</Column>
+				<Column>
+					<Label text="RefID" design="Bold"/>
+				</Column>
+				<Column width="5rem">
+					<Label text="Section" design="Bold"/>
+				</Column>
+				<Column hAlign="End" width="6rem">
+					<Label text="Count" design="Bold"/>
+				</Column>
+				<Column hAlign="Center" width="7rem">
+					<Label text="Status" design="Bold"/>
+				</Column>
+				<Column hAlign="End" width="8rem">
+					<Label text="Error Count" design="Bold"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<Text text="{CheckStatus>dateTime}"/>
+						<Text text="{CheckStatus>requestType}"/>
+						<Text text="{CheckStatus>refId}"/>
+						<Text text="{CheckStatus>section}"/>
+						<Text text="{CheckStatus>count}"/>
+						<Text text="{CheckStatus>status}" textAlign="Center" width="100%"/>
+						<HBox justifyContent="End">
+							<Text text="{CheckStatus>errorCount}" class="sapUiTinyMarginEnd"/>
+							<HBox width="1.5rem">
+								<core:Icon src="sap-icon://download" press="onDownloadCheckStatus"
+									visible="{=(${CheckStatus>errorCount}>0 || ${CheckStatus>status}==='ER')}"/>
+							</HBox>
+						</HBox>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+		<HBox justifyContent="Center" width="100%" class="dialogFooterPagination" visible="{=${CheckStatusProperty>/csbtnSegment}==='OngoingSave'}">
+			<Button type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" class="sapUiTinyMarginBeginEnd buttoncolorSec"
+				press="onPaginationChkStats('I','F')" enabled="{CheckStatusProperty>/bFirstI}"/>
+			<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" press="onPaginationChkStats('I','P')"
+				enabled="{CheckStatusProperty>/bPrevI}" class="buttoncolorSec"/>
+			<Input type="Number" textAlign="End" width="4rem" value="{CheckStatusProperty>/pageNoI}" enabled="{CheckStatusProperty>/ePageNoI}"
+				submit="onSubmitPaginationChkStats('I')" class="sapUiTinyMarginBegin buttoncolorSec"/>
+			<Text text="/ {CheckStatusProperty>/pgTotalI}" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+			<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" press="onPaginationChkStats('I','N')"
+				enabled="{CheckStatusProperty>/bNextI}" class="buttoncolorSec"/>
+			<Button type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" class="sapUiTinyMarginBeginEnd buttoncolorSec"
+				press="onPaginationChkStats('I','L')" enabled="{CheckStatusProperty>/bLastI}"/>
+			<Select change="onSubmitPaginationChkStats('I','S')" selectedKey="{CheckStatusProperty>/pgSizeI}" forceSelection="true" width="10%">
+				<core:Item key="25" text="25"/>
+				<core:Item key="50" text="50"/>
+				<core:Item key="75" text="75"/>
+				<core:Item key="100" text="100"/>
+			</Select>
+		</HBox>
+		<Table items="{QueueStatus>/resp}" sticky="ColumnHeaders" visible="{=${CheckStatusProperty>/csbtnSegment}==='QueueStatus'}">
+			<columns>
+				<Column width="11rem">
+					<Label text="Date/Time" design="Bold" textAlign="Center" width="100%"/>
+				</Column>
+				<Column hAlign="Center" width="7rem">
+					<Label text="Request Type" design="Bold"/>
+				</Column>
+				<Column width="6rem">
+					<Label text="Section" design="Bold"/>
+				</Column>
+				<Column hAlign="Center" width="8rem">
+					<Label text="Status" design="Bold"/>
+				</Column>
+				<Column>
+					<Label text="message" design="Bold"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<Text text="{QueueStatus>dateTime}"/>
+						<Text text="{QueueStatus>requestType}"/>
+						<Text text="{QueueStatus>section}"/>
+						<Text text="{QueueStatus>status}" textAlign="Center" width="100%"/>
+						<Text text="{QueueStatus>message}"/>
+						<ExpandableText text="{QueueStatus>message}" overflowMode="Popover" maxCharacters="30"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+		<HBox justifyContent="Center" width="100%" class="dialogFooterPagination" visible="{=${CheckStatusProperty>/csbtnSegment}==='QueueStatus'}">
+			<Button type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" class="sapUiTinyMarginBeginEnd buttoncolorSec"
+				press="onPaginationChkStats('Q','F')" enabled="{CheckStatusProperty>/bFirstQ}"/>
+			<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" press="onPaginationChkStats('Q','P')"
+				enabled="{CheckStatusProperty>/bPrevQ}" class="buttoncolorSec"/>
+			<Input type="Number" textAlign="End" width="4rem" value="{CheckStatusProperty>/pageNoQ}" enabled="{CheckStatusProperty>/ePageNoQ}"
+				submit="onSubmitPaginationChkStats('Q')" class="sapUiTinyMarginBegin buttoncolorSec"/>
+			<Text text="/ {CheckStatusProperty>/pgTotalQ}" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+			<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" press="onPaginationChkStats('Q','N')"
+				enabled="{CheckStatusProperty>/bNextQ}" class="buttoncolorSec"/>
+			<Button type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" class="sapUiTinyMarginBeginEnd buttoncolorSec"
+				press="onPaginationChkStats('Q','L')" enabled="{CheckStatusProperty>/bLastQ}"/>
+			<Select change="onSubmitPaginationChkStats('Q','S')" selectedKey="{CheckStatusProperty>/pgSizeQ}" forceSelection="true" width="10%">
+				<core:Item key="25" text="25"/>
+				<core:Item key="50" text="50"/>
+				<core:Item key="75" text="75"/>
+				<core:Item key="100" text="100"/>
+			</Select>
+		</HBox>
+	</Dialog>
+</core:FragmentDefinition>

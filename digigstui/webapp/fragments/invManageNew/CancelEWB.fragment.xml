@@ -1,0 +1,23 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:fb="sap.ui.comp.filterbar">
+	<Dialog title="Cancel E-Way Bill" type="Message" class="sapUiSizeCompact">
+		<VBox>
+			<Label text="Kindly select reason code" />
+			<ComboBox id="idEWBReason" selectedKey="1" change="onComboBoxChange">
+				<core:Item key="1" text="Duplicate"/>
+				<core:Item key="2" text="Order Cancelled"/>
+				<core:Item key="3" text="Data Entry Mistake"/>
+				<core:Item key="4" text="Others"/>
+			</ComboBox>
+			<Label text="Kindly provide a remark" class="sapUiTinyMarginTop"/>
+			<Input maxLength="50" id="idEWBRemarks"/>
+			
+			<Label text="Reason &amp; remarks provided will be applicable to all selected records" class="sapUiLargeMarginTop redLabel"/>
+		</VBox>
+		<beginButton>
+			<Button id="bApply" text="Submit" type="Default" press="onPressCancelClose"/>
+		</beginButton>
+		<endButton>
+			<Button id="bCancel" text="Close" type="Default" press="onPressCancelClose"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

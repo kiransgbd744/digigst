@@ -1,0 +1,473 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.ReconRsp"
+	xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons"
+	busyIndicatorDelay="0">
+	<VBox>
+		<HBox>
+			<Label text="Recon Type :" design="Bold" class="sapUiSmallMarginTop sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
+			<Toolbar height="3rem">
+				<Select id="idReconTypeRR1" class="input" forceSelection="true" change="onRecontypeChange">
+					<core:Item key="2A_PR" text="GSTR-2A/6A Vs PR"/>
+					<core:Item key="2B_PR" text="GSTR-2B Vs PR"/>
+				</Select>
+			</Toolbar>
+			<Button text="Go" type="Emphasized" class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+			<HBox>
+				<Label text="Last recon initiated on:" design="Bold" class="sapUiSmallMarginTop sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
+				<Label text="17/04/2022 13:00:00" design="Bold" class="sapUiSmallMarginTop sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
+			</HBox>
+		</HBox>
+		<HBox>
+			<f:DynamicPage id="idDynmcPagReconResult1">
+				<f:title>
+					<f:DynamicPageTitle>
+						<f:heading>
+							<!--<HBox>
+						<Button icon="sap-icon://nav-back" tooltip="Go Back to GSTN Data" type="Transparent" press="handleLinkPressGETANX2Back"
+							id="idGetPRSummaryMainNavBack" visible="false"/>-->
+							<Title text="Purchase Register"/>
+							<!--</HBox>-->
+						</f:heading>
+					</f:DynamicPageTitle>
+				</f:title>
+				<f:header>
+					<f:DynamicPageHeader id="headerID1">
+						<fb:FilterBar showFilterConfiguration="false" id="idConsldfltrBar1" useToolbar="false" class="sapUiNoContentPadding" width="90%"
+							showGoOnFB="false" showClearOnFB="false">
+							<fb:filterGroupItems>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Recipient GSTIN" visibleInFilterBar="true">
+									<fb:control>
+										<MultiComboBox id="idRRGstins1" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" selectionChange="selectAll">
+											<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+										</MultiComboBox>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="From Tax Period" visibleInFilterBar="true">
+									<fb:control>
+										<DatePicker id="dtConsldFrom1" displayFormat="MMM yyyy" valueFormat="yyyyMM" change="handleChangeRR" width="12rem"/>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="d" label="To Tax Period" visibleInFilterBar="true">
+									<fb:control>
+										<DatePicker id="dtConsld1To1" displayFormat="MMM yyyy" valueFormat="yyyyMM" change="handleChange" width="12rem"/>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="o" label="Vendor GSTIN" visibleInFilterBar="true">
+									<fb:control>
+										<MultiComboBox id="idRRGstins1k" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" selectionChange="selectAll">
+											<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+										</MultiComboBox>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="j" label="Vendor PAN" visibleInFilterBar="true">
+									<fb:control>
+										<MultiComboBox id="idConsldReptType1j" width="12rem" items="{reportTypeList>/}" selectionChange="selectAll">
+											<core:Item key="{reportTypeList>reportType}" text="{reportTypeList>reportType}"/>
+										</MultiComboBox>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="x" label="Vendor Number" visibleInFilterBar="true">
+									<fb:control>
+										<Input width="12rem" id="reconDocnumber1"/>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="n" label="Doc Number" visibleInFilterBar="true">
+									<fb:control>
+										<Input width="12rem" id="reconDocnumber1s"/>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="m" label="Report Type" visibleInFilterBar="true">
+									<fb:control>
+										<MultiComboBox id="idConsldReptType1" width="12rem" items="{reportTypeList>/}" selectionChange="selectAll">
+											<core:Item key="{reportTypeList>reportType}" text="{reportTypeList>reportType}"/>
+										</MultiComboBox>
+									</fb:control>
+								</fb:FilterGroupItem>
+							</fb:filterGroupItems>
+						</fb:FilterBar>
+						<HBox justifyContent="End" class="clMain" width="10%">
+							<!--<Button icon="sap-icon://filter" class="sapUiTinyMarginEnd" press="onPressAdaptFilter"/>-->
+							<Button type="Ghost" text="Clear" class="sapUiTinyMarginEnd" press="onPressClearRR" visible="true"/>
+							<Button type="Emphasized" press="onReconResults" text="Go"/>
+						</HBox>
+					</f:DynamicPageHeader>
+				</f:header>
+				<f:content>
+					<Panel>
+						<ui:Table id="idReconRTable1" rowSelectionChange="onSelectionConsolMatch" rows="{path:'ConsldTablData>/'}" selectionMode="Single"
+							enableSelectAll="true" fixedBottomRowCount="0" fixedColumnCount="0" visibleRowCount="10">
+							<ui:columns>
+								<ui:Column width="15%">
+									<Label design="Bold" text="Recipient GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<ObjectStatus text="{ConsldTablData>gstin}" state="None"/>
+										<!--<Text text="{ConsldTablData>gstin}"/>-->
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="15%">
+									<Label design="Bold" text="Vendor GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<ObjectStatus text="{ConsldTablData>vendorGstin}" state="None"/>
+										<!--<Text text="{ConsldTablData>vendorGstin}"/>-->
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="15%">
+									<Label design="Bold" text="Vendor Name" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<ObjectStatus text="{ConsldTablData>vendorGstin}" state="None"/>
+										<!--<Text text="{ConsldTablData>vendorGstin}"/>-->
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="7%">
+									<Label design="Bold" text="Report Type" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<VBox class="sapUiTinyMarginTopBottom">
+											<ObjectStatus text="{path:'ConsldTablData>docTypePR', formatter : '.formatter.docType'}"/>
+											<ObjectStatus text="{path:'ConsldTablData>docType2A',formatter : '.formatter.docType'}"/>
+										</VBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="Doc Type" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<VBox class="sapUiTinyMarginTopBottom">
+											<ObjectStatus text="{path:'ConsldTablData>docTypePR', formatter : '.formatter.docType'}"/>
+											<ObjectStatus text="{path:'ConsldTablData>docType2A',formatter : '.formatter.docType'}"/>
+										</VBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="15%">
+									<Label design="Bold" text="Doc No" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<VBox class="sapUiTinyMarginTopBottom">
+											<ObjectStatus text="{ConsldTablData>docNumberPR}"/>
+											<ObjectStatus text="{ConsldTablData>docNumber2A}"/>
+											<!--<Text text="{ConsldTablData>docNumberPR}"/>-->
+											<!--<Text text="{ConsldTablData>docNumber2A}" class="blueColor"/>-->
+										</VBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="18%">
+									<Label design="Bold" text="Doc Date" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<VBox>
+											<!--<Text text="{ConsldTablData>docDatePR}"/>-->
+											<ObjectStatus text="{ConsldTablData>docDatePR}"/>
+											<ObjectStatus text="{ConsldTablData>docDate2A}"/>
+											<!--<Text text="{ConsldTablData>docDate2A}" class="{ parts: [ 'ConsldTablData>docDate2A', 'ConsldTablData>isDocTypeMatch' ], formatter : '.formatter.reconcolor' }"/>-->
+										</VBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="POS" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<VBox>
+											<!--<Text text="{ConsldTablData>docDatePR}"/>-->
+											<ObjectStatus text="{ConsldTablData>docDatePR}"/>
+											<ObjectStatus text="{ConsldTablData>docDate2A}"/>
+											<!--<Text text="{ConsldTablData>docDate2A}" class="{ parts: [ 'ConsldTablData>docDate2A', 'ConsldTablData>isDocTypeMatch' ], formatter : '.formatter.reconcolor' }"/>-->
+										</VBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="15%">
+									<Label design="Bold" text="Total Tax" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<VBox>
+											<ObjectStatus text="{ConsldTablData>totalTaxPR}"/>
+											<ObjectStatus text="{ConsldTablData>totalTax2A}"/>
+											<!--<Text text="{path : 'ConsldTablData>totalTaxPR', formatter : '.formatter.totalTaxPR'}"/>-->
+											<!--<Text text="{path : 'ConsldTablData>totalTax2A', formatter : '.formatter.totalTax2A'}" class="blueColor"/>-->
+										</VBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="15%">
+									<Label design="Bold" text="IGST" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<VBox>
+											<ObjectStatus text="{ConsldTablData>igstPR}"/>
+											<ObjectStatus text="{ConsldTablData>igst2A}"/>
+											<!--<Text text="{ConsldTablData>igstPR}"/>-->
+											<!--<Text text="{ConsldTablData>igst2A}" class="blueColor"/>-->
+										</VBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="15%">
+									<Label design="Bold" text="CGST" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<VBox>
+											<ObjectStatus text="{ConsldTablData>cgstPR}"/>
+											<ObjectStatus text="{ConsldTablData>cgst2A}"/>
+											<!--<Text text="{path : 'ConsldTablData>cgstPR', formatter : '.formatter.amountValue'}"/>-->
+											<!--<Text text="{path : 'ConsldTablData>cgst2A', formatter : '.formatter.amountValue'}" class="blueColor"/>-->
+										</VBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="15%">
+									<Label design="Bold" text="SGST" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<VBox>
+											<ObjectStatus text="{ConsldTablData>sgstPR}"/>
+											<ObjectStatus text="{ConsldTablData>sgst2A}"/>
+										</VBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="15%">
+									<Label design="Bold" text="CESS" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<VBox>
+											<ObjectStatus text="{ConsldTablData>cessPR}"/>
+											<ObjectStatus text="{ConsldTablData>cess2A}"/>
+										</VBox>
+									</ui:template>
+								</ui:Column>
+							</ui:columns>
+						</ui:Table>
+						<Toolbar class="">
+							<HBox width="100%" justifyContent="Center">
+								<Button id="btnFirstN1" type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" class="sapUiTinyMarginBeginEnd"
+									enabled="true" press="onPressPaginationRR"/>
+								<Button id="btnPrevN1" type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="false"
+									press="onPressPaginationRR"/>
+								<Input id="inPageNoN1" type="Number" textAlign="End" width="4rem" submit="onSubmitPaginationRR" enabled="false" class="sapUiTinyMarginBegin"
+									value="0"/>
+								<Text id="txtPageNoN1" text="/ 0" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+								<Button id="btnNextN1" type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="false"
+									press="onPressPaginationRR"/>
+								<Button id="btnLastN1" type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" class="sapUiTinyMarginBeginEnd" enabled="true"
+									press="onPressPaginationRR"/>
+								<Select id="returnty11" class="sapUiTinyMarginBeginEnd" forceSelection="true" change="onPageNumberRR">
+									<core:Item key="10" text="10"/>
+									<core:Item key="25" text="25"/>
+									<core:Item key="50" text="50"/>
+									<core:Item key="75" text="75"/>
+									<core:Item key="100" text="100"/>
+								</Select>
+							</HBox>
+						</Toolbar>
+					</Panel>
+				</f:content>
+			</f:DynamicPage>
+			<f:DynamicPage id="idDynmcPagReconResult1s">
+				<f:title>
+					<f:DynamicPageTitle>
+						<f:heading>
+							<Title text="GSTR 2A/6A"/>
+						</f:heading>
+					</f:DynamicPageTitle>
+				</f:title>
+				<f:header>
+					<f:DynamicPageHeader id="headerID1s">
+						<fb:FilterBar showFilterConfiguration="false" id="idConsldfltrBar1s" useToolbar="false" class="sapUiNoContentPadding" width="90%"
+							showGoOnFB="false" showClearOnFB="false">
+							<fb:filterGroupItems>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Recipient GSTIN" visibleInFilterBar="true">
+									<fb:control>
+										<MultiComboBox id="idRRGstins1s" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" selectionChange="selectAll">
+											<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+										</MultiComboBox>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="From Tax Period" visibleInFilterBar="true">
+									<fb:control>
+										<DatePicker id="dtConsldFrom1s" displayFormat="MMM yyyy" valueFormat="yyyyMM" change="handleChangeRR" width="12rem"/>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="d" label="To Tax Period" visibleInFilterBar="true">
+									<fb:control>
+										<DatePicker id="dtConsld1To1s" displayFormat="MMM yyyy" valueFormat="yyyyMM" change="handleChange" width="12rem"/>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="o" label="Vendor GSTIN" visibleInFilterBar="true">
+									<fb:control>
+										<MultiComboBox id="idRRGstins1ks" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" selectionChange="selectAll">
+											<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+										</MultiComboBox>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="j" label="Vendor PAN" visibleInFilterBar="true">
+									<fb:control>
+										<MultiComboBox id="idConsldReptType1js" width="12rem" items="{reportTypeList>/}" selectionChange="selectAll">
+											<core:Item key="{reportTypeList>reportType}" text="{reportTypeList>reportType}"/>
+										</MultiComboBox>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="x" label="Vendor Number" visibleInFilterBar="true">
+									<fb:control>
+										<Input width="12rem" id="reconDocnumber1sl"/>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="n" label="Doc Number" visibleInFilterBar="true">
+									<fb:control>
+										<Input width="12rem" id="reconDocnumber1ss"/>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="m" label="Report Type" visibleInFilterBar="true">
+									<fb:control>
+										<MultiComboBox id="idConsldReptType1s" width="12rem" items="{reportTypeList>/}" selectionChange="selectAll">
+											<core:Item key="{reportTypeList>reportType}" text="{reportTypeList>reportType}"/>
+										</MultiComboBox>
+									</fb:control>
+								</fb:FilterGroupItem>
+							</fb:filterGroupItems>
+						</fb:FilterBar>
+						<HBox justifyContent="End" class="clMain" width="10%">
+							<!--<Button icon="sap-icon://filter" class="sapUiTinyMarginEnd" press="onPressAdaptFilter"/>-->
+							<Button type="Ghost" text="Clear" class="sapUiTinyMarginEnd" press="onPressClearRR" visible="true"/>
+							<Button type="Emphasized" press="onReconResults" text="Go"/>
+						</HBox>
+					</f:DynamicPageHeader>
+				</f:header>
+				<f:content>
+					<Panel>
+						<ui:Table id="idReconRTable1s" rowSelectionChange="onSelectionConsolMatch" rows="{path:'ConsldTablData>/'}" selectionMode="Single"
+							enableSelectAll="true" fixedBottomRowCount="0" fixedColumnCount="0" visibleRowCount="10">
+							<ui:columns>
+								<ui:Column width="15%">
+									<Label design="Bold" text="Recipient GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<ObjectStatus text="{ConsldTablData>gstin}" state="None"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="15%">
+									<Label design="Bold" text="Vendor GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<ObjectStatus text="{ConsldTablData>vendorGstin}" state="None"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="15%">
+									<Label design="Bold" text="Vendor Name" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<ObjectStatus text="{ConsldTablData>vendorGstin}" state="None"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="15%">
+									<Label design="Bold" text="Report Type" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<VBox class="sapUiTinyMarginTopBottom">
+											<ObjectStatus text="{path:'ConsldTablData>docTypePR', formatter : '.formatter.docType'}"/>
+											<ObjectStatus text="{path:'ConsldTablData>docType2A',formatter : '.formatter.docType'}"/>
+										</VBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="15%">
+									<Label design="Bold" text="Doc Type" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<VBox class="sapUiTinyMarginTopBottom">
+											<ObjectStatus text="{path:'ConsldTablData>docTypePR', formatter : '.formatter.docType'}"/>
+											<ObjectStatus text="{path:'ConsldTablData>docType2A',formatter : '.formatter.docType'}"/>
+										</VBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="15%">
+									<Label design="Bold" text="Doc No" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<VBox class="sapUiTinyMarginTopBottom">
+											<ObjectStatus text="{ConsldTablData>docNumberPR}"/>
+											<ObjectStatus text="{ConsldTablData>docNumber2A}"/>
+											<!--<Text text="{ConsldTablData>docNumberPR}"/>-->
+											<!--<Text text="{ConsldTablData>docNumber2A}" class="blueColor"/>-->
+										</VBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="15%">
+									<Label design="Bold" text="Doc Date" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<VBox>
+											<!--<Text text="{ConsldTablData>docDatePR}"/>-->
+											<ObjectStatus text="{ConsldTablData>docDatePR}"/>
+											<ObjectStatus text="{ConsldTablData>docDate2A}"/>
+											<!--<Text text="{ConsldTablData>docDate2A}" class="{ parts: [ 'ConsldTablData>docDate2A', 'ConsldTablData>isDocTypeMatch' ], formatter : '.formatter.reconcolor' }"/>-->
+										</VBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="15%">
+									<Label design="Bold" text="POS" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<VBox>
+											<!--<Text text="{ConsldTablData>docDatePR}"/>-->
+											<ObjectStatus text="{ConsldTablData>docDatePR}"/>
+											<ObjectStatus text="{ConsldTablData>docDate2A}"/>
+											<!--<Text text="{ConsldTablData>docDate2A}" class="{ parts: [ 'ConsldTablData>docDate2A', 'ConsldTablData>isDocTypeMatch' ], formatter : '.formatter.reconcolor' }"/>-->
+										</VBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="15%">
+									<Label design="Bold" text="Total Tax" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<VBox>
+											<ObjectStatus text="{ConsldTablData>totalTaxPR}"/>
+											<ObjectStatus text="{ConsldTablData>totalTax2A}"/>
+											<!--<Text text="{path : 'ConsldTablData>totalTaxPR', formatter : '.formatter.totalTaxPR'}"/>-->
+											<!--<Text text="{path : 'ConsldTablData>totalTax2A', formatter : '.formatter.totalTax2A'}" class="blueColor"/>-->
+										</VBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="15%">
+									<Label design="Bold" text="IGST" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<VBox>
+											<ObjectStatus text="{ConsldTablData>igstPR}"/>
+											<ObjectStatus text="{ConsldTablData>igst2A}"/>
+											<!--<Text text="{ConsldTablData>igstPR}"/>-->
+											<!--<Text text="{ConsldTablData>igst2A}" class="blueColor"/>-->
+										</VBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="15%">
+									<Label design="Bold" text="CGST" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<VBox>
+											<ObjectStatus text="{ConsldTablData>cgstPR}"/>
+											<ObjectStatus text="{ConsldTablData>cgst2A}"/>
+											<!--<Text text="{path : 'ConsldTablData>cgstPR', formatter : '.formatter.amountValue'}"/>-->
+											<!--<Text text="{path : 'ConsldTablData>cgst2A', formatter : '.formatter.amountValue'}" class="blueColor"/>-->
+										</VBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="15%">
+									<Label design="Bold" text="SGST" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<VBox>
+											<ObjectStatus text="{ConsldTablData>sgstPR}"/>
+											<ObjectStatus text="{ConsldTablData>sgst2A}"/>
+										</VBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="15%">
+									<Label design="Bold" text="CESS" textAlign="Center" width="100%" wrapping="true"/>
+									<ui:template>
+										<VBox>
+											<ObjectStatus text="{ConsldTablData>cessPR}"/>
+											<ObjectStatus text="{ConsldTablData>cess2A}"/>
+										</VBox>
+									</ui:template>
+								</ui:Column>
+							</ui:columns>
+						</ui:Table>
+						<Toolbar class="">
+							<HBox width="100%" justifyContent="Center">
+								<Button id="btnFirstN1s" type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" class="sapUiTinyMarginBeginEnd"
+									enabled="true" press="onPressPaginationRR"/>
+								<Button id="btnPrevN1s" type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="false"
+									press="onPressPaginationRR"/>
+								<Input id="inPageNoN1s" type="Number" textAlign="End" width="4rem" submit="onSubmitPaginationRR" enabled="false"
+									class="sapUiTinyMarginBegin" value="0"/>
+								<Text id="txtPageNoN1s" text="/ 0" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+								<Button id="btnNextN1s" type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="false"
+									press="onPressPaginationRR"/>
+								<Button id="btnLastN1s" type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" class="sapUiTinyMarginBeginEnd"
+									enabled="true" press="onPressPaginationRR"/>
+								<Select id="returnty11s" class="sapUiTinyMarginBeginEnd" forceSelection="true" change="onPageNumberRR">
+									<core:Item key="10" text="10"/>
+									<core:Item key="25" text="25"/>
+									<core:Item key="50" text="50"/>
+									<core:Item key="75" text="75"/>
+									<core:Item key="100" text="100"/>
+								</Select>
+							</HBox>
+						</Toolbar>
+					</Panel>
+				</f:content>
+			</f:DynamicPage>
+		</HBox>
+	</VBox>
+</mvc:View>

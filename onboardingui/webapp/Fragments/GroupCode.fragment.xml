@@ -1,0 +1,16 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m">
+	<Dialog id="dGroupCode" title="Group" class="sapUiSizeCompact">
+		<beginButton>
+			<Button id="bOK" text="OK" press=".onCloseDialog"/>
+		</beginButton>
+		<endButton>
+			<Button id="bCancel" text="Cancel" press=".onCloseDialog"/>
+		</endButton>
+		<VBox class="sapUiTinyMarginTopBottom sapUiSmallMarginBegin">
+			<Label text="Group Code"/>
+			<Select id="slGroupCode" items="{GroupCode>/}" selectedKey="{GroupCdModel>/code}" width="18rem">
+				<core:Item key="{GroupCode>groupCode}" text="{GroupCode>groupName}"/>
+			</Select>
+		</VBox>
+	</Dialog>
+</core:FragmentDefinition>

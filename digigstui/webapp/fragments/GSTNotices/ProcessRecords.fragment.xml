@@ -1,0 +1,167 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" xmlns:u="sap.ui.unified">
+	<f:DynamicPage visible="{=${ViewProperty>/btnSubSegment}==='summary'}" class="clDataStatusAPI custHeight">
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar id="fbProcessRecord" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idPGstin" selectedKeys="{pfilter>/gstins}" width="15rem" items="{path:'GstinModel>/'}" showSelectAll="true">
+									<core:Item key="{GstinModel>gstin}" text="{GstinModel>gstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Selection Criteria" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="slCriteria" selectedKey="{pfilter>/selectionCriteria}" width="15rem" forceSelection="true" change="onSelectCriteria">
+									<core:Item key="Datewise" text="Date wise"/>
+									<core:Item key="TaxPeriod" text="Tax Period wise"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="From Date" visibleInFilterBar="true"
+							visible="{=${pfilter>/selectionCriteria}==='Datewise'}">
+							<fb:control>
+								<DatePicker id="iFromDate" value="{pfilter>/fromDate}" width="15rem" displayFormat="MMM dd, yyyy" valueFormat="dd-MM-yyyy" change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="To Date" visibleInFilterBar="true"
+							visible="{=${pfilter>/selectionCriteria}==='Datewise'}">
+							<fb:control>
+								<DatePicker id="iToDate" value="{pfilter>/toDate}" width="15rem" displayFormat="MMM dd, yyyy" valueFormat="dd-MM-yyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="From Tax Period" visibleInFilterBar="true"
+							visible="{=${pfilter>/selectionCriteria}==='TaxPeriod'}">
+							<fb:control>
+								<DatePicker id="idPFromtaxPeriod" value="{pfilter>/fromTaxPeriod}" width="15rem" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="To Tax Period" visibleInFilterBar="true"
+							visible="{=${pfilter>/selectionCriteria}==='TaxPeriod'}">
+							<fb:control>
+								<DatePicker id="idPTotaxPeriod" value="{pfilter>/toTaxPeriod}" width="15rem" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" id="fbProcessHbox" width="10%">
+					<!--<Button id="bProcessFilter" icon="sap-icon://filter" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilter" class="buttoncolorSec"/>-->
+					<Button id="bProcessClear" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onPressClear('P','C')"/>
+					<Button id="bProcessGo" text="Filter" press="onSearch('P')" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<!--<Toolbar height="5.5rem" class="cl_removeBoderTool sapUiSmallMarginTop" visible="true">-->
+				<!--	<ToolbarSpacer/>-->
+				<!--	<HBox width="100%" alignItems="Center" justifyContent="Center">-->
+				<!--		<VBox alignItems="Center" justifyContent="Center" width="12%" class="actionColor sapUiSmallMarginEnd">-->
+				<!--			<Label text="21" class="fontSize25"/>-->
+				<!--			<Label text="Total Notices"/>-->
+				<!--		</VBox>-->
+				<!--		<VBox alignItems="Center" justifyContent="Center" width="12%" class="actionColor sapUiSmallMarginEnd">-->
+				<!--			<Label text="8" class="fontSize25"/>-->
+				<!--			<Label text="Responded Notices"/>-->
+				<!--		</VBox>-->
+				<!--		<VBox alignItems="Center" justifyContent="Center" width="12%" class="actionColor sapUiSmallMarginEnd">-->
+				<!--			<Label text="14" class="fontSize25"/>-->
+				<!--			<Label text="Pending Response"/>-->
+				<!--		</VBox>-->
+				<!--		<VBox alignItems="Center" justifyContent="Center" width="20%" class="actionColor sapUiSmallMarginEnd yellowBackground">-->
+				<!--			<Label text="18,90,12,338.00" class="fontSize25"/>-->
+				<!--			<Label text="Tax Amount Involved"/>-->
+				<!--		</VBox>-->
+				<!--	</HBox>-->
+				<!--	<ToolbarSpacer/>-->
+				<!--</Toolbar>-->
+				<ui:Table id="tabGSTNProcess" rows="{ProcessedRecord>/}" class="sapUiTinyMarginTop" selectionMode="MultiToggle" visibleRowCount="12" fixedColumnCount="1"
+					rowSelectionChange="onRowSelectionChange">
+					<ui:extension>
+						<OverflowToolbar >
+							<ToolbarSpacer/>
+							<Button text="Fetch Notices" press="FetchNotices" class="buttoncolorSec"/>
+							<MenuButton text="Download Report" class="buttoncolorSec" tooltip="Download Reports">
+								<Menu>
+									<MenuItem text="Download Summary Report" key="R1" press="onDownloadSummaryP" visible="false"/>
+									<MenuItem text="Download Detailed Report" key="R2" press="onDownloadDetailed('P')"/>
+								</Menu>
+							</MenuButton>
+							<!--<Button text="Set Frequency" press="SetFrequency($event,'P')" class="buttoncolorSec" visible="true"/>-->
+						</OverflowToolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="14rem">
+							<Label text="GSTIN ID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<VBox>
+									<HBox>
+										<Text text="{ProcessedRecord>stateName}" width="8rem" class="stateColor"/>
+										<Text text="{=${ProcessedRecord>regType}==='REGULAR'?'':${ProcessedRecord>regType}}" class="stateColor fontSmall"/>
+									</HBox>
+									<HBox alignContent="Start" justifyContent="SpaceBetween">
+										<Link text="{ProcessedRecord>gstin}" emphasized="true" press="onPressGSTIN"/>
+										<core:Icon src="sap-icon://circle-task-2" visible="{=${ProcessedRecord>stateName}===''?false:true}" size="0.8rem"
+											tooltip="{ProcessedRecord>isAuthToken}" color="{=${ProcessedRecord>isAuthToken}==='Active'?'#00ff00':'#ff0000'}"
+											press="onActivateAuthToken(${ProcessedRecord>gstin},${ProcessedRecord>isAuthToken})"/>
+									</HBox>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<Label text="Get Call Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<VBox width="100%">
+									<ObjectStatus text="{ProcessedRecord>status}" active="{=${ProcessedRecord>status}!=='NOT INITIATED'?true:true}"
+										state="{path:'ProcessedRecord>status', formatter:'.formatter.statusNotices'}" press="onPressStatus"/>
+									<Text text="{ProcessedRecord>getCallTime}" class="timeStmpClr"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<Label text="Notices Issued" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{ProcessedRecord>noticesIssued}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<Label text="Tax Liability Involved" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{path:'ProcessedRecord>taxLiability', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<Label text="Notices Responded" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{ProcessedRecord>noticesResponded}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<Label text="Pending Notice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{ProcessedRecord>pendingForResponse}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<Label text="Tax Liability Involved" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{path:'ProcessedRecord>taxLiabilityInvolved', formatter:'.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+					<ui:footer>
+						<HBox>
+							<core:Icon src="sap-icon://circle-task-2" ariaLabelledBy="txtActive" color="#00ff00" size="0.8rem"/>
+							<Text id="txtActive" text="Auth Token Active" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+							<core:Icon src="sap-icon://circle-task-2" ariaLabelledBy="txtInactive" color="red" size="0.8rem"/>
+							<Text id="txtInactive" text="Auth Token Inactive" class="sapUiTinyMarginBegin"/>
+						</HBox>
+					</ui:footer>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

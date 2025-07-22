@@ -1,0 +1,458 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<Dialog type="Message" class="sapUiSizeCompact cl_saveHeader" showHeader="true">
+		<f:DynamicPage id="liablityId">
+			<f:title>
+				<f:DynamicPageTitle>
+					<f:heading>
+						<Title text="Liability Set off Details"/>
+					</f:heading>
+					<f:actions>
+						<!--<Button icon="sap-icon://nav-back" press="onPress" text="Back to Summary" ariaLabelledBy="actionButtonLabel"/>-->
+						<!--<Button icon="sap-icon://edit" press="onPress" text="update" ariaLabelledBy="actionButtonLabel"/>-->
+						<!--<Button icon="sap-icon://save" press="onPress" text=" Save OffSet Liability" ariaLabelledBy="actionButtonLabel"/>-->
+						<Button icon="sap-icon://refresh" type="Transparent" press="onRefreshLiablity" tooltip="Refresh Data" ariaLabelledBy="actionButtonLabel"
+							enabled="{=${Liabillity>/liabilitySetoffStatus}!=='SAVED'}"/>
+					</f:actions>
+				</f:DynamicPageTitle>
+			</f:title>
+			<f:content>
+				<Panel class="sapUiNoContentPadding">
+					<ui:Table rows="{Liabillity>/ledgerDetails}" selectionMode="None" selectionBehavior="Row" visibleRowCount="5" fixedRowCount="0"
+						fixedColumnCount="0" enableSelectAll="false">
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label text=""/>
+								<Label text="Description" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{path:'Liabillity>desc', formatter:'.formatter.tableDesc'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="5" hAlign="End" width="12rem">
+							<ui:multiLabels>
+								<Label text="Cash Ledger Balance" design="Bold" textAlign="Center" width="100%"/>
+								<Label text="Integrated Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>i}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="10rem">
+							<ui:multiLabels>
+								<Label text="" design="Bold"/>
+								<Label text="Central Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>c}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="10rem">
+							<ui:multiLabels>
+								<Label text="" design="Bold"/>
+								<Label text="State/UT Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>s}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="10rem">
+							<ui:multiLabels>
+								<Label text="" design="Bold"/>
+								<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>cs}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="10rem">
+							<ui:multiLabels>
+								<Label text="" design="Bold"/>
+								<Label text="Total" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>Total}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="5" hAlign="End" width="10rem">
+							<ui:multiLabels>
+								<Label text="Credit Ledger Balance(including current month balance)" design="Bold" textAlign="Center" width="100%"/>
+								<Label text="Integrated Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>cri}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="10rem">
+							<ui:multiLabels>
+								<Label text="" design="Bold"/>
+								<Label text="Central Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>crc}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="10rem">
+							<ui:multiLabels>
+								<Label text="" design="Bold"/>
+								<Label text="State/UT Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>crs}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="10rem">
+							<ui:multiLabels>
+								<Label text="" design="Bold"/>
+								<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>crcs}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="10rem">
+							<ui:multiLabels>
+								<Label text="" design="Bold"/>
+								<Label text="Total" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>Total1}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="5" hAlign="End" width="10rem">
+							<ui:multiLabels>
+								<Label text="Negative Liability Ledger Balance" design="Bold" textAlign="Center" width="100%"/>
+								<Label text="Integrated Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>nlbIgst}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="10rem">
+							<ui:multiLabels>
+								<Label text="" design="Bold"/>
+								<Label text="Central Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>nlbCgst}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="10rem">
+							<ui:multiLabels>
+								<Label text="" design="Bold"/>
+								<Label text="State/UT Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>nlbSgst}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="10rem">
+							<ui:multiLabels>
+								<Label text="" design="Bold"/>
+								<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>nlbCess}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="10rem">
+							<ui:multiLabels>
+								<Label text="" design="Bold"/>
+								<Label text="Total" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>Total2}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+					</ui:Table>
+					<ui:Table rows="{Liabillity>/gstr3bDetails}" selectionMode="None" class="sapUiSmallMarginTop" selectionBehavior="Row" visibleRowCount="4"
+						fixedRowCount="0" fixedColumnCount="0" enableSelectAll="false">
+						<ui:Column width="7.5rem">
+							<ui:multiLabels>
+								<Label text=""/>
+								<VBox>
+									<Label text="Description" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									<Label text="1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</VBox>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>desc}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem">
+							<ui:multiLabels>
+								<Label text=""/>
+								<VBox>
+									<Label text="Other than reverse charge Tax Payable" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									<Label text="2" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</VBox>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>otrci}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem">
+							<ui:multiLabels>
+								<Label text=""/>
+								<VBox>
+									<Label text="Adjusted Through Negative Liability Statement" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									<Label text="2(i)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</VBox>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{Liabillity>adjNegative2i}" textAlign="End" editable="{Liabillity>edit}" maxLength="19" change="onChange2i8a('Liabillity')"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem">
+							<ui:multiLabels>
+								<Label text=""/>
+								<VBox>
+									<Label text="Net Other than reverse charge Tax Payable" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									<Label text="2(ii)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</VBox>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>netOthRecTaxPayable2i}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem">
+							<ui:multiLabels>
+								<Label text=""/>
+								<VBox>
+									<Label text="Minimum Tax liability-Rule 86B(1%)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									<Label text="2A" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</VBox>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>otrci2A}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="8rem">
+							<ui:multiLabels>
+								<Label text=""/>
+								<VBox>
+									<Label text="Liability which can be paid though ITC(99%)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									<Label text="2B" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</VBox>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>otrci2B}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="4" width="9rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Paid through ITC" design="Bold" textAlign="Center" width="100%"/>
+								<VBox>
+									<Label text="Integrated Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									<Label text="3" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</VBox>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{Liabillity>pdi}" textAlign="End" editable="{Liabillity>edit}" visible="{=${Liabillity>intTax}}" maxLength="19"
+									change="STlive1('T')"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="" design="Bold"/>
+								<VBox>
+									<Label text="Central Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									<Label text="4" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</VBox>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{Liabillity>pdc}" textAlign="End" editable="{Liabillity>edit}" visible="{=${Liabillity>ceTax}}" maxLength="19"
+									change="STlive1('T')"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="" design="Bold"/>
+								<VBox>
+									<Label text="State/UT Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									<Label text="5" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</VBox>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{Liabillity>pds}" textAlign="End" editable="{Liabillity>edit}" visible="{=${Liabillity>suTax}}" maxLength="19"
+									change="STlive1('T')"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="" design="Bold"/>
+								<VBox>
+									<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+									<Label text="6" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</VBox>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{Liabillity>pdcs}" textAlign="End" editable="{Liabillity>edit}" visible="{=${Liabillity>cTax}}" maxLength="19"
+									change="STlive1('C')"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem">
+							<ui:multiLabels>
+								<Label text=""/>
+								<VBox>
+									<Label text="Other than reverse charge tax to be paid in cash" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+									<Label text="7(2(ii)-3-4-5-6)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</VBox>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>Total7}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="9rem">
+							<ui:multiLabels>
+								<Label text=""/>
+								<VBox>
+									<Label text="Reverse Charge Tax Payble" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+									<Label text="8" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</VBox>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>rci8}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="9rem">
+							<ui:multiLabels>
+								<Label text=""/>
+								<VBox>
+									<Label text="Adjusted Through Negative Liability Statement" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+									<Label text="8A" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</VBox>
+							</ui:multiLabels>
+							<ui:template>
+								<Input value="{Liabillity>adjNegative8A}" textAlign="End" editable="{Liabillity>edit}" maxLength="19" change="onChange2i8a('Liabillity')"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="9rem">
+							<ui:multiLabels>
+								<Label text=""/>
+								<VBox>
+									<Label text="Reverse Charge Tax to be paid in cash" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+									<Label text="9" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</VBox>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>rci9}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="9rem">
+							<ui:multiLabels>
+								<Label text=""/>
+								<VBox>
+									<Label text="Interest Payable" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+									<Label text="10" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</VBox>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>inti10}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="9rem">
+							<ui:multiLabels>
+								<Label text=""/>
+								<VBox>
+									<Label text="Interest to be Paid in Cash" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+									<Label text="11" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</VBox>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>inti10}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="9rem">
+							<ui:multiLabels>
+								<Label text=""/>
+								<VBox>
+									<Label text="Late Fee Payable" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+									<Label text="12" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</VBox>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>lateFee12}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="9rem">
+							<ui:multiLabels>
+								<Label text=""/>
+								<VBox>
+									<Label text="Late Fee to be paid in Cash" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+									<Label text="13" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</VBox>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>lateFee12}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="9rem">
+							<ui:multiLabels>
+								<Label text=""/>
+								<VBox>
+									<Label text="Utilizable Cash Balance" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+									<Label text="14" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</VBox>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>Total14}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="9rem">
+							<ui:multiLabels>
+								<Label text=""/>
+								<VBox>
+									<Label text="Additional Cash Required" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+									<Label text="15" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								</VBox>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{Liabillity>Total15}" textAlign="End" width="100%"/>
+							</ui:template>
+						</ui:Column>
+					</ui:Table>
+					<Toolbar height="5rem">
+						<VBox>
+							<Label text="Kindly Note:" design="Bold"/>
+							<Label text="--> By clicking Save Off Set Liability, GSTR-3B will get submitted." design="Bold"/>
+							<Label text="--> Basis notification 14/2022 dated 05.07.2022, reverse charge tax payable includes values provided in table 3.1.1 (i),"
+								design="Bold"/>
+							<Label text="where e-com operator is required to pay tax u/s 9(5) of CGST Act,2017." design="Bold"/>
+						</VBox>
+						<ToolbarSpacer/>
+						<VBox>
+							<Text/>
+							<Button text="Compute and Save" press="onPressCompute" class="buttoncolorSec"
+								enabled="{=${buttonVis>/dataEditable} &amp;&amp; ${Liabillity>/liabilitySetoffStatus}!=='SAVED'}"/>
+						</VBox>
+						<VBox>
+							<Text/>
+							<Button text="Edit" press="onLiaEdit" class="buttoncolorSec"
+								enabled="{=${buttonVis>/dataEditable} &amp;&amp; ${Liabillity>/liabilitySetoffStatus}!=='SAVED'}"/>
+						</VBox>
+						<VBox>
+							<Text/>
+							<Button text="Save Changes" press="onLiaSaveChanges" class="buttoncolorSec"
+								enabled="{=${buttonVis>/dataEditable} &amp;&amp; ${Liabillity>/liabilitySetoffStatus}!=='SAVED'}"/>
+						</VBox>
+						<VBox>
+							<Text text="{Liabillity>/liabilitySetoffStatus}{=!${Liabillity>/updatedOn}?'':': '+${Liabillity>/updatedOn}}"/>
+							<Button text="Save Offset Liability" width="12rem" class="buttoncolorSec" press="onSave3bLiability"
+								enabled="{=${userPermission>/appPermission/P4} &amp;&amp; ${Liabillity>/liabilitySetoffStatus}!=='SAVED' &amp;&amp; !${Liabillity>/gstr3bDetails/0/edit}}"/>
+						</VBox>
+						<VBox>
+							<Text/>
+							<Button text="Refresh Status" class="buttoncolorSec" press="onPressSaveStatus"
+								enabled="{=${buttonVis>/dataEditable} &amp;&amp; ${Liabillity>/liabilitySetoffStatus}!=='SAVED'}"/>
+						</VBox>
+						<VBox>
+							<Text/>
+							<Button text="Close" press="onCancel" class="buttoncolorSec"/>
+						</VBox>
+					</Toolbar>
+				</Panel>
+			</f:content>
+		</f:DynamicPage>
+	</Dialog>
+</core:FragmentDefinition>

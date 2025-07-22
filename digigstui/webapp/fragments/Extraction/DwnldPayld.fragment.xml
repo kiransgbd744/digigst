@@ -1,0 +1,274 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table"
+	xmlns:u="sap.ui.unified" xmlns:fm="sap.ui.layout.form">
+	<f:DynamicPage id="idSplitDtl2A" visible="true">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Entity Designer"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Client ERP" visibleInFilterBar="true">
+							<fb:control>
+								<Select forceSelection="true" change="onChange">
+									<core:Item key="GST" text="GST"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Application Class" visibleInFilterBar="true">
+							<fb:control>
+								<Select forceSelection="true" change="onChange" id="appId">
+									<core:Item key="VF" text="VF - Billing"/>
+									<core:Item key="FB" text="FB - Accounting"/>
+									<core:Item key="ME" text="ME - Purchase"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Entity Name" visibleInFilterBar="true">
+							<fb:control>
+								<Input id="EntityId"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Related EY Entity" visibleInFilterBar="true">
+							<fb:control>
+								<Input id="RelEyEntity"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="RelationShip to EY Entity" visibleInFilterBar="true">
+							<fb:control>
+								<Input id="RelToEyEntity"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<!--<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="GO" type="Emphasized" press="onPressGoForGSTIN2A" class="input sapUiTinyMarginBegin"/>
+				</HBox>-->
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<!--<Page showHeader="false" class="sapUiLargeMarginTop">
+				<content>-->
+			<SplitApp id="splitcheking2A" initialDetail="detail" initialMaster="master" orientationChange="onOrientationChange">
+				<detailPages>
+					<Page showHeader="true" class="sapUiTiniMarginTop">
+						<headerContent>
+							<Button text="Import definition" press="Importdefinition" type="Emphasized"/>
+							<Button text="Next" press="onNext" type="Emphasized"/>
+						</headerContent>
+						<content>
+							<Table items="{TabName1>/}" id="idTableBulkSave2" noDataText="No Products" mode="MultiSelect" selectionChange="onTabPress">
+								<columns>
+									<Column hAlign="Center">
+										<Text text="Field Name"/>
+									</Column>
+									<Column hAlign="Center">
+										<Text text="Data Type"/>
+									</Column>
+									<Column hAlign="Center">
+										<Text text="Table Name"/>
+									</Column>
+									<Column hAlign="Center">
+										<Text text="Int Type"/>
+									</Column>
+									<Column hAlign="Center">
+										<Text text="ScrtextL"/>
+									</Column>
+									<Column hAlign="Center">
+										<Text text="Intlen"/>
+									</Column>
+								</columns>
+								<items>
+									<ColumnListItem vAlign="Middle">
+										<cells>
+											<Text text="{TabName1>Fieldname}" wrapping="false"/>
+											<Text text="{TabName1>Datatype}" wrapping="false"/>
+											<Text text="{TabName1>Tabname}" wrapping="false"/>
+											<Text text="{TabName1>Inttype}" wrapping="false"/>
+											<Text text="{TabName1>ScrtextL}" wrapping="false"/>
+											<Text text="{TabName1>Intlen}" wrapping="false"/>
+										</cells>
+									</ColumnListItem>
+								</items>
+							</Table>
+						</content>
+						<!--<footer>
+							<OverflowToolbar>
+								<ToolbarSpacer/>
+								<Button text="Import definition" type="Emphasized"/>
+							</OverflowToolbar>
+						</footer>-->
+					</Page>
+				</detailPages>
+				<masterPages>
+					<Page title="Table Details">
+						<content>
+							<!--<VBox height="50%">-->
+							<!--<SearchField id="searchId" liveChange="onSearchGstins1" width="100%"/>-->
+							<List mode="SingleSelectMaster" id="idInitiateReconList2A" items="{TabName>/}" selectionChange="onTabSelect" growing="true"
+								growingScrollToLoad="true">
+								<items>
+									<StandardListItem title="{TabName>Tabname}" description="{TabName>Description}"/>
+								</items>
+							</List>
+							<!--</VBox>-->
+						</content>
+					</Page>
+				</masterPages>
+			</SplitApp>
+			<!--</content>
+			</Page>-->
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="idSplit" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" press="onPressBack"/>
+						<Title text="Entity Designer" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header></f:header>
+		<f:content>
+			<!--<Panel height="30rem">
+				<fm:Form editable="true" width="100%">
+					<fm:layout>
+						<fm:ResponsiveGridLayout labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" adjustLabelSpan="true" emptySpanXL="4" emptySpanL="4"
+							emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="true"/>
+					</fm:layout>
+					<fm:formContainers>
+						<fm:FormContainer>
+							<fm:formElements>
+								<fm:FormElement label="Table Fields">
+									<fm:fields>
+										<ComboBox items="{TabName1>/}" width="100%" change="onEntityChange" >
+											<core:Item key="{TabName1>Fieldname}" text="{TabName1>Fieldname}"/>
+										</ComboBox>
+									</fm:fields>
+								</fm:FormElement>
+								<fm:FormElement label="Where Clause">
+									<fm:fields>
+										<ComboBox width="100%">
+											<core:Item key="=" text="="/>
+											<core:Item key="&amp;" text="&amp;"/>
+											<core:Item key="&lt;" text="&lt;"/>
+											<core:Item key="&gt;" text="&gt;"/>
+										</ComboBox>
+									</fm:fields>
+								</fm:FormElement>
+								<fm:FormElement label="Related Field Value">
+									<ComboBox items="{TabName>/}" width="100%" change="onEntityChange">
+										<core:Item key="{TabName>Tabname}" text="{TabName>Tabname}"/>
+									</ComboBox>
+								</fm:FormElement>
+								<fm:FormElement label="Join">
+									<fm:fields>
+										<ComboBox width="100%">
+											<core:Item key="INNER JOIN" text="INNER JOIN"/>
+											<core:Item key="OUTER JOIN" text="OUTER JOIN"/>
+										</ComboBox>
+									</fm:fields>
+								</fm:FormElement>
+								<fm:FormElement label="Where">
+									<fm:fields>
+										<Input value="" width="100%"/>
+									</fm:fields>
+								</fm:FormElement>
+								<fm:FormElement>
+									<fm:fields>
+										<HBox justifyContent="End">
+											<Button text="Submit" press="onSubmitCode1" class="sapUiTinyMarginEnd" type="Emphasized"/>
+										</HBox>
+									</fm:fields>
+								</fm:FormElement>
+							</fm:formElements>
+						</fm:FormContainer>
+					</fm:formContainers>
+				</fm:Form>
+			</Panel>-->
+			<Table items="{TabDetails>/}" noDataText="No Products">
+				<headerToolbar>
+					<Toolbar>
+						<HBox>
+							<HBox>
+								<Label text="From Table :" design="Bold" class="tinyMarginTop sapUiTinyMarginEnd"/>
+								<ComboBox items="{TabDet>/}" width="100%" change="onEntityChange">
+									<core:Item key="{TabDet>Tabname}" text="{TabDet>Tabname}"/>
+								</ComboBox>
+							</HBox>
+							<HBox>
+								<Label text="Join :" design="Bold" class="tinyMarginTop sapUiTinyMarginEnd sapUiTinyMarginBegin"/>
+								<ComboBox width="100%" id="JoinId">
+									<core:Item key="INNER JOIN" text="INNER JOIN"/>
+									<core:Item key="OUTER JOIN" text="OUTER JOIN"/>
+								</ComboBox>
+							</HBox>
+							<HBox>
+								<Label text="To Table :" design="Bold" class="tinyMarginTop sapUiTinyMarginEnd sapUiTinyMarginBegin"/>
+								<ComboBox items="{TabDet>/}" width="100%" change="onEntityChange">
+									<core:Item key="{TabDet>Tabname}" text="{TabDet>Tabname}"/>
+								</ComboBox>
+							</HBox>
+							<HBox visible="false">
+								<Label text="WHERE :" design="Bold" class="tinyMarginTop sapUiTinyMarginEnd sapUiTinyMarginBegin"/>
+								<Input id="whereId"/>
+							</HBox>
+						</HBox>
+						<ToolbarSpacer/>
+						<Button icon="sap-icon://add" press="onPressAddRecords" type="Emphasized"/>
+						<Button text="Submit" press="onNext1" type="Emphasized"/>
+					</Toolbar>
+				</headerToolbar>
+				<columns>
+					<Column hAlign="Center">
+						<Text text="Table Fields"/>
+					</Column>
+					<Column hAlign="Center">
+						<Text text="Where Clause"/>
+					</Column>
+					<Column hAlign="Center">
+						<Text text="Related Table Field Value"/>
+					</Column>
+					<Column hAlign="Center">
+						<Text text="Condition"/>
+					</Column>
+					<!--<Column hAlign="Center">
+						<Text text="Int Type"/>
+					</Column>
+					<Column hAlign="Center">
+						<Text text="ScrtextL"/>
+					</Column>
+					<Column hAlign="Center">
+						<Text text="Intlen"/>
+					</Column>-->
+				</columns>
+				<items>
+					<ColumnListItem vAlign="Middle">
+						<cells>
+							<ComboBox items="{FirstTabName>/}" selectedKey="{TabDetails>TN1}" change="onEntityChange">
+								<core:Item key="{FirstTabName>Fieldname}" text="{FirstTabName>Fieldname}"/>
+							</ComboBox>
+							<Input value="{TabDetails>Where}"/>
+							<ComboBox items="{secondTabName>/}" selectedKey="{TabDetails>TN2}" change="onEntityChange">
+								<core:Item key="{secondTabName>Fieldname}" text="{secondTabName>Fieldname}"/>
+							</ComboBox>
+							<Input value="{TabDetails>Condition}" enabled="false"/>
+							<!--<Text text="{TabName1>Inttype}" wrapping="false"/>
+							<Text text="{TabName1>ScrtextL}" wrapping="false"/>
+							<Text text="{TabName1>Intlen}" wrapping="false"/>-->
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

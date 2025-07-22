@@ -1,0 +1,406 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap"
+	xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table" xmlns:form="sap.ui.layout.form">
+	<Toolbar class="toolbarbot sapUiTinyMarginBottom">
+		<Label text="Document Details" design="Bold" class="sapUiSmallMarginBegin titleFont"/>
+	</Toolbar>
+	<l:Grid defaultSpan="L2" hSpacing="1" vSpacing="1" class="sapUiTinyMarginTop">
+		<VBox>
+			<Label text="{i18n>returnPeriod}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/returnPeriod}" class="sapUiTinyMarginBegin"/>
+			<!--<Text text="{InvoiceItemModel>/returnPeriod}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>-->
+			<!--<DatePicker name="returnPeriod" value="{InvoiceItemModel>/returnPeriod}" displayFormat="MMM yyyy" valueFormat="MMyyyy"-->
+			<!--	visible="{InvoiceItemModel>/edit}" valueState="{path:'InvoiceItemModel>/returnPeriodState', formatter:'.formatter.formatState'}"-->
+			<!--	valueStateText="{InvoiceItemModel>/returnPeriodText}"/>-->
+		</VBox>
+		<VBox>
+			<Label text="{i18n>docType}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/docType}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>docNo}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/docNo}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>docDate}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/docDate}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>accountVoucherNo}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/accVoucherNo}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="accVoucherNo" value="{InvoiceItemModel>/accVoucherNo}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/accVoucherNoState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/accVoucherNoText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>accountVoucherDate}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/accVoucherDate}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<DatePicker name="accVoucherDate" value="{InvoiceItemModel>/accVoucherDate}" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd"
+				visible="{InvoiceItemModel>/edit}" placeholder="dd-mm-yyyy"
+				valueState="{path:'InvoiceItemModel>/accVoucherDateState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/accVoucherDateText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>glPostingDate}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/glPostingDate}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<DatePicker name="glPostingDate" value="{InvoiceItemModel>/glPostingDate}" displayFormat="MMM yyyy" valueFormat="MMyyyy"
+				visible="{InvoiceItemModel>/edit}" valueState="{path:'InvoiceItemModel>/glPostingDateState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/glPostingDateText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>reverseCharge}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<!--<Text text="{InvoiceItemModel>/reverseCharge}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>-->
+			<ComboBox name="reverseCharge" items="{path:'DropDown>/flag', templateShareable:false}" selectedKey="{InvoiceItemModel>/reverseCharge}"
+				visible="{= !${InvoiceItemModel>/edit}}" valueState="{path:'InvoiceItemModel>/reverseChargeState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/reverseChargeText}" class="checkBoxHideBorder" editable="false">
+				<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+			</ComboBox>
+			<ComboBox name="reverseCharge" items="{path:'DropDown>/flag', templateShareable:false}" selectedKey="{InvoiceItemModel>/reverseCharge}"
+				visible="{InvoiceItemModel>/edit}" valueState="{path:'InvoiceItemModel>/reverseChargeState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/reverseChargeText}">
+				<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+			</ComboBox>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>docCategory}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/docCat}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="docCat" value="{InvoiceItemModel>/docCat}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/docCatState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/docCatText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>sec7OfIgstFlag}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<!--<Text text="{InvoiceItemModel>/sec7OfIgstFlag}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>-->
+			<ComboBox name="sec7OfIgstFlag" items="{path:'DropDown>/flag', templateShareable:false}" selectedKey="{InvoiceItemModel>/sec7OfIgstFlag}"
+				visible="{= !${InvoiceItemModel>/edit}}" valueState="{path:'InvoiceItemModel>/sec7OfIgstFlagState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/sec7OfIgstFlagText}" class="checkBoxHideBorder" editable="false">
+				<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+			</ComboBox>
+			<ComboBox name="sec7OfIgstFlag" items="{path:'DropDown>/flag', templateShareable:false}" selectedKey="{InvoiceItemModel>/sec7OfIgstFlag}"
+				visible="{InvoiceItemModel>/edit}" valueState="{path:'InvoiceItemModel>/sec7OfIgstFlagState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/sec7OfIgstFlagText}">
+				<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+			</ComboBox>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>claimRefundFlag}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<!--<Text text="{InvoiceItemModel>/claimRefundFlag}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>-->
+			<ComboBox name="claimRefundFlag" items="{path:'DropDown>/flag', templateShareable:false}" selectedKey="{InvoiceItemModel>/claimRefundFlag}"
+				visible="{= !${InvoiceItemModel>/edit}}" valueState="{path:'InvoiceItemModel>/claimRefundFlagState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/claimRefundFlagText}" class="checkBoxHideBorder" editable="false">
+				<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+			</ComboBox>
+			<ComboBox name="claimRefundFlag" items="{path:'DropDown>/flag', templateShareable:false}" selectedKey="{InvoiceItemModel>/claimRefundFlag}"
+				visible="{InvoiceItemModel>/edit}" valueState="{path:'InvoiceItemModel>/claimRefundFlagState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/claimRefundFlagText}">
+				<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+			</ComboBox>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>autoPopToRefundFlag}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<!--<Text text="{InvoiceItemModel>/autoPopToRefundFlag}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>-->
+			<ComboBox name="autoPopToRefundFlag" items="{path:'DropDown>/flag', templateShareable:false}" visible="{= !${InvoiceItemModel>/edit}}"
+				selectedKey="{InvoiceItemModel>/autoPopToRefundFlag}"
+				valueState="{path:'InvoiceItemModel>/autoPopToRefundFlagState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/autoPopToRefundFlagText}" class="checkBoxHideBorder" editable="false">
+				<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+			</ComboBox>
+			<ComboBox name="autoPopToRefundFlag" items="{path:'DropDown>/flag', templateShareable:false}" visible="{InvoiceItemModel>/edit}"
+				selectedKey="{InvoiceItemModel>/autoPopToRefundFlag}"
+				valueState="{path:'InvoiceItemModel>/autoPopToRefundFlagState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/autoPopToRefundFlagText}">
+				<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+			</ComboBox>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>transactionType}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/tranType}" class="sapUiTinyMarginBegin"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>taxScheme}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<!--<Text text="{InvoiceItemModel>/taxScheme}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>-->
+			<ComboBox name="taxScheme" selectedKey="{InvoiceItemModel>/taxScheme}" width="100%" visible="{= !${InvoiceItemModel>/edit}}"
+				valueState="{path:'InvoiceItemModel>/taxSchemeState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/taxSchemeText}" class="checkBoxHideBorder" editable="false">
+				<core:Item key="NEINV" text="NEINV"/>
+				<core:Item key="NEWB" text="NEWB"/>
+				<core:Item key="NBOTH" text="NBOTH"/>
+			</ComboBox>
+			<ComboBox name="taxScheme" selectedKey="{InvoiceItemModel>/taxScheme}" width="100%" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/taxSchemeState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/taxSchemeText}">
+				<core:Item key="NEINV" text="NEINV"/>
+				<core:Item key="NEWB" text="NEWB"/>
+				<core:Item key="NBOTH" text="NBOTH"/>
+			</ComboBox>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>cancellationReason}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<!--<Text text="{InvoiceItemModel>/canReason}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>-->
+			<ComboBox name="canReason" selectedKey="{InvoiceItemModel>/canReason}" visible="{= !${InvoiceItemModel>/edit}}"
+				valueState="{path:'InvoiceItemModel>/canReasonState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/canReasonText}" class="checkBoxHideBorder" editable="false">
+				<core:Item key="1" text="1 - Duplicate"/>
+				<core:Item key="2" text="2 - Order Cancelled"/>
+				<core:Item key="3" text="3 - Data Entry Mistake"/>
+				<core:Item key="4" text="4 - Others"/>
+			</ComboBox>
+			<ComboBox name="canReason" selectedKey="{InvoiceItemModel>/canReason}" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/canReasonState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/canReasonText}">
+				<core:Item key="1" text="1 - Duplicate"/>
+				<core:Item key="2" text="2 - Order Cancelled"/>
+				<core:Item key="3" text="3 - Data Entry Mistake"/>
+				<core:Item key="4" text="4 - Others"/>
+			</ComboBox>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>cancellationRemarks}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/canRemarks}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="canRemarks" value="{InvoiceItemModel>/canRemarks}" maxLength="12" liveChange="alphaNumberSpecial"
+				visible="{InvoiceItemModel>/edit}" valueState="{path:'InvoiceItemModel>/canRemarksState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/canRemarksText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>diffPercent}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<!--<Text text="{InvoiceItemModel>/diffPercent}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>-->
+			<ComboBox name="diffPercent" items="{path:'DropDown>/diffPercent', templateShareable:false}" selectedKey="{InvoiceItemModel>/diffPercent}"
+				visible="{= !${InvoiceItemModel>/edit}}" valueState="{path:'InvoiceItemModel>/diffPercentState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/diffPercentText}" class="checkBoxHideBorder" editable="false">
+				<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+			</ComboBox>
+			<ComboBox name="diffPercent" items="{path:'DropDown>/diffPercent', templateShareable:false}" selectedKey="{InvoiceItemModel>/diffPercent}"
+				visible="{InvoiceItemModel>/edit}" valueState="{path:'InvoiceItemModel>/diffPercentState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/diffPercentText}">
+				<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+			</ComboBox>
+		</VBox>
+	</l:Grid>
+	<Toolbar class="toolbarbot sapUiTinyMarginBottom">
+		<Label text="Value" design="Bold" class="sapUiSmallMarginBegin titleFont"/>
+	</Toolbar>
+	<l:Grid defaultSpan="L2" hSpacing="1" vSpacing="1" class="sapUiTinyMarginTop">
+		<VBox>
+			<Label text="{i18n>lineItemAmt}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{path:'InvoiceItemModel>/docAmt', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginBegin"
+				visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="docAmt" value="{InvoiceItemModel>/docAmt}" type="Number" liveChange="anyDecimalValue"
+				visible="{InvoiceItemModel>/edit}" valueState="{path:'InvoiceItemModel>/docAmtState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/docAmtText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>invoiceAssessableAmount}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{path:'InvoiceItemModel>/invAssessableAmt', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginBegin"
+				visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="invAssessableAmt" value="{InvoiceItemModel>/invAssessableAmt}" type="Number" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/invAssessableAmtState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/invAssessableAmtText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>invoiceIgstAmount}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{path:'InvoiceItemModel>/invIgstAmt', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginBegin"
+				visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="invIgstAmt" value="{InvoiceItemModel>/invIgstAmt}" type="Number" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/invIgstAmtState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/invIgstAmtText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>invoiceCgstAmount}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{path:'InvoiceItemModel>/invCgstAmt', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginBegin"
+				visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="invCgstAmt" value="{InvoiceItemModel>/invCgstAmt}" type="Number" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/invCgstAmtState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/invCgstAmtText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>invoiceSgstAmount}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{path:'InvoiceItemModel>/invSgstAmt', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginBegin"
+				visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="invSgstAmt" value="{InvoiceItemModel>/invSgstAmt}" type="Number" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/invSgstAmtState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/invSgstAmtText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>invCessAdvaloremAmount}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{path:'InvoiceItemModel>/invCessAdvaloremAmt', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginBegin"
+				visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="invCessAdvaloremAmt" value="{InvoiceItemModel>/invCessAdvaloremAmt}" type="Number" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/invCessAdvaloremAmtState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/invCessAdvaloremAmt Text}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>invCessSpecificAmount}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{path:'InvoiceItemModel>/invCessSpecificAmt', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginBegin"
+				visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="invCessSpecificAmt" value="{InvoiceItemModel>/invCessSpecificAmt}" type="Number" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/invCessSpecificAmtState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/invCessSpecificAmtText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>invStateCessAmount}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{path:'InvoiceItemModel>/invStateCessAmt', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginBegin"
+				visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="invStateCessAmt" value="{InvoiceItemModel>/invStateCessAmt}" type="Number" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/invStateCessAmtState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/invStateCessAmtText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>invStateCessSpecificAmt}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{path:'InvoiceItemModel>/invStateCessSpecificAmt', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginBegin"
+				visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="invStateCessSpecificAmt" value="{InvoiceItemModel>/invStateCessSpecificAmt}" type="Number" liveChange="alphaNumberSpecial"
+				visible="{InvoiceItemModel>/edit}" valueState="{path:'InvoiceItemModel>/invStateCessSpecificAmtState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/invStateCessSpecificAmtText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>invoiceOtherCharges}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/invOtherCharges}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="invOtherCharges" value="{InvoiceItemModel>/invOtherCharges}" type="Number" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/invOtherChargesState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/invOtherChargesText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>roundOff}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/roundOff}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="roundOff" value="{InvoiceItemModel>/roundOff}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/roundOffState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/roundOffText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>totalInvValueInWords}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/totalInvValueInWords}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="totalInvValueInWords" value="{InvoiceItemModel>/totalInvValueInWords}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/totalInvValueInWordsState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/totalInvValueInWordsText}"/>
+		</VBox>
+	</l:Grid>
+	<Toolbar class="toolbarbot sapUiTinyMarginBottom">
+		<Label text="Basic:" design="Bold" class="sapUiSmallMarginBegin titleFont"/>
+	</Toolbar>
+	<l:Grid defaultSpan="L2" hSpacing="1" vSpacing="1" class="sapUiTinyMarginTop">
+		<VBox>
+			<Label text="{i18n>custOrSupType}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/custOrSupType}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="custOrSupType" value="{InvoiceItemModel>/custOrSupType}" maxLength="1" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/custOrSupTypeState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/custOrSupTypeText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>custOrSuppCode}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/custOrSupCode}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="custOrSupCode" value="{InvoiceItemModel>/custOrSupCode}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/custOrSupCodeState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/custOrSupCodeText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>subSupplyType}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/subsupplyType}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="subsupplyType" value="{InvoiceItemModel>/subsupplyType}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/subsupplyTypeState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/subsupplyTypeText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>ecomGSTIN}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/ecomGSTIN}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="ecomGSTIN" value="{InvoiceItemModel>/ecomGSTIN}" maxLength="15" liveChange="alphaNumeric" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/ecomGSTINState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/ecomGSTINText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>ecomTransactionID}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/ecomTransactionID}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="ecomTransactionID" value="{InvoiceItemModel>/ecomTransactionID}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/ecomTransactionIDState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/ecomTransactionIDText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>crDrPreGst}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<!--<Text text="{InvoiceItemModel>/crDrPreGst}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>-->
+			<ComboBox name="crDrPreGst" items="{path:'DropDown>/flag', templateShareable:false}" selectedKey="{InvoiceItemModel>/crDrPreGst}"
+				visible="{= !${InvoiceItemModel>/edit}}" valueState="{path:'InvoiceItemModel>/crDrPreGstState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/crDrPreGstText}" class="checkBoxHideBorder" editable="false">
+				<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+			</ComboBox>
+			<ComboBox name="crDrPreGst" items="{path:'DropDown>/flag', templateShareable:false}" selectedKey="{InvoiceItemModel>/crDrPreGst}"
+				visible="{InvoiceItemModel>/edit}" valueState="{path:'InvoiceItemModel>/crDrPreGstState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/crDrPreGstText}">
+				<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+			</ComboBox>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>tcsFlag}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/tcsFlag}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="tcsFlag" value="{InvoiceItemModel>/tcsFlag}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/tcsFlagState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/tcsFlagText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>tdsFlag}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<!--<Text text="{InvoiceItemModel>/tdsFlag}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>-->
+			<ComboBox name="tdsFlag" items="{path:'DropDown>/flag', templateShareable:false}" selectedKey="{InvoiceItemModel>/tdsFlag}"
+				visible="{= !${InvoiceItemModel>/edit}}" valueState="{path:'InvoiceItemModel>/tdsFlagState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/tdsFlagText}" class="checkBoxHideBorder" editable="false">
+				<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+			</ComboBox>
+			<ComboBox name="tdsFlag" items="{path:'DropDown>/flag', templateShareable:false}" selectedKey="{InvoiceItemModel>/tdsFlag}"
+				visible="{InvoiceItemModel>/edit}" valueState="{path:'InvoiceItemModel>/tdsFlagState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/tdsFlagText}">
+				<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+			</ComboBox>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>originalDocType}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/orgDocType}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="orgDocType" value="{InvoiceItemModel>/orgDocType}" maxLength="5" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/orgDocTypeState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/orgDocTypeText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>origCgstin}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/orgCgstin}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="orgCgstin" value="{InvoiceItemModel>/orgCgstin}" maxLength="15" liveChange="alphaNumeric" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/orgCgstinState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/orgCgstinText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>invPeriodStartDate}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/invPeriodStartDate}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<DatePicker name="invPeriodStartDate" value="{InvoiceItemModel>/invPeriodStartDate}" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd"
+				visible="{InvoiceItemModel>/edit}" placeholder="dd-mm-yyyy"
+				valueState="{path:'InvoiceItemModel>/invPeriodStartDateState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/invPeriodStartDateText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>invPeriodEndDate}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/invPeriodEndDate}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<DatePicker name="invPeriodEndDate" value="{InvoiceItemModel>/invPeriodEndDate}" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd"
+				visible="{InvoiceItemModel>/edit}" placeholder="dd-mm-yyyy"
+				valueState="{path:'InvoiceItemModel>/invPeriodEndDateState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/invPeriodEndDateText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>salesOrderNumber}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/salesOrderNo}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="salesOrderNo" value="{InvoiceItemModel>/salesOrderNo}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/salesOrderNoState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/salesOrderNoText}"/>
+		</VBox>
+		<!--<VBox>
+			<Label text="{i18n>Rate}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/Rate}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="stateApplyingCess" value="{InvoiceItemModel>/stateApplyingCess}" maxLength="2" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/stateApplyingCessState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/stateApplyingCessText}"/>
+		</VBox>-->
+		<VBox>
+			<Label text="{i18n>stateApplyingCess}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/stateApplyingCess}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="stateApplyingCess" value="{InvoiceItemModel>/stateApplyingCess}" maxLength="2" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/stateApplyingCessState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/stateApplyingCessText}"/>
+		</VBox>
+		<VBox>
+			<Label text="{i18n>otherSupplyTypeDesc}" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+			<Text text="{InvoiceItemModel>/otherSupplyTypeDesc}" class="sapUiTinyMarginBegin" visible="{= !${InvoiceItemModel>/edit}}"/>
+			<Input name="otherSupplyTypeDesc" value="{InvoiceItemModel>/otherSupplyTypeDesc}" maxLength="100" visible="{InvoiceItemModel>/edit}"
+				valueState="{path:'InvoiceItemModel>/otherSupplyTypeDescState', formatter:'.formatter.formatState'}"
+				valueStateText="{InvoiceItemModel>/otherSupplyTypeDescText}"/>
+		</VBox>
+	</l:Grid>
+</core:FragmentDefinition>

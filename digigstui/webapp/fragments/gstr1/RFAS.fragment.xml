@@ -1,0 +1,78 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" xmlns:l="sap.ui.layout" xmlns:commons="sap.suite.ui.commons">
+	<Dialog id="dSaveStatus1" title="Request for Approval Status" type="Message" contentWidth="75%" class="sapUiSizeCompact" draggable="true">
+		<buttons>
+			<Button text="Close" class="buttoncolorSec" press="onCloseRFAS"/>
+		</buttons>
+		<ui:Table rows="{RequestAprvolStatus>/}" enableColumnReordering="false" class="sapUiTinyMarginTop" visibleRowCount="8" id="gstrTabId1"
+			selectionMode="None">
+			<ui:columns>
+				<!--<ui:Column hAlign="Center">-->
+				<!--	<Label text="Sr.No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>-->
+				<!--	<ui:template>-->
+				<!--		<Text text="{RequestAprvoldata>srno}"/>-->
+				<!--	</ui:template>-->
+				<!--</ui:Column>-->
+				<ui:Column hAlign="Center">
+					<Label text="Request ID" textAlign="Center" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{RequestAprvolStatus>requestId}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center" width="15%">
+					<Label text="Date &amp; Time of Request" textAlign="Center" design="Bold"/>
+					<ui:template>
+						<Text text="{RequestAprvolStatus>dateAndTimeOfReq}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="GSTIN" textAlign="Center" wrapping="true" design="Bold"/>
+					<ui:template>
+						<Text text="{RequestAprvolStatus>gstin}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="Request made to" textAlign="Center" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox alignItems="Center" justifyContent="Center">
+							<Link text="{RequestAprvolStatus>noOfRequestMadeTo}" press="onPressRequestMadeTo"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="Action Taken For" textAlign="Center" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="Center">
+							<Text text="{RequestAprvolStatus>actionTakenFor}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="Status of Request" textAlign="Center" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="Center">
+							<Text text="{RequestAprvolStatus>statusOfReq}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center" width="15%">
+					<Label text="Date &amp; time of checker" textAlign="Center" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="Center">
+							<Text text="{RequestAprvolStatus>dateAndTimeOfChecker}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column hAlign="Center">
+					<Label text="Comments from checkers" textAlign="Center" wrapping="true" design="Bold"/>
+					<ui:template>
+						<HBox justifyContent="Center">
+							<!--<Text text="Approved for Save to GSTIN"/>-->
+							<core:Icon src="sap-icon://message-information" tooltip="{RequestAprvolStatus>commentsFromChec}"/>
+						</HBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+	</Dialog>
+</core:FragmentDefinition>

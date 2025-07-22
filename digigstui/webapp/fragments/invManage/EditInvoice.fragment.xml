@@ -1,0 +1,1898 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:ui="sap.ui.table">
+	<ui:Table id="tabOutwardEdit" rows="{InvoiceItemModel>/lineItems/}" selectionMode="None" enableSelectAll="false" visible="false">
+		<ui:extension>
+			<Toolbar>
+				<MultiComboBox items="{path:'ReviewFields>/outward/'}" width="20%" placeholder="Column Show / Hide">
+					<core:Item key="{ReviewFields>key}" text="{ReviewFields>text}"/>
+				</MultiComboBox>
+				<ToolbarSpacer/>
+				<Button type="Transparent" id="bPrevError" icon="sap-icon://nav-back" press="pressPrevNextError" tooltip="{i18n>prevError}" visible="false"/>
+				<Button type="Transparent" id="bNextError" icon="sap-icon://navigation-right-arrow" press="pressPrevNextError" tooltip="{i18n>nextError}"
+					visible="false"/>
+				<Button type="Accept" text="Save Changes" press="onSaveOutwardInvoice"/>
+				<Button type="Emphasized" text="{i18n>changeTrail}" enabled="false"/>
+				<Button type="Emphasized" icon="sap-icon://download" tooltip="Download" press="onPressDownload" enabled="false"/>
+				<Button type="Emphasized" id="bMessage" icon="sap-icon://message-popup" text="0" tooltip="Errors With Description"
+					press="handleErrorMessages"/>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="10rem">
+				<Label text="{i18n>userId}" tooltip="{i18n>userId}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{InvoiceItemModel>/userId}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="250">
+				<Label text="{i18n>sourceFileName}" tooltip="{i18n>sourceFileName}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{InvoiceItemModel>/srcFileName}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>profitCentre}" tooltip="{i18n>profitCentre}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="profitCentre" items="{path:'userPermission>/respData/dataSecurity/profitCenter', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/profitCentre1}" valueStateText="{InvoiceItemModel>/profitCentre1Text}"
+						valueState="{path:'InvoiceItemModel>/profitCentre1State', formatter:'.formatter.formatState'}">
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>plantCode}" tooltip="{i18n>plantCode}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="plantCode" items="{path:'userPermission>/respData/dataSecurity/plant', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>plantCode}" valueStateText="{InvoiceItemModel>plantCodeText}"
+						valueState="{path:'InvoiceItemModel>plantCodeState', formatter:'.formatter.formatState'}">
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>division}" tooltip="{i18n>division}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="division" items="{path:'userPermission>/respData/dataSecurity/division', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/division}" valueStateText="{InvoiceItemModel>/divisionText}"
+						valueState="{path:'InvoiceItemModel>/divisionState', formatter:'.formatter.formatState'}">
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>location}" tooltip="{i18n>location}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="location" items="{path:'userPermission>/respData/dataSecurity/location', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/location}" valueStateText="{InvoiceItemModel>/locationText}"
+						valueState="{path:'InvoiceItemModel>/locationState', formatter:'.formatter.formatState'}">
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>salesOrgnization}" tooltip="{i18n>salesOrgnization}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="salesOrg" items="{path:'userPermission>/respData/dataSecurity/salesOrg', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/salesOrg}" valueStateText="{InvoiceItemModel>/salesOrgText}"
+						valueState="{path:'InvoiceItemModel>/salesOrgState', formatter:'.formatter.formatState'}">
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>distChannel}" tooltip="{i18n>distChannel}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="distChannel" items="{path:'userPermission>/respData/dataSecurity/distChannel', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/distChannel}" valueStateText="{InvoiceItemModel>/distChannelText}"
+						valueState="{path:'InvoiceItemModel>/distChannelState', formatter:'.formatter.formatState'}">
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>userAccess1}" tooltip="{i18n>userAccess1}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="profitCentre3" items="{path:'userPermission>/respData/dataSecurity/userAccess1', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/profitCentre3}" valueStateText="{InvoiceItemModel>/profitCentre3Text}"
+						valueState="{path:'InvoiceItemModel>/profitCentre3State', formatter:'.formatter.formatState'}">
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>userAccess2}" tooltip="{i18n>userAccess2}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="profitCentre4" items="{path:'userPermission>/respData/dataSecurity/userAccess2', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/profitCentre4}" valueStateText="{InvoiceItemModel>/profitCentre4Text}"
+						valueState="{path:'InvoiceItemModel>/profitCentre4State', formatter:'.formatter.formatState'}">
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>userAccess3}" tooltip="{i18n>userAccess3}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="profitCentre5" items="{path:'userPermission>/respData/dataSecurity/userAccess3', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/profitCentre5}" valueStateText="{InvoiceItemModel>/profitCentre5Text}"
+						valueState="{path:'InvoiceItemModel>/profitCentre5State', formatter:'.formatter.formatState'}">
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>userAccess4}" tooltip="{i18n>userAccess4}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="profitCentre6" items="{path:'userPermission>/respData/dataSecurity/userAccess4', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/profitCentre6}" valueStateText="{InvoiceItemModel>/profitCentre6Text}"
+						valueState="{path:'InvoiceItemModel>/profitCentre6State', formatter:'.formatter.formatState'}">
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>userAccess5}" tooltip="{i18n>userAccess5}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="profitCentre7" items="{path:'userPermission>/respData/dataSecurity/userAccess5', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/profitCentre7}" valueStateText="{InvoiceItemModel>/profitCentre7Text}"
+						valueState="{path:'InvoiceItemModel>/profitCentre7State', formatter:'.formatter.formatState'}">
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>userAccess6}" tooltip="{i18n>userAccess6}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="profitCentre8" items="{path:'userPermission>/respData/dataSecurity/userAccess6', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/profitCentre8}" valueStateText="{InvoiceItemModel>/profitCentre8Text}"
+						valueState="{path:'InvoiceItemModel>/profitCentre8State', formatter:'.formatter.formatState'}">
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>glCodeTaxableVal}" tooltip="{i18n>glCodeTaxableVal}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="glCodeTaxableVal" value="{InvoiceItemModel>glCodeTaxableVal}" valueStateText="{InvoiceItemModel>glCodeTaxableValText}"
+						valueState="{path:'InvoiceItemModel>glCodeTaxableValState', formatter:'.formatter.formatState'}" maxLength="100"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>glCodeIgst}" tooltip="{i18n>glCodeIgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="glCodeIgst" value="{InvoiceItemModel>glCodeIgst}" maxLength="100" valueStateText="{InvoiceItemModel>glCodeIgstText}"
+						valueState="{path:'InvoiceItemModel>glCodeIgstState', formatter:'.formatter.formatState'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>glCodeCgst}" tooltip="{i18n>glCodeCgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="glCodeCgst" value="{InvoiceItemModel>glCodeCgst}" maxLength="100" valueStateText="{InvoiceItemModel>glCodeCgstText}"
+						valueState="{path:'InvoiceItemModel>glCodeCgstState', formatter:'.formatter.formatState'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>glCodeSgst}" tooltip="{i18n>glCodeSgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="glCodeSgst" value="{InvoiceItemModel>glCodeSgst}" maxLength="100" valueStateText="{InvoiceItemModel>glCodeSgstText}"
+						valueState="{path:'InvoiceItemModel>glCodeSgstState', formatter:'.formatter.formatState'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>glCodeAdvCess}" tooltip="{i18n>glCodeAdvCess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="glCodeAdvCess" value="{InvoiceItemModel>glCodeAdvCess}" maxLength="100" valueStateText="{InvoiceItemModel>glCodeAdvCessText}"
+						valueState="{path:'InvoiceItemModel>glCodeAdvCessState', formatter:'.formatter.formatState'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>glCodeSpCess}" tooltip="{i18n>glCodeSpCess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="glCodeSpCess" value="{InvoiceItemModel>glCodeSpCess}" maxLength="100" valueStateText="{InvoiceItemModel>glCodeSpCessText}"
+						valueState="{path:'InvoiceItemModel>glCodeSpCessState', formatter:'.formatter.formatState'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>glCodeStateCess}" tooltip="{i18n>glCodeStateCess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="glCodeStateCess" value="{InvoiceItemModel>glCodeStateCess}" valueStateText="{InvoiceItemModel>glCodeStateCessText}"
+						valueState="{path:'InvoiceItemModel>glCodeStateCessState', formatter:'.formatter.formatState'}" maxLength="100"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="130">
+				<HBox justifyContent="Center" width="100%">
+					<Label text="{i18n>returnPeriod}" tooltip="{i18n>returnPeriod}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<Label text="*" design="Bold" class="redLabel"/>
+				</HBox>
+				<ui:template>
+					<DatePicker name="returnPeriod" value="{InvoiceItemModel>/returnPeriod}" valueStateText="{InvoiceItemModel>/returnPeriodText}"
+						valueState="{path:'InvoiceItemModel>/returnPeriodState', formatter:'.formatter.formatState'}" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="180">
+				<HBox justifyContent="Center" width="100%">
+					<Label text="{i18n>supplierGstin}" tooltip="{i18n>supplierGstin}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<Label text="*" design="Bold" class="redLabel"/>
+				</HBox>
+				<ui:template>
+					<Input name="suppGstin" value="{InvoiceItemModel>/suppGstin}" editable="false" valueStateText="{InvoiceItemModel>/suppGstinText}"
+						liveChange="alphaNumeric" maxLength="15" valueState="{path:'InvoiceItemModel>/suppGstinState', formatter:'.formatter.formatState'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="150">
+				<HBox justifyContent="Center" width="100%">
+					<Label text="{i18n>docType}" tooltip="{i18n>docType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<Label text="*" design="Bold" class="redLabel"/>
+				</HBox>
+				<ui:template>
+					<Input name="docType" value="{InvoiceItemModel>/docType}" maxLength="5" editable="false" valueStateText="{InvoiceItemModel>/docTypeText}"
+						valueState="{path:'InvoiceItemModel>/docTypeState', formatter:'.formatter.formatState'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="130">
+				<HBox justifyContent="Center" width="100%">
+					<Label text="{i18n>supplyType}" tooltip="{i18n>supplyType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<Label text="*" design="Bold" class="redLabel"/>
+				</HBox>
+				<ui:template>
+					<Input name="supplyType" value="{InvoiceItemModel>supplyType}" maxLength="5" valueStateText="{InvoiceItemModel>supplyTypeText}"
+						valueState="{path:'InvoiceItemModel>supplyTypeState', formatter:'.formatter.formatState'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="200">
+				<HBox justifyContent="Center" width="100%">
+					<Label text="{i18n>docNo}" tooltip="{i18n>docNo}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<Label text="*" design="Bold" class="redLabel"/>
+				</HBox>
+				<ui:template>
+					<Input name="docNo" value="{InvoiceItemModel>/docNo}" maxLength="16" valueStateText="{InvoiceItemModel>/docNoText}" editable="false"
+						liveChange="alphaNumberSpecial" valueState="{path:'InvoiceItemModel>/docNoState', formatter:'.formatter.formatState'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="150">
+				<HBox>
+					<Label text="{i18n>docDate}" tooltip="{i18n>docDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<Label text="*" design="Bold" class="redLabel"/>
+				</HBox>
+				<ui:template>
+					<DatePicker name="docDate" value="{InvoiceItemModel>/docDate}" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" placeholder="dd-mm-yyyy"
+						valueState="{path:'InvoiceItemModel>/docDateState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/docDateText}"
+						editable="false"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>originalDocType}" tooltip="{i18n>originalDocType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="orgDocType" value="{InvoiceItemModel>/orgDocType}" valueStateText="{InvoiceItemModel>/orgDocTypeText}"
+						valueState="{path:'InvoiceItemModel>/orgDocTypeState', formatter:'.formatter.formatState'}" maxLength="5"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="160">
+				<Label text="{i18n>originalDocNo}" tooltip="{i18n>originalDocNo}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="preceedingInvNo" value="{InvoiceItemModel>preceedingInvNo}" maxLength="16" liveChange="alphaNumberSpecial"
+						valueState="{path:'InvoiceItemModel>preceedingInvNoState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>preceedingInvNoText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="150">
+				<Label text="{i18n>originalDocDate}" tooltip="{i18n>originalDocDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<DatePicker name="preceedingInvDate" value="{InvoiceItemModel>/preceedingInvDate}" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd"
+						placeholder="dd-mm-yyyy" valueState="{path:'InvoiceItemModel>preceedingInvDateState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>preceedingInvDateText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="Center">
+				<Label text="{i18n>crDrPreGst}" tooltip="{i18n>crDrPreGst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="crDrPreGst" items="{path:'DropDown>/flag', templateShareable:false}" valueStateText="{InvoiceItemModel>/crDrPreGstText}"
+						selectedKey="{InvoiceItemModel>/crDrPreGst}" valueState="{path:'InvoiceItemModel>/crDrPreGstState', formatter:'.formatter.formatState'}">
+						<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>itemNo}" tooltip="{i18n>itemNo}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="itemNo" value="{InvoiceItemModel>itemNo}" textAlign="End"
+						valueState="{path:'InvoiceItemModel>itemNoState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>itemNoText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="180">
+				<Label text="{i18n>custGstin}" tooltip="{i18n>custGstin}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="custGstin" value="{InvoiceItemModel>/custGstin}" maxLength="15" valueStateText="{InvoiceItemModel>/custGstinText}"
+						liveChange="alphaNumeric" valueState="{path:'InvoiceItemModel>/custGstinState', formatter:'.formatter.formatState'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>recipientType}" tooltip="{i18n>recipientType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="custOrSupType" value="{InvoiceItemModel>/custOrSupType}" valueStateText="{InvoiceItemModel>/custOrSupTypeText}" maxLength="1"
+						valueState="{path:'InvoiceItemModel>/custOrSupTypeState', formatter:'.formatter.formatState'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>diffPercent}" tooltip="{i18n>diffPercent}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="diffPercent" items="{path:'DropDown>/diffPercent', templateShareable:false}" selectedKey="{InvoiceItemModel>/diffPercent}"
+						valueState="{path:'InvoiceItemModel>/diffPercentState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/diffPercentText}">
+						<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="180">
+				<Label text="{i18n>origCgstin}" tooltip="{i18n>origCgstin}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="origCgstin" value="{InvoiceItemModel>/origCgstin}" maxLength="15" liveChange="alphaNumeric"
+						valueState="{path:'InvoiceItemModel>/origCgstinState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/origCgstinText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="160">
+				<Label text="{i18n>recipientName}" tooltip="{i18n>recipientName}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="custOrSupName" value="{InvoiceItemModel>/custOrSupName}" maxLength="100" valueStateText="{InvoiceItemModel>/custOrSupNameText}"
+						valueState="{path:'InvoiceItemModel>/custOrSupNameState', formatter:'.formatter.formatState'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>recipientCode}" tooltip="{i18n>recipientCode}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="custOrSupCode" value="{InvoiceItemModel>/custOrSupCode}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>/custOrSupCodeState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/custOrSupCodeText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="200">
+				<Label text="{i18n>recipientAddress1}" tooltip="{i18n>recipientAddress1}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="custOrSupAddr1" value="{InvoiceItemModel>/custOrSupAddr1}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>/custOrSupAddr1State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/custOrSupAddr1Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="200">
+				<Label text="{i18n>recipientAddress2}" tooltip="{i18n>recipientAddress2}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="custOrSupAddr2" value="{InvoiceItemModel>/custOrSupAddr2}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>/custOrSupAddr2State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/custOrSupAddr2Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="200">
+				<Label text="{i18n>recipientAddress3}" tooltip="{i18n>recipientAddress3}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="custOrSupAddr3" value="{InvoiceItemModel>/custOrSupAddr3}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>/custOrSupAddr3State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/custOrSupAddr3Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="200">
+				<Label text="{i18n>recipientAddress4}" tooltip="{i18n>recipientAddress4}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="custOrSupAddr4" value="{InvoiceItemModel>/custOrSupAddr4}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>/custOrSupAddr4State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/custOrSupAddr4Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120">
+				<Label text="{i18n>billToState}" tooltip="{i18n>billToState}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="billToState" value="{InvoiceItemModel>/billToState}" maxLength="2"
+						valueState="{path:'InvoiceItemModel>/billToStateState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/billToStateText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120">
+				<Label text="{i18n>shipToState}" tooltip="{i18n>shipToState}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="shipToState" value="{InvoiceItemModel>/shipToState}" maxLength="2"
+						valueState="{path:'InvoiceItemModel>/shipToStateState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/shipToStateText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>pos}" tooltip="{i18n>pos}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="pos" value="{InvoiceItemModel>/pos}" maxLength="2"
+						valueState="{path:'InvoiceItemModel>/posState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/posText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>stateApplyingCess}" tooltip="{i18n>stateApplyingCess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="stateApplyingCess" value="{InvoiceItemModel>/stateApplyingCess}" maxLength="2"
+						valueState="{path:'InvoiceItemModel>/stateApplyingCessState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/stateApplyingCessText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="130">
+				<Label text="{i18n>portCode}" tooltip="{i18n>portCode}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="portCode" value="{InvoiceItemModel>/portCode}" maxLength="6"
+						valueState="{path:'InvoiceItemModel>/portCodeState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/portCodeText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>shippingBillNo}" tooltip="{i18n>shippingBillNo}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="shippingBillNo" value="{InvoiceItemModel>/shippingBillNo}" maxLength="7" liveChange="positiveInteger"
+						valueState="{path:'InvoiceItemModel>/shippingBillNoState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/shippingBillNoText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="150">
+				<Label text="{i18n>shippingBillDate}" tooltip="{i18n>shippingBillDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<DatePicker name="shippingBillDate" value="{InvoiceItemModel>/shippingBillDate}" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd"
+						placeholder="dd-mm-yyyy" valueState="{path:'InvoiceItemModel>/shippingBillDateState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/shippingBillDateText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>fob}" tooltip="{i18n>fob}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="fob" value="{InvoiceItemModel>fob}" textAlign="End" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>fobState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>fobText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>exportDuty}" tooltip="{i18n>exportDuty}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="exportDuty" value="{InvoiceItemModel>exportDuty}" textAlign="End" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>exportDutyState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>exportDutyText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>hsnsacCode}" tooltip="{i18n>hsnsacCode}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="hsnsacCode" value="{InvoiceItemModel>hsnsacCode}" maxLength="8" liveChange="positiveInteger"
+						valueState="{path:'InvoiceItemModel>hsnsacCodeState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>hsnsacCodeText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="130">
+				<Label text="{i18n>productCode}" tooltip="{i18n>productCode}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="productCode" value="{InvoiceItemModel>productCode}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>productCodeState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>productCodeText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="160">
+				<Label text="{i18n>itemDesc}" tooltip="{i18n>itemDesc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="itemDesc" value="{InvoiceItemModel>itemDesc}" maxLength="100" valueStateText="{InvoiceItemModel>itemDescText}"
+						valueState="{path:'InvoiceItemModel>itemDescState', formatter:'.formatter.formatState'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>itemType}" tooltip="{i18n>itemType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="itemType" value="{InvoiceItemModel>itemType}" maxLength="100" valueStateText="{InvoiceItemModel>itemTypeText}"
+						valueState="{path:'InvoiceItemModel>itemTypeState', formatter:'.formatter.formatState'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120">
+				<Label text="{i18n>itemUqc}" tooltip="{i18n>itemUqc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="itemUqc" value="{InvoiceItemModel>itemUqc}" maxLength="100" valueStateText="{InvoiceItemModel>itemUqcText}"
+						valueState="{path:'InvoiceItemModel>itemUqcState', formatter:'.formatter.formatState'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>itemQty}" tooltip="{i18n>itemQty}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="itemQty" value="{InvoiceItemModel>itemQty}" maxLength="18" liveChange="positiveDecimal"
+						valueState="{path:'InvoiceItemModel>itemQtyState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>itemQtyText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110" hAlign="Center">
+				<Label text="{i18n>sec7OfIgstFlag}" tooltip="{i18n>sec7OfIgstFlag}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="sec7OfIgstFlag" items="{path:'DropDown>/flag', templateShareable:false}" selectedKey="{InvoiceItemModel>/sec7OfIgstFlag}"
+						valueState="{path:'InvoiceItemModel>/sec7OfIgstFlagState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/sec7OfIgstFlagText}">
+						<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>taxableVal}" tooltip="{i18n>taxableVal}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="taxableVal" value="{InvoiceItemModel>taxableVal}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>taxableValState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>taxableValText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>igstRate}" tooltip="{i18n>igstRate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="igstRt" value="{InvoiceItemModel>igstRt}" maxLength="18"
+						valueState="{path:'InvoiceItemModel>igstRtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>igstRtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>igstAmt}" tooltip="{i18n>igstAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="igstAmt" value="{InvoiceItemModel>igstAmt}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>igstAmtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>igstAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>cgstRate}" tooltip="{i18n>cgstRate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="cgstRt" value="{InvoiceItemModel>cgstRt}" maxLength="18"
+						valueState="{path:'InvoiceItemModel>cgstRtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>cgstRtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>cgstAmt}" tooltip="{i18n>cgstAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="cgstAmt" value="{InvoiceItemModel>cgstAmt}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>cgstAmtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>cgstAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>sgstRate}" tooltip="{i18n>sgstRate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="sgstRt" value="{InvoiceItemModel>sgstRt}" maxLength="18"
+						valueState="{path:'InvoiceItemModel>sgstRtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>sgstRtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>sgstAmt}" tooltip="{i18n>sgstAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="sgstAmt" value="{InvoiceItemModel>sgstAmt}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>sgstAmtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>sgstAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>cessRateAdvalorem}" tooltip="{i18n>cessRateAdvalorem}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="cessRtAdvalorem" value="{InvoiceItemModel>cessRtAdvalorem}" maxLength="18" liveChange="positiveDecimal"
+						valueState="{path:'InvoiceItemModel>cessRtAdvaloremState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>cessRtAdvaloremText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>cessAmtAdvalorem}" tooltip="{i18n>cessAmtAdvalorem}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="cessAmtAdvalorem" value="{InvoiceItemModel>cessAmtAdvalorem}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>cessAmtAdvaloremState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>cessAmtAdvaloremText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>cessRateSpecific}" tooltip="{i18n>cessRateSpecific}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="cessRtSpecific" value="{InvoiceItemModel>cessRtSpecific}" maxLength="18" liveChange="positiveDecimal"
+						valueState="{path:'InvoiceItemModel>cessRtSpecificState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>cessRtSpecificText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>cessAmtSpecfic}" tooltip="{i18n>cessAmtSpecfic}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="cessAmtSpecfic" value="{InvoiceItemModel>cessAmtSpecfic}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>cessAmtSpecficState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>cessAmtSpecficText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>stateCessRate}" tooltip="{i18n>stateCessRate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="stateCessRt" value="{InvoiceItemModel>stateCessRt}" maxLength="18" liveChange="positiveDecimal"
+						valueState="{path:'InvoiceItemModel>stateCessRtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>stateCessRtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>stateCessAmt}" tooltip="{i18n>stateCessAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="stateCessAmt" value="{InvoiceItemModel>stateCessAmt}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>stateCessAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>stateCessAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>otherValues}" tooltip="{i18n>otherValues}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="otherValues" value="{InvoiceItemModel>otherValues}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>otherValuesState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>otherValuesText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>lineItemAmt}" tooltip="{i18n>lineItemAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="lineItemAmt" value="{InvoiceItemModel>lineItemAmt}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>lineItemAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>lineItemAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="175">
+				<Label text="{i18n>adjustmentRefNo}" tooltip="{i18n>adjustmentRefNo}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="adjustmentRefNo" value="{InvoiceItemModel>adjustmentRefNo}" maxLength="16" liveChange="alphaNumberSpecial"
+						valueState="{path:'InvoiceItemModel>adjustmentRefNoState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>adjustmentRefNoText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="150">
+				<Label text="{i18n>adjustmentRefDate}" tooltip="{i18n>adjustmentRefDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<DatePicker name="adjustmentRefDate" value="{InvoiceItemModel>/adjustmentRefDate}" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd"
+						placeholder="dd-mm-yyyy" valueState="{path:'InvoiceItemModel>adjustmentRefDateState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>adjustmentRefDateText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>adjustedTaxableValue}" tooltip="{i18n>adjustedTaxableValue}" textAlign="Center" width="100%" wrapping="true"
+					design="Bold"/>
+				<ui:template>
+					<Input name="adjustedTaxableValue" value="{InvoiceItemModel>adjustedTaxableValue}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>adjustedTaxableValueState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>adjustedTaxableValueText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>adjustedIgstAmt}" tooltip="{i18n>adjustedIgstAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="adjustedIgstAmt" value="{InvoiceItemModel>adjustedIgstAmt}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>adjustedIgstAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>adjustedIgstAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>adjustedCgstAmt}" tooltip="{i18n>adjustedCgstAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="adjustedCgstAmt" value="{InvoiceItemModel>adjustedCgstAmt}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>adjustedCgstAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>adjustedCgstAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>adjustedSgstAmt}" tooltip="{i18n>adjustedSgstAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="adjustedSgstAmt" value="{InvoiceItemModel>adjustedSgstAmt}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>adjustedSgstAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>adjustedSgstAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>adjustedCessAmtAdvalorem}" tooltip="{i18n>adjustedCessAmtAdvalorem}" textAlign="Center" width="100%" wrapping="true"
+					design="Bold"/>
+				<ui:template>
+					<Input name="adjustedCessAmtAdvalorem" value="{InvoiceItemModel>adjustedCessAmtAdvalorem}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>adjustedCessAmtAdvaloremState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>adjustedCessAmtAdvaloremText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>adjustedCessAmtSpecific}" tooltip="{i18n>adjustedCessAmtSpecific}" textAlign="Center" width="100%" wrapping="true"
+					design="Bold"/>
+				<ui:template>
+					<Input name="adjustedCessAmtSpecific" value="{InvoiceItemModel>adjustedCessAmtSpecific}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>adjustedCessAmtSpecificState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>adjustedCessAmtSpecificText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>adjustedCessAmt}" tooltip="{i18n>adjustedCessAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="adjustedStateCessAmt" value="{InvoiceItemModel>adjustedStateCessAmt}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>adjustedStateCessAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>adjustedStateCessAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>reverseCharge}" tooltip="{i18n>reverseCharge}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="reverseCharge" items="{path:'DropDown>/flag', templateShareable:false}" selectedKey="{InvoiceItemModel>/reverseCharge}"
+						valueState="{path:'InvoiceItemModel>/reverseChargeState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/reverseChargeText}">
+						<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110" hAlign="Center">
+				<Label text="{i18n>tcsFlag}" tooltip="{i18n>tcsFlag}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="tcsFlag" items="{path:'DropDown>/flag', templateShareable:false}" selectedKey="{InvoiceItemModel>/tcsFlag}"
+						valueState="{path:'InvoiceItemModel>/tcsFlagState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/tcsFlagText}">
+						<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="180">
+				<Label text="{i18n>ecomGSTIN}" tooltip="{i18n>ecomGSTIN}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="ecomGSTIN" value="{InvoiceItemModel>/ecomGSTIN}" maxLength="15" liveChange="alphaNumeric"
+						valueState="{path:'InvoiceItemModel>/ecomGSTINState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/ecomGSTINText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>tcsAmount}" tooltip="{i18n>tcsAmount}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="tcsAmount" value="{InvoiceItemModel>tcsAmount}" maxLength="18" textAlign="Right" liveChange="positiveDecimal"
+						valueState="{path:'InvoiceItemModel>tcsAmountState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>tcsAmountText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>itcFlag}" tooltip="{i18n>itcFlag}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="itcFlag" items="{path:'DropDown>/itcFlag', templateShareable:false}" selectedKey="{InvoiceItemModel>/itcFlag}"
+						valueState="{path:'InvoiceItemModel>itcFlagState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>itcFlagText}">
+						<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110" hAlign="Center">
+				<Label text="{i18n>claimRefundFlag}" tooltip="{i18n>claimRefundFlag}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="claimRefundFlag" items="{path:'DropDown>/flag', templateShareable:false}" selectedKey="{InvoiceItemModel>/claimRefundFlag}"
+						valueState="{path:'InvoiceItemModel>claimRefundFlagState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>claimRefundFlagText}">
+						<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="Center">
+				<Label text="{i18n>autoPopToRefundFlag}" tooltip="{i18n>autoPopToRefundFlag}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="autoPopToRefundFlag" items="{path:'DropDown>/flag', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/autoPopToRefundFlag}" valueStateText="{InvoiceItemModel>/autoPopToRefundFlagText}"
+						valueState="{path:'InvoiceItemModel>/autoPopToRefundFlagState', formatter:'.formatter.formatState'}">
+						<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>crDrReason}" tooltip="{i18n>crDrReason}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="crDrReason" value="{InvoiceItemModel>crDrReason}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>crDrReasonState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>crDrReasonText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>accountVoucherNo}" tooltip="{i18n>accountVoucherNo}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="accountVoucherNo" value="{InvoiceItemModel>/accountVoucherNo}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>/accountVoucherNoState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/accountVoucherNoText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="150">
+				<Label text="{i18n>accountVoucherDate}" tooltip="{i18n>accountVoucherDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<DatePicker name="accountVoucherDate" value="{InvoiceItemModel>/accountVoucherDate}" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd"
+						placeholder="dd-mm-yyyy" valueState="{path:'InvoiceItemModel>/accountVoucherDateState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/accountVoucherDateText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField1}" tooltip="{i18n>userDefinedField1}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf1" value="{InvoiceItemModel>udf1}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>udf1State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf1Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField2}" tooltip="{i18n>userDefinedField2}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf2" value="{InvoiceItemModel>udf2}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>udf2State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf2Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField3}" tooltip="{i18n>userDefinedField3}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf3" value="{InvoiceItemModel>udf3}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>udf3State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf3Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField4}" tooltip="{i18n>userDefinedField4}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf4" value="{InvoiceItemModel>udf4}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>udf4State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf4Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField5}" tooltip="{i18n>userDefinedField5}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf5" value="{InvoiceItemModel>udf5}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>udf5State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf5Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField6}" tooltip="{i18n>userDefinedField6}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf6" value="{InvoiceItemModel>udf6}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>udf6State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf6Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField7}" tooltip="{i18n>userDefinedField7}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf7" value="{InvoiceItemModel>udf7}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>udf7State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf7Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField8}" tooltip="{i18n>userDefinedField8}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf8" value="{InvoiceItemModel>udf8}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>udf8State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf8Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField9}" tooltip="{i18n>userDefinedField9}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf9" value="{InvoiceItemModel>udf9}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>udf9State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf9Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField10}" tooltip="{i18n>userDefinedField10}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf10" value="{InvoiceItemModel>udf10}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>udf10State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf10Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField11}" tooltip="{i18n>userDefinedField11}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf11" value="{InvoiceItemModel>udf11}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>udf11State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf11Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField12}" tooltip="{i18n>userDefinedField12}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf12" value="{InvoiceItemModel>udf12}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>udf12State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf12Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField13}" tooltip="{i18n>userDefinedField13}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf13" value="{InvoiceItemModel>udf13}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>udf13State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf13Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField14}" tooltip="{i18n>userDefinedField14}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf14" value="{InvoiceItemModel>udf14}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>udf14State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf14Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField15}" tooltip="{i18n>userDefinedField15}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf15" value="{InvoiceItemModel>udf15}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>udf15State', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>udf15Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="160">
+				<Label text="{i18n>eWayBillNo}" tooltip="{i18n>eWayBillNo}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="ewbNo" value="{InvoiceItemModel>/ewbNo}" maxLength="12" liveChange="alphaNumberSpecial"
+						valueState="{path:'InvoiceItemModel>/ewbNoState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/ewbNoText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="150">
+				<Label text="{i18n>eWayBillDate}" tooltip="{i18n>eWayBillDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<DatePicker name="ewbDate" value="{InvoiceItemModel>/ewbDate}" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" placeholder="dd-mm-yyyy"
+						valueState="{path:'InvoiceItemModel>/ewbDateState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/ewbDateText}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+		<ui:footer>
+			<HBox>
+				<ObjectStatus text="{i18n>msgInvMandotory}" state="Error"/>
+			</HBox>
+		</ui:footer>
+	</ui:Table>
+	<ui:Table id="tabInwardEdit" rows="{InvoiceItemModel>/lineItems/}" selectionMode="None" enableSelectAll="false" visible="false">
+		<ui:extension>
+			<Toolbar>
+				<MultiComboBox items="{path:'ReviewFields>/inward/'}" width="20%" placeholder="Column Show / Hide">
+					<core:Item key="{ReviewFields>key}" text="{ReviewFields>text}"/>
+				</MultiComboBox>
+				<ToolbarSpacer/>
+				<!--<Button type="Transparent" id="bPrevError" icon="sap-icon://nav-back" press="navtoPreError" tooltip="Previous Error"/>-->
+				<!--<Button type="Transparent" id="bNextError" icon="sap-icon://navigation-right-arrow" press="navtoNextError" tooltip="Next Error"/>-->
+				<Button type="Accept" text="Save Changes" press="onSaveInwardInvoice"/>
+				<Button type="Emphasized" text="{i18n>changeTrail}" enabled="false"/>
+				<Button type="Emphasized" icon="sap-icon://download" tooltip="Download" press="onPressDownload" enabled="false"/>
+				<Button type="Emphasized" id="bMessage1" icon="sap-icon://message-popup" text="0" tooltip="Errors With Description"
+					press="handleErrorMessages"/>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="10rem">
+				<Label text="{i18n>userId}" tooltip="{i18n>userId}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{InvoiceItemModel>/userId}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="250">
+				<Label text="{i18n>sourceFileName}" tooltip="{i18n>sourceFileName}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Text text="{InvoiceItemModel>/srcFileName}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>profitCentre}" tooltip="{i18n>profitCentre}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox items="{path:'userPermission>/respData/dataSecurity/profitCenter', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/profitCentre}" valueState="{path:'InvoiceItemModel>/profitCentreState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/profitCentreText}">
+						<!--<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>-->
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>plantCode}" tooltip="{i18n>plantCode}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox items="{path:'userPermission>/respData/dataSecurity/plant', templateShareable:false}" selectedKey="{InvoiceItemModel>/plantCode}"
+						valueState="{path:'InvoiceItemModel>/plantCodeState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/plantCodeText}">
+						<!--<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>-->
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>division}" tooltip="{i18n>division}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox items="{path:'userPermission>/respData/dataSecurity/division', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/division}" valueState="{path:'InvoiceItemModel>/divisionState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/divisionText}">
+						<!--<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>-->
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>location}" tooltip="{i18n>location}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox items="{path:'userPermission>/respData/dataSecurity/location', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/location}" valueState="{path:'InvoiceItemModel>/locationState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/locationText}">
+						<!--<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>-->
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>purchaseOrganization}" tooltip="{i18n>purchaseOrganization}" textAlign="Center" width="100%" wrapping="true"
+					design="Bold"/>
+				<ui:template>
+					<ComboBox items="{path:'userPermission>/respData/dataSecurity/purchOrg', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/purchaseOrganization}"
+						valueState="{path:'InvoiceItemModel>/purchaseOrganizationState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/purchaseOrganizationText}">
+						<!--<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>-->
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>userAccess1}" tooltip="{i18n>userAccess1}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess1', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/profitCentre3}"
+						valueState="{path:'InvoiceItemModel>/profitCentre3State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/profitCentre3Text}">
+						<!--<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>-->
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>userAccess2}" tooltip="{i18n>userAccess2}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess2', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/profitCentre4}"
+						valueState="{path:'InvoiceItemModel>/profitCentre4State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/profitCentre4Text}">
+						<!--<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>-->
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>userAccess3}" tooltip="{i18n>userAccess3}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess3', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/profitCentre5}"
+						valueState="{path:'InvoiceItemModel>/profitCentre5State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/profitCentre5Text}">
+						<!--<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>-->
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>userAccess4}" tooltip="{i18n>userAccess4}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess4', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/profitCentre6}"
+						valueState="{path:'InvoiceItemModel>/profitCentre6State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/profitCentre6Text}">
+						<!--<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>-->
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>userAccess5}" tooltip="{i18n>userAccess5}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess5', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/profitCentre7}"
+						valueState="{path:'InvoiceItemModel>/profitCentre7State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/profitCentre7Text}">
+						<!--<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>-->
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>userAccess6}" tooltip="{i18n>userAccess6}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox items="{path:'userPermission>/respData/dataSecurity/userAccess6', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/profitCentre8}"
+						valueState="{path:'InvoiceItemModel>/profitCentre8State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/profitCentre8Text}">
+						<!--<core:Item key="{DataSecurity>value}" text="{DataSecurity>value}"/>-->
+						<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>glCodeTaxableVal}" tooltip="{i18n>glCodeTaxableVal}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{InvoiceItemModel>glCodeTaxableVal}" name="glCodeTaxableVal" maxLength="100"
+						valueState="{path:'InvoiceItemModel>glCodeTaxableValState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>glCodeTaxableValText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>glCodeIgst}" tooltip="{i18n>glCodeIgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{InvoiceItemModel>glCodeIgst}" name="glCodeIgst" maxLength="100"
+						valueState="{path:'InvoiceItemModel>glCodeIgstState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>glCodeIgstText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>glCodeCgst}" tooltip="{i18n>glCodeCgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{InvoiceItemModel>glCodeCgst}" name="glCodeCgst" maxLength="100"
+						valueState="{path:'InvoiceItemModel>glCodeCgstState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>glCodeCgstText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>glCodeSgst}" tooltip="{i18n>glCodeSgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{InvoiceItemModel>glCodeSgst}" name="glCodeSgst" maxLength="100"
+						valueState="{path:'InvoiceItemModel>glCodeSgstState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>glCodeSgstText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>glCodeAdvCess}" tooltip="{i18n>glCodeAdvCess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{InvoiceItemModel>glCodeAdvCess}" name="glCodeAdvCess" maxLength="100"
+						valueState="{path:'InvoiceItemModel>glCodeAdvCessState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>glCodeAdvCessText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>glCodeSpCess}" tooltip="{i18n>glCodeSpCess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{InvoiceItemModel>glCodeSpCess}" name="glCodeSpCess" maxLength="100"
+						valueState="{path:'InvoiceItemModel>glCodeSpCessState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>glCodeSpCessText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>glCodeStateCess}" tooltip="{i18n>glCodeStateCess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input value="{InvoiceItemModel>glCodeStateCess}" name="glCodeStateCess" maxLength="100"
+						valueState="{path:'InvoiceItemModel>glCodeStateCessState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>glCodeStateCessText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="130">
+				<HBox justifyContent="Center" width="100%">
+					<Label text="{i18n>returnPeriod}" tooltip="{i18n>returnPeriod}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<Label text="*" design="Bold" class="redLabel"/>
+				</HBox>
+				<ui:template>
+					<DatePicker name="returnPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy" value="{InvoiceItemModel>/returnPeriod}"
+						valueState="{path:'InvoiceItemModel>/returnPeriodState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/returnPeriodText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="180">
+				<HBox justifyContent="Center" width="100%">
+					<Label text="{i18n>custGstin}" tooltip="{i18n>custGstin}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<Label text="*" design="Bold" class="redLabel"/>
+				</HBox>
+				<ui:template>
+					<Input name="custGstin" value="{InvoiceItemModel>/custGstin}" maxLength="15" liveChange="alphaNumeric"
+						valueState="{path:'InvoiceItemModel>/custGstinState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/custGstinText}" editable="false"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<HBox justifyContent="Center" width="100%">
+					<Label text="{i18n>docType}" tooltip="{i18n>docType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<Label text="*" design="Bold" class="redLabel"/>
+				</HBox>
+				<ui:template>
+					<Input name="docType" value="{InvoiceItemModel>/docType}" maxLength="5" editable="false"
+						valueState="{path:'InvoiceItemModel>/docTypeState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/docTypeText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<HBox justifyContent="Center" width="100%">
+					<Label text="{i18n>supplyType}" tooltip="{i18n>supplyType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<Label text="*" design="Bold" class="redLabel"/>
+				</HBox>
+				<ui:template>
+					<Input name="supplyType" value="{InvoiceItemModel>supplyType}" maxLength="5"
+						valueState="{path:'InvoiceItemModel>supplyTypeState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>supplyTypeText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="160">
+				<HBox justifyContent="Center" width="100%">
+					<Label text="{i18n>docNo}" tooltip="{i18n>docNo}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<Label text="*" design="Bold" class="redLabel"/>
+				</HBox>
+				<ui:template>
+					<Input name="docNo" value="{InvoiceItemModel>/docNo}" maxLength="16" liveChange="alphaNumberSpecial" editable="false"
+						valueState="{path:'InvoiceItemModel>/docNoState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/docNoText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="150">
+				<HBox justifyContent="Center" width="100%">
+					<Label text="{i18n>docDate}" tooltip="{i18n>docDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<Label text="*" design="Bold" class="redLabel"/>
+				</HBox>
+				<ui:template>
+					<DatePicker name="docDate" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" value="{InvoiceItemModel>/docDate}" placeholder="dd-mm-yyyy"
+						valueState="{path:'InvoiceItemModel>/docDateState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/docDateText}"
+						editable="false"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="160">
+				<Label text="{i18n>originalDocNo}" tooltip="{i18n>originalDocNo}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="originalDocNo" value="{InvoiceItemModel>originalDocNo}" maxLength="16" liveChange="alphaNumberSpecial"
+						valueState="{path:'InvoiceItemModel>originalDocNoState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>originalDocNoText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="150">
+				<Label text="{i18n>originalDocDate}" tooltip="{i18n>originalDocDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<DatePicker name="originalDocDate" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" value="{InvoiceItemModel>/originalDocDate}"
+						placeholder="dd-mm-yyyy" valueState="{path:'InvoiceItemModel>originalDocDateState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>originalDocDateText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="Center">
+				<Label text="{i18n>crDrPreGst}" tooltip="{i18n>crDrPreGst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="crDrPreGst" items="{path:'DropDown>/flag', templateShareable:false}" selectedKey="{InvoiceItemModel>/crDrPreGst}"
+						valueState="{path:'InvoiceItemModel>/crDrPreGstState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/crDrPreGstText}">
+						<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>itemNo}" tooltip="{i18n>itemNo}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="itemNo" value="{InvoiceItemModel>itemNo}" textAlign="End"
+						valueState="{path:'InvoiceItemModel>itemNoState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>itemNoText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="180">
+				<Label text="{i18n>supplierGstin}" tooltip="{i18n>supplierGstin}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="suppGstin" value="{InvoiceItemModel>/suppGstin}" maxLength="15" liveChange="alphaNumeric"
+						valueState="{path:'InvoiceItemModel>/suppGstinState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/suppGstinText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>supplierType}" tooltip="{i18n>supplierType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="custOrSuppType" value="{InvoiceItemModel>/custOrSuppType}" maxLength="1"
+						valueState="{path:'InvoiceItemModel>/custOrSuppTypeState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/custOrSuppTypeText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>diffPercent}" tooltip="{i18n>diffPercent}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="diffPercent" items="{path:'DropDown>/diffPercent', templateShareable:false}" selectedKey="{InvoiceItemModel>/diffPercent}"
+						valueState="{path:'InvoiceItemModel>/diffPercentState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/diffPercentText}">
+						<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="180">
+				<Label text="{i18n>originalSupplierGstin}" tooltip="{i18n>originalSupplierGstin}" textAlign="Center" width="100%" wrapping="true"
+					design="Bold"/>
+				<ui:template>
+					<Input name="originalSupplierGstin" value="{InvoiceItemModel>/originalSupplierGstin}" maxLength="15" liveChange="alphaNumeric"
+						valueState="{path:'InvoiceItemModel>/originalSupplierGstinState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/originalSupplierGstinText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="160">
+				<Label text="{i18n>supplierName}" tooltip="{i18n>supplierName}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="custOrSupName" value="{InvoiceItemModel>/custOrSupName}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>/custOrSupNameState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/custOrSupNameText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>supplierCode}" tooltip="{i18n>supplierCode}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="custOrSupCode" value="{InvoiceItemModel>/custOrSupCode}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>/custOrSupCodeState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/custOrSupCodeText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="200">
+				<Label text="{i18n>supplierAddress1}" tooltip="{i18n>supplierAddress1}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="custOrSupAddr1" value="{InvoiceItemModel>/custOrSupAddr1}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>/custOrSupAddr1State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/custOrSupAddr1Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="200">
+				<Label text="{i18n>supplierAddress2}" tooltip="{i18n>supplierAddress2}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="custOrSupAddr2" value="{InvoiceItemModel>/custOrSupAddr2}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>/custOrSupAddr2State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/custOrSupAddr2Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="200">
+				<Label text="{i18n>supplierAddress3}" tooltip="{i18n>supplierAddress3}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="custOrSupAddr3" value="{InvoiceItemModel>/custOrSupAddr3}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>/custOrSupAddr3State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/custOrSupAddr3Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="200">
+				<Label text="{i18n>supplierAddress4}" tooltip="{i18n>supplierAddress4}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="custOrSupAddr4" value="{InvoiceItemModel>/custOrSupAddr4}" maxLength="100"
+						valueState="{path:'InvoiceItemModel>/custOrSupAddr4State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/custOrSupAddr4Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>pos}" tooltip="{i18n>pos}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="pos" value="{InvoiceItemModel>/pos}" maxLength="2"
+						valueState="{path:'InvoiceItemModel>/posState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/posText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>stateApplyingCess}" tooltip="{i18n>stateApplyingCess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="stateApplyingCess" value="{InvoiceItemModel>/stateApplyingCess}" maxLength="2"
+						valueState="{path:'InvoiceItemModel>/stateApplyingCessState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/stateApplyingCessText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="130">
+				<Label text="{i18n>portCode}" tooltip="{i18n>portCode}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="portCode" value="{InvoiceItemModel>/portCode}" maxLength="6"
+						valueState="{path:'InvoiceItemModel>/portCodeState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/portCodeText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>billOfEntryNo}" tooltip="{i18n>billOfEntryNo}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="billOfEntryNo" value="{InvoiceItemModel>/billOfEntryNo}" maxLength="7" liveChange="positiveInteger"
+						valueState="{path:'InvoiceItemModel>/billOfEntryNoState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/billOfEntryNoText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="150">
+				<Label text="{i18n>billOfEntryDate}" tooltip="{i18n>billOfEntryDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<DatePicker name="billOfEntryDate" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" value="{InvoiceItemModel>/billOfEntryDate}"
+						placeholder="dd-mm-yyyy" valueState="{path:'InvoiceItemModel>/billOfEntryDateState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/billOfEntryDateText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>cifValue}" tooltip="{i18n>cifValue}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="cifValue" value="{InvoiceItemModel>cifValue}" textAlign="End" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>cifValueState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>cifValueText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>customDuty}" tooltip="{i18n>customDuty}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="customDuty" value="{InvoiceItemModel>customDuty}" textAlign="End" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>customDutyState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>customDutyText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>hsnsacCode}" tooltip="{i18n>hsnsacCode}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="hsnsacCode" value="{InvoiceItemModel>hsnsacCode}" maxLength="8" liveChange="positiveInteger"
+						valueState="{path:'InvoiceItemModel>hsnsacCodeState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>hsnsacCodeText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="130">
+				<Label text="{i18n>productCode}" tooltip="{i18n>productCode}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="productCode" value="{InvoiceItemModel>productCode}"
+						valueState="{path:'InvoiceItemModel>productCodeState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>productCodeText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="160">
+				<Label text="{i18n>itemDesc}" tooltip="{i18n>itemDesc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="itemDesc" value="{InvoiceItemModel>itemDesc}"
+						valueState="{path:'InvoiceItemModel>itemDescState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>itemDescText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>itemType}" tooltip="{i18n>itemType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="itemType" value="{InvoiceItemModel>itemType}"
+						valueState="{path:'InvoiceItemModel>itemTypeState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>itemTypeText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120">
+				<Label text="{i18n>itemUqc}" tooltip="{i18n>itemUqc}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="itemUqc" value="{InvoiceItemModel>itemUqc}"
+						valueState="{path:'InvoiceItemModel>itemUqcState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>itemUqcText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>itemQty}" tooltip="{i18n>itemQty}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="itemQty" value="{InvoiceItemModel>itemQty}" maxLength="18" liveChange="positiveDecimal"
+						valueState="{path:'InvoiceItemModel>itemQtyState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>itemQtyText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110" hAlign="Center">
+				<Label text="{i18n>sec7OfIgstFlag}" tooltip="{i18n>sec7OfIgstFlag}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="sec7OfIgstFlag" items="{path:'DropDown>/flag', templateShareable:false}" selectedKey="{InvoiceItemModel>/sec7OfIgstFlag}"
+						valueState="{path:'InvoiceItemModel>/sec7OfIgstFlagState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/sec7OfIgstFlagText}">
+						<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>taxableVal}" tooltip="{i18n>taxableVal}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="taxableVal" value="{InvoiceItemModel>taxableVal}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>taxableValState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>taxableValText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>igstRate}" tooltip="{i18n>igstRate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="igstRt" value="{InvoiceItemModel>igstRt}" maxLength="18"
+						valueState="{path:'InvoiceItemModel>igstRtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>igstRtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>igstAmt}" tooltip="{i18n>igstAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="igstAmt" value="{InvoiceItemModel>igstAmt}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>igstAmtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>igstAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>cgstRate}" tooltip="{i18n>cgstRate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="cgstRt" value="{InvoiceItemModel>cgstRt}" maxLength="18"
+						valueState="{path:'InvoiceItemModel>cgstRtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>cgstRtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>cgstAmt}" tooltip="{i18n>cgstAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="cgstAmt" value="{InvoiceItemModel>cgstAmt}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>cgstAmtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>cgstAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>sgstRate}" tooltip="{i18n>sgstRate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="sgstRt" value="{InvoiceItemModel>sgstRt}" maxLength="18"
+						valueState="{path:'InvoiceItemModel>sgstRtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>sgstRtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>sgstAmt}" tooltip="{i18n>sgstAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="sgstAmt" value="{InvoiceItemModel>sgstAmt}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>sgstAmtState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>sgstAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>cessRateAdvalorem}" tooltip="{i18n>cessRateAdvalorem}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="cessRtAdvalorem" value="{InvoiceItemModel>cessRtAdvalorem}" maxLength="18" liveChange="positiveDecimal"
+						valueState="{path:'InvoiceItemModel>cessRtAdvaloremState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>cessRtAdvaloremText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>cessAmtAdvalorem}" tooltip="{i18n>cessAmtAdvalorem}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="cessAmtAdvalorem" value="{InvoiceItemModel>cessAmtAdvalorem}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>cessAmtAdvaloremState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>cessAmtAdvaloremText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>cessRateSpecific}" tooltip="{i18n>cessRateSpecific}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="cessRtSpecific" value="{InvoiceItemModel>cessRtSpecific}" maxLength="18" liveChange="positiveDecimal"
+						valueState="{path:'InvoiceItemModel>cessRtSpecificState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>cessRtSpecificText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>cessAmtSpecfic}" tooltip="{i18n>cessAmtSpecfic}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="cessAmtSpecfic" value="{InvoiceItemModel>cessAmtSpecfic}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>cessAmtSpecficState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>cessAmtSpecficText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>stateCessRate}" tooltip="{i18n>stateCessRate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="stateCessRt" value="{InvoiceItemModel>stateCessRt}" maxLength="18" liveChange="positiveDecimal"
+						valueState="{path:'InvoiceItemModel>stateCessRtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>stateCessRtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>stateCessAmt}" tooltip="{i18n>stateCessAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="stateCessAmt" value="{InvoiceItemModel>stateCessAmt}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>stateCessAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>stateCessAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>otherValues}" tooltip="{i18n>otherValues}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="otherValues" value="{InvoiceItemModel>otherValues}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>otherValuesState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>otherValuesText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="190">
+				<Label text="{i18n>lineItemAmt}" tooltip="{i18n>lineItemAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="lineItemAmt" value="{InvoiceItemModel>lineItemAmt}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>lineItemAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>lineItemAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110" hAlign="Center">
+				<Label text="{i18n>claimRefundFlag}" tooltip="{i18n>claimRefundFlag}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="claimRefundFlag" items="{path:'DropDown>/flag', templateShareable:false}" selectedKey="{InvoiceItemModel>/claimRefundFlag}"
+						valueState="{path:'InvoiceItemModel>claimRefundFlagState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>claimRefundFlagText}">
+						<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="120" hAlign="Center">
+				<Label text="{i18n>autoPopToRefundFlag}" tooltip="{i18n>autoPopToRefundFlag}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="autoPopToRefundFlag" items="{path:'DropDown>/flag', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/autoPopToRefundFlag}"
+						valueState="{path:'InvoiceItemModel>/autoPopToRefundFlagState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/autoPopToRefundFlagText}">
+						<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>adjustmentRefNo}" tooltip="{i18n>adjustmentRefNo}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="adjustmentRefNo" value="{InvoiceItemModel>adjustmentRefNo}" maxLength="16" liveChange="alphaNumberSpecial"
+						valueState="{path:'InvoiceItemModel>adjustmentRefNoState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>adjustmentRefNoText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="150">
+				<Label text="{i18n>adjustmentRefDate}" tooltip="{i18n>adjustmentRefDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<DatePicker name="adjustmentRefDate" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" value="{InvoiceItemModel>/adjustmentRefDate}"
+						placeholder="dd-mm-yyyy" valueState="{path:'InvoiceItemModel>adjustmentRefDateState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>adjustmentRefDateText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>adjustedTaxableValue}" tooltip="{i18n>adjustedTaxableValue}" textAlign="Center" width="100%" wrapping="true"
+					design="Bold"/>
+				<ui:template>
+					<Input name="adjustedTaxableValue" value="{InvoiceItemModel>adjustedTaxableValue}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>adjustedTaxableValueState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>adjustedTaxableValueText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>adjustedIgstAmt}" tooltip="{i18n>adjustedIgstAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="adjustedIgstAmt" value="{InvoiceItemModel>adjustedIgstAmt}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>adjustedIgstAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>adjustedIgstAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>adjustedCgstAmt}" tooltip="{i18n>adjustedCgstAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="adjustedCgstAmt" value="{InvoiceItemModel>adjustedCgstAmt}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>adjustedCgstAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>adjustedCgstAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>adjustedSgstAmt}" tooltip="{i18n>adjustedSgstAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="adjustedSgstAmt" value="{InvoiceItemModel>adjustedSgstAmt}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>adjustedSgstAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>adjustedSgstAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>adjustedCessAmtAdvalorem}" tooltip="{i18n>adjustedCessAmtAdvalorem}" textAlign="Center" width="100%" wrapping="true"
+					design="Bold"/>
+				<ui:template>
+					<Input name="adjustedCessAmtAdvalorem" value="{InvoiceItemModel>adjustedCessAmtAdvalorem}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>adjustedCessAmtAdvaloremState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>adjustedCessAmtAdvaloremText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>adjustedCessAmtSpecific}" tooltip="{i18n>adjustedCessAmtSpecific}" textAlign="Center" width="100%" wrapping="true"
+					design="Bold"/>
+				<ui:template>
+					<Input name="adjustedCessAmtSpecific" value="{InvoiceItemModel>adjustedCessAmtSpecific}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>adjustedCessAmtSpecificState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>adjustedCessAmtSpecificText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>adjustedCessAmt}" tooltip="{i18n>adjustedCessAmt}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="adjustedCessAmt" value="{InvoiceItemModel>adjustedCessAmt}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>adjustedCessAmtState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>adjustedCessAmtText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>reverseCharge}" tooltip="{i18n>reverseCharge}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="reverseCharge" items="{path:'DropDown>/flag', templateShareable:false}" selectedKey="{InvoiceItemModel>/reverseCharge}"
+						valueState="{path:'InvoiceItemModel>/reverseChargeState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/reverseChargeText}">
+						<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110" hAlign="Center">
+				<Label text="{i18n>eligibilityIndicator}" tooltip="{i18n>eligibilityIndicator}" textAlign="Center" width="100%" wrapping="true"
+					design="Bold"/>
+				<ui:template>
+					<Input name="eligibilityIndicator" value="{InvoiceItemModel>eligibilityIndicator}" maxLength="2"
+						valueState="{path:'InvoiceItemModel>eligibilityIndicatorState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>eligibilityIndicatorText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="150">
+				<Label text="{i18n>commonSupplyIndicator}" tooltip="{i18n>commonSupplyIndicator}" textAlign="Center" width="100%" wrapping="true"
+					design="Bold"/>
+				<ui:template>
+					<ComboBox name="commonSupplyIndicator" items="{path:'DropDown>/flag', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>commonSupplyIndicator}" valueStateText="{InvoiceItemModel>commonSupplyIndicatorText}"
+						valueState="{path:'InvoiceItemModel>commonSupplyIndicatorState', formatter:'.formatter.formatState'}">
+						<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>availableIgst}" tooltip="{i18n>availableIgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="availableIgst" value="{InvoiceItemModel>availableIgst}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>availableIgstState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>availableIgstText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>availableCgst}" tooltip="{i18n>availableCgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="availableCgst" value="{InvoiceItemModel>availableCgst}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>availableCgstState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>availableCgstText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>availableSgst}" tooltip="{i18n>availableSgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="availableSgst" value="{InvoiceItemModel>availableSgst}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>availableSgstState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>availableSgstText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="110">
+				<Label text="{i18n>availableCess}" tooltip="{i18n>availableCess}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="availableCess" value="{InvoiceItemModel>availableCess}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>availableCessState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>availableCessText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="180">
+				<Label text="{i18n>itcEntitlement}" tooltip="{i18n>itcEntitlement}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<ComboBox name="itcEntitlement" items="{path:'DropDown>/flag', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/itcEntitlementState}" valueStateText="{InvoiceItemModel>/itcEntitlementText}"
+						valueState="{path:'InvoiceItemModel>/itcEntitlementState', formatter:'.formatter.formatState'}">
+						<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="180">
+				<Label text="{i18n>itcReversalIdentifier}" tooltip="{i18n>itcReversalIdentifier}" textAlign="Center" width="100%" wrapping="true"
+					design="Bold"/>
+				<ui:template>
+					<ComboBox name="itcReversalIdentifier" items="{path:'DropDown>/itcFlag', templateShareable:false}"
+						selectedKey="{InvoiceItemModel>/itcReversalIdentifier}" valueStateText="{InvoiceItemModel>/itcReversalIdentifierText}"
+						valueState="{path:'InvoiceItemModel>/itcReversalIdentifierState', formatter:'.formatter.formatState'}">
+						<core:Item key="{DropDown>key}" text="{DropDown>key}"/>
+					</ComboBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="160">
+				<Label text="{i18n>crDrReason}" tooltip="{i18n>crDrReason}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="crDrReason" value="{InvoiceItemModel>crDrReason}"
+						valueState="{path:'InvoiceItemModel>crDrReasonState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>crDrReasonText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="140">
+				<Label text="{i18n>purchaseVoucherNum}" tooltip="{i18n>purchaseVoucherNum}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="purchaseVoucherNum" value="{InvoiceItemModel>/purchaseVoucherNum}"
+						valueState="{path:'InvoiceItemModel>/purchaseVoucherNumState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/purchaseVoucherNumText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="150">
+				<Label text="{i18n>purchaseVoucherDate}" tooltip="{i18n>purchaseVoucherDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<DatePicker name="purchaseVoucherDate" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" value="{InvoiceItemModel>/purchaseVoucherDate}"
+						placeholder="dd-mm-yyyy" valueState="{path:'InvoiceItemModel>/purchaseVoucherDateState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/purchaseVoucherDateText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="160">
+				<Label text="{i18n>postingDate}" tooltip="{i18n>postingDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<DatePicker name="postingDate" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" value="{InvoiceItemModel>/postingDate}"
+						placeholder="dd-mm-yyyy" valueState="{path:'InvoiceItemModel>/postingDateState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>/postingDateText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="160">
+				<Label text="{i18n>paymentVoucherNumber}" tooltip="{i18n>paymentVoucherNumber}" textAlign="Center" width="100%" wrapping="true"
+					design="Bold"/>
+				<ui:template>
+					<Input name="paymentVoucherNumber" value="{InvoiceItemModel>paymentVoucherNumber}"
+						valueState="{path:'InvoiceItemModel>paymentVoucherNumberState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>paymentVoucherNumberText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="160">
+				<Label text="{i18n>paymentDate}" tooltip="{i18n>paymentDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<DatePicker name="paymentDate" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" placeholder="dd-mm-yyyy"
+						value="{InvoiceItemModel>paymentDate}" valueState="{path:'InvoiceItemModel>paymentDateState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>paymentDateText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="160">
+				<Label text="{i18n>contractNumber}" tooltip="{i18n>contractNumber}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="contractNumber" value="{InvoiceItemModel>contractNumber}"
+						valueState="{path:'InvoiceItemModel>contractNumberState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>contractNumberText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="160">
+				<Label text="{i18n>contractDate}" tooltip="{i18n>contractDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<DatePicker name="contractDate" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" placeholder="dd-mm-yyyy"
+						value="{InvoiceItemModel>contractDate}" valueState="{path:'InvoiceItemModel>contractDateState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>contractDateText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="160">
+				<Label text="{i18n>contractValue}" tooltip="{i18n>contractValue}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="contractValue" value="{InvoiceItemModel>contractValue}" maxLength="19" liveChange="anyDecimalValue"
+						valueState="{path:'InvoiceItemModel>contractValueState', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>contractValueText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField1}" tooltip="{i18n>userDefinedField1}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf1" value="{InvoiceItemModel>udf1}" valueState="{path:'InvoiceItemModel>udf1State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>udf1Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField2}" tooltip="{i18n>userDefinedField2}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf2" value="{InvoiceItemModel>udf2}" valueState="{path:'InvoiceItemModel>udf2State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>udf2Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField3}" tooltip="{i18n>userDefinedField3}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf3" value="{InvoiceItemModel>udf3}" valueState="{path:'InvoiceItemModel>udf3State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>udf3Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField4}" tooltip="{i18n>userDefinedField4}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf4" value="{InvoiceItemModel>udf4}" valueState="{path:'InvoiceItemModel>udf4State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>udf4Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField5}" tooltip="{i18n>userDefinedField5}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf5" value="{InvoiceItemModel>udf5}" valueState="{path:'InvoiceItemModel>udf5State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>udf5Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField6}" tooltip="{i18n>userDefinedField6}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf6" value="{InvoiceItemModel>udf6}" valueState="{path:'InvoiceItemModel>udf6State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>udf6Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField7}" tooltip="{i18n>userDefinedField7}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf7" value="{InvoiceItemModel>udf7}" valueState="{path:'InvoiceItemModel>udf7State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>udf7Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField8}" tooltip="{i18n>userDefinedField8}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf8" value="{InvoiceItemModel>udf8}" valueState="{path:'InvoiceItemModel>udf8State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>udf8Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField9}" tooltip="{i18n>userDefinedField9}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf9" value="{InvoiceItemModel>udf9}" valueState="{path:'InvoiceItemModel>udf9State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>udf9Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField10}" tooltip="{i18n>userDefinedField10}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf10" value="{InvoiceItemModel>udf10}" valueState="{path:'InvoiceItemModel>udf10State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>udf10Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField11}" tooltip="{i18n>userDefinedField11}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf11" value="{InvoiceItemModel>udf11}" valueState="{path:'InvoiceItemModel>udf11State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>udf11Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField12}" tooltip="{i18n>userDefinedField12}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf12" value="{InvoiceItemModel>udf12}" valueState="{path:'InvoiceItemModel>udf12State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>udf12Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField13}" tooltip="{i18n>userDefinedField13}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf13" value="{InvoiceItemModel>udf13}" valueState="{path:'InvoiceItemModel>udf13State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>udf13Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField14}" tooltip="{i18n>userDefinedField14}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf14" value="{InvoiceItemModel>udf14}" valueState="{path:'InvoiceItemModel>udf14State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>udf14Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="170">
+				<Label text="{i18n>userDefinedField15}" tooltip="{i18n>userDefinedField15}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="udf15" value="{InvoiceItemModel>udf15}" valueState="{path:'InvoiceItemModel>udf15State', formatter:'.formatter.formatState'}"
+						valueStateText="{InvoiceItemModel>udf15Text}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="160">
+				<Label text="{i18n>eWayBillNo}" tooltip="{i18n>eWayBillNo}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<Input name="ewbNo" value="{InvoiceItemModel>/ewbNo}" maxLength="12" liveChange="alphaNumberSpecial"
+						valueState="{path:'InvoiceItemModel>/ewbNoState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/ewbNoText}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column minWidth="150">
+				<Label text="{i18n>eWayBillDate}" tooltip="{i18n>eWayBillDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				<ui:template>
+					<DatePicker name="ewbDate" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" value="{InvoiceItemModel>/ewbDate}" placeholder="dd-mm-yyyy"
+						valueState="{path:'InvoiceItemModel>/ewbDateState', formatter:'.formatter.formatState'}" valueStateText="{InvoiceItemModel>/ewbDateText}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+		<ui:footer>
+			<HBox>
+				<ObjectStatus text="{i18n>msgInvMandotory}" state="Error"/>
+			</HBox>
+		</ui:footer>
+	</ui:Table>
+</core:FragmentDefinition>

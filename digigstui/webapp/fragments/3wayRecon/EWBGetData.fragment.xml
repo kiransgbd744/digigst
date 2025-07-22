@@ -1,0 +1,138 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" xmlns:l="sap.ui.layout" xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<Title text="Get EWB Data" titleStyle="H3" class="tinyMarginTop"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="GSTINEntityID" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" selectionChange="selectAll">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="a" label="Criteria" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idReconType12" class="input" forceSelection="true" change="onRecontypeChange">
+									<core:Item key="DocumentDate" text="Document Date"/>
+									<core:Item key="BillDate" text="E-way Bill Date"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="From Date" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="gstr3bDate1" displayFormat="dd MMM yyyy" valueFormat="yyyy-MM-dd" change="onFromDateChange"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="To Date" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="gstr3bDate2" displayFormat="dd MMM yyyy" valueFormat="yyyy-MM-dd"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onPressClearEWB"/>
+					<Button text="Filter" class="buttoncolor" press="onSearchEWB"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapFDynamicPageAlignContent" width="auto" height="500px">
+				<ui:Table rows="{EWB>/resp/}" enableColumnReordering="false" class="sapUiTinyMarginTop" visibleRowCount="8" id="gstrTabId">
+					<ui:extension >
+						<Toolbar>
+							<ToolbarSpacer/>
+							<Button id="idEWBData" text="Get EWB Data" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onPressEWBData" visible="false"/>
+							<MenuButton class="buttoncolorSec" text="Download Report" beforeMenuOpen="onBeforeMenu">
+								<Menu itemSelected="onMenuItemPressdownload" id="DOWNREPORTS">
+									<MenuItem text="EWB data_NIC report" key="EWBData"/>
+									<MenuItem text="EWB Detail Report" key="EWB_DETAIL_REPORT"/>
+								</Menu>
+							</MenuButton>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column>
+							<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<VBox>
+									<HBox>
+										<Text text="{EWB>stateName}" width="8rem" class="stateColor"/>
+										<Text text="{=${EWB>regType}==='REGULAR'?'':${EWB>regType}}" class="stateColor fontSmall"/>
+									</HBox>
+									<HBox alignContent="Start" justifyContent="SpaceBetween">
+										<Link text="{EWB>gstin}" emphasized="true" press="onPressGstr1Summary"/>
+										<core:Icon src="sap-icon://circle-task-2" visible="{=${EWB>stateName}===''?false:true}" size="0.8rem"
+											color="{=${EWB>authStatus}==='A'?'#00ff00':'#ff0000'}" press="onPressGenerateOTP"/>
+									</HBox>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<Label text="Get EWB Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<VBox width="100%" class="sapUiTinyMarginTopBottom">
+									<ObjectStatus text="{EWB>ewbGetCallStatus}" state="{path:'EWB>ewbGetCallStatus', formatter:'.formatter.statusClrEWB'}" active="true"
+										press="onSaveStatus"/>
+									<Text text="{EWB>ewbGetCallIniTime}" class="timeStmpClr"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<Label text="Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{EWB>countOfRecords}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{parts:[{path : 'EWB>taxableValue'}]}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{EWB>totalTax}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center">
+							<Label text="Invoice Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{EWB>invoiceValue}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+					<ui:footer>
+						<Toolbar>
+							<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+							<Text text="Auth Token Active"/>
+							<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+							<Text text="Auth Token Inactive"/>
+							<ToolbarSpacer/>
+							<Label text="Note: EWB Get calls are auto scheduled every midnight" design="Bold"/>
+						</Toolbar>
+					</ui:footer>
+				</ui:Table>
+			</Panel>
+		</f:content>
+		<f:footer>
+			<OverflowToolbar class="cl_ToolbarColor" height="3rem">
+				<ToolbarSpacer/>
+				<Label text="© 2021 | All Rights Reserved. Content within this application is confidential and meant for EY staff and EY clients only."
+					class="logoText"/>
+				<ToolbarSpacer/>
+			</OverflowToolbar>
+		</f:footer>
+	</f:DynamicPage>
+</core:FragmentDefinition>

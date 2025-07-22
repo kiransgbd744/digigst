@@ -1,0 +1,72 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage >
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Label text="Scenario Permission" design="Bold"/>
+					<!--<HBox>-->
+					<!--	<Label text="Entity :" class="sapUiTinyMarginTop" design="Bold"/>-->
+					<!--	<Select items="{entityUser>/resp}" change="onSelectionChangeEntity" width="12rem" id="idEntityUserCreation" class="sapUiTinyMarginBegin">-->
+					<!--		<core:Item key="{entityUser>entityId}" text="{entityUser>entityName}"/>-->
+					<!--	</Select>-->
+					<!--</HBox>-->
+				</f:heading>
+				<f:actions>
+					<Button type="Emphasized" icon="sap-icon://save" text="Submit"  press="onSubmit" />
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<ui:Table rows="{stubData>/SenarioPer1/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10" fixedRowCount="0"
+					fixedColumnCount="0" enableSelectAll="true">
+					<ui:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<Button type="Accept" icon="sap-icon://edit" tooltip="Edit rows"  press="onEditRows"/>
+							<Button type="Accept" icon="sap-icon://add" tooltip="Add row"  press="onAddrow"/>
+							<Button type="Reject" icon="sap-icon://delete" tooltip="Delete rows"  press="onDeleteRows"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="4rem" headerSpan="0">
+							<ui:multiLabels>
+								<Label text="S.No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{stubData>serialno}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="" hAlign="Left">
+							<ui:multiLabels>
+								<Label text="Scenario Category" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{stubData>SenarioCat}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="" hAlign="Left">
+							<ui:multiLabels>
+								<Label text="Scenario Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{stubData>SenarioApi}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="" hAlign="Center">
+							<ui:multiLabels>
+								<Label text="Permission" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<CheckBox selected="{stubData>Permission}" />
+							</ui:template>
+						</ui:Column>
+						
+					</ui:columns>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

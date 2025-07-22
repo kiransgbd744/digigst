@@ -1,0 +1,158 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="idDPMasterFileUpload">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Label text="File Upload" design="Bold"/>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<HBox>
+						<SegmentedButton selectedKey="Upload" selectionChange="onChangeFileStatus" class="sapUiLargeMarginBegin" visible="true">
+							<items>
+								<SegmentedButtonItem text="FIle Upload" key="Upload" width="6rem"/>
+								<SegmentedButtonItem text="File Status" key="Status" width="6rem"/>
+							</items>
+						</SegmentedButton>
+					</HBox>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader>
+				<f:content>
+					<VBox>
+						<HBox id="hbRbgFileStatus" visible="true">
+							<Label id="lRbgMasterStatus" text="Template Type:" labelFor="rbgStatus" design="Bold" class="sapUiTinyMarginTop sapUiTinyMarginEnd"/>
+							<RadioButtonGroup id="rbgMasterStatus" columns="4" width="100%" select="onSelectChangeRadioButton">
+								<buttons>
+									<RadioButton text="Product Master"/>
+									<RadioButton text="Item Master"/>
+									<RadioButton text="Customer Master"/>
+									<RadioButton text="Vendor Master"/>
+								</buttons>
+							</RadioButtonGroup>
+						</HBox>
+						<fb:FilterBar id="fbStatus" width="90%" showGoOnFB="true" showClearOnFB="false" showFilterConfiguration="false" search="onSearchFileStatus"
+							clear="onClearFilter" useToolbar="false" visible="false">
+							<fb:filterGroupItems>
+								<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="File Type" visibleInFilterBar="true"
+									visible="{=!${DataStatus>/apiFilter}}">
+									<fb:control>
+										<Select id="slStatsFileType" forceSelection="true" items="{FileType>/}">
+											<core:Item key="{FileType>key}" text="{FileType>text}"/>
+										</Select>
+									</fb:control>
+								</fb:FilterGroupItem>-->
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="{i18n>Entity}" visibleInFilterBar="true"
+									visible="{=${DataStatus>/apiFilter}&amp;&amp;!${DataStatus>/returnPeriod}}">
+									<fb:control>
+										<Select id="slMFUEntity" items="{EntityModel>/resp}">
+											<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>
+										</Select>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>fromDate}" visibleInFilterBar="true"
+									visible="{=${DataStatus>/apiFilter}&amp;&amp;!${DataStatus>/returnPeriod}}">
+									<fb:control>
+										<DatePicker id="iFromDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" change="onChangeDateValue"/>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="I" label="{i18n>toDate}" visibleInFilterBar="true"
+									visible="{=${DataStatus>/apiFilter}&amp;&amp;!${DataStatus>/returnPeriod}}">
+									<fb:control>
+										<DatePicker id="iToDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd"/>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="{i18n>File Type}" visibleInFilterBar="true"
+									visible="{=${DataStatus>/apiFilter}&amp;&amp;!${DataStatus>/returnPeriod}}">
+									<fb:control>
+										<Select id="slMFUFileType">
+											<core:Item key="CUSTOMER" text="CUSTOMER"/>
+											<core:Item key="VENDOR" text="VENDOR"/>
+											<core:Item key="PRODUCT" text="PRODUCT"/>
+											<core:Item key="ITEM" text="ITEM"/>
+										</Select>
+									</fb:control>
+								</fb:FilterGroupItem>
+							</fb:filterGroupItems>
+						</fb:FilterBar>
+					</VBox>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<VBox>
+				<l:HorizontalLayout id="idHorizontalLayout">
+					<Select id="slEntity" items="{EntityModel>/resp}" change="onSelectChangeProduct" width="15rem" class="sapUiTinyMarginBeginEnd">
+						<core:ListItem key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>
+					</Select>
+					<u:FileUploader id="ucMasterFileUpload" style="Emphasized" name="file" fileType="xlsx,csv,xls,xlsm" width="25rem"
+						sameFilenameAllowed="false" sendXHR="true" tooltip="Upload your file to the local server" uploadComplete="handleUploadComplete"/>
+					<Button text="Upload File" press="handleUploadPress" class="sapUiTinyMarginBegin"/>
+				</l:HorizontalLayout>
+				<ui:Table id="tabFileStatus" rows="{FileStatus>/}" selectionMode="None" selectionBehavior="Row" visibleRowCount="10" visible="false"
+					enableSelectAll="false" class="sapUiSmallMarginBeginEnd">
+					<ui:columns>
+						<ui:Column width="12rem">
+							<Label text="{i18n>uploadDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{path:'FileStatus>uploadedOn', formatter:'.formatter.dateFormat'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="12rem">
+							<Label text="{i18n>uploadBy}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{FileStatus>uploadedBy}"/>
+							</ui:template>
+						</ui:Column>
+						<!--<ui:Column width="">
+							<Label text="{i18n>dataType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{FileStatus>dataType}"/>
+							</ui:template>
+						</ui:Column>-->
+						<ui:Column width="12rem">
+							<Label text="{i18n>fileType}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<Text text="{path:'FileStatus>fileType', formatter:'.formatter.fileType'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="">
+							<Label text="{i18n>fileName}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="SpaceBetween">
+									<Text text="{FileStatus>fileName}"/>
+									<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" alt="Download" press="onPressFileStatusDownload">
+										<core:dependents>
+											<Text text="fileName"/>
+										</core:dependents>
+									</core:Icon>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<Label text="Error File" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							<ui:template>
+								<HBox alignItems="Start" justifyContent="SpaceBetween">
+									<Text text="{FileStatus>errorCount}"/>
+									<core:Icon src="sap-icon://download" size="0.75rem" class="sapUiTinyMarginBegin" alt="Download" press="onPressFileStatusDownload">
+										<core:dependents>
+											<Text text="errorCount"/>
+										</core:dependents>
+									</core:Icon>
+								</HBox>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+					<ui:footer>
+						<ObjectStatus text="{i18n>msgFileSummary}" state="Error"/>
+					</ui:footer>
+				</ui:Table>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

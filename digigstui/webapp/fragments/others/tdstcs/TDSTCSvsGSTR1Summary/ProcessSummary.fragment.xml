@@ -1,0 +1,333 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage id="dpGstr1vs3Summary" class="sapUiNoContentPadding sapUiNoMargin" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" class="sapUiTinyMarginEnd" tooltip="{i18>back}" press="onPressBack"/>
+						<Title text="TDS / TCS vs GSTR-1 Summary" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="slSummaryGstin" items="{path:'DataPermission>/respData/dataSecurity/gstin'}">
+									<core:Item key="{DataPermission>value}" text="{DataPermission>value}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Deductor GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slSDeductorGSTIN" items="{path:'userPermission>/respData/dataSecurity/gstin111'}" selectionChange="selectAll">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Indicator" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slSIndicator" items="{path:'userPermission>/respData/dataSecurity/gstin111'}" selectionChange="selectAll">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Financial Year" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<Select width="100%" id="dtSFinYearGstrNew" forceSelection="true">
+									<core:Item key="2017-18" text="2017-18"/>
+									<core:Item key="2018-19" text="2018-19"/>
+									<core:Item key="2019-20" text="2019-20"/>
+									<core:Item key="2020-21" text="2020-21"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<!--<Button id="bProcessFilter" icon="sap-icon://filter" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilter"/>-->
+					<Button id="bSummaryClear" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onPressClear"/>
+					<Button id="bSummaryGo" text="Filter" class="buttoncolor" press="onSearchGSTR1vs3B('P')"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table id="tabGstr1vs3Summary" rows="{ProcessedRecord>/}" selectionMode="MultiToggle" visibleRowCount="8" fixedColumnCount="1"
+				rowSelectionChange="onRowSelectionChange" class="sapUiSmallMarginTop">
+				<ui:extension>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+						<Button class="buttoncolorSec" text="Initiate Knock Off" press="onPressInitiateKnockOff('P')"
+							enabled="{= ${userPermission>/appPermission/P99}}"/>
+						<Button class="buttoncolorSec" text="{i18n>downReport}" press="onPressDownloadReport('P')"
+							enabled="{= ${userPermission>/appPermission/P99}}"/>
+						<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="{i18n>downExcel}" press="onExportExcel('P')" enabled="false"/>
+						<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="{i18n>downPdf}" class="sapUiTinyMarginEnd" enabled="false"/>
+					</OverflowToolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="14rem">
+						<Label text="Deductor GSTINs" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>gstin}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="14rem">
+						<Label text="Indicator" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>indicator}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" headerSpan="1" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text="Difference" textAlign="Center" width="100%" design="Bold"/>
+							<Label text="(R1 - TDS Values)" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" headerSpan="2" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text="Total Amount" textAlign="Center" width="100%" design="Bold"/>
+							<Label text="As per GSTR-1" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="As per GSTN TDS Data" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" headerSpan="2" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text="April" textAlign="Center" width="100%" design="Bold"/>
+							<Label text="As per GSTR-1" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="As per GSTN TDS Data" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" headerSpan="2" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text="May" textAlign="Center" width="100%" design="Bold"/>
+							<Label text="As per GSTR-1" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="As per GSTN TDS Data" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" headerSpan="2" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text="June" textAlign="Center" width="100%" design="Bold"/>
+							<Label text="As per GSTR-1" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="As per GSTN TDS Data" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" headerSpan="2" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text="July" textAlign="Center" width="100%" design="Bold"/>
+							<Label text="As per GSTR-1" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="As per GSTN TDS Data" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" headerSpan="2" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text="August" textAlign="Center" width="100%" design="Bold"/>
+							<Label text="As per GSTR-1" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="As per GSTN TDS Data" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" headerSpan="2" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text="September" textAlign="Center" width="100%" design="Bold"/>
+							<Label text="As per GSTR-1" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="As per GSTN TDS Data" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" headerSpan="2" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text="October" textAlign="Center" width="100%" design="Bold"/>
+							<Label text="As per GSTR-1" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="As per GSTN TDS Data" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" headerSpan="2" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text="November" textAlign="Center" width="100%" design="Bold"/>
+							<Label text="As per GSTR-1" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="As per GSTN TDS Data" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" headerSpan="2" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text="December" textAlign="Center" width="100%" design="Bold"/>
+							<Label text="As per GSTR-1" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="As per GSTN TDS Data" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" headerSpan="2" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text="January" textAlign="Center" width="100%" design="Bold"/>
+							<Label text="As per GSTR-1" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="As per GSTN TDS Data" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" headerSpan="2" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text="February" textAlign="Center" width="100%" design="Bold"/>
+							<Label text="As per GSTR-1" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="As per GSTN TDS Data" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" headerSpan="2" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text="March" textAlign="Center" width="100%" design="Bold"/>
+							<Label text="As per GSTR-1" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="12rem" hAlign="End" visible="{visiSummAnx1>/asp}">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="As per GSTN TDS Data" textAlign="Center" width="100%" design="Bold"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{path:'ProcessedRecord>aspInvoiceValue',formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

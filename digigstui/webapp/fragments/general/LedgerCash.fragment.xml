@@ -1,0 +1,525 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table">
+	<ui:Table id="idTabCashLedger" rows="{EleCashDtls>/resp}" selectionMode="None" class="sapUiTinyMarginTop sapUiTinyMarginBeginEnd"
+		visible="false">
+		<ui:extension>
+			<Toolbar height="4rem">
+				<VBox>
+					<Label text="From Date"/>
+					<DatePicker id="dtCashDtlFromDate" displayFormat="MMM dd, yyyy" valueFormat="dd-MM-yyyy" change="onFromDateChangeCashDtl"/>
+				</VBox>
+				<VBox>
+					<Label text="To Date"/>
+					<DatePicker id="dtCashDtlToDate" displayFormat="MMM dd, yyyy" valueFormat="dd-MM-yyyy"/>
+				</VBox>
+				<VBox>
+					<Label/>
+					<Button text="Filter" press="onPrsCashGo" class="buttoncolor"/>
+				</VBox>
+				<ToolbarSpacer/>
+				<Button text="Excel Download" icon="sap-icon://excel-attachment" tooltip="Download details in Excel" iconFirst="false"
+					press="onCashExclDwnld" class="buttoncolorSec"/>
+				<Button text="PDF Download" icon="sap-icon://pdf-attachment" tooltip="Download details in PDF" iconFirst="false"
+					press="onDownloadCashLedgerPdf" class="buttoncolorSec"/>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column width="4rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text="Sr.No" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{EleCashDtls>cashTabSrNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="11rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text="Date of Deposit/Debit" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{EleCashDtls>dpt_dt}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text="Time of Deposit" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{EleCashDtls>dpt_time}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="7.5rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text="Reporting Date" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="(By Bank)" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{EleCashDtls>rpt_dt}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="10rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text="Reference No" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{EleCashDtls>refNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="6rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text="Tax Period" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{EleCashDtls>ret_period}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="13rem" hAlign="Begin">
+				<ui:multiLabels>
+					<Label text="Description" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{EleCashDtls>desc}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="15rem" hAlign="Center">
+				<ui:multiLabels>
+					<Label text="Transaction Type(Debit/Credit)" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{EleCashDtls>tr_typ}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="6" width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text="IGST Debited/Credited" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>igst/tx',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Interest" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>igst/intr',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Penalty" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>igst/pen',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Fee" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>igst/fee',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Others" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>igst/oth',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Total" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>igst/tot',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="6" width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text="IGST Balance" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>igstbal/tx',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Interest" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>igstbal/intr',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Penalty" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>igstbal/pen',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Fee" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>igstbal/fee',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Others" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>igstbal/oth',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Total" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>igstbal/tot',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="6" width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text="CGST Debited/Credited" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cgst/tx',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Interest" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cgst/intr',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Penalty" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cgst/pen',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Fee" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cgst/fee',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Others" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cgst/oth',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Total" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cgst/tot',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="6" width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text="CGST Balance" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cgstbal/tx',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Interest" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cgstbal/intr',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Penalty" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cgstbal/pen',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Fee" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cgstbal/fee',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Others" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cgstbal/oth',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Total" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cgstbal/tot',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="6" width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text="SGST Debited/Credited" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>sgst/tx',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Interest" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>sgst/intr',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Penalty" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>sgst/pen',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Fee" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>sgst/fee',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Others" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>sgst/oth',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Total" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>sgst/tot',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="6" width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text="SGST Balance" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>sgstbal/tx',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Interest" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>sgstbal/intr',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Penalty" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>sgstbal/pen',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Fee" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>sgstbal/fee',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Others" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>sgstbal/oth',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Total" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>sgstbal/tot',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="6" width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text="Cess Debited/Credited" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cess/tx',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Interest" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cess/intr',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Penalty" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cess/pen',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Fee" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cess/fee',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Others" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cess/oth',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Total" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cess/tot',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column headerSpan="6" width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text="Cess Balance" textAlign="Center" design="Bold" width="100%"/>
+					<Label text="Tax" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cessbal/tx',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Interest" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cessbal/intr',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Penalty" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cessbal/pen',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Fee" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cessbal/fee',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Others" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cessbal/oth',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<ui:multiLabels>
+					<Label text=""/>
+					<Label text="Total" textAlign="Center" design="Bold" width="100%"/>
+				</ui:multiLabels>
+				<ui:template>
+					<Text text="{path:'EleCashDtls>cessbal/tot',formatter:'.formatLedgerAmount'}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+	</ui:Table>
+</core:FragmentDefinition>

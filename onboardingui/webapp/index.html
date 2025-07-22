@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>On Boarding</title>
+		<link rel="icon" href="images/4-layers.png" type="image/x-icon" />
+        <script type="text/javascript" src="util/underscore-min.js"></script> 
+		<script id="sap-ui-bootstrap"
+			src="https://sapui5.hana.ondemand.com/1.120/resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_belize"
+			data-sap-ui-resourceroots='{"com.ey.onboarding": "./"}'
+			data-sap-ui-compatVersion="edge"
+			data-sap-ui-oninit="module:sap/ui/core/ComponentSupport"
+			data-sap-ui-async="true"
+			data-sap-ui-preload="async"
+			data-sap-ui-language="en"
+			data-sap-ui-frameOptions="trusted">
+		</script>
+		<script>
+            sap.ui.getCore().attachInit(function () {
+    			sap.ui.require([
+    				"sap/m/Shell",
+    				"sap/ui/core/ComponentContainer"
+    			], function (Shell, ComponentContainer) {
+					app : new ComponentContainer({
+						height : "100%",
+						name : "com.ey.onboarding",
+				    }).placeAt("content");
+			    });
+		    });
+	    </script>
+	</head>
+	<body class="sapUiBody" id="content">
+		<!--<div data-sap-ui-component data-name="com.ey.onboarding" data-id="container" data-settings='{"id" : "onboarding"}'></div>-->
+	</body>
+</html>

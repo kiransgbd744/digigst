@@ -1,0 +1,325 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.Reversal180Days"
+	xmlns:ui="sap.ui.table" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:commons="sap.suite.ui.commons" busyIndicatorDelay="0">
+	<f:DynamicPage id="id180DaysReversal" visible="{=!${PrProperty>/reqIdWise}}">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<Title text="ITC Reversal - 180 Days" titleStyle="H3" class="tinyMarginTop"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" class="sapUiNoContentPadding"
+					width="90%">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>gstin}" visibleInFilterBar="true" required="true">
+							<fb:control>
+								<MultiComboBox id="GSTINEntityID" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin/'}" selectionChange="selectAll"
+									selectedKeys="{FilterModel>/gstins}">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Criteria" visibleInFilterBar="true" required="true">
+							<fb:control>
+								<Select id="idCriteria" items="{CriteriaModel>/}" selectedKey="{FilterModel>/criteria}">
+									<core:Item key="{CriteriaModel>key}" text="{CriteriaModel>text}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" visible="{=${FilterModel>/criteria}!=='taxPeriod'}"
+							label="{=${FilterModel>/criteria}==='docDate' ? 'From Doc Date':'From Accounting Voucher Date'}" visibleInFilterBar="true" required="true">
+							<fb:control>
+								<DatePicker id="idDateFrom" displayFormat="dd-MM-yyyy" valueFormat="dd-MM-yyyy" placeholder="DD-MM-YYYY" dateValue="{FilterModel>/fromDate}"
+									maxDate="{FilterModel>/maxDate}" change="onChangeDateValue('D')"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" visible="{=${FilterModel>/criteria}!=='taxPeriod'}"
+							label="{=${FilterModel>/criteria}==='docDate' ? 'To Doc Date':'To Accounting Voucher Date'}" visibleInFilterBar="true" required="true">
+							<fb:control>
+								<DatePicker id="idDateTo" displayFormat="dd-MM-yyyy" valueFormat="dd-MM-yyyy" placeholder="DD-MM-YYYY" dateValue="{FilterModel>/toDate}"
+									minDate="{FilterModel>/fromDate}" maxDate="{FilterModel>/maxDate}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="From Tax Period" visibleInFilterBar="true" required="true"
+							visible="{=${FilterModel>/criteria}==='taxPeriod'}">
+							<fb:control>
+								<DatePicker id="idFromPeriod" displayFormat="MMM-yyyy" valueFormat="MM-yyyy" placeholder="MMM-YYYY" maxDate="{FilterModel>/maxDate}"
+									dateValue="{FilterModel>/fromTaxPeriod}" change="onChangeDateValue('P')"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="To Tax Period" visibleInFilterBar="true" required="true"
+							visible="{=${FilterModel>/criteria}==='taxPeriod'}">
+							<fb:control>
+								<DatePicker id="idToPeriod" displayFormat="MMM-yyyy" valueFormat="MM-yyyy" placeholder="MMM-YYYY" dateValue="{FilterModel>/toTaxPeriod}"
+									minDate="{FilterModel>/fromTaxPeriod}" maxDate="{FilterModel>/maxDate}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onClearMainFilter"/>
+					<Button text="Filter" press="onLoadEntity" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer showFullScreen="false" autoAdjustHeight="false" class="sapUiTinyMarginBeginEnd cl_ChartConHeight" id="idCcSummary"
+				fullScreen="{PrProperty>/OutFullScreen}">
+				<commons:toolbar>
+					<OverflowToolbar class="colorToolbar toolbarHeight">
+						<ToolbarSpacer/>
+						<Button class="buttoncolorSec" text="Compute" press="onCompute"/>
+						<MenuButton text="Download Report" class="sapUiTinyMarginBeginEnd buttoncolorSec" visible="false">
+							<Menu id="bSummaryDownloadRpt" itemSelected="onPressDownloadReport($event,${$parameters>/item},'S')">
+								<MenuItem key="RevReportPayInfo" text="{i18n>RevReportPayInfo}"/>
+								<MenuItem key="RevReportPayInfAvai" text="{i18n>RevReportPayInfAvai}"/>
+								<MenuItem key="RevReportPayInfRev" text="{i18n>RevReportPayInfRev}"/>
+							</Menu>
+						</MenuButton>
+						<Button text="Request ID wise" press="onPressRequestIDwise" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+						<Button type="Transparent" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="{=!${PrProperty>/OutFullScreen}}"
+							press="onGstr2FullScreen('openSummary')"/>
+						<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="{PrProperty>/OutFullScreen}"
+							press="onGstr2FullScreen('closeSummary')"/>
+						<commons:ChartContainerToolbarPlaceholder/>
+					</OverflowToolbar>
+				</commons:toolbar>
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table rows="{SummTab>/}" id="idSumTab" enableColumnReordering="false" class="sapUiTinyMarginTop" selectionMode="MultiToggle"
+								visibleRowCount="{=${PrProperty>/OutFullScreen}?32:8}">
+								<ui:columns>
+									<ui:Column>
+										<Label text="GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<VBox>
+												<HBox alignContent="Start" justifyContent="SpaceBetween">
+													<Text text="{SummTab>state}" class="stateColor" width="8rem"/>
+													<Text text="{=${SummTab>regType}==='REGULAR'?'':${SummTab>regType}}" class="stateColor fontSmall"/>
+												</HBox>
+												<HBox alignContent="Start" justifyContent="SpaceBetween">
+													<Link text="{SummTab>gstin}" emphasized="true"/>
+													<core:Icon src="sap-icon://circle-task-2" visible="{=${oReversal>state}===''?false:true}" size="0.8rem"
+														color="{=${SummTab>authtoken}==='I'?'red':'#00ff00'}" press="onPressGenerateOTP"/>
+												</HBox>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column>
+										<Label text="Reversal Compute Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<VBox>
+												<ObjectStatus text="{path:'SummTab>statusDesc', formatter:'.formatter.status3B'}"
+													state="{path:'SummTab>statusDesc', formatter:'.formatter.statusClr'}"/>
+												<Text text="{path:'SummTab>status',formatter:'.formatter.TimeStamp'}" class="timeStmpClr"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<Label text="Count of Records" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<VBox>
+												<Text text="{path : 'SummTab>count', formatter : '.formatter.Count1'}"></Text>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<Label text="Total Tax-Reversal" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{parts:[{path : 'SummTab>totalTax'}], formatter : '.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<Label text="IGST-Reversal" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{parts:[{path : 'SummTab>igst'}], formatter : '.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<Label text="CGST-Reversal" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{parts:[{path : 'SummTab>sgst'}], formatter : '.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<Label text="SGST-Reversal" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{parts:[{path : 'SummTab>cgst'}], formatter : '.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="Center">
+										<Label text="Cess-Reversal" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+										<ui:template>
+											<Text text="{parts:[{path : 'SummTab>Cess'}], formatter : '.formatter.amountValue'}" class="sapUiTinyMarginEnd"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent>
+				</commons:content>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="idRequestIDwisePage" visible="{PrProperty>/reqIdWise}">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button icon="sap-icon://nav-back" type="Transparent" press="onPressRequestIDwiseBack"/>
+						<Title text="Request ID wise" class="sapUiSmallMarginBegin clTitleMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding">
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Criteria" visibleInFilterBar="true">
+							<fb:control>
+								<Select items="{CriteriaModel>/}" selectedKey="{ReqIdFilter>/criteria}">
+									<core:Item key="{CriteriaModel>key}" text="{CriteriaModel>text}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" visible="{=${ReqIdFilter>/criteria}!=='taxPeriod'}"
+							label="{=${ReqIdFilter>/criteria}==='docDate' ? 'From Doc Date':'From Accounting Voucher Date'}" visibleInFilterBar="true" required="true">
+							<fb:control>
+								<DatePicker id="frDocDate" displayFormat="dd-MM-yyyy" valueFormat="dd-MM-yyyy" placeholder="DD-MM-YYYY" dateValue="{ReqIdFilter>/fromDate}"
+									maxDate="{ReqIdFilter>/maxDate}" change="onChangeReqWiseDate('D')"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" visible="{=${ReqIdFilter>/criteria}!=='taxPeriod'}"
+							label="{=${ReqIdFilter>/criteria}==='docDate' ? 'To Doc Date':'To Accounting Voucher Date'}" visibleInFilterBar="true" required="true">
+							<fb:control>
+								<DatePicker id="toDocDate" displayFormat="dd-MM-yyyy" valueFormat="dd-MM-yyyy" placeholder="DD-MM-YYYY" dateValue="{ReqIdFilter>/toDate}"
+									minDate="{ReqIdFilter>/fromDate}" maxDate="{ReqIdFilter>/maxDate}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="From Tax Period" visibleInFilterBar="true" required="true"
+							visible="{=${ReqIdFilter>/criteria}==='taxPeriod'}">
+							<fb:control>
+								<DatePicker id="frTaxPeriod" displayFormat="MMM-yyyy" valueFormat="MM-yyyy" placeholder="MMM-YYYY" maxDate="{ReqIdFilter>/maxDate}"
+									dateValue="{ReqIdFilter>/fromTaxPeriod}" change="onChangeReqWiseDate('P')"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="To Tax Period" visibleInFilterBar="true" required="true"
+							visible="{=${ReqIdFilter>/criteria}==='taxPeriod'}">
+							<fb:control>
+								<DatePicker id="toTaxPeriod" displayFormat="MMM-yyyy" valueFormat="MM-yyyy" placeholder="MMM-YYYY" dateValue="{ReqIdFilter>/toTaxPeriod}"
+									minDate="{ReqIdFilter>/fromTaxPeriod}" maxDate="{ReqIdFilter>/maxDate}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="Initiated By" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox items="{UserNames>/}" selectedKeys="{ReqIdFilter>/initiatedBy}" selectionChange="selectAll">
+									<core:Item key="{UserNames>userName}" text="{UserNames>userName}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="Status" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox selectedKey="{ReqIdFilter>/reconStatus}">
+									<core:Item key="REPORT_GENERATED" text="REPORT GENERATED"/>
+									<core:Item key="REPORT_GENERATION_FAILED" text="REPORT GENERATION FAILED"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="Clear" press="onClearReqIdWise" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+					<Button text="Filter" press="onSearchReqIdWise" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false">
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table rows="{path:'oRequestWise>/requestDetails', sorter: {path: 'computeId',descending:true}}" selectionMode="None"
+								selectionBehavior="Row" visibleRowCount="12" fixedColumnCount="0" enableSelectAll="false">
+								<ui:Column width="10%">
+									<Label design="Bold" text="Request ID"/>
+									<ui:template>
+										<Text text="{oRequestWise>computeId}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="GSTIN"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Link text="{oRequestWise>gstinCount}" press="onPressGSTIN"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="Criteria"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{oRequestWise>criteria}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="From Doc Date / From Accounting Voucher Date / From Tax Period" wrapping="true"/>
+									<ui:template>
+										<Text text="{oRequestWise>fromDate}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="To Doc Date / To Accounting Voucher Date / To Tax Period" wrapping="true"/>
+									<ui:template>
+										<Text text="{oRequestWise>toDate}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="Initiated On" wrapping="true"/>
+									<ui:template>
+										<Text text="{oRequestWise>InitiatedOn}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="10%">
+									<Label design="Bold" text="Initiated By"/>
+									<ui:template>
+										<HBox alignItems="Center" justifyContent="Center">
+											<Text text="{oRequestWise>createdBy}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="12%">
+									<Label design="Bold" text="Download"/>
+									<ui:template>
+										<HBox alignItems="Start" justifyContent="Center">
+											<Button text="Report Download" press="onConfigExtractPress2A1" class="sapUiSmallMarginEnd buttoncolorSec"
+												enabled="{=${userPermission>/appPermission/P13}&amp;&amp;!['REPORT GENERATION FAILED','IN-PROGRESS','Compute Failed'].includes(${oRequestWise>status})}"/>
+										</HBox>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="14%">
+									<Label design="Bold" text="Status"/>
+									<ui:template>
+										<Text text="{oRequestWise>status}"/>
+									</ui:template>
+								</ui:Column>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+				<commons:toolbar>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+						<Button type="Transparent" icon="sap-icon://download" tooltip="Download Summary" press="onDownloadSummary" visible="false"/>
+						<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+					</OverflowToolbar>
+				</commons:toolbar>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

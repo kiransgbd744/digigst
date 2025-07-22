@@ -1,0 +1,105 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fm="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"
+	class="sapUiNoContentPadding sapUiSizeCompact">
+	<f:DynamicPage visible="true">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Custom Entity"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Entity Name" visibleInFilterBar="true">
+							<fb:control>
+								<ComboBox id="ENid" width="100%" items="{path:'EntityName>/'}" selectionChange="selectAll">
+									<core:Item key="{EntityName>Qcode}" text="{EntityName>Qcode}"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="GO" type="Emphasized" press="onPressGoForCE" class="input sapUiTinyMarginBegin"/>
+					<Button text="Clear" type="Emphasized" press="onPressClearForCE" class="input sapUiTinyMarginBegin"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel height="30rem">
+				<fm:Form editable="true" width="100%" id="formId" visible="true">
+					<fm:layout>
+						<fm:ResponsiveGridLayout labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" adjustLabelSpan="true" emptySpanXL="4" emptySpanL="4"
+							emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="true"/>
+					</fm:layout>
+					<fm:formContainers>
+						<fm:FormContainer>
+							<fm:formElements>
+								<fm:FormElement label="Description">
+									<fm:fields>
+										<Input value="{PostSrv>/Description}" width="100%"/>
+									</fm:fields>
+								</fm:FormElement>
+								<fm:FormElement label="Custom Entity Name">
+									<fm:fields>
+										<Input value="{PostSrv>/Qcode}" width="100%"/>
+									</fm:fields>
+								</fm:FormElement>
+								<fm:FormElement label="Select">
+									<fm:fields>
+										<Input value="{PostSrv>/Qselect}" width="100%"/>
+									</fm:fields>
+								</fm:FormElement>
+								<fm:FormElement label="From">
+									<fm:fields>
+										<Input value="{PostSrv>/Qfrom}" width="100%"/>
+									</fm:fields>
+								</fm:FormElement>
+								<fm:FormElement label="Where">
+									<fm:fields>
+										<Input value="{PostSrv>/Qwhere}" width="100%"/>
+									</fm:fields>
+								</fm:FormElement>
+								<fm:FormElement label="Filter">
+									<fm:fields>
+										<Input value="{PostSrv>/Qfilter}" width="100%"/>
+									</fm:fields>
+								</fm:FormElement>
+								<fm:FormElement label="Related EY Entity">
+									<fm:fields>
+										<Input value="{PostSrv>/Qrelated}" width="100%"/>
+									</fm:fields>
+								</fm:FormElement>
+								<fm:FormElement label="RelationShip to EY Entity">
+									<fm:fields>
+										<Input value="{PostSrv>/Qrelationship}" width="100%"/>
+									</fm:fields>
+								</fm:FormElement>
+								<fm:FormElement>
+									<fm:fields>
+										<HBox justifyContent="End">
+											<Button text="Submit" press="onSubmitCode" class="sapUiTinyMarginEnd" type="Emphasized"/>
+										</HBox>
+									</fm:fields>
+								</fm:FormElement>
+							</fm:formElements>
+						</fm:FormContainer>
+					</fm:formContainers>
+				</fm:Form>
+			</Panel>
+			<!--<Panel>
+				<Button text="Submit" press="onSubmitCode" type="Emphasized"/>
+			</Panel>-->
+		</f:content>
+		<!--<f:footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button text="Submit" press="onSubmitCode" type="Emphasized"/>
+			</OverflowToolbar>
+		</f:footer>-->
+	</f:DynamicPage>
+</core:FragmentDefinition>

@@ -1,0 +1,277 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"properties": {
+		"req": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"tableNumber": {
+						"type": "string",
+						"maxLength": 5
+					},
+					"actionType": {
+						"type": "string",
+						"maxLength": 5
+					},
+					"finYear": {
+						"type": "string",
+						"maxLength": 10
+					},
+					"retPeriod": {
+						"type": "string",
+						"maxLength": 20
+					},
+					"supplierGstin": {
+						"type": "string",
+						"minLength": 15,
+						"maxLength": 15,
+						"pattern": "([0-9]{2}[0-9|A-Z]{13})"
+					},
+					"dChallanNo": {
+						"type": "string",
+						"maxLength": 16
+					},
+					"dChalanDate": {
+						"type": "string",
+						"maxLength": 10
+					},
+					"jdChallanNo": {
+						"type": "string",
+						"maxLength": 16
+					},
+					"jdChalanDate": {
+						"type": "string",
+						"maxLength": 10
+					},
+					"invNumber": {
+						"type": "string",
+						"maxLength": 16
+					},
+					"invDate": {
+						"type": "string",
+						"maxLength": 10
+					},
+					"jwGstin": {
+						"type": "string",
+						"minLength": 15,
+						"maxLength": 15,
+						"pattern": "([0-9]{2}[0-9|A-Z]{13})"
+					},
+					"jwStateCode": {
+						"type": "string",
+						"maxLength": 2
+					},
+					"jwType": {
+						"type": "string",
+						"maxLength": 2
+					},
+					"jwId": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"jwName": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"postingDate": {
+						"type": "string",
+						"maxLength": 10
+					},
+					"userId": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"companyCode": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"sourceId": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"sourFileName": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"division": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"profitCentre1": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"profitCentre2": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"accVoucNo": {
+						"type": "string",
+						"maxLength": 100
+					},
+					"accVoucDate": {
+						"type": "string",
+						"maxLength": 10
+					},
+					"lineItems": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"goodsRecDate": {
+									"type": "string",
+									"maxLength": 10
+								},
+								"typeOfGoods": {
+									"type": "string",
+									"maxLength": 5
+								},
+								"itemNo": {
+									"type": "integer",
+									"maxLength": 6
+								},
+								"prodDes": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"productCode": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"natureOfJw": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"hsn": {
+									"type": "string",
+									"maxLength": 8
+								},
+								"uqc": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"qnt": {
+									"type": "number"
+								},
+								"lossesUqc": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"lossesQnt": {
+									"type": "number"
+								},
+								"taxableVal": {
+									"type": "number"
+								},
+								"igstRt": {
+									"type": "number"
+								},
+								"igstAmt": {
+									"type": "number"
+								},
+								"cgstRt": {
+									"type": "number"
+								},
+								"cgstAmt": {
+									"type": "number"
+								},
+								"sgstRt": {
+									"type": "number"
+								},
+								"sgstAmt": {
+									"type": "number"
+								},
+								"cessAdvRate": {
+									"type": "number"
+								},
+								"cessAdvAmt": {
+									"type": "number"
+								},
+								"cessSpeRate": {
+									"type": "number"
+								},
+								"cessSpAmt": {
+									"type": "number"
+								},
+								"stCessAdvRt": {
+									"type": "number"
+								},
+								"stCessAdvAmt": {
+									"type": "number"
+								},
+								"stCessSpeRt": {
+									"type": "number"
+								},
+								"stCessSpeAmt": {
+									"type": "number"
+								},
+								"totalValue": {
+									"type": "number"
+								},
+								"plantCode": {
+									"type": "string",
+									"maxLength": 100
+								},
+								"udf1": {
+									"type": "string",
+									"maxLength": 500
+								},
+								"udf2": {
+									"type": "string",
+									"maxLength": 500
+								},
+								"udf3": {
+									"type": "string",
+									"maxLength": 500
+								},
+								"udf4": {
+									"type": "string",
+									"maxLength": 500
+								},
+								"udf5": {
+									"type": "string",
+									"maxLength": 500
+								},
+								"udf6": {
+									"type": "string",
+									"maxLength": 500
+								},
+								"udf7": {
+									"type": "string",
+									"maxLength": 500
+								},
+								"udf8": {
+									"type": "string",
+									"maxLength": 500
+								},
+								"udf9": {
+									"type": "string",
+									"maxLength": 500
+								},
+								"udf10": {
+									"type": "string",
+									"maxLength": 500
+								}
+							},
+							"required": [
+								"qnt",
+								"prodDes"
+							]
+						}
+					}
+				},
+				"required": [
+					"tableNumber",
+					"finYear",
+					"retPeriod",
+					"supplierGstin"
+				]
+			}
+		}
+	},
+	"required": [
+		"req"
+	]
+}

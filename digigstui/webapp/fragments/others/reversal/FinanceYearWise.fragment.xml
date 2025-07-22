@@ -1,0 +1,1503 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage id="idFinanceWiseReverasl" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Rule 42 Reversal (Input Goods &amp; Input Services Finance Year Wise)"/>
+				</f:heading>
+				<f:actions>
+					<HBox class="sapUiTinyMarginBegin">
+						<SegmentedButton id="idCreditReFinWise1" selectedKey="FYWise" selectionChange="onChangeCreditReversal">
+							<items>
+								<SegmentedButtonItem text="Return Period Wise" key="RPWise" width="12rem"/>
+								<SegmentedButtonItem text="Financial Year Wise" key="FYWise" width="12rem"/>
+							</items>
+						</SegmentedButton>
+					</HBox>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idgstingstFinWise1" width="100%" items="{GstinModel>/}" selectionChange="selectAll">
+									<core:Item key="{GstinModel>value}" text="{GstinModel>value}"/>
+								</MultiComboBox>
+								<!--<MultiComboBox id="slSummaryGstin" items="{path:'userPermission>/respData/dataSecurity/gstin'}" selectionChange="selectAll">-->
+								<!--	<core:Item key="{userPermission>value}" text="{userPermission>value}"/>-->
+								<!--</MultiComboBox>-->
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Financial Year" visibleInFilterBar="true">
+							<fb:control>
+								<Select width="100%" id="dtFinYearGstr123" selectedKey="2020-21" forceSelection="true">
+									<core:Item key="2018-19" text="2018-19"/>
+									<core:Item key="2019-20" text="2019-20"/>
+									<core:Item key="2020-21" text="2020-21"/>
+									<core:Item key="2021-21" text="2021-22"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button id="idFilterProFinWise" icon="sap-icon://filter" class="buttoncolorSec" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilter"
+						enabled="false"/>
+					<Button id="bSummaryFinWise" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onPressClear" enabled="false"/>
+					<Button text="Filter" class="buttoncolor" press="onPressFinWiseGo"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel>
+				<ui:Table rowSelectionChange="onSelection" rows="{path:'FinYearProcessData>/'}" selectionMode="MultiToggle" visibleRowCount="11"
+					id="idtableFYWise" enableSelectAll="true" fixedBottomRowCount="0" fixedColumnCount="2" visible="true">
+					<ui:extension>
+						<Toolbar>
+							<Label text="Showing:" design="Bold"/>
+							<RadioButtonGroup id="idRadioFinType" columns="3" select="onSelectFinTypeGroup" class="sapUiMediumMarginEnd">
+								<RadioButton text="Ratio I"/>
+								<RadioButton text="Ratio II"/>
+								<RadioButton text="Ratio III"/>
+							</RadioButtonGroup>
+							<ToolbarSpacer/>
+							<Button class="buttoncolorSec" enabled="{= ${userPermission>/appPermission/P99}}" text="Compute Reversal" press="onButtonExtractPressFY"/>
+							<Button class="buttoncolorSec" enabled="{= ${userPermission>/appPermission/P99}}" text="Download Report" press="onDownloadButtonPressFY"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:Column width="14rem">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="GSTIN" textAlign="Center" design="Bold" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<VBox>
+								<HBox>
+									<Text text="{FinYearProcessData>state}" width="8rem" class="stateColor"/>
+									<Text text="{=${FinYearProcessData>regType}==='REGULAR'?'':${FinYearProcessData>regType}}" class="stateColor fontSmall"/>
+								</HBox>
+								<HBox alignContent="Start" justifyContent="SpaceBetween">
+									<Link text="{FinYearProcessData>gstin}" press="handleLinkPressGSTINMainFY123"/>
+									<core:Icon src="sap-icon://circle-task-2" size="0.8rem" class="sapUiSmallMarginBegin" tooltip="Generate OTP"
+										visible="{=${FinYearProcessData>gstin}=== '' ?false:true}" color="{=${FinYearProcessData>authToken}=== 'Active' ?'#00ff00':'#ff0000'}"
+										press="onActivateAuthToken(${FinYearProcessData>gstin},${FinYearProcessData>authToken})"/>
+								</HBox>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="11rem">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="Status" textAlign="Center" design="Bold" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<VBox>
+								<!--<HBox>-->
+								<Text text="{FinYearProcessData>status}" width="8rem" class="stateColor"/>
+								<Text text="{FinYearProcessData>dateTime}" class="stateColor fontSmall"/>
+								<!--</HBox>-->
+								<HBox alignContent="Start" justifyContent="SpaceBetween">
+									<!--<Link text="{FinYearProcessData>status}" press="handleLinkPressGSTINMain123"/>-->
+								</HBox>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="11rem" hAlign="End">
+						<ui:multiLabels>
+							<Label text=""/>
+							<Label text="Total Tax Amount" textAlign="Center" design="Bold" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<VBox>
+								<!--<HBox>-->
+								<!--<Text text="{FinYearProcessData>totalTaxAmount}" width="8rem" class="stateColor"/>-->
+								<Text text="{parts:[{path : 'FinYearProcessData>totalTaxAmount'}], formatter : '.formatter.amountValue'}"/>
+								<!--</HBox>-->
+								<HBox alignContent="Start" justifyContent="SpaceBetween">
+									<!--<Link text="{FinYearProcessData>status}" press="handleLinkPressGSTINMain123"/>-->
+								</HBox>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column headerSpan="2" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+						<ui:multiLabels>
+							<HBox justifyContent="Center" width="100%">
+								<!--<Label text="*" class="cl_star1"/>-->
+								<Label text="April" textAlign="Center" width="100%" design="Bold"/>
+							</HBox>
+							<Label text="Reversal Ratio (%)" textAlign="Center" design="Bold" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path : 'FinYearProcessData>aprilRevRatio'}], formatter : '.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+						<ui:multiLabels>
+							<Label/>
+							<Label text="Tax Amount" textAlign="Center" design="Bold" width="100%"/>
+						</ui:multiLabels>
+						<ui:template>
+							<Text text="{parts:[{path : 'FinYearProcessData>aprilTaxamount'}], formatter : '.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:columns>
+						<ui:Column headerSpan="2" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<HBox justifyContent="Center" width="100%">
+									<!--<Label text="*" class="cl_star1"/>-->
+									<Label text="May" textAlign="Center" width="100%" design="Bold"/>
+								</HBox>
+								<Label text="Reversal Ratio (%)" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>mayRevRatio'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Tax Amount" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>mayTaxamount'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="2" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<HBox justifyContent="Center" width="100%">
+									<!--<Label text="*" class="cl_star1"/>-->
+									<Label text="June" textAlign="Center" width="100%" design="Bold"/>
+								</HBox>
+								<Label text="Reversal Ratio (%)" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>juneRevRatio'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Tax Amount" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>juneTaxamount'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="2" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<HBox justifyContent="Center" width="100%">
+									<!--<Label text="*" class="cl_star1"/>-->
+									<Label text="July" textAlign="Center" width="100%" design="Bold"/>
+								</HBox>
+								<Label text="Reversal Ratio (%)" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>julyRevRatio'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Tax Amount" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>julyTaxamount'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="2" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<HBox justifyContent="Center" width="100%">
+									<!--<Label text="*" class="cl_star1"/>-->
+									<Label text="August" textAlign="Center" width="100%" design="Bold"/>
+								</HBox>
+								<Label text="Reversal Ratio (%)" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>augRevRatio'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Tax Amount" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>augTaxamount'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="2" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<HBox justifyContent="Center" width="100%">
+									<!--<Label text="*" class="cl_star1"/>-->
+									<Label text="September" textAlign="Center" width="100%" design="Bold"/>
+								</HBox>
+								<Label text="Reversal Ratio (%)" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>sepRevRatio'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Tax Amount" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>sepTaxamount'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="2" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<HBox justifyContent="Center" width="100%">
+									<!--<Label text="*" class="cl_star1"/>-->
+									<Label text="October" textAlign="Center" width="100%" design="Bold"/>
+								</HBox>
+								<Label text="Reversal Ratio (%)" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>octRevRatio'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Tax Amount" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>octTaxamount'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="2" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<HBox justifyContent="Center" width="100%">
+									<!--<Label text="*" class="cl_star1"/>-->
+									<Label text="November" textAlign="Center" width="100%" design="Bold"/>
+								</HBox>
+								<Label text="Reversal Ratio (%)" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>novRevRatio'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Tax Amount" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>novTaxamount'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="2" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<HBox justifyContent="Center" width="100%">
+									<!--<Label text="*" class="cl_star1"/>-->
+									<Label text="December" textAlign="Center" width="100%" design="Bold"/>
+								</HBox>
+								<Label text="Reversal Ratio (%)" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>decRevRatio'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Tax Amount" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>decTaxamount'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="2" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<HBox justifyContent="Center" width="100%">
+									<!--<Label text="*" class="cl_star1"/>-->
+									<Label text="January" textAlign="Center" width="100%" design="Bold"/>
+								</HBox>
+								<Label text="Reversal Ratio (%)" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>janRevRatio'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Tax Amount" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>janTaxamount'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="2" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<HBox justifyContent="Center" width="100%">
+									<!--<Label text="*" class="cl_star1"/>-->
+									<Label text="February" textAlign="Center" width="100%" design="Bold"/>
+								</HBox>
+								<Label text="Reversal Ratio (%)" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>febRevRatio'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Tax Amount" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>febTaxamount'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column headerSpan="2" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<HBox justifyContent="Center" width="100%">
+									<!--<Label text="*" class="cl_star1"/>-->
+									<Label text="March" textAlign="Center" width="100%" design="Bold"/>
+								</HBox>
+								<Label text="Reversal Ratio (%)" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>marchRevRatio'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Tax Amount" textAlign="Center" design="Bold" width="100%"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{parts:[{path : 'FinYearProcessData>marchTaxamount'}], formatter : '.formatter.amountValue'}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+					<ui:footer>
+						<!--<Toolbar height="5rem">-->
+						<!--	<VBox>-->
+						<!--		<HBox>-->
+						<!--			<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>-->
+						<!--			<Text text="Auth Token Active" class="sapUiTinyMarginBegin"/>-->
+						<!--			<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem" class="sapUiTinyMarginBegin"/>-->
+						<!--			<Text text="Auth Token Inactive" class="sapUiTinyMarginBegin"/>-->
+						<!--		</HBox>-->
+						<!--		<VBox>-->
+						<!--			<HBox>-->
+						<!--				<Label text="*" class="cl_star1"/>-->
+						<!--				<Text-->
+						<!--					text="Exempted Turnover (Exempt supplies+ NIL Rated supplies + Reverse Charge supplies) divided by Total Turnover (Taxable Supplies + Exempt Supplies + NIL Rated Supplies), excluding NON GST supplies"/>-->
+						<!--			</HBox>-->
+						<!--			<HBox>-->
+						<!--				<Text text="**" class="cl_star1"/>-->
+						<!--				<Text-->
+						<!--					text="Exempted Turnover (Exempt Supplies + NIL Rated Supplies + Reverse Charge supplies + NON-GST Supplies) divided by Total Turnover (Taxable Supplies + Exempt Supplies + NIL Rated Supplies + NON GST Supplies)"/>-->
+						<!--			</HBox>-->
+						<!--		</VBox>-->
+						<!--	</VBox>-->
+						<!--	<ToolbarSpacer/>-->
+						<!--</Toolbar>-->
+					</ui:footer>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage id="idCreditReveraslFW1" class="cl_dpScroll" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" class="sapUiTinyMarginEnd" press="onPressBackCreditRevFY"/>
+						<Title text="Rule 42 Reversal (Input Goods &amp; Input Services Finance Wise)" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+				<f:actions>
+					<HBox class="sapUiTinyMarginBegin">
+						<SegmentedButton id="idFinWise" selectedKey="RPWise" selectionChange="onChangeCreditReversalSum1">
+							<items>
+								<SegmentedButtonItem text="Reversal" key="RPWise" width="12rem"/>
+								<SegmentedButtonItem text="Turnover" key="FYWise" width="12rem"/>
+							</items>
+						</SegmentedButton>
+					</HBox>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding" id="id_ReversalFilterFinWise" visible="true">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idgstingstFinWise" items="{path:'DataPermission>/respData/dataSecurity/gstin'}">
+									<core:Item key="{DataPermission>value}" text="{DataPermission>value}"/>
+								</Select>
+								<!--<MultiComboBox id="slSummaryGstin" items="{path:'userPermission>/respData/dataSecurity/gstin'}" selectionChange="selectAll">-->
+								<!--	<core:Item key="{userPermission>value}" text="{userPermission>value}"/>-->
+								<!--</MultiComboBox>-->
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Financial Year" visibleInFilterBar="true">
+							<fb:control>
+								<Select width="100%" id="dtFinYearturnover" selectedKey="2020-21" forceSelection="true">
+									<core:Item key="2018-19" text="2018-19"/>
+									<core:Item key="2019-20" text="2019-20"/>
+									<core:Item key="2020-21" text="2020-21"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" id="fbSummaryHboxFW" width="10%" visible="true">
+					<Button id="idFilterFinWise" class="buttoncolorSec" icon="sap-icon://filter" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilter"
+						enabled="false"/>
+					<Button id="bSummaryClearFinanceWise" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onPressClear"
+						enabled="false"/>
+					<Button text="Filter" class="buttoncolor" press="onPressCreditRevFyGo"/>
+				</HBox>
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding" id="Id_trunoverFilFinWise" visible="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idgstingstFinWise12" items="{path:'DataPermission>/respData/dataSecurity/gstin'}">
+									<core:Item key="{DataPermission>value}" text="{DataPermission>value}"/>
+								</Select>
+								<!--<MultiComboBox id="slSummaryGstin" items="{path:'userPermission>/respData/dataSecurity/gstin'}" selectionChange="selectAll">-->
+								<!--	<core:Item key="{userPermission>value}" text="{userPermission>value}"/>-->
+								<!--</MultiComboBox>-->
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Financial Year" visibleInFilterBar="true">
+							<fb:control>
+								<Select width="100%" id="dtFinYearturnover2" selectedKey="2020-21" forceSelection="true">
+									<core:Item key="2018-19" text="2018-19"/>
+									<core:Item key="2019-20" text="2019-20"/>
+									<core:Item key="2020-21" text="2020-21"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" id="fbSummaryHboxFw1" width="10%" visible="false">
+					<Button id="idFilterProFinWise1" class="buttoncolorSec" icon="sap-icon://filter" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilter"
+						enabled="false"/>
+					<Button id="bSummaryFinWise1" text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onPressClear" enabled="false"/>
+					<Button text="Filter" class="buttoncolor" press="onPressTurnOverGoFY"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<VBox>
+				<Panel id="id_reversalFinWise" visible="true">
+					<layout:BlockLayout background="Dashboard" id="id_BlockLayoutFinWise1" class="cl_shadow">
+						<layout:BlockLayoutRow class="sapUiNoContentPadding">
+							<layout:BlockLayoutCell id="id_BlCellgstrFinWise1" width="10rem">
+								<Toolbar height="2.2rem" class="supplToolbar supplToolbarCol">
+									<Label text="Summary" design="Bold" textAlign="Center" width="100%"/>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTopBottom">
+									<VBox width="8rem">
+										<Text/>
+										<Label text="Reversal Turnover" class="sapUiTinyMarginBegin sapUiTinyMarginTop" design="Bold"/>
+									</VBox>
+									<VBox alignItems="End" width="25%">
+										<HBox>
+											<Label text="Ratio I" design="Bold"/>
+											<!--<Button icon="sap-icon://begin" press="fnBeinBtnPress" tooltip="Push to GSTR-3B (Table 4B1)" id="id_btnRatFinWise1" type="Transparent"-->
+											<!--	class="cl_BtnRat"/>-->
+										</HBox>
+										<Text text="{path:'CreditRevData>/resp/summary/ratio1/', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+									</VBox>
+									<VBox alignItems="End" width="25%">
+										<HBox>
+											<Label text="Ratio II" design="Bold"/>
+											<!--<Button icon="sap-icon://begin" id="id_btnRatFinWise2" tooltip="Push to GSTR-3B (Table 4B1)" press="fnBeinBtnPress" type="Transparent"-->
+											<!--	class="cl_BtnRat"/>-->
+										</HBox>
+										<Text text="{path:'CreditRevData>/resp/summary/ratio2/', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+									</VBox>
+									<VBox alignItems="End" width="25%">
+										<HBox>
+											<Label text="Ratio III" design="Bold"/>
+											<!--<Button icon="sap-icon://begin" id="id_btnRatFinWise3" tooltip="Push to GSTR-3B (Table 4B1)" press="fnBeinBtnPress" type="Transparent"-->
+											<!--	class="cl_BtnRat" enabled="false"/>-->
+										</HBox>
+										<Text text="{path:'CreditRevData>/resp/summary/ratio3/', formatter:'.formatter.amountValue'}" class="sapUiTinyMarginTop"/>
+									</VBox>
+								</HBox>
+								<HBox class="sapUiTinyMarginTopBottom">
+									<VBox width="8rem">
+										<Label text="Total Turnover" class="sapUiTinyMarginBegin" design="Bold"/>
+									</VBox>
+									<VBox alignItems="End" width="25%">
+										<Text text="{path:'CreditRevData>/resp/summary/reversalRatio1/', formatter:'.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="End" width="25%">
+										<Text text="{path:'CreditRevData>/resp/summary/reversalRatio2/', formatter:'.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="End" width="25%">
+										<Text text="{path:'CreditRevData>/resp/summary/reversalRatio3/', formatter:'.formatter.amountValue'}"/>
+									</VBox>
+								</HBox>
+								<HBox class="sapUiTinyMarginTopBottom">
+									<VBox width="8rem">
+										<Label text="Ratio" class="sapUiTinyMarginBegin" design="Bold"/>
+									</VBox>
+									<VBox alignItems="End" width="25%">
+										<Text text="{path:'CreditRevData>/resp/summary/turnoverRatio1/', formatter:'.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="End" width="25%">
+										<Text text="{path:'CreditRevData>/resp/summary/turnoverRatio2/', formatter:'.formatter.amountValue'}"/>
+									</VBox>
+									<VBox alignItems="End" width="25%">
+										<Text text="{path:'CreditRevData>/resp/summary/turnoverRatio3/', formatter:'.formatter.amountValue'}"/>
+									</VBox>
+								</HBox>
+							</layout:BlockLayoutCell>
+						</layout:BlockLayoutRow>
+					</layout:BlockLayout>
+					<ui:TreeTable rows="{path:'CreditRevFYData>/resp/'}" id="idtableRFinWise1" fixedBottomRowCount="0" visible="true" visibleRowCount="20"
+						selectionMode="None">
+						<ui:extension>
+							<Toolbar>
+								<ToolbarSpacer/>
+								<Button class="buttoncolorSec" enabled="{= ${userPermission>/appPermission/P99}}" text="Compute Reversal" press="onButtonExtractPress1"/>
+								<Button class="buttoncolorSec" enabled="{= ${userPermission>/appPermission/P99}}" text="Download Report" press="onReversalDownloadpress"/>
+							</Toolbar>
+						</ui:extension>
+						<ui:columns>
+							<ui:Column width="40rem" hAlign="Center">
+								<Label design="Bold" text="Particulars" width=""/>
+								<ui:template>
+									<VBox>
+										<HBox></HBox>
+										<HBox alignContent="Start" justifyContent="SpaceBetween">
+											<ObjectStatus text="{CreditRevFYData>particulars}" press="onPartPressLink"
+												state="{= ${CreditRevFYData>supplyType}==='None'?'None':'Indication05'}" active="true" class="cl_Bold"/>
+											<!--<Link text="{Anx2>particular}" press="onPressGstrNew11Summary"/>-->
+										</HBox>
+									</VBox>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="5" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label text="Total for Financial Year" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>totalIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>totalCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="SGST" textAlign="End" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>totalSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>totalCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Total Tax" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>totalTotalTax'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="5" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label text="April" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>aprilIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>aprilCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="SGST" textAlign="End" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>aprilSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>aprilCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Total Tax" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>aprilTotalTax'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="5" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label text="May" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>mayIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>mayCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="SGST" textAlign="End" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>maySgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>mayCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Total Tax" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>mayTotalTax'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="5" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label text="June" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>juneIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>juneCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="SGST" textAlign="End" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>juneSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>juneCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Total Tax" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>juneTotalTax'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="5" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label text="July" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>julyIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>julyCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="SGST" textAlign="End" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>julySgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>julyCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Total Tax" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>julyTotalTax'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="5" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label text="August" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>augIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>augCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="SGST" textAlign="End" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>augSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>augCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Total Tax" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>augTotalTax'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="5" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label text="September" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>sepIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>sepCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="SGST" textAlign="End" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>sepSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>sepCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Total Tax" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>sepTotalTax'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="5" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label text="October" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>octIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>octCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="SGST" textAlign="End" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>octSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>octCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Total Tax" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>octTotalTax'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="5" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label text="November" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>novIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>novCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="SGST" textAlign="End" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>novSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>novCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Total Tax" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>novTotalTax'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="5" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label text="December" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>decIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>decCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="SGST" textAlign="End" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>decSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>decCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Total Tax" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>decTotalTax'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="5" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label text="January" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>janIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>janCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="SGST" textAlign="End" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>janSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>janCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Total Tax" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>janTotalTax'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="5" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label text="Febuaray" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>febIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>febCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="SGST" textAlign="End" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>febSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>febCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Total Tax" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>febTotalTax'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column headerSpan="5" width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label text="March" textAlign="Center" width="100%" design="Bold"/>
+									<Label text="IGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>marchIgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="CGST" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>marchCgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="SGST" textAlign="End" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>marchSgst'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Cess" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>marchCess'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem" hAlign="End" visible="{showing>/ratio1}">
+								<ui:multiLabels>
+									<Label/>
+									<Label text="Total Tax" textAlign="Center" design="Bold" width="100%"/>
+								</ui:multiLabels>
+								<ui:template>
+									<Text text="{parts:[{path : 'CreditRevFYData>marchTotalTax'}], formatter : '.formatter.amountValue'}"/>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+						<ui:footer>
+							<Toolbar height="3.5rem">
+								<VBox>
+									<HBox>
+										<Label text="*" class="cl_star1"/>
+										<Text
+											text="Exempted Turnover (Exempt supplies+ NIL Rated supplies + Reverse Charge supplies) divided by Total Turnover (Taxable Supplies + Exempt Supplies + NIL Rated Supplies), excluding NON GST supplies"/>
+									</HBox>
+									<HBox>
+										<Text text="**" class="cl_star1"/>
+										<Text
+											text="Exempted Turnover (Exempt Supplies + NIL Rated Supplies + Reverse Charge supplies + NON-GST Supplies) divided by Total Turnover (Taxable Supplies + Exempt Supplies + NIL Rated Supplies + NON GST Supplies)"/>
+									</HBox>
+								</VBox>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</ui:footer>
+					</ui:TreeTable>
+				</Panel>
+				<commons:ChartContainer id="id_turnoverFinWise" showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false"
+					visible="false">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<VBox>
+									<ui:TreeTable id="id_turnoverTabFinWise"
+										rows="{path:'TurnOverDataFY>/resp/', parameters:{ arrayNames:['items'], numberOfExpandedLevels:0 }}" visible="true" selectionMode="None"
+										enableSelectAll="false" enableColumnReordering="false" visibleRowCount="7" toggleOpenState="OnOpenStateGET2A">
+										<ui:columns>
+											<ui:Column width="6rem">
+												<Label text="Sr. No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{TurnOverDataFY>sno}" design="{= ${Anx2>supplyType}?'Bold':'Standard'}" class="cl_colorBlue"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="16rem">
+												<Label text="Turnover Computation" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<ObjectStatus text="{TurnOverDataFY>turnoverComp}" press="onPartPressLink1" state="{= ${Anx2>supplyType}==='None'?'None':'Indication05'}"
+														active="true" class="cl_Bold"/>
+													<!--<Link text="{Anx2>tableNo}" design="{= ${Anx2>supplyType}?'Bold':'Standard'}" class="cl_colorBlue"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="April" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataFY>april'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="May" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataFY>may'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="June" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataFY>june'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="July" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataFY>july'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="August" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataFY>aug'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="September" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataFY>sep'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="October" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataFY>oct'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="November" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataFY>nov'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="December" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataFY>dec'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="January" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataFY>jan'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="February" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataFY>feb'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="March" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataFY>march'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+										</ui:columns>
+									</ui:TreeTable>
+									<ui:TreeTable id="id_turnoverTab2FinWise"
+										rows="{path:'TurnOverDataBFY>/resp/', parameters:{ arrayNames:['items'], numberOfExpandedLevels:0 }}" visible="true" selectionMode="None"
+										enableSelectAll="false" enableColumnReordering="false" visibleRowCount="8" toggleOpenState="OnOpenStateGET2A">
+										<ui:columns>
+											<ui:Column width="6rem">
+												<Label text="Sr. No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{TurnOverDataBFY>sno}" design="{= ${Anx2>supplyType}?'Bold':'Standard'}" class="cl_colorBlue"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column width="16rem">
+												<Label text="ITC Reversal Ratio" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<ObjectStatus text="{TurnOverDataBFY>turnoverComp}" press="onPartPressLink1" state="{= ${Anx2>supplyType}==='None'?'None':'Indication05'}"
+														active="true" class="cl_Bold"/>
+													<!--<Link text="{Anx2>tableNo}" design="{= ${Anx2>supplyType}?'Bold':'Standard'}" class="cl_colorBlue"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="Total" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataBFY>total'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="April" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataBFY>april'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="May" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataBFY>may'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="June" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataBFY>june'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="July" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataBFY>july'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="August" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataBFY>aug'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="September" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataBFY>sep'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="October" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataBFY>oct'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="November" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataBFY>nov'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="December" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataBFY>dec'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="January" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataBFY>jan'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="February" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataBFY>feb'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+											<ui:Column>
+												<Label text="March" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Label text="{parts:[{path : 'TurnOverDataBFY>march'}], formatter : '.formatter.amountValue'}"
+														design="{= ${Anx2>supplyType}?'Bold':'Standard'}"/>
+													<!--<Label text="{parts:[{path : 'Gstr6ADetailed>inVoiceVal'}], formatter : '.formatter.amountValue'}"-->
+													<!--	design="{=!${Gstr6ADetailed>supplyType}?'Bold':'Standard'}"/>-->
+												</ui:template>
+											</ui:Column>
+										</ui:columns>
+										<ui:footer>
+											<Toolbar height="3.5rem">
+												<VBox>
+													<HBox>
+														<Label text="*" class="cl_star1"/>
+														<Text
+															text="Exempted Turnover (Exempt supplies+ NIL Rated supplies + Reverse Charge supplies) divided by Total Turnover (Taxable Supplies + Exempt Supplies + NIL Rated Supplies), excluding NON GST supplies"/>
+													</HBox>
+													<HBox>
+														<Text text="**" class="cl_star1"/>
+														<Text
+															text="Exempted Turnover (Exempt Supplies + NIL Rated Supplies + Reverse Charge supplies + NON-GST Supplies) divided by Total Turnover (Taxable Supplies + Exempt Supplies + NIL Rated Supplies + NON GST Supplies)"/>
+													</HBox>
+												</VBox>
+												<ToolbarSpacer/>
+											</Toolbar>
+										</ui:footer>
+									</ui:TreeTable>
+								</VBox>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar>
+							<ToolbarSpacer/>
+							<!--<Button type="Emphasized" text="Compute Reversal" press="onButtonExtractPress"/>-->
+							<Button class="buttoncolorSec" text="Download Report" press="OnturnoverDownloadPress" enabled="{= ${userPermission>/appPermission/P99}}"/>
+							<Button type="Ghost" id="idCreditRevExp2FinWise" icon="sap-icon://expand-all" tooltip="{i18n>expand}" press="expandCollapseCreditRevNew2"
+								class="sapUiTinyMarginEnd"/>
+							<Button type="Ghost" id="idCreditrev2Col2FinWise" icon="sap-icon://collapse-all" tooltip="{i18n>collapse}"
+								press="expandCollapseCreditRevNew2"/>
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

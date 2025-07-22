@@ -1,0 +1,121 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:ui="sap.ui.table">
+	<ui:Table id="iditc04Tab" rows="{path:'ComplienceHistory>/resp/ComplienceSummeryRespDto'}" selectionMode="Multi" selectionBehavior="Row"
+		visibleRowCount="10" fixedColumnCount="1" rowSelectionChange="onRowSelectionChange2A" visible="false">
+		<ui:extension>
+			<Toolbar>
+				<Label text="Financial Year : " design="Bold" visible="{ComplienceHistory>/resp/visFlag}"/>
+				<Label text="{ComplienceHistory>/resp/financialYear}" visible="{ComplienceHistory>/resp/visFlag}"/>
+				<ToolbarSpacer/>
+				<Label text="Last Initiated On : " design="Bold" visible="{ComplienceHistory>/resp/visFlag}"/>
+				<Label text="{ComplienceHistory>/resp/initiateTime} - {ComplienceHistory>/resp/initiatestatus}" visible="{ComplienceHistory>/resp/visFlag}"/>
+				<Button class="buttoncolorSec" text="Initiate Call - Return filing" tooltip="Initiate Call - Return filing"
+					enabled="{= ${userPermission>/appPermission/P99}}" press="onPressInitiateCall"/>
+				<Button class="buttoncolorSec" text="Report Download" tooltip="Report Download" enabled="{= ${userPermission>/appPermission/P99}}"
+					press="onPressDownloadReport"/>
+				<Button class="buttoncolorSec" text="Email" press="onPressEmail" enabled="{= ${userPermission>/appPermission/P99}}" visible="false"/>
+			</Toolbar>
+		</ui:extension>
+		<ui:columns>
+			<ui:Column hAlign="Center" width="15rem">
+				<HBox>
+					<Label text="GSTN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox>
+						<HBox>
+							<Text text="{ComplienceHistory>state}" width="8rem" class="stateColor"/>
+							<Text text="{=${ComplienceHistory>regType}==='REGULAR'?'':${ComplienceHistory>regType}}" class="stateColor fontSmall"/>
+						</HBox>
+						<HBox justifyContent="SpaceBetween" width="100%">
+							<Link text="{ComplienceHistory>gstin}" press="handleLinkPressGetGSTINMain1"/>
+							<core:Icon src="sap-icon://circle-task-2" size="0.8rem" class="sapUiTinyMarginBegin" tooltip="Generate OTP"
+								visible="{=${ComplienceHistory>gstin}=== '' ?false:true}" color="{=${ComplienceHistory>authToken}=== 'Active' ?'#00ff00':'#ff0000'}"
+								press="onActivateAuthToken(${ComplienceHistory>gstin},${ComplienceHistory>authToken})"/>
+						</HBox>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" id="col1" visible="false">
+				<HBox>
+					<Label text="Q1 (Apr - Jun)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus text="{ComplienceHistory>q1Status}" state="{path:'ComplienceHistory>q1Status', formatter:'.formatter.statusCH'}"
+							press="onPressGetGstr2a($event,'2A',${ComplienceHistory>gstin},'q1')" active="true"/>
+						<Text text="{ComplienceHistory>q1Timestamp}" class="timeStmpClr"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" id="col2" visible="false">
+				<HBox>
+					<Label text="Q2 (Jul - Sep)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus text="{ComplienceHistory>q2Status}" state="{path:'ComplienceHistory>q2Status', formatter:'.formatter.statusCH'}"
+							press="onPressGetGstr2a($event,'2A',${ComplienceHistory>gstin},'q2')" active="true"/>
+						<Text text="{ComplienceHistory>q2Timestamp}" class="timeStmpClr"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" id="col3" visible="false">
+				<HBox>
+					<Label text="Q3 (Oct - Dec)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus text="{ComplienceHistory>q3Status}" state="{path:'ComplienceHistory>q3Status', formatter:'.formatter.statusCH'}"
+							press="onPressGetGstr2a($event,'2A',${ComplienceHistory>gstin},'q3')" active="true"/>
+						<Text text="{ComplienceHistory>q3Timestamp}" class="timeStmpClr"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" id="col4" visible="false">
+				<HBox>
+					<Label text="Q4 (Jan - Mar)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+				</HBox>
+				<ui:template>
+					<VBox width="100%">
+						<ObjectStatus text="{ComplienceHistory>q4Status}" state="{path:'ComplienceHistory>q4Status', formatter:'.formatter.statusCH'}"
+							press="onPressGetGstr2a($event,'2A',${ComplienceHistory>gstin},'q4')" active="true"/>
+						<Text text="{ComplienceHistory>q4Timestamp}" class="timeStmpClr"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" id="col5" visible="false">
+				<ui:multiLabels>
+					<Label text="H1(Apr-Sep)" design="Bold" class="sapUiTinyMarginTop"/>
+				</ui:multiLabels>
+				<ui:template>
+					<VBox>
+						<ObjectStatus text="{ComplienceHistory>h1Status}" state="{path:'ComplienceHistory>h1Status', formatter:'.formatter.statusCH'}"
+							press="onPressGetGstr2a($event,'2A',${ComplienceHistory>gstin},'h1')" active="true"/>
+						<Text text="{ComplienceHistory>h1Timestamp}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+			<ui:Column hAlign="Center" id="col6" visible="false">
+				<ui:multiLabels>
+					<Label text="H2(Oct-Mar)" design="Bold" class="sapUiTinyMarginTop"/>
+				</ui:multiLabels>
+				<ui:template>
+					<VBox>
+						<ObjectStatus text="{ComplienceHistory>h2Status}" state="{path:'ComplienceHistory>h2Status', formatter:'.formatter.statusCH'}"
+							press="onPressGetGstr2a($event,'2A',${ComplienceHistory>gstin},'h2')" active="true"/>
+						<Text text="{ComplienceHistory>h2Timestamp}"/>
+					</VBox>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+		<ui:footer>
+			<Toolbar>
+				<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+				<Text text="Auth Token Active"/>
+				<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+				<Text text="Auth Token Inactive"/>
+				<ToolbarSpacer/>
+			</Toolbar>
+		</ui:footer>
+	</ui:Table>
+</core:FragmentDefinition>

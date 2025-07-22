@@ -1,0 +1,1267 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.imInwardEINVManage"
+	xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table" busyIndicatorDelay="0">
+	<f:DynamicPage visible="{=!${Property>/visiSumm}}" class="sapUiNoContentPadding sapUiNoMargin">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Inward E-Invoice Management" titleStyle="H3"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox items="{IRNGstin>/}" selectedKeys="{FilterModel>/gstins}" selectionChange="selectAll">
+									<core:Item key="{IRNGstin>gstin}" text="{IRNGstin>gstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Criteria" visibleInFilterBar="true">
+							<fb:control>
+								<Select selectedKey="{FilterModel>/criteria}" forceSelection="true">
+									<core:Item key="taxPeriod" text="Month"/>
+									<core:Item key="docDate" text="Date criteria"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="From Date" visibleInFilterBar="true"
+							visible="{=${FilterModel>/criteria}==='docDate'}">
+							<fb:control>
+								<DatePicker id="iFromDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" maxDate="{FilterModel>/maxDt}"
+									value="{FilterModel>/frDate}" change="onChangeDateValue($event,'D')"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="To Date" visibleInFilterBar="true"
+							visible="{=${FilterModel>/criteria}==='docDate'}">
+							<fb:control>
+								<DatePicker id="iToDate" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" maxDate="{FilterModel>/maxDate}"
+									minDate="{FilterModel>/minDate}" value="{FilterModel>/toDate}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="From Period" visibleInFilterBar="true"
+							visible="{=${FilterModel>/criteria}==='taxPeriod'}">
+							<fb:control>
+								<DatePicker id="iFromPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy" maxDate="{FilterModel>/maxDt}" value="{FilterModel>/frPeriod}"
+									change="onChangeDateValue($event,'T')"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="To Period" visibleInFilterBar="true"
+							visible="{=${FilterModel>/criteria}==='taxPeriod'}">
+							<fb:control>
+								<DatePicker id="iToPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy" maxDate="{FilterModel>/maxPeriod}"
+									minDate="{FilterModel>/minPeriod}" value="{FilterModel>/toPeriod}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="Supply Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox selectedKeys="{FilterModel>/supplyType}" selectionChange="selectAll">
+									<core:Item key="All" text="All"/>
+									<core:Item key="B2B" text="B2B"/>
+									<core:Item key="SEZWP" text="SEZWP"/>
+									<core:Item key="SEZWOP" text="SEZWOP"/>
+									<core:Item key="DXP" text="DXP"/>
+									<core:Item key="EXPWP" text="EXPWP"/>
+									<core:Item key="EXPWOP" text="EXPWOP"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="H" label="IRN Status" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox selectedKeys="{FilterModel>/irnStatus}" selectionChange="selectAll">
+									<core:Item key="All" text="All"/>
+									<core:Item key="ACT" text="Active"/>
+									<core:Item key="CNL" text="Cancelled"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="I" label="IRN No" visibleInFilterBar="true">
+							<fb:control>
+								<Input value="{FilterModel>/irn}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="J" label="Doc Number" visibleInFilterBar="true">
+							<fb:control>
+								<Input value="{FilterModel>/docNum}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="K" label="Vendor GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<Input value="{FilterModel>/vendrGstin}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" width="10%" class="clMain">
+					<Button text="{i18n>clear}" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onPressClear('P','C')"/>
+					<Button class="buttoncolor" text="Filter" press="onSearch"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table id="tabEInvManage" rows="{ProcessedRecord>/}" selectionMode="MultiToggle" visibleRowCount="10" fixedColumnCount="0"
+				rowSelectionChange="onRowSelectionChange">
+				<ui:extension >
+					<OverflowToolbar >
+						<Title level="H3"/>
+						<ToolbarSpacer/>
+						<Button text="Update PR Linking" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onPressUpdatePRLinking"/>
+						<MenuButton text="Print" class="buttoncolorSec">
+							<Menu itemSelected="onPressPrint">
+								<MenuItem icon="sap-icon://print" key="summary" text="Summary E-invoice"/>
+								<MenuItem icon="sap-icon://print" key="detail" text="Detailed E-invoice"/>
+							</Menu>
+						</MenuButton>
+						<MenuButton text="Download Reports" class="buttoncolorSec">
+							<Menu itemSelected="onDownloadReport">
+								<MenuItem key="table" text="Table Data"/>
+								<MenuItem key="detail" text="Detailed Report (Line Item level)"/>
+								<MenuItem key="summary" text="Detailed Report (Invoice level)"/>
+								<MenuItem key="json" text="JSON Data"/>
+								<MenuItem key="nested" text="Preceding Document &amp; Other details"/>
+							</Menu>
+						</MenuButton>
+					</OverflowToolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="11rem">
+						<Label text="Recipient GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>gstin}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="11rem">
+						<Label text="Vendor GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>vendorGstin}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="Doc No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Link text="{ProcessedRecord>docNo}" press="onProcessDocNo"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="Doc Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>docDate}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="Doc Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>docType}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="Supply Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>supplyType}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem" hAlign="End">
+						<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>taxableVal}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem" hAlign="End">
+						<Label text="Total Tax" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>totalTax}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem" hAlign="End">
+						<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>igst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem" hAlign="End">
+						<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>cgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem" hAlign="End">
+						<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>sgst}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem" hAlign="End">
+						<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>cess}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem" hAlign="End">
+						<Label text="Total Invoice Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>totInvVal}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="20rem" hAlign="End">
+						<Label text="IRN Number" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>irnNum}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="IRN status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>irnSts}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="Acknowledgement Number" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>ackNum}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="Acknowledgement Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>ackDt}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="E-Way Bill Number" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>ewbNo}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="E-Way Bill Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>ewbDt}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="Cancellation Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>cnclDt}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="6rem">
+						<Label text="QR Code Validated" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>qrCodeValidated}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="9rem">
+						<Label text="QR Code Validation Result" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>qrCodeValidationResult}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem" hAlign="End">
+						<Label text="QR Code Match Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>qrCodeMatchCount}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem" hAlign="End">
+						<Label text="QR Code Mismatch Count" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>qrCodeMismatchCount}">
+								<customData>
+									<core:CustomData key="mismatch" value="{=${ProcessedRecord>qrCodeMismatchCount}>0?'R':''}" writeToDom="true"/>
+								</customData>
+							</Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="10rem">
+						<Label text="QR Code&#10;Mismatch Attributes" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{ProcessedRecord>qrCodeMismatchAttributes}">
+								<customData>
+									<core:CustomData key="mismatch" value="{=${ProcessedRecord>qrCodeMismatchCount}>0?'R':''}" writeToDom="true"/>
+								</customData>
+							</Text>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="11rem">
+						<Label text="PR Data Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<VBox width="100%">
+								<ObjectStatus text="{ProcessedRecord>prTagging}" active="false"/>
+								<Text text="{ProcessedRecord>lastPrTagged}" class="timeStmpClr"/>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+				<ui:footer>
+					<HBox justifyContent="Center">
+						<Button type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" enabled="{Property>/bFirst}" class="sapUiTinyMarginBeginEnd"
+							press="onPaginationEInv('F')"/>
+						<Button type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="{Property>/bPrev}"
+							press="onPaginationEInv('P')"/>
+						<Input type="Number" textAlign="End" value="{Property>/pageNo}" enabled="{Property>/ePageNo}" width="4rem" class="sapUiTinyMarginBegin"
+							submit="onSubmitPaginationEInv"/>
+						<Text text="/ {Property>/pgTotal}" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+						<Button type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="{Property>/bNext}"
+							press="onPaginationEInv('N')"/>
+						<Button type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" enabled="{Property>/bLast}" class="sapUiTinyMarginBeginEnd"
+							press="onPaginationEInv('L')"/>
+					</HBox>
+				</ui:footer>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+	<f:DynamicPage visible="{Property>/visiSumm}" class="sapUiNoContentPadding sapUiNoMargin">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button type="Transparent" icon="sap-icon://nav-back" class="sapUiSmallMarginEnd" tooltip="{i18>back}" press="onPressBack"/>
+						<Title text="Inward E-Invoice Management" titleStyle="H3" class="sapUiMediumMarginEnd sapUiTinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel>
+				<Toolbar>
+					<Label text="{InvHeaderKey>/gstin}" design="Bold" class="sapUiMediumMarginEnd font15"/>
+					<core:Icon src="sap-icon://open-command-field" size="1rem"/>
+					<Label text="{InvHeaderKey>/docNo}" design="Bold" class="sapUiMediumMarginBeginEnd font15"/>
+					<core:Icon src="sap-icon://open-command-field" size="1rem"/>
+					<Label text="{InvHeaderKey>/docDate}" design="Bold" class="sapUiMediumMarginBeginEnd font15"/>
+					<core:Icon src="sap-icon://open-command-field" size="1rem"/>
+					<Label text="{InvHeaderKey>/docType}" design="Bold" class="sapUiMediumMarginBeginEnd font15"/>
+					<core:Icon src="sap-icon://open-command-field" size="1rem"/>
+					<Label text="{=!${InvHeaderKey>/vendorGstin}?'':${InvHeaderKey>/vendorGstin}}" design="Bold" class="sapUiMediumMarginBegin font15"/>
+					<ToolbarSpacer/>
+					<SegmentedButton selectedKey="{Property>/displayTab}" selectionChange="onChangeSegmentLayoutEINV"
+						class="sapUiTinyMarginBegin sapUiTinyMarginEnd" enabled="true" visible="true">
+						<items>
+							<SegmentedButtonItem text="Table Layout" key="TableLayout" width="8rem" enabled="true"/>
+							<SegmentedButtonItem text="Tab Layout" key="TabLayout" width="8rem" enabled="true"/>
+						</items>
+					</SegmentedButton>
+				</Toolbar>
+				<VBox>
+					<ui:Table rows="{EInvMgmtDetail>/}" visible="{=${Property>/displayTab} ==='TableLayout'}" selectionMode="None" enableSelectAll="false">
+						<ui:extension>
+							<Toolbar>
+								<ToolbarSpacer/>
+								<!--<Button class="buttoncolorSec" enabled="{= (!${userPermission>/appPermission/P38} &amp;&amp; ${locked>/isLocked})}" text="Save Changes"-->
+								<!--	press="onSaveInwardInvoice"/>-->
+								<!--<Button class="buttoncolorSec" enabled="{= (${userPermission>/appPermission/P28})}" text="Audit Trail" press="onChangeTrail"/>-->
+								<!--<Button class="buttoncolorSec" enabled="{= (${userPermission>/appPermission/P28} &amp;&amp; ${locked>/isLocked})}"-->
+								<!--	icon="sap-icon://download" tooltip="Download" press="onPressDownload" visible="false"/>-->
+								<!--<Button class="buttoncolorSec" icon="sap-icon://message-popup" text="0" tooltip="Errors With Description" press="handleErrorMessages"/>-->
+							</Toolbar>
+						</ui:extension>
+						<ui:columns>
+							<ui:Column width="10rem">
+								<Label text="{i18n>IRNGenerationPeriod}" tooltip="{i18n>IRNGenerationPeriod}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="iRNGenerationPeriod" value="{EInvMgmtDetail>iRNGenerationPeriod}" enabled="{locked>/isLocked}"
+										valueState="{path:'EInvMgmtDetail>iRNGenerationPeriodState', formatter:'.formatter.formatState'}"
+										valueStateText="{EInvMgmtDetail>iRNGenerationPeriodText}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="9rem">
+								<Label text="{i18n>IRNstatus}" tooltip="{i18n>IRNstatus}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="iRNStatus" value="{EInvMgmtDetail>iRNStatus}" editable="false"
+										valueState="{path:'EInvMgmtDetail>iRNStatusState', formatter:'.formatter.formatState'}" valueStateText="{EInvMgmtDetail>iRNStatusText}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="25rem">
+								<Label text="{i18n>IRNNumber}" tooltip="{i18n>IRNNumber}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="iRNNumber" value="{EInvMgmtDetail>iRNNumber}" editable="false"
+										valueState="{path:'EInvMgmtDetail>iRNNumberState', formatter:'.formatter.formatState'}" valueStateText="{EInvMgmtDetail>iRNNumberText}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="{i18n>IRNDate}" tooltip="{i18n>IRNDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="iRNDate" value="{EInvMgmtDetail>iRNDate}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="{i18n>AcknowledgmentNumber}" tooltip="{i18n>AcknowledgmentNumber}" textAlign="Center" width="100%" wrapping="true"
+									design="Bold"/>
+								<ui:template>
+									<Input name="acknowledgmentNumber" value="{EInvMgmtDetail>acknowledgmentNumber}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="{i18n>IRNCancellationDate}" tooltip="{i18n>IRNCancellationDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="iRNCancellationDate" value="{EInvMgmtDetail>iRNCancellationDate}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="{i18n>CancellationReason}" tooltip="{i18n>CancellationReason}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="cancellationReason" value="{EInvMgmtDetail>cancellationReason}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="{i18n>CancellationRemarks}" tooltip="{i18n>CancellationRemarks}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="cancellationRemarks" value="{EInvMgmtDetail>cancellationRemarks}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="{i18n>E-WayBillNumber}" tooltip="{i18n>E-WayBillNumber}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="eWayBillNumber" value="{EInvMgmtDetail>eWayBillNumber}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="{i18n>E-WayBillDate}" tooltip="{i18n>E-WayBillDate}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="eWayBillDate" value="{EInvMgmtDetail>eWayBillDate}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="{i18n>ValidUpto}" tooltip="{i18n>ValidUpto}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="validUpto" value="{EInvMgmtDetail>validUpto}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="{i18n>TaxScheme}" tooltip="{i18n>TaxScheme}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="taxScheme" value="{EInvMgmtDetail>taxScheme}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Supply Type" tooltip="Supply Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="supplyType" value="{EInvMgmtDetail>supplyType}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Document Type" tooltip="Document Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="documentType" value="{EInvMgmtDetail>documentType}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Document Number" tooltip="Document Number" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="documentNumber" value="{EInvMgmtDetail>documentNumber}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Document Date" tooltip="Document Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="documentDate" value="{EInvMgmtDetail>documentDate}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Reverse Charge Flag" tooltip="Reverse Charge Flag" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="reverseChargeFlag" value="{EInvMgmtDetail>reverseChargeFlag}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Supplier GSTIN" tooltip="Supplier GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="supplierGSTIN" value="{EInvMgmtDetail>supplierGSTIN}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Supplier Trade Name" tooltip="Supplier Trade Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="supplierTradeName" value="{EInvMgmtDetail>supplierTradeName}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Supplier Legal Name" tooltip="Supplier Legal Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="supplierLegalName" value="{EInvMgmtDetail>supplierLegalName}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Supplier Address 1" tooltip="Supplier Address 1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="supplierAddress1" value="{EInvMgmtDetail>supplierAddress1}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Supplier Address 2" tooltip="Supplier Address 2" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="supplierAddress2" value="{EInvMgmtDetail>supplierAddress2}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Supplier Location" tooltip="Supplier Location" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="supplierLocation" value="{EInvMgmtDetail>supplierLocation}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Supplier Pincode" tooltip="Supplier Pincode" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="supplierPincode" value="{EInvMgmtDetail>supplierPincode}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Supplier State Code" tooltip="Supplier State Code" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="supplierStateCode" value="{EInvMgmtDetail>supplierStateCode}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Supplier Phone" tooltip="Supplier Phone" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="supplierPhone" value="{EInvMgmtDetail>supplierPhone}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Supplier Email" tooltip="Supplier Email" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="supplierEmail" value="{EInvMgmtDetail>supplierEmail}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Customer GSTIN" tooltip="Customer GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="customerGSTIN" value="{EInvMgmtDetail>customerGSTIN}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Customer Trade Name" tooltip="Customer Trade Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="customerTradeName" value="{EInvMgmtDetail>customerTradeName}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Customer Legal Name" tooltip="Customer Legal Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="customerLegalName" value="{EInvMgmtDetail>customerLegalName}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Customer Address 1" tooltip="Customer Address 1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="customerAddress1" value="{EInvMgmtDetail>customerAddress1}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Customer Address 2" tooltip="Customer Address 2" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="customerAddress2" value="{EInvMgmtDetail>customerAddress2}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Customer Location" tooltip="Customer Location" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="customerLocation" value="{EInvMgmtDetail>customerLocation}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Customer Pincode" tooltip="Customer Pincode" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="customerPincode" value="{EInvMgmtDetail>customerPincode}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Customer State Code" tooltip="Customer State Code" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="customerStateCode" value="{EInvMgmtDetail>customerStateCode}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Billing POS" tooltip="Billing POS" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="billingPOS" value="{EInvMgmtDetail>billingPOS}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Customer Phone" tooltip="Customer Phone" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="customerPhone" value="{EInvMgmtDetail>customerPhone}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Customer Email" tooltip="Customer Email" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="customerEmail" value="{EInvMgmtDetail>customerEmail}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Dispatcher Trade Name" tooltip="Dispatcher Trade Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="dispatcherTradeName" value="{EInvMgmtDetail>dispatcherTradeName}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Dispatcher Address 1" tooltip="Dispatcher Address 1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="dispatcherAddress1" value="{EInvMgmtDetail>dispatcherAddress1}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Dispatcher Address 2" tooltip="Dispatcher Address 2" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="dispatcherAddress2" value="{EInvMgmtDetail>dispatcherAddress2}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Dispatcher Location" tooltip="Dispatcher Location" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="dispatcherLocation" value="{EInvMgmtDetail>dispatcherLocation}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Dispatcher Pincode" tooltip="Dispatcher Pincode" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="dispatcherPincode" value="{EInvMgmtDetail>dispatcherPincode}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Dispatcher State Code" tooltip="Dispatcher State Code" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="dispatcherStateCode" value="{EInvMgmtDetail>dispatcherStateCode}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Ship To GSTIN" tooltip="Ship To GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="shipToGSTIN" value="{EInvMgmtDetail>shipToGSTIN}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Ship To Trade Name" tooltip="Ship To Trade Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="shipToTradeName" value="{EInvMgmtDetail>shipToTradeName}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Ship To Legal Name" tooltip="Ship To Legal Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="shipToLegalName" value="{EInvMgmtDetail>shipToLegalName}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Ship To Address 1" tooltip="Ship To Address 1" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="shipToAddress1" value="{EInvMgmtDetail>shipToAddress1}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Ship To Address 2" tooltip="Ship To Address 2" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="shipToAddress2" value="{EInvMgmtDetail>shipToAddress2}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Ship To Location" tooltip="Ship To Location" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="shipToLocation" value="{EInvMgmtDetail>shipToLocation}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Ship To Pincode" tooltip="Ship To Pincode" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="shipToPincode" value="{EInvMgmtDetail>shipToPincode}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Ship To State Code" tooltip="Ship To State Code" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="shipToStateCode" value="{EInvMgmtDetail>shipToStateCode}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Item Serial Number" tooltip="Item Serial Number" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="itemSerialNumber" value="{EInvMgmtDetail>itemSerialNumber}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Product Serial Number" tooltip="Product Serial Number" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="productSerialNumber" value="{EInvMgmtDetail>productSerialNumber}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Product Description" tooltip="Product Description" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="productDescription" value="{EInvMgmtDetail>productDescription}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Is Service" tooltip="Is Service" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="isService" value="{EInvMgmtDetail>isService}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="HSN" tooltip="HSN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="hSN" value="{EInvMgmtDetail>hSN}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Barcode" tooltip="Barcode" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="barcode" value="{EInvMgmtDetail>barcode}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Batch Name" tooltip="Batch Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="batchName" value="{EInvMgmtDetail>batchName}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Batch Expiry Date" tooltip="Batch Expiry Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="batchExpiryDate" value="{EInvMgmtDetail>batchExpiryDate}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Warranty Date" tooltip="Warranty Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="warrantyDate" value="{EInvMgmtDetail>warrantyDate}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Order Line Reference" tooltip="Order Line Reference" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="orderLineReference" value="{EInvMgmtDetail>orderLineReference}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Attribute Name" tooltip="Attribute Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="attributeName" value="{EInvMgmtDetail>attributeName}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Attribute Value" tooltip="Attribute Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="attributeValue" value="{EInvMgmtDetail>attributeValue}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Origin Country" tooltip="Origin Country" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="originCountry" value="{EInvMgmtDetail>originCountry}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="UQC" tooltip="UQC" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="uQC" value="{EInvMgmtDetail>uQC}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Quantity" tooltip="Quantity" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="quantity" value="{EInvMgmtDetail>quantity}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Free Quantity" tooltip="Free Quantity" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="freeQuantity" value="{EInvMgmtDetail>freeQuantity}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Unit Price" tooltip="Unit Price" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="unitPrice" value="{EInvMgmtDetail>unitPrice}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Item Amount" tooltip="Item Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="itemAmount" value="{EInvMgmtDetail>itemAmount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Item Discount" tooltip="Item Discount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="itemDiscount" value="{EInvMgmtDetail>itemDiscount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Pre-Tax Amount" tooltip="Pre-Tax Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="preTaxAmount" value="{EInvMgmtDetail>preTaxAmount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Item Assessable Amount" tooltip="Item Assessable Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="itemAssessableAmount" value="{EInvMgmtDetail>itemAssessableAmount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="IGST Rate" tooltip="IGST Rate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="iGSTRate" value="{EInvMgmtDetail>iGSTRate}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="IGST Amount" tooltip="IGST Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="iGSTAmount" value="{EInvMgmtDetail>iGSTAmount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="CGST Rate" tooltip="CGST Rate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="cGSTRate" value="{EInvMgmtDetail>cGSTRate}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="CGST Amount" tooltip="CGST Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="cGSTAmount" value="{EInvMgmtDetail>cGSTAmount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="SGST Rate" tooltip="SGST Rate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="sGSTRate" value="{EInvMgmtDetail>sGSTRate}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="SGST Amount" tooltip="SGST Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="sGSTAmount" value="{EInvMgmtDetail>sGSTAmount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Cess Ad Valorem Rate" tooltip="Cess Ad Valorem Rate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="cessAdvaloremRate" value="{EInvMgmtDetail>cessAdvaloremRate}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Cess Ad Valorem Amount" tooltip="Cess Ad Valorem Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="cessAdvaloremAmount" value="{EInvMgmtDetail>cessAdvaloremAmount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Cess Specific Amount" tooltip="Cess Specific Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="cessSpecificAmount" value="{EInvMgmtDetail>cessSpecificAmount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="State Cess Ad Valorem Rate" tooltip="State Cess Ad Valorem Rate" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="stateCessAdvaloremRate" value="{EInvMgmtDetail>stateCessAdvaloremRate}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="State Cess Ad Valorem Amount" tooltip="State Cess Ad Valorem Amount" textAlign="Center" width="100%" wrapping="true"
+									design="Bold"/>
+								<ui:template>
+									<Input name="stateCessAdvaloremAmount" value="{EInvMgmtDetail>stateCessAdvaloremAmount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="State Cess Specific Amount" tooltip="State Cess Specific Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="stateCessSpecificAmount" value="{EInvMgmtDetail>stateCessSpecificAmount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Item Other Charges" tooltip="Item Other Charges" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="itemOtherCharges" value="{EInvMgmtDetail>itemOtherCharges}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Total Item Amount" tooltip="Total Item Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="totalItemAmount" value="{EInvMgmtDetail>totalItemAmount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Invoice Other Charges" tooltip="Invoice Other Charges" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="invoiceOtherCharges" value="{EInvMgmtDetail>invoiceOtherCharges}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Invoice Assessable Amount" tooltip="Invoice Assessable Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="invoiceAssessableAmount" value="{EInvMgmtDetail>invoiceAssessableAmount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Invoice IGST Amount" tooltip="Invoice IGST Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="invoiceIGSTAmount" value="{EInvMgmtDetail>invoiceIGSTAmount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Invoice CGST Amount" tooltip="Invoice CGST Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="invoiceCGSTAmount" value="{EInvMgmtDetail>invoiceCGSTAmount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Invoice SGST Amount" tooltip="Invoice SGST Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="invoiceSGSTAmount" value="{EInvMgmtDetail>invoiceSGSTAmount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Invoice Cess Ad Valorem Amount" tooltip="Invoice Cess Ad Valorem Amount" textAlign="Center" width="100%" wrapping="true"
+									design="Bold"/>
+								<ui:template>
+									<Input name="invoiceCessAdvaloremAmount" value="{EInvMgmtDetail>invoiceCessAdvaloremAmount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Invoice Cess Specific Amount" tooltip="Invoice Cess Specific Amount" textAlign="Center" width="100%" wrapping="true"
+									design="Bold"/>
+								<ui:template>
+									<Input name="invoiceCessSpecificAmount" value="{EInvMgmtDetail>invoiceCessSpecificAmount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Invoice State Cess Ad Valorem Amount" tooltip="Invoice State Cess Ad Valorem Amount" textAlign="Center" width="100%"
+									wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="invoiceStateCessAdvaloremAmount" value="{EInvMgmtDetail>invoiceStateCessAdvaloremAmount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Invoice State Cess Specific Amount" tooltip="Invoice State Cess Specific Amount" textAlign="Center" width="100%"
+									wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="invoiceStateCessSpecificAmount" value="{EInvMgmtDetail>invoiceStateCessSpecificAmount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Invoice Discount" tooltip="Invoice Discount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="invoiceDiscount" value="{EInvMgmtDetail>invoiceDiscount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Invoice Value" tooltip="Invoice Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="invoiceValue" value="{EInvMgmtDetail>invoiceValue}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Round Off" tooltip="Round Off" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="roundOff" value="{EInvMgmtDetail>roundOff}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Currency Code" tooltip="Currency Code" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="currencyCode" value="{EInvMgmtDetail>currencyCode}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Country Code" tooltip="Country Code" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="countryCode" value="{EInvMgmtDetail>countryCode}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Invoice Value FC" tooltip="Invoice Value FC" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="invoiceValueFC" value="{EInvMgmtDetail>invoiceValueFC}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Port Code" tooltip="Port Code" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="portCode" value="{EInvMgmtDetail>portCode}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Shipping Bill Number" tooltip="Shipping Bill Number" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="shippingBillNumber" value="{EInvMgmtDetail>shippingBillNumber}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Shipping Bill Date" tooltip="Shipping Bill Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="shippingBillDate" value="{EInvMgmtDetail>shippingBillDate}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Invoice Remarks" tooltip="Invoice Remarks" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="invoiceRemarks" value="{EInvMgmtDetail>invoiceRemarks}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Invoice Period Start Date" tooltip="Invoice Period Start Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="invoicePeriodStartDate" value="{EInvMgmtDetail>invoicePeriodStartDate}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Invoice Period End Date" tooltip="Invoice Period End Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="invoicePeriodEndDate" value="{EInvMgmtDetail>invoicePeriodEndDate}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Preceding Invoice Number" tooltip="Preceding Invoice Number" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="preceedingInvoiceNumber" value="{EInvMgmtDetail>preceedingInvoiceNumber}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Preceding Invoice Date" tooltip="Preceding Invoice Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="preceedingInvoiceDate" value="{EInvMgmtDetail>preceedingInvoiceDate}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Other Reference" tooltip="Other Reference" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="otherReference" value="{EInvMgmtDetail>otherReference}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Receipt Advice Reference" tooltip="Receipt Advice Reference" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="receiptAdviceReference" value="{EInvMgmtDetail>receiptAdviceReference}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Receipt Advice Date" tooltip="Receipt Advice Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="receiptAdviceDate" value="{EInvMgmtDetail>receiptAdviceDate}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Tender Reference" tooltip="Tender Reference" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="tenderReference" value="{EInvMgmtDetail>tenderReference}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Contract Reference" tooltip="Contract Reference" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="contractReference" value="{EInvMgmtDetail>contractReference}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="External Reference" tooltip="External Reference" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="externalReference" value="{EInvMgmtDetail>externalReference}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Project Reference" tooltip="Project Reference" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="projectReference" value="{EInvMgmtDetail>projectReference}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Customer PO Reference Number" tooltip="Customer PO Reference Number" textAlign="Center" width="100%" wrapping="true"
+									design="Bold"/>
+								<ui:template>
+									<Input name="customerPOReferenceNumber" value="{EInvMgmtDetail>customerPOReferenceNumber}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Customer PO Reference Date" tooltip="Customer PO Reference Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="customerPOReferenceDate" value="{EInvMgmtDetail>customerPOReferenceDate}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Payee Name" tooltip="Payee Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="payeeName" value="{EInvMgmtDetail>payeeName}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Mode of Payment" tooltip="Mode of Payment" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="modeOfPayment" value="{EInvMgmtDetail>modeOfPayment}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Branch or IFSC Code" tooltip="Branch or IFSC Code" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="branchOrIFSCCode" value="{EInvMgmtDetail>branchOrIFSCCode}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Payment Terms" tooltip="Payment Terms" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="paymentTerms" value="{EInvMgmtDetail>paymentTerms}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Payment Instruction" tooltip="Payment Instruction" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="paymentInstruction" value="{EInvMgmtDetail>paymentInstruction}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Credit Transfer" tooltip="Credit Transfer" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="creditTransfer" value="{EInvMgmtDetail>creditTransfer}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Direct Debit" tooltip="Direct Debit" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="directDebit" value="{EInvMgmtDetail>directDebit}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Credit Days" tooltip="Credit Days" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="creditDays" value="{EInvMgmtDetail>creditDays}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Paid Amount" tooltip="Paid Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="paidAmount" value="{EInvMgmtDetail>paidAmount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Balance Amount" tooltip="Balance Amount" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="balanceAmount" value="{EInvMgmtDetail>balanceAmount}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Account Detail" tooltip="Account Detail" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="accountDetail" value="{EInvMgmtDetail>accountDetail}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Ecom GSTIN" tooltip="Ecom GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="ecomGSTIN" value="{EInvMgmtDetail>ecomGSTIN}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Supporting Doc URL" tooltip="Supporting Doc URL" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="supportingDocURL" value="{EInvMgmtDetail>supportingDocURL}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Supporting Document" tooltip="Supporting Document" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="supportingDocument" value="{EInvMgmtDetail>supportingDocument}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Additional Information" tooltip="Additional Information" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="additionalInformation" value="{EInvMgmtDetail>additionalInformation}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Transporter ID" tooltip="Transporter ID" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="transporterID" value="{EInvMgmtDetail>transporterID}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Transporter Name" tooltip="Transporter Name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="transporterName" value="{EInvMgmtDetail>transporterName}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Transport Mode" tooltip="Transport Mode" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="transportMode" value="{EInvMgmtDetail>transportMode}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Transport Doc No" tooltip="Transport Doc No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="transportDocNo" value="{EInvMgmtDetail>transportDocNo}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Transport Doc Date" tooltip="Transport Doc Date" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="transportDocDate" value="{EInvMgmtDetail>transportDocDate}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Distance" tooltip="Distance" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="distance" value="{EInvMgmtDetail>distance}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Vehicle No" tooltip="Vehicle No" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="vehicleNo" value="{EInvMgmtDetail>vehicleNo}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Vehicle Type" tooltip="Vehicle Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="vehicleType" value="{EInvMgmtDetail>vehicleType}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Section7 of IGST Flag" tooltip="Section7 of IGST Flag" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="section7OfIGSTFlag" value="{EInvMgmtDetail>section7OfIGSTFlag}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Claim Refund Flag" tooltip="Claim Refund Flag" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="claimRefundFlag" value="{EInvMgmtDetail>claimRefundFlag}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="Export Duty" tooltip="Export Duty" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="exportDuty" value="{EInvMgmtDetail>exportDuty}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="IRN Get Call Date Time" tooltip="IRN Get Call Date Time" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="iRNGetCallDateTime" value="{EInvMgmtDetail>iRNGetCallDateTime}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="12rem">
+								<Label text="IRP name" tooltip="IRP name" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+								<ui:template>
+									<Input name="irpName" value="{EInvMgmtDetail>irpName}" editable="false"/>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+						<ui:footer>
+							<!--<VBox>-->
+							<!--	<ObjectStatus text="{=${locked>/isLocked}? ${i18n>msgInvMandotory} : ${locked>/lockedReason} }" state="Error"/>-->
+							<!--</VBox>-->
+						</ui:footer>
+					</ui:Table>
+					<core:Fragment fragmentName="com.ey.digigst.fragments.invManageNew.inwardEINV.tabLayout.tabLayoutEINV" type="XML"/>
+				</VBox>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

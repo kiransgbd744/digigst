@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- Appenders -->
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		 <param name="Target" value="System.out" /> 
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="-JobId=%X{jobId} -UserName=%X{userName} -GroupCode=%X{groupCode} [%d{ISO8601}] %5p [%X{sessionID}] [%t][%x] %c.%M - %m %n" />
+		</layout>
+	</appender>
+	
+	 <appender name="FILE" class="org.apache.log4j.RollingFileAppender">
+	    <param name="File" value="SAPASYNC.log"/>
+	    <param name="MaxFileSize" value="100MB"/>
+	    <param name="MaxBackupIndex" value="50"/>
+	    <layout class="org.apache.log4j.PatternLayout">
+         	<param name="ConversionPattern" value="[%d{ISO8601}] %5p [%X{sessionID}] [%t][%x] %c.%M - %m -JobId=%X{jobId} -UserName=%X{userName}%n" />     
+         	<param name="ConversionPattern" value="-JobId=%X{jobId} -UserName=%X{userName} -GroupCode=%X{groupCode} [%d{ISO8601}] %5p [%X{sessionID}] [%t][%x] %c.%M - %m %n" />
+        </layout>
+	  </appender> 
+
+	<!-- Application Loggers -->
+	<logger name="com.ey.advisory">
+		<level value="error" />
+		<!-- <appender-ref ref="FILE"/> -->
+		<appender-ref ref="console"/>
+	</logger>
+	
+	<!-- 3rdparty Loggers -->
+	<logger name="org.springframework.core">
+		<level value="error" />
+	</logger>
+	
+	<logger name="org.springframework.beans">
+		<level value="error" />
+	</logger>
+	
+	<logger name="org.springframework.context">
+		<level value="error" />
+	</logger>
+	
+	<logger name="org.springframework.security">
+		<level value="error" />
+	</logger>
+
+	<logger name="org.springframework.web">
+		<level value="error" />
+	</logger>
+	<logger name="org.springframework.security">
+		<level value="error" />
+	</logger>
+	
+	<logger name="org.hibernate">
+            <level value="debug" />
+      </logger>
+      <logger name="org.hibernate.pretty">
+            <level value="error"/>
+      </logger>
+      <logger name="org.hibernate.tool.hbm2ddl">
+            <level value="debug"/> 
+      </logger>
+      <logger name="org.hibernate.SQL">
+            <level value="debug"/>
+      </logger>
+    <logger name="org.hibernate.type.descriptor.sql">
+      <level value="debug"/>
+    </logger>
+    <logger name="org.hibernate.stat">
+      <level value="debug"/>
+    </logger>
+	
+
+	<!-- Root Logger -->
+	<root>
+		<priority value="debug" />
+		<appender-ref ref="FILE"/>
+	</root>
+	
+</log4j:configuration>

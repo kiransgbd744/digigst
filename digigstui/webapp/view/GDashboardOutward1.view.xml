@@ -1,0 +1,422 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.GDashboardOutward1"
+	xmlns:layout="sap.ui.layout" height="100%" xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" xmlns:form="sap.ui.layout.form" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data" xmlns:viz="sap.viz.ui5.controls" busyIndicatorDelay="0">
+	<Page class="ReconResponce">
+		<customHeader>
+			<Bar class="header colorToolbar">
+				<contentLeft>
+					<MenuButton id="idDimension" text="{i18n>rupeesIn} {i18n>K}" width="13rem" class="sapUiTinyMarginBegin buttoncolorSec">
+						<Menu itemSelected="onDinomChange" items="{oDinomtion>/}" id="idDimensionMenu">
+							<MenuItem key="{oDinomtion>Key}" text="{oDinomtion>Value}"/>
+						</Menu>
+					</MenuButton>
+					<!--<Select id="idDimension" items="{oDinomtion>/}"  width="8rem"  change="onDinomChange">-->
+					<!--	<items>-->
+					<!--		<core:Item key="{oDinomtion>Key}" text="{oDinomtion>Value}"/>-->
+					<!--	</items>-->
+					<!--</Select>-->
+				</contentLeft>
+				<contentMiddle>
+					<Title class="title sapUiSmallMarginEnd" text="Outward Supply - 1"/>
+					<Button icon="sap-icon://navigation-left-arrow" enabled="false"></Button>
+					<Title text="1/2"></Title>
+					<Button icon="sap-icon://navigation-right-arrow" press="onPressNextPage"></Button>
+				</contentMiddle>
+				<contentRight>
+					<!--<HBox class="sapUiSmallMarginEnd">-->
+					<Label text="Last Updated On :" class="sapUiTinyMarginEnd" design="Bold"></Label>
+					<Text text="{oTotalLiabDetailsModel>/totalLiabDetails/lastRefreshedOn}"></Text>
+					<!--</HBox>-->
+				</contentRight>
+			</Bar>
+		</customHeader>
+		<content>
+			<l:VerticalLayout width="100%">
+				<l:BlockLayout background="Dashboard" class="cl_Contentpading">
+					<l:BlockLayoutRow accentCells="Accent1">
+						<l:BlockLayoutCell width="4" class=" cl_Blockout cl_blockBg">
+							<Panel>
+								<Toolbar class="cl_borderBOTTOM" height="2.5rem">
+									<VBox alignContent="Center" alignItems="Center">
+										<Text
+											text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTotalLiabDetailsModel>/totalLiabDetails/netLiability' }], formatter : '.formatter.Denomination'}"
+											class="cl_textNumber"/>
+										<Label text="NET LIABILITY" design="Bold"/>
+									</VBox>
+									<ToolbarSpacer></ToolbarSpacer>
+									<VBox alignContent="Center" alignItems="Center">
+										<Text
+											text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTotalLiabDetailsModel>/totalLiabDetails/totalLiability' }], formatter : '.formatter.Denomination'}"
+											class="cl_textNumber"/>
+										<Label text="TOTAL LIABILITY" design="Bold"/>
+									</VBox>
+								</Toolbar>
+								<Toolbar class="cl_borderBOTTOM" height="2.5rem">
+									<ToolbarSpacer></ToolbarSpacer>
+									<VBox alignContent="Center" alignItems="Center">
+										<Text
+											text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTotalLiabDetailsModel>/totalLiabDetails/netItcAvailable' }], formatter : '.formatter.Denomination'}"
+											class="cl_textNumber"/>
+										<Label text="NET ITC AVAILABLE" design="Bold"/>
+									</VBox>
+									<ToolbarSpacer></ToolbarSpacer>
+								</Toolbar>
+								<!--<Toolbar class="cl_borderBOTTOM" height="2.5rem">-->
+								<!--	<VBox alignContent="Center" alignItems="Center">-->
+								<!--		<Text text="{oTotalLiabDetailsModel>/totalLiabDetails/totalLiability}" class="cl_textNumber"/>-->
+								<!--		<Label text="TOTAL LIABILITYe" design="Bold"/>-->
+								<!--	</VBox>-->
+								<!--	<ToolbarSpacer></ToolbarSpacer>-->
+								<!--</Toolbar>-->
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell width="2" class="cl_Blockout cl_blockBg">
+							<Panel class="cl_toolbarstate">
+								<VBox>
+									<Label text="Financial Year" class="cl_lebsta" design="Bold"/>
+									<Select id="idFinance" items="{oFyModel>/finYears}" selectedKey="{GloblePayload>/fy}" width="100%" change="onFyChange"
+										class="sapUiSmallMarginTop">
+										<items>
+											<core:Item key="{oFyModel>fy}" text="{oFyModel>fy}"/>
+										</items>
+									</Select>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell width="2" class="cl_Blockout cl_blockBg">
+							<Panel class="cl_toolbarstate">
+								<VBox>
+									<Label text="Entity Name" class="cl_lebsta" design="Bold"/>
+									<MultiComboBox id="idEntityGOutward1" items="{entityAll>/}" selectedKeys="{GloblePayload>/entity}" selectionChange="selectEntity"
+										class="sapUiSmallMarginTop">
+										<core:Item key="{entityAll>entityId}" text="{entityAll>entityName}"/>
+									</MultiComboBox>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell width="2" class="cl_Blockout cl_blockBg">
+							<Panel>
+								<VBox>
+									<Label text="Supplier GSTIN" design="Bold"/>
+									<MultiComboBox id="idSupplier" items="{oGstinModel>/gstins}" selectedKeys="{GloblePayload>/gstin}" width="100%" class="sapUiSmallMarginTop"
+										showSecondaryValues="true" selectionChange="selectAll">
+										<core:Item key="{oGstinModel>gstin}" text="{oGstinModel>gstin} {=!${oGstinModel>stateName}?'':'-'} {oGstinModel>stateName}"/>
+									</MultiComboBox>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell width="2" class="cl_Blockout cl_blockBg">
+							<Panel>
+								<VBox>
+									<Label text="Return Period" design="Bold"/>
+									<MultiComboBox id="idReturn" items="{oRetPeriodModel>/returnPeriods}" class="sapUiSmallMarginTop" width="100%" selectionChange="selectAll">
+										<core:Item key="{oRetPeriodModel>fy}" text="{oRetPeriodModel>fy}"/>
+									</MultiComboBox>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+				<Toolbar class="cl_borderBOTTOM">
+					<ToolbarSpacer></ToolbarSpacer>
+					<Button text="Filter" class="sapUiSmallMarginEnd buttoncolor" press="onGoSelect"></Button>
+				</Toolbar>
+				<l:BlockLayout background="Dashboard" class="cl_Contentpading">
+					<l:BlockLayoutRow accentCells="Accent1">
+						<l:BlockLayoutCell width="3">
+							<Panel class="sapUiNoContentPadding" width="auto">
+								<Toolbar class="cl_borderBOTTOM sapUiTinyMargin">
+									<Switch id="switchoutId" state="false" change="onSwitchout">
+										<layoutData>
+											<FlexItemData growFactor="1"/>
+										</layoutData>
+									</Switch>
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Gross Outward Supplies" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+									<core:Icon src="sap-icon://download" press="onDownloadGross"></core:Icon>
+									<!--<Button icon="sap-icon://download" press="onDownloadGross"></Button>-->
+								</Toolbar>
+								<viz:Popover id="idPopOver"></viz:Popover>
+								<viz:VizFrame id="id_iddonut" xmlns="sap.viz" vizType="donut" class="cl_vizHeigDonut" autoAdjustHeight="true"
+									uiConfig="{applicationSet:'fiori'}" visible="true" width="170%">
+									<viz:dataset>
+										<viz.data:FlattenedDataset data="{oGrossModel>/grossOutward}">
+											<viz.data:dimensions>
+												<viz.data:DimensionDefinition name="Transaction Type" value="{oGrossModel>xAxis}"/>
+											</viz.data:dimensions>
+											<viz.data:measures>
+												<viz.data:MeasureDefinition name="Invoice Value" value="{oGrossModel>yAxis}"/>
+											</viz.data:measures>
+										</viz.data:FlattenedDataset>
+									</viz:dataset>
+									<viz:feeds>
+										<viz.feeds:FeedItem uid="size" type="Measure" values="Invoice Value"/>
+										<viz.feeds:FeedItem uid="color" type="Dimension" values="Transaction Type"/>
+									</viz:feeds>
+								</viz:VizFrame>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell width="3">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Month Wise Trend Analysis" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+									<core:Icon src="sap-icon://download" press="onDownloadMonth"></core:Icon>
+								</Toolbar>
+								<HBox class="sapUiTinyMarginTop">
+									<RadioButtonGroup id="idRdValue" selectedIndex="0" select="onSelectTrendValue" columns="3" class="sapUiTinyMarginBegin sapUiSmallMarginEnd">
+										<RadioButton text="Invoice Value"/>
+										<RadioButton text="Taxable Value"/>
+										<RadioButton text="Tax Amount"/>
+									</RadioButtonGroup>
+								</HBox>
+								<viz:Popover id="idPopOver1"></viz:Popover>
+								<viz:VizFrame id="vfBiDashLine" xmlns="sap.viz" vizType="line" class="cl_vizHeig2 sapUiTinyMarginTop" uiConfig="{applicationSet:'fiori'}">
+									<viz:dataset>
+										<viz.data:FlattenedDataset data="{oMonthTrendModel>/monthWiseAnalysis}">
+											<viz.data:dimensions>
+												<viz.data:DimensionDefinition name="Month" value="{path:'oMonthTrendModel>xAxis', formatter:'.formatter.Monthaxis'}"/>
+											</viz.data:dimensions>
+											<viz.data:measures>
+												<viz.data:MeasureDefinition name="Invoice Values" value="{oMonthTrendModel>yAxis}"/>
+												<viz.data:MeasureDefinition name="Taxable Value" value="{oMonthTrendModel>yAxis}"/>
+												<viz.data:MeasureDefinition name="Tax Amount" value="{oMonthTrendModel>yAxis}"/>
+											</viz.data:measures>
+										</viz.data:FlattenedDataset>
+									</viz:dataset>
+									<viz:feeds>
+										<viz.feeds:FeedItem id='valueAxisFeed1' uid="valueAxis" type="Measure" values="Invoice Values"/>
+										<viz.feeds:FeedItem id='categoryAxisFeed1' uid="categoryAxis" type="Dimension" values="Month"/>
+									</viz:feeds>
+								</viz:VizFrame>
+							</Panel>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell width="2">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Top Customers B2B" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+									<Switch change="onSwitchB2B" id="idSwitchB2B" state="false" customTextOn="I" customTextOff="A"/>
+									<core:Icon src="sap-icon://download" id="idTopCustB2BDownload" press="onDownloadTopCustomer"></core:Icon>
+								</Toolbar>
+								<VBox id="idTopCustB2B_A" visible="true">
+									<viz:Popover id="idPopOver2"></viz:Popover>
+									<viz:VizFrame id="idVizFrameBar" uiConfig="{applicationSet:'fiori'}" vizType='stacked_bar' class="cl_vizHeig1">
+										<viz:dataset>
+											<viz.data:FlattenedDataset data="{oTopCustB2BModel>/topCustomers}">
+												<viz.data:dimensions>
+													<viz.data:DimensionDefinition name="GSTIN" value="{oTopCustB2BModel>xAxis}"/>
+												</viz.data:dimensions>
+												<viz.data:measures>
+													<viz.data:MeasureDefinition name="Invoice Value" value="{oTopCustB2BModel>yAxis}"/>
+												</viz.data:measures>
+											</viz.data:FlattenedDataset>
+										</viz:dataset>
+										<viz:feeds>
+											<viz.feeds:FeedItem id='valueAxisFeed' uid="valueAxis" type="Measure" values="Invoice Value"/>
+											<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="GSTIN"/>
+										</viz:feeds>
+									</viz:VizFrame>
+								</VBox>
+								<VBox id="idTopCustB2B_I" visible="false">
+									<ui:TreeTable rows="{path:'oTopCustB2BHSN>/taxLiability/', parameters:{ arrayNames:['hsndto','level3'], numberOfExpandedLevels:0 }}"
+										visible="true" selectionMode="None" selectionBehavior="Row" fixedColumnCount="1" enableSelectAll="false" class="sapUiTinyMarginBottom"
+										visibleRowCount="13">
+										<!--<ui:extension>-->
+										<!--	<Toolbar>-->
+										<!--<ui:Title id="title" text="Tax Inward Details"/>-->
+										<!--		<ToolbarSpacer/>-->
+										<!--	</Toolbar>-->
+										<!--</ui:extension>-->
+										<ui:columns>
+											<ui:Column width="14rem" hAlign="Center">
+												<Label text="GSTIN/HSN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<ObjectIdentifier title="{oTopCustB2BHSN>transactionType}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="End">
+												<Label text="Invoice Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTopCustB2BHSN>invoiceValue' }], formatter : '.formatter.Denomination'}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="End">
+												<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTopCustB2BHSN>taxableValue' }], formatter : '.formatter.Denomination'}"/>
+												</ui:template>
+											</ui:Column>
+										</ui:columns>
+									</ui:TreeTable>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell >
+					</l:BlockLayoutRow>
+					<l:BlockLayoutRow accentCells="Accent1">
+						<l:BlockLayoutCell width="3">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Major Tax Paying Products" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+									<Switch change="onSwitchMajorTax" id="idSwitchMajorTax" state="false" customTextOn="I" customTextOff="A"/>
+									<core:Icon src="sap-icon://download" press="onDownloadMajorTax"></core:Icon>
+								</Toolbar>
+								<VBox id="idMajorTax_A" visible="true">
+									<viz:Popover id="idPopOver3"></viz:Popover>
+									<viz:VizFrame id="idVizFrameBar1" uiConfig="{applicationSet:'fiori'}" vizType='bar' class="cl_vizHeig1">
+										<viz:dataset>
+											<viz.data:FlattenedDataset data="{oMajorTaxModel>/majTaxPayingProds}">
+												<viz.data:dimensions>
+													<viz.data:DimensionDefinition name="HSN Number" value="{oMajorTaxModel>xAxis}"/>
+												</viz.data:dimensions>
+												<viz.data:measures>
+													<viz.data:MeasureDefinition name="Total Value" value="{oMajorTaxModel>yAxis}"/>
+												</viz.data:measures>
+											</viz.data:FlattenedDataset>
+										</viz:dataset>
+										<viz:feeds>
+											<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Total Value"/>
+											<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="HSN Number"/>
+										</viz:feeds>
+									</viz:VizFrame>
+								</VBox>
+								<VBox id="idMajorTax_I" visible="false">
+									<viz:Popover id="idPopOver_stacked_bar"></viz:Popover>
+									<viz:VizFrame id="idVizFrame_stacked_bar" uiConfig="{applicationSet:'fiori'}" class="cl_vizHeig1" vizType='stacked_bar'>
+										<viz:dataset>
+											<viz.data:FlattenedDataset data="{oMajorTaxRate>/majorTaxPayProducts}">
+												<viz.data:dimensions>
+													<viz.data:DimensionDefinition name="HSN Number" value="{oMajorTaxRate>hsnsac}"/>
+													<!--<viz.data:DimensionDefinition name="Fat Percentage" value="{invB>gstin}"/>-->
+												</viz.data:dimensions>
+												<viz.data:measures>
+													<viz.data:MeasureDefinition name="0 Percent" value="{oMajorTaxRate>per0}"/>
+													<viz.data:MeasureDefinition name="1 Percent" value="{oMajorTaxRate>per1}"/>
+													<viz.data:MeasureDefinition name="1.5 Percent" value="{oMajorTaxRate>per1_5}"/>
+													<viz.data:MeasureDefinition name="3 Percent" value="{oMajorTaxRate>per3}"/>
+													<viz.data:MeasureDefinition name="5 Percent" value="{oMajorTaxRate>per5}"/>
+													<viz.data:MeasureDefinition name="7.5 Percent" value="{oMajorTaxRate>per7_5}"/>
+													<viz.data:MeasureDefinition name="12 Percent" value="{oMajorTaxRate>per12}"/>
+													<viz.data:MeasureDefinition name="18 Percent" value="{oMajorTaxRate>per18}"/>
+													<viz.data:MeasureDefinition name="28 Percent" value="{oMajorTaxRate>per28}"/>
+												</viz.data:measures>
+											</viz.data:FlattenedDataset>
+										</viz:dataset>
+										<viz:feeds>
+											<viz.feeds:FeedItem uid="valueAxis" type="Measure"
+												values="0 Percent,1 Percent,1.5 Percent,3 Percent,5 Percent,7.5 Percent,12 Percent,18 Percent,28 Percent"/>
+											<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="HSN Number"/>
+											<!--<viz.feeds:FeedItem uid="color" type="Dimension" values="Fat Percentage"/>-->
+										</viz:feeds>
+									</viz:VizFrame>
+								</VBox>
+								<Label text="Values displayed are as per DigiGST Processed data" class="redLink" textAlign="Center" width="100%"/>
+							</Panel>
+						</l:BlockLayoutCell >
+						<l:BlockLayoutCell width="4">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Tax Liability Details" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+								</Toolbar>
+								<ui:TreeTable rows="{oTaxLiabDetailsModel>/}" visible="true" selectionMode="None" selectionBehavior="Row" fixedColumnCount="1"
+									enableSelectAll="false" class="sapUiTinyMarginBottom" visibleRowCount="17">
+									<ui:extension>
+										<Toolbar>
+											<!--<ui:Title id="title" text="Tax Inward Details"/>-->
+											<ToolbarSpacer/>
+										</Toolbar>
+									</ui:extension>
+									<ui:columns>
+										<ui:Column hAlign="Center">
+											<Label text="Transaction Type" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<ObjectIdentifier title="{path : 'oTaxLiabDetailsModel>transactionType', formatter : '.formatter.TransactionType'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="Invoice Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>invoiceValue' }], formatter : '.formatter.Denomination'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="Taxable Value" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>taxableValue' }], formatter : '.formatter.Denomination'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="IGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>igstAmt' }], formatter : '.formatter.Denomination'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="CGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>cgstAmt' }], formatter : '.formatter.Denomination'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="SGST" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>sgstAmt' }], formatter : '.formatter.Denomination'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label text="Cess" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+											<ui:template>
+												<Text text="{parts: [{path : 'oDmModel>/Key'}, {path : 'oTaxLiabDetailsModel>cessAmt' }], formatter : '.formatter.Denomination'}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:TreeTable>
+								<VBox class="sapUiSmallMarginTop sapUiSmallMarginBegin sapUiSmallMarginBottom">
+									<Text text="Kindly Note:" class="sapUiSmallMarginBottom"></Text>
+									<Text text="1. Others includes transactions which are NIL,NON and Exempt supplies" class="sapUiLargeMarginBegin"></Text>
+									<!--<Text text="2. All figures are appearing in Thousands (000)" class="sapUiLargeMarginBegin"></Text>-->
+									<Text text="2. For amendment transactions - diffrential value is not considered" class="sapUiLargeMarginBegin"></Text>
+								</VBox>
+							</Panel>
+						</l:BlockLayoutCell >
+						<l:BlockLayoutCell width="2">
+							<Panel class="sapUiNoContentPadding">
+								<Toolbar class="cl_borderBOTTOM">
+									<ToolbarSpacer></ToolbarSpacer>
+									<Label text="Tax Rate Wise Distribution" design="Bold" class="titleFont"/>
+									<ToolbarSpacer></ToolbarSpacer>
+									<core:Icon src="sap-icon://download" press="onDownloadTotalRate"></core:Icon>
+								</Toolbar>
+								<viz:Popover id="idPopOver4"></viz:Popover>
+								<viz:VizFrame id="id_iddonut2" xmlns="sap.viz" vizType="donut" class="cl_vizHeigDonut" uiConfig="{applicationSet:'fiori'}" visible="true">
+									<viz:dataset>
+										<viz.data:FlattenedDataset data="{otaxwiseDistModel>/taxRateWise}">
+											<viz.data:dimensions>
+												<viz.data:DimensionDefinition name="Tax Rate" value="{otaxwiseDistModel>taxRate}"/>
+											</viz.data:dimensions>
+											<viz.data:measures>
+												<viz.data:MeasureDefinition name="Total Value" value="{otaxwiseDistModel>invoiceValue}"/>
+											</viz.data:measures>
+										</viz.data:FlattenedDataset>
+									</viz:dataset>
+									<viz:feeds>
+										<viz.feeds:FeedItem uid="size" type="Measure" values="Total Value"/>
+										<viz.feeds:FeedItem uid="color" type="Dimension" values="Tax Rate"/>
+									</viz:feeds>
+								</viz:VizFrame>
+							</Panel>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+			</l:VerticalLayout>
+		</content>
+	</Page>
+</mvc:View>

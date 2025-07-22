@@ -1,0 +1,16 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.Reports"
+	busyIndicatorDelay="0">
+	<IconTabBar expanded="true" class="sapUiNoContentPadding" stretchContentHeight="true" selectedKey="report" expandable="false">
+		<items>
+			<IconTabFilter showAll="true" count="Reports" enabled="false"/>
+			<IconTabSeparator/>
+			<IconTabFilter icon="sap-icon://expense-report" text="{i18n>generateReport}" tooltip="{i18n>generateReport}" key="report">
+				<mvc:XMLView viewName="com.ey.digigst.view.ReportGenerate"/>
+			</IconTabFilter>
+			<IconTabSeparator icon="sap-icon://open-command-field"/>
+			<IconTabFilter icon="sap-icon://work-history" text="{i18n>repHistory}" tooltip="{i18n>repHistory}" key="history">
+				<core:Fragment fragmentName="com.ey.digigst.fragments.reports.History" type="XML"/>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</mvc:View>

@@ -1,0 +1,32 @@
+/*package com.ey.advisory.app.data.repositories.client;
+
+import jakarta.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Service;
+
+import com.ey.advisory.app.data.entities.client.InterestAndLateFeeGstnEntity;
+
+*//**
+ * 
+ * @author Mahesh.Golla
+ *
+ *//*
+@Service("InterestAndLateFeeGstnRepository")
+public interface InterestAndLateFeeGstnRepository
+		extends JpaRepository<InterestAndLateFeeGstnEntity, Long>,
+		JpaSpecificationExecutor<InterestAndLateFeeGstnEntity> {
+	
+	
+	@Transactional
+	@Modifying
+	@Query("UPDATE InterestAndLateFeeGstnEntity b SET b.isDelete = TRUE "
+			+ "WHERE b.interestGstnKey IN (:interestGstnKey) ")
+	public void UpdateSameGstnKey(@Param("interestGstnKey") String interestGstnKey);
+
+}
+*/

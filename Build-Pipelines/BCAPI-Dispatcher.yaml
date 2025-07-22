@@ -1,0 +1,71 @@
+resources:
+  repositories:
+  - repository: templates
+    type: git
+    name: SAPDigiGST/DevOps
+    ref: refs/heads/main
+
+parameters:
+  - name: environment
+    displayName: 'Environment'
+    type: string
+    default: 'DEV'
+    values:
+      - 'DEV'
+      - 'UAT'
+      - 'PROD'
+  - name: sonar
+    displayName: 'Sonar_Required'
+    type: string
+    default: false
+    values:
+      - 'true'
+      - 'false'
+  - name: ossscan
+    displayName: 'Oss_Scan'
+    type: string
+    default: Required
+    values:
+      - 'Required'
+      - 'NotRequired'
+  - name: nexusupload
+    displayName: 'Nexus_Upload'
+    type: string
+    default: NO
+    values:
+      - 'Yes'
+      - 'NO'             
+ 
+variables:
+- name: releaseVersion
+  ${{ if eq(parameters.environment, 'DEV') }}:
+    value: "$(DEV-RELEASE)"
+  ${{ if eq(parameters.environment, 'UAT') }}:
+    value: "$(UAT-RELEASE)"
+  ${{ if eq(parameters.environment, 'PROD') }}:
+    value: "$(PROD-RELEASE)"
+- name: nexus
+  ${{ if eq(parameters.environment, 'DEV') }}:
+    value: "$(DEV)"
+  ${{ if eq(parameters.environment, 'UAT') }}:
+    value: "$(UAT)"
+  ${{ if eq(parameters.environment, 'PROD') }}:
+    value: "$(PROD)"
+
+name: $(Build.BuildId)
+
+jobs:
+- job: Building_BCAPI_Dispatcher
+  displayName: 'Building BCAPI Dispatcher module'
+  pool:
+    name: 'SAP-CF'
+  steps:
+  - checkout: templates
+  - template: DiGiGST-Build-Pipelines/Pipeline-SAP-BCAPI-Dispatcher.yaml@templates  # Template reference with repository
+    parameters:
+      environment: ${{ parameters.environment }}
+      sonar: ${{ parameters.sonar }}
+      releaseVersion: $(releaseVersion)
+      nexusupload: ${{ parameters.nexusupload }}
+      ossscan: ${{ parameters.ossscan }}
+      nexus: $(nexus) # Pass the conditional variable as a parameter

@@ -1,0 +1,223 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.Auto2B"
+	xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" busyIndicatorDelay="0">
+	<f:DynamicPage id="dpGstr3bSummary1">
+		<f:title>
+			<f:DynamicPageTitle class="sapUiSizeCompact">
+				<f:heading>
+					<HBox>
+						<Title text="Auto Get GSTR 2B" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onPressGo" clear="onClearFilter"
+					useToolbar="false" class="sapUiNoContentPadding" width="25%">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Finacial Year" visibleInFilterBar="true">
+							<fb:control>
+								<Select width="100%" id="Fy2b" items="{oFyModel>/finYears}" forceSelection="true">
+									<core:Item key="{oFyModel>fy}" text="{oFyModel>fy}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox class="clMain" justifyContent="Start" width="75%" visible="true">
+					<Button id="bSgsrt1" text="Filter" press="onPressGo" class="sapUiTinyMarginBegin buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel>
+				<ui:Table rows="{GSTR2BTable>/}" id="idTableGstr3B" selectionMode="None" selectionBehavior="Row" visibleRowCount="11" fixedRowCount="0"
+					fixedColumnCount="0" enableSelectAll="true" rowSelectionChange="onSelectionGstn">
+					<ui:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<HBox>
+								<Label design="Bold" id="timeId"/>
+								<Text/>
+							</HBox>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="15rem" headerSpan="1">
+							<ui:multiLabels>
+								<Label text="GSTIN" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<!--<HBox alignContent="Center" justifyContent="SpaceBetween">
+									<Label text="{GSTR2BTable>gstin}" design="Bold" textAlign="Center" width="100%"/>
+									<VBox>
+										<Text text="{GSTR2BTable>registrationType}" class="stateColor fontSmall"/>
+										<core:Icon src="sap-icon://circle-task-2" size="0.8rem" visible="{=${GSTR2BTable>authStatus}===''?false:true}"
+											tooltip="{=${GSTR2BTable>authStatus}==='A'?'Active':'Inactive'}" color="{=${GSTR2BTable>authStatus}==='A'?'#00ff00':'red'}"
+											press="onPressGenerateOTP" class="sapUiTinyMarginBegin"/>
+									</VBox>
+								</HBox>-->
+								<VBox width="100%">
+									<HBox>
+										<Text text="{GSTR2BTable>stateName}" class="stateColor" width="9rem"/>
+										<Text text="{=${GSTR2BTable>registrationType}==='REGULAR'?'':${GSTR2BTable>registrationType}}" class="stateColor fontSmall"/>
+									</HBox>
+									<HBox alignContent="Start" justifyContent="SpaceBetween">
+										<Label text="{GSTR2BTable>gstin}" design="Bold" textAlign="Center"/>
+										<core:Icon src="sap-icon://circle-task-2" size="0.8rem" visible="{=${GSTR2BTable>authStatus}===''?false:true}"
+											tooltip="{=${GSTR2BTable>authStatus}==='A'?'Active':'Inactive'}" color="{=${GSTR2BTable>authStatus}==='A'?'#00ff00':'red'}"
+											press="onPressGenerateOTP" class="sapUiTinyMarginBegin"/>
+									</HBox>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="16rem">
+							<ui:multiLabels>
+								<Label text="April"/>
+							</ui:multiLabels>
+							<ui:template>
+								<VBox>
+									<ObjectStatus text="{GSTR2BTable>statusAprl}" state="{path:'GSTR2BTable>statusAprl', formatter:'.GstrStatus'}"
+										class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+									<Text text="{GSTR2BTable>initiatedOnApril}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="16rem">
+							<ui:multiLabels>
+								<Label text="May"/>
+							</ui:multiLabels>
+							<ui:template>
+								<VBox>
+									<ObjectStatus text="{GSTR2BTable>statusMay}" state="{path:'GSTR2BTable>statusMay', formatter:'.GstrStatus'}"
+										class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+									<Text text="{GSTR2BTable>initiatedOnMay}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="16rem">
+							<ui:multiLabels>
+								<Label text="June"/>
+							</ui:multiLabels>
+							<ui:template>
+								<VBox>
+									<ObjectStatus text="{GSTR2BTable>statusJune}" state="{path:'GSTR2BTable>statusJune', formatter:'.GstrStatus'}"
+										class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+									<Text text="{GSTR2BTable>initiatedOnJune}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="16rem">
+							<ui:multiLabels>
+								<Label text="July"/>
+							</ui:multiLabels>
+							<ui:template>
+								<VBox>
+									<ObjectStatus text="{GSTR2BTable>statusJuly}" state="{path:'GSTR2BTable>statusJuly', formatter:'.GstrStatus'}"
+										class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+									<Text text="{GSTR2BTable>initiatedOnJuly}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="16rem">
+							<ui:multiLabels>
+								<Label text="August"/>
+							</ui:multiLabels>
+							<ui:template>
+								<VBox>
+									<ObjectStatus text="{GSTR2BTable>statusAug}" state="{path:'GSTR2BTable>statusAug', formatter:'.GstrStatus'}"
+										class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+									<Text text="{GSTR2BTable>initiatedOnAug}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="16rem">
+							<ui:multiLabels>
+								<Label text="September"/>
+							</ui:multiLabels>
+							<ui:template>
+								<VBox>
+									<ObjectStatus text="{GSTR2BTable>statusSept}" state="{path:'GSTR2BTable>statusSept', formatter:'.GstrStatus'}"
+										class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+									<Text text="{GSTR2BTable>initiatedOnSept}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="16rem">
+							<ui:multiLabels>
+								<Label text="October"/>
+							</ui:multiLabels>
+							<ui:template>
+								<VBox>
+									<ObjectStatus text="{GSTR2BTable>statusOct}" state="{path:'GSTR2BTable>statusOct', formatter:'.GstrStatus'}"
+										class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+									<Text text="{GSTR2BTable>initiatedOnOct}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="16rem">
+							<ui:multiLabels>
+								<Label text="November"/>
+							</ui:multiLabels>
+							<ui:template>
+								<VBox>
+									<ObjectStatus text="{GSTR2BTable>statusNov}" state="{path:'GSTR2BTable>statusNov', formatter:'.GstrStatus'}"
+										class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+									<Text text="{GSTR2BTable>initiatedOnNov}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="16rem">
+							<ui:multiLabels>
+								<Label text="December"/>
+							</ui:multiLabels>
+							<ui:template>
+								<VBox>
+									<ObjectStatus text="{GSTR2BTable>statusDec}" state="{path:'GSTR2BTable>statusDec', formatter:'.GstrStatus'}"
+										class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+									<Text text="{GSTR2BTable>initiatedOnDec}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="16rem">
+							<ui:multiLabels>
+								<Label text="January"/>
+							</ui:multiLabels>
+							<ui:template>
+								<VBox>
+									<ObjectStatus text="{GSTR2BTable>statusJan}" state="{path:'GSTR2BTable>statusJan', formatter:'.GstrStatus'}"
+										class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+									<Text text="{GSTR2BTable>initiatedOnJan}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="16rem">
+							<ui:multiLabels>
+								<Label text="February"/>
+							</ui:multiLabels>
+							<ui:template>
+								<VBox>
+									<ObjectStatus text="{GSTR2BTable>statusFeb}" state="{path:'GSTR2BTable>statusFeb', formatter:'.GstrStatus'}"
+										class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+									<Text text="{GSTR2BTable>initiatedOnFeb}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="Center" width="16rem">
+							<ui:multiLabels>
+								<Label text="March"/>
+							</ui:multiLabels>
+							<ui:template>
+								<VBox>
+									<ObjectStatus text="{GSTR2BTable>statusMar}" state="{path:'GSTR2BTable>statusMar', formatter:'.GstrStatus'}"
+										class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+									<Text text="{GSTR2BTable>initiatedOnMar}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

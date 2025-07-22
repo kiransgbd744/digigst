@@ -1,0 +1,247 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+	controllerName="com.ey.digigst.controller.transMonitoringReportOutward" xmlns:commons="sap.suite.ui.commons" xmlns:ui="sap.ui.table"
+	xmlns:l="sap.ui.layout" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" busyIndicatorDelay="0">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Transactional Monitoring Report - Outward" class="TitleColor"/>
+				</f:heading>
+				<f:actions></f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar width="100%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" search="onSearch" clear="onClearFilter"
+					useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slGstin" width="100%" items="{path:'userPermission>/respData/dataSecurity/gstin'}" selectionChange="selectAll">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>taxPeriod}" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dtTaxPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Source ID" visibleInFilterBar="true">
+							<fb:control>
+								<Input id="idSourceID"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Status" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idStatus" width="100%">
+									<core:Item key="Not in scope of raw upload" text="Not in scope of raw upload"/>
+									<core:Item key="Compliance on-hold" text="Compliance on-hold"/>
+									<core:Item key="Ready to push" text="Ready to push"/>
+									<core:Item key="DQ error on erp" text="DQ error on erp"/>
+									<core:Item key="Push pending verification" text="Push pending verification"/>
+									<core:Item key="Push error" text="Push error"/>
+									<core:Item key="Asp error" text="Asp error"/>
+									<core:Item key="Asp processed" text="Asp processed"/>
+									<core:Item key="Gstn error" text="Gstn error"/>
+									<core:Item key="Filed at GSTN" text="Filed at GSTN"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End">
+					<Button text="{i18n>clear}" press="onPressClear" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+					<Button text="Filter" class="buttoncolor" press="onSearch"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel>
+				<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<ui:Table rows="{path:'transOutward>/resp/resp'}" selectionMode="None" selectionBehavior="Row" visibleRowCount="12" fixedColumnCount="0"
+									enableSelectAll="false">
+									<ui:columns>
+										<ui:Column hAlign="Center" width="10rem">
+											<Label design="Bold" text="GSTIN" tooltip="GSTIN"/>
+											<ui:template>
+												<Text text="{transOutward>gstin}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="10rem">
+											<Label design="Bold" text="Tax Period" tooltip="Tax Period"/>
+											<ui:template>
+												<Text text="{transOutward>taxPeriod}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="10rem">
+											<Label design="Bold" text="Source ID" tooltip="Source ID"/>
+											<ui:template>
+												<Text text="{transOutward>sourceId}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="10rem">
+											<Label design="Bold" text="Status" tooltip="Status"/>
+											<ui:template>
+												<Text text="{transOutward>status}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="10rem">
+											<Label design="Bold" text="Doc Type" tooltip="GSTIN"/>
+											<ui:template>
+												<Text text="{transOutward>docType}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center" width="10rem">
+											<Label design="Bold" text="Supply Type" tooltip="Supply Type"/>
+											<ui:template>
+												<Text text="{transOutward>supplyType}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" headerSpan="7" hAlign="Center">
+											<ui:multiLabels>
+												<Label text="From ERP" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="Number of invoices" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{transOutward>erpNumofinv}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" hAlign="End">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="Total Invoice value" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{transOutward>erpTotinvVal}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" hAlign="End">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="Assessable Value" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{transOutward>erpAccValue}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="120" hAlign="End">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{transOutward>erpIgst}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="120" hAlign="End">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{transOutward>erpCgst}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="120" hAlign="End">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{transOutward>erpSgst}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="120" hAlign="End">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{transOutward>erpCess}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" headerSpan="7" hAlign="Center">
+											<ui:multiLabels>
+												<Label text="From Cloud" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="Number of invoices" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{transOutward>cloudNumofinv}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" hAlign="End">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="Total Invoice value" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{transOutward>cloudTotinvVal}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" hAlign="End">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="Assessable Value" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{transOutward>cloudAccValue}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="120" hAlign="End">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{transOutward>cloudIgst}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="120" hAlign="End">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{transOutward>cloudCgst}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="120" hAlign="End">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{transOutward>cloudSgst}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column minWidth="120" hAlign="End">
+											<ui:multiLabels>
+												<Label text="" textAlign="Center" width="100%" design="Bold"/>
+												<Label text="Cess" textAlign="Center" width="100%" design="Bold"/>
+											</ui:multiLabels>
+											<ui:template>
+												<Text text="{transOutward>cloudCess}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+								</ui:Table>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar>
+							<Label text="Date of Reporting : {transOutward>/resp/dateofRep}" design="Bold"/>
+							<ToolbarSpacer/>
+							<Button class="buttoncolorSec" text="Download Report" tooltip="Download" press="onDownloadSummary" visible="false"/>
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

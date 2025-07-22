@@ -1,0 +1,121 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:ui="sap.ui.table">
+	<ui:TreeTable id="tabInvProcess" rows="{path:'Processed>/', parameters: {arrayNames:['hsnItems']}}" selectionMode="Single"
+		selectionBehavior="Row" enableSelectAll="false" rowSelectionChange="onProcessRowSelection" fixedColumnCount="1">
+		<ui:columns>
+			<ui:Column width="10rem">
+				<Label text="{i18n>view}" tooltip="{i18n>view}" textAlign="Center" width="100%" wrapping="false" design="Bold"/>
+				<ui:template>
+					<Text text="{Processed>view}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="7rem">
+				<Label text="{i18n>returnType}" tooltip="{i18n>returnType}" textAlign="Center" width="100%" wrapping="false" design="Bold"/>
+				<ui:template>
+					<Text text="{Processed>returnType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem">
+				<Label text="{i18n>dataCategory}" tooltip="{i18n>dataCategory}" textAlign="Center" width="100%" wrapping="false" design="Bold"/>
+				<ui:template>
+					<Text text="{Processed>an1Gstr1SubCategory}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="7rem">
+				<Label text="{i18n>tableNumber}" tooltip="{i18n>tableNumber}" textAlign="Center" width="100%" wrapping="false" design="Bold"/>
+				<ui:template>
+					<Text text="{path:'Processed>an1Gstr1TableNo'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="10rem" visible="{Properties>/colVisi}">
+				<Label text="{i18n>supplierGstin}" tooltip="{i18n>supplierGstin}" textAlign="Center" width="100%" wrapping="false" design="Bold"/>
+				<ui:template>
+					<Text text="{Processed>suppGstin}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="10rem" visible="{=!${Properties>/colVisi}}">
+				<Label text="{i18n>custGstin}" tooltip="{i18n>custGstin}" textAlign="Center" width="100%" wrapping="false" design="Bold"/>
+				<ui:template>
+					<Text text="{Processed>custGstin}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="7rem">
+				<Label text="{i18n>docType}" tooltip="{i18n>docType}" textAlign="Center" width="100%" wrapping="false" design="Bold"/>
+				<ui:template>
+					<Text text="{Processed>docType}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="10rem">
+				<Label text="{i18n>docNo}" tooltip="{i18n>docNo}" textAlign="Center" width="100%" wrapping="false" design="Bold"/>
+				<ui:template>
+					<Text text="{Processed>docNo}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="Center">
+				<Label text="{i18n>docDate}" tooltip="{i18n>docDate}" textAlign="Center" width="100%" wrapping="false" design="Bold"/>
+				<ui:template>
+					<Text text="{path:'Processed>docDate', formatter:'.formatter.dateFormat'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="12rem" hAlign="End">
+				<Label text="{i18n>taxableVal}" tooltip="{i18n>taxableVal}" textAlign="Center" width="100%" wrapping="false" design="Bold"/>
+				<ui:template>
+					<Text text="{path:'Processed>taxableValue', formatter:'.formatter.amountValue'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem" hAlign="End">
+				<Label text="{i18n>totalTaxes}" tooltip="{i18n>totalTaxes}" textAlign="Center" width="100%" wrapping="false" design="Bold"/>
+				<ui:template>
+					<Text text="{path:'Processed>taxPayable', formatter:'.formatter.amountValue'}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="10rem">
+				<Label text="{i18n>infoCode}" tooltip="{i18n>infoCode}" textAlign="Center" width="100%" wrapping="false" design="Bold"/>
+				<ui:template>
+					<Text text="{Processed>infoCode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="30rem">
+				<Label text="{i18n>asp} {i18n>infoDesc}" tooltip="{i18n>asp} {i18n>infoDesc}" textAlign="Center" width="100%" wrapping="false" design="Bold"/>
+				<ui:template>
+					<Text text="{Processed>infoDesc}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="8rem">
+				<Label text="{i18n>saveStatus}" tooltip="{i18n>saveStatus}" textAlign="Center" width="100%" wrapping="false" design="Bold"/>
+				<ui:template>
+					<Text text="{Processed>saveStatus}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="10rem">
+				<Label text="{i18n>gstn} {i18n>errorCode}" tooltip="{i18n>gstn} {i18n>errorCode}" textAlign="Center" width="100%" wrapping="false"
+					design="Bold"/>
+				<ui:template>
+					<Text text="{Processed>errroCode}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="25rem">
+				<Label text="{i18n>gstn} {i18n>errorDesc}" tooltip="{i18n>gstn} {i18n>errorDesc}" textAlign="Center" width="100%" wrapping="false"
+					design="Bold"/>
+				<ui:template>
+					<Text text="{Processed>errorDesc}"/>
+				</ui:template>
+			</ui:Column>
+			<ui:Column width="10rem">
+				<Label text="{i18n>counterPartyAction}" tooltip="{i18n>counterPartyAction}" textAlign="Center" width="100%" wrapping="false" design="Bold"/>
+				<ui:template>
+					<Text text="{Processed>counterPartyAction}"/>
+				</ui:template>
+			</ui:Column>
+		</ui:columns>
+		<ui:footer>
+			<HBox width="100%" justifyContent="Center">
+				<Button id="btnPrev" type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="false"
+					press="onPressPagination"/>
+				<Input id="inPageNo" type="Number" textAlign="End" width="4rem" submit="onSubmitPagination" enabled="false" class="sapUiTinyMarginBegin"
+					value="0"/>
+				<Text id="txtPageNo" text="/ 0" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+				<Button id="btnNext" type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="false" press="onPressPagination"/>
+			</HBox>
+		</ui:footer>
+	</ui:TreeTable>
+</core:FragmentDefinition>

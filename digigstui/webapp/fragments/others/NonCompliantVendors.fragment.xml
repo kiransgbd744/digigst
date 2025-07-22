@@ -1,0 +1,807 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons">
+	<f:DynamicPage id="id_NonCompalintPg">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Title text="Non Compliant Vendors" class="sapUiSmallMarginBegin clTitleMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar showFilterConfiguration="false" useToolbar="false" class="sapUiNoContentPadding" width="90%" showGoOnFB="false"
+					showClearOnFB="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Financial Year" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idFiYear" forceSelection="true" items="{oFyModel>/finYears}">
+									<core:Item key="{oFyModel>fy}" text="{oFyModel>fy}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="Return Type" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idRetType" change="onReturnTypeChange" forceSelection="true">
+									<core:Item key="GSTR1" text="GSTR-1"/>
+									<core:Item key="GSTR3B" text="GSTR-3B"/>
+									<core:Item key="CMP08" text="CMP08"/>
+									<core:Item key="GSTR4" text="GSTR-4"/>
+									<core:Item key="GSTR5" text="GSTR-5"/>
+									<core:Item key="GSTR6" text="GSTR-6"/>
+									<core:Item key="GSTR7" text="GSTR-7"/>
+									<core:Item key="GSTR8" text="GSTR-8"/>
+									<core:Item key="GSTR9" text="GSTR-9"/>
+									<core:Item key="GSTR9A" text="GSTR-9A"/>
+									<core:Item key="ITC04" text="ITC04"/>
+								</Select>
+							</fb:control>
+							<!--CMP08 GSTR1 GSTR3B GSTR4 GSTR5 GSTR6 GSTR7 GSTR8 GSTR9 GSTR9A ITC04-->
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="Z" label="View Type" visibleInFilterBar="true">
+							<fb:control>
+								<Select id="idViewType" forceSelection="true">
+									<core:Item key="ALL" text="All"/>
+									<core:Item key="Compliant" text="Only Compliant"/>
+									<core:Item key="NonCompliant" text="Not Compliant"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Vendor PAN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiInput id="idVenPan" showSuggestion="true" showValueHelp="true" valueHelpRequest="onHelpVendorPan" tokens="{Token>/}">
+									<tokens>
+										<Token key="{Token>pan}" text="{Token>pan}"/>
+									</tokens>
+								</MultiInput>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="Y" label="Vendor GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiInput id="idVenGstin" showSuggestion="true" showValueHelp="true" valueHelpRequest="onHelpVendorGstin" tokens="{TokenGSTN>/}">
+									<tokens>
+										<Token key="{TokenGSTN>gstin}" text="{TokenGSTN>gstin}"/>
+									</tokens>
+								</MultiInput>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="K" label="Vendor Name" visibleInFilterBar="false">
+							<fb:control>
+								<ComboBox id="IdVenName" selectionChange="onRRDocTypCHange">
+									<!--<core:Item key="R" text="R"/>
+										<core:Item key="C" text="C"/>
+										<core:Item key="D" text="D"/>-->
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<!--<Button type="Ghost" text="Clear" class="sapUiTinyMarginEnd" press="onPressClear"/>-->
+					<Button class="buttoncolor" press="onPressGo" text="Filter"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<VBox>
+				<l:BlockLayout background="Dashboard" class="sapUiTinyMarginBottom">
+					<l:BlockLayoutRow class="sapUiNoContentPadding">
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Daily API call limit" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ApiLimit>/limit}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="API calls used" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ApiLimit>/usage}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="API calls remaining" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{ApiLimit>/remainingCnt}" class=" " design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+				<commons:ChartContainer showFullScreen="false" showZoom="true" showPersonalization="false" autoAdjustHeight="false" id="nonId">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<Panel class="sapFDynamicPageAlignContent">
+									<ui:TreeTable rows="{path:'NCV>/', parameters:{ arrayNames:['gstinWiseFilingStatusMonthwise'], numberOfExpandedLevels:0 }}"
+										enableSelectAll="false" fixedBottomRowCount="0" fixedColumnCount="0" visibleRowCount="8" selectionMode="None" id="table1"
+										rowSelectionChange="onSelectionConsolMatch">
+										<ui:columns>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label design="Bold" text="Vendor PAN" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{NCV>vendorPan}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label design="Bold" text="Vendor Name" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{NCV>vendorName}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label design="Bold" text="Vendor GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{NCV>gstin}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label text="Mar" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<VBox>
+														<ObjectStatus text="{path:'NCV>MarStatus', formatter:'.formatter.statusReplace'}" class="sapUiTinyMarginBegin"
+															state="{path:'NCV>MarStatus', formatter:'.formatter.NCVStatus'}" visible="{=${NCV>gstin}===undefined}"/>
+														<Text text="{NCV>MarStatus}" visible="{=${NCV>gstin}!==undefined}">
+															<customData>
+																<core:CustomData key="state" value="{NCV>MarStatus}" writeToDom="true"/>
+															</customData>
+														</Text>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label text="Feb" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<VBox>
+														<ObjectStatus text="{path:'NCV>FebStatus', formatter:'.formatter.statusReplace'}" class="sapUiTinyMarginBegin"
+															state="{path:'NCV>FebStatus', formatter:'.formatter.NCVStatus'}" visible="{=${NCV>gstin}===undefined}"/>
+														<Text text="{NCV>FebStatus}" visible="{=${NCV>gstin}!==undefined}">
+															<customData>
+																<core:CustomData key="state" value="{NCV>MarStatus}" writeToDom="true"/>
+															</customData>
+														</Text>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label text="Jan" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<VBox>
+														<ObjectStatus text="{path:'NCV>JanStatus', formatter:'.formatter.statusReplace'}" class="sapUiTinyMarginBegin"
+															state="{path:'NCV>JanStatus', formatter:'.formatter.NCVStatus'}" visible="{=${NCV>gstin}===undefined}"/>
+														<Text text="{NCV>JanStatus}" visible="{=${NCV>gstin}!==undefined}">
+															<customData>
+																<core:CustomData key="state" value="{NCV>MarStatus}" writeToDom="true"/>
+															</customData>
+														</Text>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label text="Dec" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<VBox>
+														<ObjectStatus text="{path:'NCV>DecStatus', formatter:'.formatter.statusReplace'}" class="sapUiTinyMarginBegin"
+															state="{path:'NCV>DecStatus', formatter:'.formatter.NCVStatus'}" visible="{=${NCV>gstin}===undefined}"/>
+														<Text text="{NCV>DecStatus}" visible="{=${NCV>gstin}!==undefined}">
+															<customData>
+																<core:CustomData key="state" value="{NCV>MarStatus}" writeToDom="true"/>
+															</customData>
+														</Text>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label text="Nov" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<VBox>
+														<ObjectStatus text="{path:'NCV>NovStatus', formatter:'.formatter.statusReplace'}" class="sapUiTinyMarginBegin"
+															state="{path:'NCV>NovStatus', formatter:'.formatter.NCVStatus'}" visible="{=${NCV>gstin}===undefined}"/>
+														<Text text="{NCV>NovStatus}" visible="{=${NCV>gstin}!==undefined}">
+															<customData>
+																<core:CustomData key="state" value="{NCV>MarStatus}" writeToDom="true"/>
+															</customData>
+														</Text>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label text="Oct" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<VBox>
+														<ObjectStatus text="{path:'NCV>OctStatus', formatter:'.formatter.statusReplace'}" class="sapUiTinyMarginBegin"
+															state="{path:'NCV>OctStatus', formatter:'.formatter.NCVStatus'}" visible="{=${NCV>gstin}===undefined}"/>
+														<Text text="{NCV>OctStatus}" visible="{=${NCV>gstin}!==undefined}">
+															<customData>
+																<core:CustomData key="state" value="{NCV>MarStatus}" writeToDom="true"/>
+															</customData>
+														</Text>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label text="Sep" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<VBox>
+														<ObjectStatus text="{path:'NCV>SepStatus', formatter:'.formatter.statusReplace'}" class="sapUiTinyMarginBegin"
+															state="{path:'NCV>SepStatus', formatter:'.formatter.NCVStatus'}" visible="{=${NCV>gstin}===undefined}"/>
+														<Text text="{NCV>SepStatus}" visible="{=${NCV>gstin}!==undefined}">
+															<customData>
+																<core:CustomData key="state" value="{NCV>MarStatus}" writeToDom="true"/>
+															</customData>
+														</Text>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label text="Aug" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<VBox>
+														<ObjectStatus text="{path:'NCV>AugStatus', formatter:'.formatter.statusReplace'}" class="sapUiTinyMarginBegin"
+															state="{path:'NCV>AugStatus', formatter:'.formatter.NCVStatus'}" visible="{=${NCV>gstin}===undefined}"/>
+														<Text text="{NCV>AugStatus}" visible="{=${NCV>gstin}!==undefined}">
+															<customData>
+																<core:CustomData key="state" value="{NCV>MarStatus}" writeToDom="true"/>
+															</customData>
+														</Text>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label text="Jul" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<VBox>
+														<ObjectStatus text="{path:'NCV>JulyStatus', formatter:'.formatter.statusReplace'}" class="sapUiTinyMarginBegin"
+															state="{path:'NCV>JulyStatus', formatter:'.formatter.NCVStatus'}" visible="{=${NCV>gstin}===undefined}"/>
+														<Text text="{NCV>JulyStatus}" visible="{=${NCV>gstin}!==undefined}">
+															<customData>
+																<core:CustomData key="state" value="{NCV>MarStatus}" writeToDom="true"/>
+															</customData>
+														</Text>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label text="Jun" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<VBox>
+														<ObjectStatus text="{path:'NCV>JuneStatus', formatter:'.formatter.statusReplace'}" class="sapUiTinyMarginBegin"
+															state="{path:'NCV>JuneStatus', formatter:'.formatter.NCVStatus'}" visible="{=${NCV>gstin}===undefined}"/>
+														<Text text="{NCV>JuneStatus}" visible="{=${NCV>gstin}!==undefined}">
+															<customData>
+																<core:CustomData key="state" value="{NCV>MarStatus}" writeToDom="true"/>
+															</customData>
+														</Text>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label text="May" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<VBox>
+														<ObjectStatus text="{path:'NCV>MayStatus', formatter:'.formatter.statusReplace'}" class="sapUiTinyMarginBegin"
+															state="{path:'NCV>MayStatus', formatter:'.formatter.NCVStatus'}" visible="{=${NCV>gstin}===undefined}"/>
+														<Text text="{NCV>MayStatus}" visible="{=${NCV>gstin}!==undefined}">
+															<customData>
+																<core:CustomData key="state" value="{NCV>MarStatus}" writeToDom="true"/>
+															</customData>
+														</Text>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<Label text="Apr" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												<ui:template>
+													<VBox>
+														<ObjectStatus text="{path:'NCV>AprilStatus', formatter:'.formatter.statusReplace'}" class="sapUiTinyMarginBegin"
+															state="{path:'NCV>AprilStatus', formatter:'.formatter.NCVStatus'}" visible="{=${NCV>gstin}===undefined}"/>
+														<Text text="{NCV>AprilStatus}" visible="{=${NCV>gstin}!==undefined}">
+															<customData>
+																<core:CustomData key="state" value="{NCV>MarStatus}" writeToDom="true"/>
+															</customData>
+														</Text>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+										</ui:columns>
+									</ui:TreeTable>
+									<ui:TreeTable rowSelectionChange="onSelectionConsolMatch"
+										rows="{path:'NCV>/', parameters:{ arrayNames:['gstinWiseFilingStatusMonthwise'], numberOfExpandedLevels:0 }}" enableSelectAll="false"
+										fixedBottomRowCount="0" fixedColumnCount="0" visibleRowCount="8" selectionMode="None" id="ITC04id" visible="false">
+										<ui:columns>
+											<ui:Column hAlign="Center">
+												<Label design="Bold" text="Vendor PAN" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{NCV>vendorPan}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center">
+												<Label design="Bold" text="Vendor Name" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{NCV>vendorName}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center">
+												<Label design="Bold" text="Vendor GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{NCV>gstin}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" id="col1" visible="false">
+												<ui:multiLabels>
+													<Label text="Apr - Jun" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox>
+														<ObjectStatus state="{path:'NCV>APRJUNStatus', formatter:'.formatter.NCVStatus'}"
+															text="{path:'NCV>APRJUNStatus', formatter:'.formatter.statusReplace'}" visible="{=${NCV>gstin}===undefined}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<!--<core:Icon src="sap-icon://alert" size="1rem" color="{=${NCV>SepStatus}==='Filed'?'#69a269':'#ff0000'}"
+															visible="{=${NCV>gstin}!==undefined?true:false}"/>-->
+														<HBox visible="{=${NCV>gstin}!==undefined?true:false}" justifyContent="Center">
+															<core:Icon src="sap-icon://message-warning" size="1rem" color="#ff0000" visible="{=${NCV>APRJUNStatus}==='Not Filed'}"/>
+															<core:Icon src="sap-icon://message-success" size="1rem" color="#69a269" visible="{=${NCV>APRJUNStatus}==='Filed'}"/>
+														</HBox>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" id="col2" visible="false">
+												<ui:multiLabels>
+													<Label text="Jul - Sep" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox>
+														<ObjectStatus state="{path:'NCV>JULSEPStatus', formatter:'.formatter.NCVStatus'}"
+															text="{path:'NCV>JULSEPStatus', formatter:'.formatter.statusReplace'}" visible="{=${NCV>gstin}===undefined?true:false}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<!--<core:Icon src="sap-icon://alert" size="1rem" color="{=${NCV>SepStatus}==='Filed'?'#69a269':'#ff0000'}"
+															visible="{=${NCV>gstin}!==undefined?true:false}"/>-->
+														<HBox visible="{=${NCV>gstin}!==undefined?true:false}" justifyContent="Center">
+															<core:Icon src="sap-icon://message-warning" size="1rem" color="#ff0000" visible="{=${NCV>JULSEPStatus}==='Not Filed'}"/>
+															<core:Icon src="sap-icon://message-success" size="1rem" color="#69a269" visible="{=${NCV>JULSEPStatus}==='Filed'}"/>
+														</HBox>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" id="col3" visible="false">
+												<ui:multiLabels>
+													<Label text="Oct - Dec" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox>
+														<ObjectStatus state="{path:'NCV>OCTDECStatus', formatter:'.formatter.NCVStatus'}"
+															text="{path:'NCV>OCTDECStatus', formatter:'.formatter.statusReplace'}" visible="{=${NCV>gstin}===undefined?true:false}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<!--<core:Icon src="sap-icon://alert" size="1rem" color="{=${NCV>SepStatus}==='Filed'?'#69a269':'#ff0000'}"
+															visible="{=${NCV>gstin}!==undefined?true:false}"/>-->
+														<HBox visible="{=${NCV>gstin}!==undefined?true:false}" justifyContent="Center">
+															<core:Icon src="sap-icon://message-warning" size="1rem" color="#ff0000" visible="{=${NCV>OCTDECStatus}==='Not Filed'}"/>
+															<core:Icon src="sap-icon://message-success" size="1rem" color="#69a269" visible="{=${NCV>OCTDECStatus}==='Filed'}"/>
+														</HBox>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" id="col4" visible="false">
+												<ui:multiLabels>
+													<Label text="Jan - Mar" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox>
+														<ObjectStatus state="{path:'NCV>JANMARStatus', formatter:'.formatter.NCVStatus'}"
+															text="{path:'NCV>JANMARStatus', formatter:'.formatter.statusReplace'}" visible="{=${NCV>gstin}===undefined?true:false}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<!--<core:Icon src="sap-icon://alert" size="1rem" color="{=${NCV>SepStatus}==='Filed'?'#69a269':'#ff0000'}"
+															visible="{=${NCV>gstin}!==undefined?true:false}"/>-->
+														<HBox visible="{=${NCV>gstin}!==undefined?true:false}" justifyContent="Center">
+															<core:Icon src="sap-icon://message-warning" size="1rem" color="#ff0000" visible="{=${NCV>JANMARStatus}==='Not Filed'}"/>
+															<core:Icon src="sap-icon://message-success" size="1rem" color="#69a269" visible="{=${NCV>JANMARStatus}==='Filed'}"/>
+														</HBox>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" id="col5" visible="false">
+												<ui:multiLabels>
+													<Label text="Apr - Sep" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox>
+														<ObjectStatus state="{path:'NCV>AprSepStatus', formatter:'.formatter.NCVStatus'}"
+															text="{path:'NCV>AprSepStatus', formatter:'.formatter.statusReplace'}" visible="{=${NCV>gstin}===undefined?true:false}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<!--<core:Icon src="sap-icon://alert" size="1rem" color="{=${NCV>SepStatus}==='Filed'?'#69a269':'#ff0000'}"
+															visible="{=${NCV>gstin}!==undefined?true:false}"/>-->
+														<HBox visible="{=${NCV>gstin}!==undefined?true:false}" justifyContent="Center">
+															<core:Icon src="sap-icon://message-warning" size="1rem" color="#ff0000" visible="{=${NCV>AprSepStatus}==='Not Filed'}"/>
+															<core:Icon src="sap-icon://message-success" size="1rem" color="#69a269" visible="{=${NCV>AprSepStatus}==='Filed'}"/>
+														</HBox>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" id="col6" visible="false">
+												<ui:multiLabels>
+													<Label text="Oct - Mar" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox>
+														<ObjectStatus state="{path:'NCV>OctMarStatus', formatter:'.formatter.NCVStatus'}"
+															text="{path:'NCV>OctMarStatus', formatter:'.formatter.statusReplace'}" visible="{=${NCV>gstin}===undefined?true:false}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<!--<core:Icon src="sap-icon://alert" size="1rem" color="{=${NCV>SepStatus}==='Filed'?'#69a269':'#ff0000'}"
+															visible="{=${NCV>gstin}!==undefined?true:false}"/>-->
+														<HBox visible="{=${NCV>gstin}!==undefined?true:false}" justifyContent="Center">
+															<core:Icon src="sap-icon://message-warning" size="1rem" color="#ff0000" visible="{=${NCV>OctMarStatus}==='Not Filed'}"/>
+															<core:Icon src="sap-icon://message-success" size="1rem" color="#69a269" visible="{=${NCV>OctMarStatus}==='Filed'}"/>
+														</HBox>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+										</ui:columns>
+									</ui:TreeTable>
+									<ui:TreeTable rowSelectionChange="onSelectionConsolMatch"
+										rows="{path:'NCV>/', parameters:{ arrayNames:['gstinWiseFilingStatusMonthwise'], numberOfExpandedLevels:0 }}" enableSelectAll="false"
+										fixedBottomRowCount="0" fixedColumnCount="0" visibleRowCount="8" selectionMode="None" id="CMP08id" visible="false">
+										<ui:columns>
+											<ui:Column hAlign="Center">
+												<Label design="Bold" text="Vendor PAN" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{NCV>vendorPan}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center">
+												<Label design="Bold" text="Vendor Name" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{NCV>vendorName}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center">
+												<Label design="Bold" text="Vendor GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{NCV>gstin}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center">
+												<ui:multiLabels>
+													<Label text="Apr - Jun" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox>
+														<ObjectStatus state="{path:'NCV>JuneStatus', formatter:'.formatter.NCVStatus'}"
+															text="{path:'NCV>JuneStatus', formatter:'.formatter.statusReplace'}" visible="{=${NCV>gstin}===undefined?true:false}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<!--<core:Icon src="sap-icon://alert" size="1rem" color="{=${NCV>SepStatus}==='Filed'?'#69a269':'#ff0000'}"
+															visible="{=${NCV>gstin}!==undefined?true:false}"/>-->
+														<HBox visible="{=${NCV>gstin}!==undefined?true:false}" justifyContent="Center">
+															<core:Icon src="sap-icon://message-warning" size="1rem" color="#ff0000" visible="{=${NCV>JuneStatus}==='Not Filed'}"/>
+															<core:Icon src="sap-icon://message-success" size="1rem" color="#69a269" visible="{=${NCV>JuneStatus}==='Filed'}"/>
+														</HBox>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center">
+												<ui:multiLabels>
+													<Label text="Jul - Sep" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox>
+														<ObjectStatus state="{path:'NCV>SepStatus', formatter:'.formatter.NCVStatus'}"
+															text="{path:'NCV>SepStatus', formatter:'.formatter.statusReplace'}" visible="{=${NCV>gstin}===undefined?true:false}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<!--<core:Icon src="sap-icon://alert" size="1rem" color="{=${NCV>SepStatus}==='Filed'?'#69a269':'#ff0000'}"
+															visible="{=${NCV>gstin}!==undefined?true:false}"/>-->
+														<HBox visible="{=${NCV>gstin}!==undefined?true:false}" justifyContent="Center">
+															<core:Icon src="sap-icon://message-warning" size="1rem" color="#ff0000" visible="{=${NCV>SepStatus}==='Not Filed'}"/>
+															<core:Icon src="sap-icon://message-success" size="1rem" color="#69a269" visible="{=${NCV>SepStatus}==='Filed'}"/>
+														</HBox>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center">
+												<ui:multiLabels>
+													<Label text="Oct - Dec" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox>
+														<ObjectStatus state="{path:'NCV>DecStatus', formatter:'.formatter.NCVStatus'}"
+															text="{path:'NCV>DecStatus', formatter:'.formatter.statusReplace'}" visible="{=${NCV>gstin}===undefined?true:false}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<!--<core:Icon src="sap-icon://alert" size="1rem" color="{=${NCV>SepStatus}==='Filed'?'#69a269':'#ff0000'}"
+															visible="{=${NCV>gstin}!==undefined?true:false}"/>-->
+														<HBox visible="{=${NCV>gstin}!==undefined?true:false}" justifyContent="Center">
+															<core:Icon src="sap-icon://message-warning" size="1rem" color="#ff0000" visible="{=${NCV>DecStatus}==='Not Filed'}"/>
+															<core:Icon src="sap-icon://message-success" size="1rem" color="#69a269" visible="{=${NCV>DecStatus}==='Filed'}"/>
+														</HBox>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center">
+												<ui:multiLabels>
+													<Label text="Jan - Mar" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox>
+														<ObjectStatus state="{path:'NCV>MarStatus', formatter:'.formatter.NCVStatus'}"
+															text="{path:'NCV>MarStatus', formatter:'.formatter.statusReplace'}" visible="{=${NCV>gstin}===undefined?true:false}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<!--<core:Icon src="sap-icon://alert" size="1rem" color="{=${NCV>SepStatus}==='Filed'?'#69a269':'#ff0000'}"
+															visible="{=${NCV>gstin}!==undefined?true:false}"/>-->
+														<HBox visible="{=${NCV>gstin}!==undefined?true:false}" justifyContent="Center">
+															<core:Icon src="sap-icon://message-warning" size="1rem" color="#ff0000" visible="{=${NCV>MarStatus}==='Not Filed'}"/>
+															<core:Icon src="sap-icon://message-success" size="1rem" color="#69a269" visible="{=${NCV>MarStatus}==='Filed'}"/>
+														</HBox>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+										</ui:columns>
+									</ui:TreeTable>
+									<ui:TreeTable rowSelectionChange="onSelectionConsolMatch"
+										rows="{path:'NCV>/', parameters:{ arrayNames:['gstinWiseFilingStatusMonthwise'], numberOfExpandedLevels:0 }}" enableSelectAll="false"
+										fixedBottomRowCount="0" fixedColumnCount="0" visibleRowCount="8" selectionMode="None" id="Gstr9id" visible="false">
+										<ui:columns>
+											<ui:Column hAlign="Center">
+												<Label design="Bold" text="Vendor PAN" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{NCV>vendorPan}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center">
+												<Label design="Bold" text="Vendor Name" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{NCV>vendorName}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center">
+												<Label design="Bold" text="Vendor GSTIN" textAlign="Center" width="100%" wrapping="true"/>
+												<ui:template>
+													<Text text="{NCV>gstin}"/>
+												</ui:template>
+											</ui:Column>
+											<ui:Column hAlign="Center" width="12rem">
+												<ui:multiLabels>
+													<Label text="Compliance" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+												</ui:multiLabels>
+												<ui:template>
+													<VBox>
+														<ObjectStatus state="{path:'NCV>MarStatus', formatter:'.formatter.NCVStatus'}"
+															text="{path:'NCV>MarStatus', formatter:'.formatter.statusReplace'}" visible="{=${NCV>gstin}===undefined?true:false}"
+															class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+														<!--<core:Icon src="sap-icon://alert" size="1rem" color="{=${NCV>SepStatus}==='Filed'?'#69a269':'#ff0000'}"
+															visible="{=${NCV>gstin}!==undefined?true:false}"/>-->
+														<HBox visible="{=${NCV>gstin}!==undefined?true:false}" justifyContent="Center">
+															<core:Icon src="sap-icon://message-warning" size="1rem" color="#ff0000" visible="{=${NCV>MarStatus}==='Not Filed'}"/>
+															<core:Icon src="sap-icon://message-success" size="1rem" color="#69a269" visible="{=${NCV>MarStatus}==='Filed'}"/>
+														</HBox>
+													</VBox>
+												</ui:template>
+											</ui:Column>
+										</ui:columns>
+									</ui:TreeTable>
+								</Panel>
+							</commons:content>
+						</commons:ChartContainerContent>
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar height="8rem">
+							<HBox direction="Column">
+								<Label text=" "/>
+								<HBox>
+									<Label text="Financial Year :" design="Bold"/>
+									<Label id="FYid"/>
+								</HBox>
+							</HBox>
+							<ToolbarSpacer/>
+							<!--<HBox>-->
+							<!--	<Label design="Bold" text="Last Initiated On :"/>-->
+							<!--	<Label id="statusId"/>-->
+							<!--</HBox>-->
+							<HBox direction="Column">
+								<Label id="statusId" class="timeStmpClr"/>
+								<Button class="buttoncolorSec" text="Get Return Filing Status" press="onInitiateReport" width="12rem"
+									enabled="{= (${userPermission>/appPermission/P99} || ${userPermission>/appPermission/P31})}"/>
+							</HBox>
+							<HBox direction="Column">
+								<Label id="statsFreq" class="timeStmpClr"/>
+								<Button class="buttoncolorSec" text="Get Filing Frequency" press="onGetFilingFrequency" width="12rem"
+									enabled="{= (${userPermission>/appPermission/P99} || ${userPermission>/appPermission/P31})}"/>
+							</HBox>
+							<HBox direction="Column">
+								<Label text=" "/>
+								<HBox>
+									<MenuButton class="buttoncolorSec" text="Download Reports"
+										enabled="{= (${userPermission>/appPermission/P99} || ${userPermission>/appPermission/P31})}">
+										<Menu itemSelected="onMenuItemPress">
+											<MenuItem key="tableData" text="Download Table Data"/>
+											<MenuItem key="All" text="All Vendors"/>
+											<MenuItem key="Compliant" text="Only Compliant Vendors"/>
+											<MenuItem key="Non-Compliant" text="Only Non-Compliant Vendors"/>
+										</Menu>
+									</MenuButton>
+									<Button text="Email" enabled="{= (${userPermission>/appPermission/P99} || ${userPermission>/appPermission/P31})}"
+										class="buttoncolorSec sapUiTinyMarginBeginEnd" press="onEmail"/>
+									<Button id="expand2B" icon="sap-icon://expand-all" press="onExpand2B"/>
+									<Button icon="sap-icon://collapse-all" press="onExpand2B" class="sapUiTinyMarginBegin"/>
+									<Button type="Transparent" id="openbutnon" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" press="onnonDetFullScreen('open')"/>
+									<Button type="Transparent" id="closebutnon" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="false"
+										press="onnonDetFullScreen('close')"/>
+								</HBox>
+							</HBox>
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+				<Toolbar class="">
+					<HBox width="100%" justifyContent="Center">
+						<Button id="btnFirstN" type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" class="sapUiTinyMarginBeginEnd" enabled="true"
+							press="onPressPagination"/>
+						<Button id="btnPrevN" type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="false"
+							press="onPressPagination"/>
+						<Input id="inPageNoN" type="Number" textAlign="End" width="4rem" submit="onSubmitPagination" enabled="false" class="sapUiTinyMarginBegin"
+							value="0"/>
+						<Text id="txtPageNoN" text="/ 0" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+						<Button id="btnNextN" type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="false" press="onPressPagination"/>
+						<Button id="btnLastN" type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" class="sapUiTinyMarginBeginEnd" enabled="true"
+							press="onPressPagination"/>
+					</HBox>
+				</Toolbar>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>
+	<!-- Email Added by chaithra on 08/03/2021 -->
+	<f:DynamicPage id="id_EmailPg" visible="false">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Button icon="sap-icon://nav-back" type="Transparent" press="onPressEmailBack"/>
+						<Title text="Non Compliant Vendors" class="sapUiSmallMarginBegin clTitleMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" class="sapUiNoContentPadding"
+					width="90%" pinnable="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Vendor PAN" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<MultiInput id="idEmailVenPAN" showSuggestion="true" showValueHelp="true" valueHelpRequest="handleValueHelpPan" tokens="{TokenE>/}">
+									<tokens>
+										<Token key="{TokenE>pan}" text="{TokenE>pan}"/>
+									</tokens>
+								</MultiInput>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="Vendor GSTIN" visibleInFilterBar="true" mandatory="true">
+							<fb:control>
+								<MultiInput id="idEmailVenGstn" showSuggestion="true" showValueHelp="true" valueHelpRequest="handleValueHelpGstin" tokens="{TokenGSTNE>/}">
+									<tokens>
+										<Token key="{TokenGSTNE>gstin}" text="{TokenGSTNE>gstin}"/>
+									</tokens>
+								</MultiInput>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="Vendor Name" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idEmailVenName" items="{path:'oVendNameModel>/resp'}" selectionFinish="onLoadVendorCode" selectionChange="selectAll"
+									editable="false">
+									<core:Item key="{oVendNameModel>vendorName}" text="{oVendNameModel>vendorName}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="J" label="Vendor Code" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idEmailVenCode" items="{oVendCodeModel>/resp}" selectionChange="selectAll" editable="false">
+									<core:Item key="{oVendCodeModel>vendorCode}" text="{oVendCodeModel>vendorCode}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button class="buttoncolor" text="Generate Report" press="onPressEmailGenReport"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer showFullScreen="false" showPersonalization="false" autoAdjustHeight="false" id="idCcSummary">
+				<commons:toolbar>
+					<OverflowToolbar class="colorToolbar toolbarHeight">
+						<ToolbarSpacer/>
+						<Button text="Refresh" class="sapUiTinyMarginBeginEnd buttoncolorSec" press="onRefreshNonCompVend" type="Emphasized"/>
+						<Button type="Transparent" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="{=!${PrProperty>/summaryFullScreen}}"
+							press="onGstr2FullScreen('openSummary')"/>
+						<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="{PrProperty>/summaryFullScreen}"
+							press="onGstr2FullScreen('closeSummary')"/>
+						<commons:ChartContainerToolbarPlaceholder/>
+					</OverflowToolbar>
+				</commons:toolbar>
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table id="id_NonVendComTab" rowSelectionChange="onSelection" rows="{path:'oVendDetailModel>/resp/NonCompVendorData'}"
+								selectionMode="None" enableSelectAll="true" fixedBottomRowCount="0" fixedColumnCount="0">
+								<ui:columns>
+									<ui:Column width="" hAlign="Center">
+										<Label design="Bold" text="Request ID"/>
+										<ui:template>
+											<Text text="{oVendDetailModel>requestId}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column width="" hAlign="Center">
+										<Label design="Bold" text="No of Non-Compliant Vendor GSTINs"/>
+										<ui:template>
+											<Link text="{oVendDetailModel>noOfVendorGstins}" press="RecGstinPress"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column width="" hAlign="Center">
+										<Label design="Bold" text="Financial Year"/>
+										<ui:template>
+											<Text text="{oVendDetailModel>financialYear}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column width="" hAlign="Center" visible="false">
+										<Label design="Bold" text="Return Type"/>
+										<ui:template>
+											<Text text="{oVendDetailModel>returnType}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column width="" hAlign="Center">
+										<Label design="Bold" text="Date / Time"/>
+										<ui:template>
+											<Text text="{oVendDetailModel>createdOn}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column width="14rem" hAlign="Center">
+										<Label design="Bold" text="Report Status"/>
+										<ui:template>
+											<Text text="{oVendDetailModel>status}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column width="" hAlign="Center">
+										<Label design="Bold" text="Download Report"/>
+										<ui:template>
+											<core:Icon src="sap-icon://download" size="0.75rem" press="onPressNonCompDownload" tooltip="Download Report" class="sapUiTinyMarginBegin"
+												visible="{= ${oVendDetailModel>status} === 'REPORT_GENERATED'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column width="" hAlign="Center">
+										<Label design="Bold" text="Email"/>
+										<ui:template>
+											<core:Icon src="sap-icon://email" press="onEmailReqIdPress" size="0.75rem" tooltip="Email Download" class="sapUiTinyMarginBegin"
+												visible="{= ${oVendDetailModel>status} === 'REPORT_GENERATED'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column width="" hAlign="Center">
+										<Label design="Bold" text="Non-Compliant Vendors E-mail Status"/>
+										<ui:template>
+											<Text text="{parts:[{path:'oVendDetailModel>sentEmails'},{path:'oVendDetailModel>totalEmails'}], formatter : '.formatter.emailStatus'}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+	<!-- Email Code ended by chaithra on 08/03/2021-->
+</core:FragmentDefinition>

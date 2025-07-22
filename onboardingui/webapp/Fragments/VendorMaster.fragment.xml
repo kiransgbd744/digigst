@@ -1,0 +1,163 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage >
+		<!--<f:title>
+			<f:DynamicPageTitle>
+				<f:heading></f:heading>
+				<f:actions>
+					<Button type="Emphasized" id="idMasterVendorSubmit" icon="sap-icon://save" text="Submit" press="onSubmit"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>-->
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<f:content>
+					<fb:FilterBar id="fbVendor" reset="onReset" search="onSearchMaster" useToolbar="false" showGoOnFB="false" showFilterConfiguration="false"
+						filterContainerWidth="10rem" class="sapUiNoContentPadding">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="Entity" visibleInFilterBar="true">
+								<fb:control>
+									<Select id="slVendorEntity" items="{EntityModel>/resp}" change="onSelectChangeProduct">
+										<core:Item key="{EntityModel>entityId}" text="{EntityModel>entityName}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Entity" visibleInFilterBar="true">-->
+							<!--	<fb:control>-->
+							<!--		<Select items="{DropDown>/Entity}" change="onSelectionChange" width="100%">-->
+							<!--			<core:Item key="{DropDown>key}" text="{DropDown>text}"/>-->
+							<!--		</Select>-->
+							<!--	</fb:control>-->
+							<!--</fb:FilterGroupItem>-->
+							<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="Tax Period" visibleInFilterBar="true">-->
+							<!--	<fb:control>-->
+							<!--		<DateRangeSelection displayFormat="MMyyyy" editable="true" change="handleChange"/>-->
+							<!--	</fb:control>-->
+							<!--</fb:FilterGroupItem>-->
+							<!--<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="EL Value" visibleInFilterBar="true">-->
+							<!--	<fb:control>-->
+							<!--		<Input/>-->
+							<!--	</fb:control>-->
+							<!--</fb:FilterGroupItem>-->
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel class="sapUiNoContentPadding">
+				<ui:Table rows="{MasterVendor>/}" id="idMasterVendorTab" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="10"
+					fixedRowCount="0" fixedColumnCount="1" enableSelectAll="true">
+					<ui:extension>
+						<Toolbar>
+							<ToolbarSpacer/>
+							<!--<Button icon="sap-icon://download" press="onExportExcel"/>-->
+							<!--<Button type="Accept" icon="sap-icon://edit" tooltip="Edit rows" id="idMasterVendorEditRows" press="onEditRows"/>-->
+							<!--<Button type="Accept" icon="sap-icon://add" tooltip="Add row" press="onAddrow"/>-->
+							<Button type="Reject" icon="sap-icon://delete" tooltip="Delete rows" id="idMasterVendorDeleteRows" press="onDeleteRows"/>
+						</Toolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="4rem">
+							<ui:multiLabels>
+								<Label text="S.No" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{MasterVendor>sno}"/>
+							</ui:template>
+						</ui:Column>
+						<!--<ui:Column width="8rem">-->
+						<!--	<ui:multiLabels>-->
+						<!--		<Label text="Data Fields" textAlign="Center" width="100%" design="Bold"/>-->
+						<!--	</ui:multiLabels>-->
+						<!--	<ui:template>-->
+						<!--		<Text text="{MasterVendor>rgstin}" />-->
+						<!--	</ui:template>-->
+						<!--</ui:Column>-->
+						<!--<ui:Column minWidth="11rem">
+							<ui:multiLabels>
+								<Label text="Recipient GSTIN/PAN" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{MasterVendor>custGstinPan}"/>
+							</ui:template>
+						</ui:Column>-->
+						<ui:Column minWidth="8rem">
+							<ui:multiLabels>
+								<Label text="Supplier Code" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{MasterVendor>supplierCode}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="11rem">
+							<ui:multiLabels>
+								<Label text="Supplier GSTIN/PAN" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{MasterVendor>supplierGstinPan}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="11rem">
+							<ui:multiLabels>
+								<Label text="Supplier Name" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{MasterVendor>supplierName}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="8rem">
+							<ui:multiLabels>
+								<Label text="Supplier Type" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{MasterVendor>supplierType}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="8rem">
+							<ui:multiLabels>
+								<Label text="Outside India" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{MasterVendor>outSideIndia}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="12rem">
+							<ui:multiLabels>
+								<Label text="E-MailID" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{MasterVendor>emailId}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column minWidth="8rem">
+							<ui:multiLabels>
+								<Label text="Mobile Number" textAlign="Center" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{MasterVendor>mobileNum}"/>
+							</ui:template>
+						</ui:Column>
+						<!--<ui:Column width="8rem">-->
+						<!--	<ui:multiLabels>-->
+						<!--		<Label text="Mobile No (2)" textAlign="Center" width="100%" design="Bold"/>-->
+						<!--	</ui:multiLabels>-->
+						<!--	<ui:template>-->
+						<!--		<Text text="{MasterVendor>mobileNum2}" />-->
+						<!--	</ui:template>-->
+						<!--</ui:Column>-->
+						<!--<ui:Column width="8rem">-->
+						<!--	<ui:multiLabels>-->
+						<!--		<Label text="Trigger Point" textAlign="Center" width="100%" design="Bold"/>-->
+						<!--	</ui:multiLabels>-->
+						<!--	<ui:template>-->
+						<!--		<Text text="{MasterVendor>triggerPoint}" />-->
+						<!--	</ui:template>-->
+						<!--</ui:Column>-->
+					</ui:columns>
+				</ui:Table>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

@@ -1,0 +1,24 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.f" xmlns:table="sap.ui.table"
+	xmlns:fb="sap.ui.comp.filterbar" controllerName="com.ey.digigst.controller.VGLRecon" busyIndicatorDelay="0">
+	<IconTabBar selectedKey="masterData" expandable="false" expanded="true" stretchContentHeight="true" backgroundDesign="Transparent"
+		class="sapUiNoContentPadding sapUiSmallMarginBottom">
+		<items>
+			<IconTabFilter key="masterData" text="Master Data">
+				<IconTabBar selectedKey="mdUpload" expandable="false" expanded="true" stretchContentHeight="true" backgroundDesign="Transparent"
+					class="sapUiNoContentPadding sapUiSmallMarginBottom">
+					<items>
+						<IconTabFilter key="mdUpload" text="Master Data Upload">
+							<core:Fragment fragmentName="com.ey.digigst.fragments.others.GLRecon.MasterDataUpload" type="XML"/>
+						</IconTabFilter>
+						<IconTabFilter key="mdUpload" text="Master Data View">
+							<core:Fragment fragmentName="com.ey.digigst.fragments.others.GLRecon.MasterDataView" type="XML"/>
+						</IconTabFilter>
+					</items>
+				</IconTabBar>
+			</IconTabFilter>
+			<IconTabFilter key="srVsGL" text="SR vs GL">
+				<mvc:XMLView viewName="com.ey.digigst.view.VGLReconSrVsGL"/>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</mvc:View>

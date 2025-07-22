@@ -1,0 +1,21 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m">
+	<Dialog id="dVerifyAuthToken" title="Auth Token Confirmation" type="Message" showHeader="false" class="sapUiSizeCompact">
+		<beginButton>
+			<Button text="{i18n>verify}" press="onPressVerifyOTP" enabled="{OtpProperty>/verify}"/>
+		</beginButton>
+		<endButton>
+			<Button text="{i18n>close}" press="onPressCloseOTP"/>
+		</endButton>
+		<VBox alignItems="Center" height="8rem">
+			<Title titleStyle="H3" text="{i18n>GenerateOtp}" class="sapUiTinyMarginTop"/>
+			<Title titleStyle="H5" text="{i18n>ActivateOtp}" class="sapUiTinyMarginTop"/>
+			<VBox>
+				<HBox class="sapUiTinyMarginTop">
+					<Input id="idotp" maxLength="6" value="{OtpProperty>/otp}" liveChange="validateOTP" placeholder="Enter OTP"/>
+					<Link text="Resend OTP" press="onPressResendOTP" class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+				</HBox>
+				<ObjectStatus id="tResendOtp" text="A new OTP has been sent." state="Error" class="sapUiTinyMarginTop" visible="{OtpProperty>/resendOtp}"/>
+			</VBox>
+		</VBox>
+	</Dialog>
+</core:FragmentDefinition>

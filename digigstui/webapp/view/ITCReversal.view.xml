@@ -1,0 +1,14 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.ITCReversal"
+	busyIndicatorDelay="0">
+	<IconTabBar expanded="true" id="iditbReports1" select="handleIconTabBarSelect180" class="sapUiNoContentPadding clOther"
+		backgroundDesign="Transparent" stretchContentHeight="true" selectedKey="180DCredit1" expandable="false">
+		<items>
+			<IconTabFilter text="ITC Reversal - 180 Days" key="180DCredit1" enabled="{= ${userPermission>/appPermission/P13}}">
+				<mvc:XMLView viewName="com.ey.digigst.view.Reversal180Days" type="XML"/>
+			</IconTabFilter>
+			<IconTabFilter text="Vendor Ledger" class="cl_ccr" key="NonCompliantVendors" enabled="{= ${userPermission>/appPermission/P13}}">
+				<mvc:XMLView viewName="com.ey.digigst.view.VendorLedger"/>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+</mvc:View>

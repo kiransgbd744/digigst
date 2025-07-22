@@ -1,0 +1,186 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="dpGetGstr2aProcess" visible="{Get2aProp>/process}">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="{i18n>gstnData}"/>
+				</f:heading>
+				<!--<f:actions>-->
+				<!--	<Link text="{i18n>requsetIdWise}" press="onPressGstr2RequestId" visible="true"/>-->
+				<!--</f:actions>-->
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding" pinnable="false">
+				<fb:FilterBar width="90%" showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="From Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dtGet2aPTaxperiodFrom" displayFormat="MMM yyyy" valueFormat="MMyyyy" change="onChangeDateValue"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="To Tax Period" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dtGet2aPTaxperiodTo" displayFormat="MMM yyyy" valueFormat="MMyyyy"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slGet2aProcessGstin" items="{path:'userPermission>/respData/dataSecurity/gstin'}" selectionChange="selectAll">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="{i18n>tableType}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slGet2aProcessTabType" items="{DropDown>/get2aTableType1}" selectionChange="selectAll">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="{i18n>docType}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="slGet2aProcessDocType" items="{DropDown>/get2aDocType}" selectionChange="selectAll">
+									<core:Item key="{DropDown>key}" text="{DropDown>text}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<!--<Button icon="sap-icon://filter" type="Default" tooltip="{i18n>adaptFilter}" press="onPressAdaptFilters"/>-->
+					<Button text="{i18n>clear}" press="onPressClearGet2a('Process')" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+					<Button text="Filter" class="buttoncolor" press="onSearch('Get2aProcess')"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer id="idCcGet2aProcess" showFullScreen="false" autoAdjustHeight="false">
+				<commons:toolbar>
+					<OverflowToolbar>
+						<RadioButtonGroup id="rgbFileType" columns="2" enabled="{= ${userPermission>/appPermission/P8}}"
+							select="onSelectFileType(${$parameters>/selectedIndex})" class="sapUiMediumMarginEnd">
+							<RadioButton text="Excel"/>
+							<RadioButton text="JSON" visible="false"/>
+						</RadioButtonGroup>
+						<u:FileUploader id="fuGetGstr2a" name="file" fileType="xlsx,xlsm,xls,csv" sameFilenameAllowed="false" sendXHR="true" class="buttoncolorSec"
+							width="30rem" uploadComplete="onGet2aUploadComplete" enabled="{= ${userPermission>/appPermission/P8}}"/>
+						<Button text="{i18n>upload}" press="onUploadGet2a" class="sapUiTinyMarginBegin buttoncolor"
+							enabled="{= ${userPermission>/appPermission/P8}}"/>
+						<ToolbarSpacer/>
+						<Button class="buttoncolorSec" text="{i18n>getGstr2a}" press="onPressGetGstr2a($event,'P')" visible="false"/>
+						<MenuButton class="buttoncolorSec" text="{i18n>downReport}" enabled="{= ${userPermission>/appPermission/P8}}">
+							<Menu itemSelected="onDownloadGet2aReport($event,${$parameters>/item},'P')">
+								<MenuItem key="getGstr2A" text="{i18n>gstr2aComplete}"/>
+								<MenuItem key="dropOut" text="{i18n>gstr2aDropOut}" enabled="false"/>
+								<MenuItem key="exDropOut" text="{i18n>gst2aExDropOut}" enabled="false"/>
+							</Menu>
+						</MenuButton>
+						<!--<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="{i18n>downExcel}" enabled="false"/>-->
+						<!--<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="{i18n>downPdf}" enabled="false"/>-->
+						<Button type="Transparent" icon="sap-icon://full-screen" tooltip="{i18n>openFullScreen}" visible="{=!${Get2aProp>/processFullScreen}}"
+							press="onGet2aFullScreen('openProcess')"/>
+						<Button type="Transparent" icon="sap-icon://exit-full-screen" tooltip="{i18n>closeFullScreen}" visible="{Get2aProp>/processFullScreen}"
+							press="onGet2aFullScreen('closeProcess')"/>
+						<commons:ChartContainerToolbarPlaceholder/>
+					</OverflowToolbar>
+				</commons:toolbar>
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table id="tab2aProcess" rows="{Gstr2aProcessed>/}" selectionMode="MultiToggle" visibleRowCount="8" fixedColumnCount="2"
+								enableColumnReordering="false">
+								<ui:columns>
+									<ui:Column width="14rem">
+										<Label text="{i18n>gstin}" design="Bold" textAlign="Center" width="100%"/>
+										<ui:template>
+											<VBox width="100%">
+												<HBox>
+													<Text text="{Gstr2aProcessed>state}" width="8rem"/>
+													<Text text="{=${Gstr2aProcessed>regType}==='REGULAR'?'':${Gstr2aProcessed>regType}}"/>
+												</HBox>
+												<HBox alignContent="Start" justifyContent="SpaceBetween">
+													<Link text="{Gstr2aProcessed>gstin}" emphasized="true" press="onGetGstr2aSummary(${$source>/text})"/>
+													<core:Icon src="sap-icon://circle-task-2" color="{=${Gstr2aProcessed>authToken}==='Active'?'#00ff00':'#ff0000'}"
+														tooltip="{Gstr2aProcessed>authToken}" size="0.8rem" press="onPressGenerateOtp"/>
+												</HBox>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column width="10rem">
+										<Label text="{i18n>gstr2Status}" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+										<ui:template>
+											<VBox>
+												<ObjectStatus text="{Gstr2aProcessed>status}" active="{=${Gstr2aProcessed>status}==='NOT INITIATED'?false:true}"
+													state="{path:'Gstr2aProcessed>status',formatter:'.statusFormat'}" press="onPressGetGstr2a($event,'PS',${Gstr2aProcessed>gstin})"/>
+												<Text text="{Gstr2aProcessed>timeStamp}"/>
+											</VBox>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" width="8rem">
+										<Label text="{i18n>count}" design="Bold" textAlign="Center" width="100%" wrapping="true"/>
+										<ui:template>
+											<Text text="{Gstr2aProcessed>count}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160">
+										<Label design="Bold" text="{i18n>invoiceValue}" textAlign="Center" width="100%" wrapping="true"/>
+										<ui:template>
+											<Text text="{path:'Gstr2aProcessed>invoiceValue', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160">
+										<Label design="Bold" text="{i18n>taxableVal}" textAlign="Center" width="100%" wrapping="true"/>
+										<ui:template>
+											<Text text="{path:'Gstr2aProcessed>taxableValue', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160">
+										<Label design="Bold" text="{i18n>totalTax}" textAlign="Center" width="100%" wrapping="true"/>
+										<ui:template>
+											<Text text="{path:'Gstr2aProcessed>taxPayable', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160">
+										<Label text="{i18n>igst}" design="Bold" textAlign="Center" width="100%"/>
+										<ui:template>
+											<Text text="{path:'Gstr2aProcessed>igst', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160">
+										<Label text="{i18n>cgst}" design="Bold" textAlign="Center" width="100%"/>
+										<ui:template>
+											<Text text="{path:'Gstr2aProcessed>cgst', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160">
+										<Label text="{i18n>sgst}" design="Bold" textAlign="Center" width="100%"/>
+										<ui:template>
+											<Text text="{path:'Gstr2aProcessed>sgst', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+									<ui:Column hAlign="End" minWidth="160">
+										<Label text="{i18n>cess}" design="Bold" textAlign="Center" width="100%"/>
+										<ui:template>
+											<Text text="{path:'Gstr2aProcessed>cess', formatter:'.formatter.amountValue'}"/>
+										</ui:template>
+									</ui:Column>
+								</ui:columns>
+								<ui:footer>
+									<HBox>
+										<core:Icon src="sap-icon://circle-task-2" color="#00ff00" ariaLabelledBy="Text" size="0.8rem"/>
+										<Text text="{i18n>authActive}" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+										<core:Icon src="sap-icon://circle-task-2" color="red" ariaLabelledBy="Text" size="0.8rem"/>
+										<Text text="{i18n>authInactive}" class="sapUiTinyMarginBegin"/>
+									</HBox>
+								</ui:footer>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+	<core:Fragment fragmentName="com.ey.digigst.fragments.gstr2.GetGstr2aSummary" type="XML"/>
+</core:FragmentDefinition>

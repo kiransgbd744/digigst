@@ -1,0 +1,44 @@
+<core:FragmentDefinition controllerName="sap.ui.demo.toolpageapp.controller.ViewStatusFragment" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants" xmlns:ui="sap.ui.table" xmlns:tnt="sap.tnt" xmlns:u="sap.ui.unified">
+	<f:DynamicPage id="dynamicERP" class="sapUiSizeCompact">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Label text="Select Event" design="Bold"/>
+				</f:heading>
+				<f:actions>
+					<Button text="Submit" class="sapUiTinyMarginBegin" type="Emphasized"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<VBox>
+				<HBox class="sapUiLargeMarginTop">
+					<Label text="Sales Invoice Event :" design="Bold" class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+					<RadioButtonGroup id="rbgStatus" columns="2" width="100%" select="onSelectChangeRadioButton" class="sapUiTinyMarginBegin">
+						<buttons>
+							<RadioButton text="BTE"/>
+							<RadioButton text="SD Output"/>
+						</buttons>
+					</RadioButtonGroup>
+				</HBox>
+				<HBox class="sapUiLargeMarginTop">
+					<Label text="Purchase Invoice Event :" design="Bold" class="sapUiTinyMarginTop "/>
+					<RadioButtonGroup id="rbgStatus1" columns="2" width="100%" select="onSelectChangeRadioButton">
+						<buttons>
+							<RadioButton text="BTE"/>
+						</buttons>
+					</RadioButtonGroup>
+				</HBox>
+			</VBox>
+		</f:content>
+		<f:footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button type="Accept" text="Accept"/>
+				<Button type="Reject" text="Reject"/>
+			</OverflowToolbar>
+		</f:footer>
+	</f:DynamicPage>
+</core:FragmentDefinition>

@@ -1,0 +1,45 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.f"
+	controllerName="com.ey.digigst.controller.Ledger" busyIndicatorDelay="0">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Ledger" class="TitleColor"/>
+				</f:heading>
+				<f:actions>
+					<SegmentedButton id="idElectronicledger" selectedKey="API" selectionChange="onChangeEleLedger" visible="false">
+						<items>
+							<SegmentedButtonItem key="EleLedger" text="Electronic Ledger" width="9rem" visible="false"/>
+							<SegmentedButtonItem key="PCB" text="Provisional Credit balance" width="12rem" visible="false"/>
+							<SegmentedButtonItem key="BlCredit" text="Blocked Credit" width="9rem" visible="false"/>
+						</items>
+					</SegmentedButton>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+			<Panel>
+				<Toolbar visible="{=${ViewProperty>/table}!=='tabLedger'}">
+					<Button id="navBackLedger" icon="sap-icon://nav-back" tooltip="Back" type="Transparent" press="onPressBack"
+						visible="{ViewProperty>/btnBack}"/>
+					<Title text="{ViewProperty>/title}" level="H2" class="Titleledger"/>
+				</Toolbar>
+				<core:Fragment fragmentName="com.ey.digigst.fragments.general.LedgerSummary" type="XML"/>
+				<!--	Electronic Credit Led transparent -->
+				<core:Fragment fragmentName="com.ey.digigst.fragments.general.LedgerCredit" type="XML"/>
+				<!--	Electronic Cash Ledger -->
+				<core:Fragment fragmentName="com.ey.digigst.fragments.general.LedgerCash" type="XML"/>
+				<!--	Electronic Liability Ledger -->
+				<core:Fragment fragmentName="com.ey.digigst.fragments.general.LedgerLiability" type="XML"/>
+				<!--	Electronic Credit Register - Provisional Credit Balance -->
+				<core:Fragment fragmentName="com.ey.digigst.fragments.general.LedgerElecCredit" type="XML"/>
+				<!--	Electronic Credit Reversal & Re-claim Ledger -->
+				<core:Fragment fragmentName="com.ey.digigst.fragments.general.LedgerCrReversal" type="XML"/>
+				<!--	RCM Ledger-->
+				<core:Fragment fragmentName="com.ey.digigst.fragments.general.LedgerRCM" type="XML"/>
+				<!--	Negative Liability	-->
+				<core:Fragment fragmentName="com.ey.digigst.fragments.general.LedgerNegLiability" type="XML"/>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

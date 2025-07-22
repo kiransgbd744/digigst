@@ -1,0 +1,43 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:ui="sap.ui.table"
+	xmlns:layout="sap.ui.layout">
+	<Dialog type="Message" title="Get Call Status" class="sapUiSizeCompact" showHeader="true">
+		<beginButton>
+			<Button text="Close" press="onCloseACSDialog"/>
+		</beginButton>
+		<ui:Table rows="{GetCallStatus>/}" enableColumnReordering="false" selectionMode="None" width="40rem" selectionBehavior="RowSelector"
+			rowSelectionChange="onRowSelectionChange" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop cl_popupCheck">
+			<ui:columns>
+				<ui:Column >
+					<Label text="API 1 - List of Notice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox width="100%">
+							<ObjectStatus text="{GetCallStatus>api1Status}" active="false" state="{path:'GetCallStatus>api1Status', formatter:'.formatter.statusNotices'}"
+								press="onPressGetGst1EinvStatus($event,${GetCallStatus>gstin})"/>
+							<Text text="{GetCallStatus>api1TimeStamp}" class="timeStmpClr"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column >
+					<Label text="API 2 - Details of Notice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox width="100%">
+							<ObjectStatus text="{GetCallStatus>api2Status}" active="false" state="{path:'GetCallStatus>api2Status', formatter:'.formatter.statusNotices'}"
+								press="onPressGetGst1EinvStatus($event,${GetCallStatus>gstin})"/>
+							<Text text="{GetCallStatus>api2TimeStamp}" class="timeStmpClr"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+				<ui:Column >
+					<Label text="API 3 - Attachments in Notice" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+					<ui:template>
+						<VBox width="100%">
+							<ObjectStatus text="{GetCallStatus>api3Status}" active="false" state="{path:'GetCallStatus>api3Status', formatter:'.formatter.statusNotices'}"
+								press="onPressGetGst1EinvStatus($event,${GetCallStatus>gstin})"/>
+							<Text text="{GetCallStatus>api3TimeStamp}" class="timeStmpClr"/>
+						</VBox>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+	</Dialog>
+</core:FragmentDefinition>

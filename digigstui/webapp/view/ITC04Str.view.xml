@@ -1,0 +1,273 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.ITC04Str"
+	xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table" xmlns:l="sap.ui.layout" busyIndicatorDelay="0">
+	<f:DynamicPage class="sapUiNoContentPadding sapUiNoMargin" visible="true">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="ITC04 Stock Tracking Report" titleStyle="H3"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G9" groupTitle="Basic" name="A" label="GSTIN" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox items="{path:'userPermission>/respData/dataSecurity/gstin'}" selectedKeys="{FilterModel>/gstin}" selectionChange="selectAll"
+									width="100%">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G9" groupTitle="Basic" name="B" label="Criteria for Recon" visibleInFilterBar="true">
+							<fb:control>
+								<Select forccaleSelection="true" selectedKey="{FilterModel>/criteria}" class="input">
+									<core:Item key="ChallanDate" text="Challan Date"/>
+									<core:Item key="ReturnPeriod" text="Return Period"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Financial year" visibleInFilterBar="true">
+							<fb:control>
+								<Select width="100%" items="{oFyModel>/finYears}" selectedKey="{FilterModel>/fy}">
+									<core:Item key="{oFyModel>fullFy}" text="{oFyModel>fullFy}"/>
+								</Select>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="From Challan Date" visibleInFilterBar="true"
+							visible="{=${FilterModel>/criteria}==='ChallanDate'}">
+							<fb:control>
+								<DatePicker id="frStockTrade" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" value="{FilterModel>/frChallanDate}" class="input"
+									maxDate="{FilterModel>/maxDate}" change="onFromDateChange"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="To Challan Date" visibleInFilterBar="true"
+							visible="{=${FilterModel>/criteria}==='ChallanDate'}">
+							<fb:control>
+								<DatePicker id="toStockTrade" displayFormat="MMM dd, yyyy" valueFormat="yyyy-MM-dd" value="{FilterModel>/toChallanDate}" class="input"
+									maxDate="{FilterModel>/maxDate}" minDate="{FilterModel>/minDate}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="F" label="From Return Period" visibleInFilterBar="true"
+							visible="{=${FilterModel>/criteria}==='ReturnPeriod'}">
+							<fb:control>
+								<ComboBox selectedKey="{FilterModel>/frReturnPeriod}">
+									<core:Item key="Q1" text="Q1"/>
+									<core:Item key="Q2" text="Q2"/>
+									<core:Item key="Q3" text="Q3"/>
+									<core:Item key="Q4" text="Q4"/>
+									<core:Item key="H1" text="H1"/>
+									<core:Item key="H2" text="H2"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="G" label="To Return Period" visibleInFilterBar="true"
+							visible="{=${FilterModel>/criteria}==='ReturnPeriod'}">
+							<fb:control>
+								<ComboBox selectedKey="{FilterModel>/toReturnPeriod}">
+									<core:Item key="Q1" text="Q1"/>
+									<core:Item key="Q2" text="Q2"/>
+									<core:Item key="Q3" text="Q3"/>
+									<core:Item key="Q4" text="Q4"/>
+									<core:Item key="H1" text="H1"/>
+									<core:Item key="H2" text="H2"/>
+								</ComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="Filter" class="buttoncolor" press="onSearchStockTrade"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<VBox>
+				<l:BlockLayout background="Dashboard" class="sapUiTinyMarginBottom">
+					<l:BlockLayoutRow class="sapUiNoContentPadding">
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Challans (Manufacturer to Job Worker)" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{StockTradeRpt>/totalCnt/totmftojwcnt}" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Challans (Job Worker to Manufacturer)" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{StockTradeRpt>/totalCnt/totjwtomfcnt}" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Challans (Job Worker to another Job Worker)" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{StockTradeRpt>/totalCnt/totjwtojwcnt}" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell class="clBlockLayout1" width="2">
+							<Toolbar class="colorToolbar">
+								<ToolbarSpacer/>
+								<Label text="Documents (Sold from Job Work Premises)" class="sapUiTinyMarginBegin titleFontEinv" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+							<Toolbar class="cl_toolBarBorder sapUiTinyMarginTop">
+								<ToolbarSpacer/>
+								<Label text="{StockTradeRpt>/totalCnt/totsoldjwcnt}" design="Bold"/>
+								<ToolbarSpacer/>
+							</Toolbar>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+				<ui:Table id="tabStkRpt" rows="{StockTradeRpt>/resp}" selectionMode="MultiToggle" visibleRowCount="8" fixedColumnCount="1"
+					enableColumnReordering="false">
+					<ui:extension>
+						<OverflowToolbar >
+							<ToolbarSpacer/>
+							<Button text="Initiate Report" press="onInitiateReport" class="buttoncolorSec"/>
+							<MenuButton class="buttoncolorSec" text="{i18n>downReport}" enabled="{= ${userPermission>/appPermission/P7}}">
+								<Menu itemSelected="onDownloadReport">
+									<MenuItem key="stockTradeRpt" text="Stock Tracking Report"/>
+								</Menu>
+							</MenuButton>
+						</OverflowToolbar>
+					</ui:extension>
+					<ui:columns>
+						<ui:Column width="13rem">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Manufacturer GSTIN" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<VBox>
+									<HBox>
+										<Text text="{StockTradeRpt>state}" width="8rem" class="stateColor"/>
+										<Text text="{=${StockTradeRpt>regType}==='REGULAR'?'':${StockTradeRpt>regType}}" class="stateColor fontSmall"/>
+									</HBox>
+									<HBox alignContent="Start" justifyContent="SpaceBetween">
+										<Text text="{StockTradeRpt>gstin}"/>
+										<core:Icon src="sap-icon://circle-task-2" size="0.8rem" tooltip="Generate OTP" visible="{=${StockTradeRpt>gstin} === '' ? false:true}"
+											press="onActivateAuthToken(${StockTradeRpt>gstin},${StockTradeRpt>authToken})">
+											<core:customData>
+												<core:CustomData key="authToken" value="{=!${StockTradeRpt>authToken}?'':${StockTradeRpt>authToken}}" writeToDom="true"/>
+											</core:customData>
+										</core:Icon>
+									</HBox>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column width="10rem">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Report Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<VBox width="100%">
+									<Text text="{StockTradeRpt>reportStatus}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Challans (MFs to JW)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<VBox width="100%">
+									<Text text="{StockTradeRpt>mftojwcnt}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Challans (JW to Mfs)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<VBox width="100%">
+									<Text text="{StockTradeRpt>jwtomfcnt}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Challans (JW to another JW)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<VBox width="100%">
+									<Text text="{StockTradeRpt>jwtojwcnt}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" minWidth="150">
+							<ui:multiLabels>
+								<Label/>
+								<Label text="Documents (Sold from JW)" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<VBox width="100%">
+									<Text text="{StockTradeRpt>soldjwcnt}"/>
+								</VBox>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" headerSpan="2" width="12rem">
+							<ui:multiLabels>
+								<Label text="Input Goods" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Open Challan &gt; 365 days (1 year)" textAlign="Center" wrapping="true" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{StockTradeRpt>igOpenChallanGrYear}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="12rem">
+							<ui:multiLabels>
+								<Label text=""/>
+								<Label text="Open Challan &lt; 365 days (1 year)" textAlign="Center" wrapping="true" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{StockTradeRpt>igOpenChallanlsYear}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" headerSpan="2" width="12rem">
+							<ui:multiLabels>
+								<Label text="Capital Goods" textAlign="Center" width="100%" design="Bold"/>
+								<Label text="Open Challan &gt; 1095 days (3 years)" textAlign="Center" wrapping="true" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{StockTradeRpt>cgOpenChallanGrYear}"/>
+							</ui:template>
+						</ui:Column>
+						<ui:Column hAlign="End" width="12rem">
+							<ui:multiLabels>
+								<Label text=""/>
+								<Label text="Open Challan &lt; 1095 days (3 years)" textAlign="Center" wrapping="true" width="100%" design="Bold"/>
+							</ui:multiLabels>
+							<ui:template>
+								<Text text="{StockTradeRpt>cgOpenChallanlsYear}"/>
+							</ui:template>
+						</ui:Column>
+					</ui:columns>
+				</ui:Table>
+			</VBox>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

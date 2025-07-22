@@ -1,0 +1,87 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:u="sap.ui.unified"
+	controllerName="com.ey.digigst.controller.Feedback" busyIndicatorDelay="0">
+	<Page title="User Feedback" showHeader="false">
+		<VBox items="{UserFeedback>/results}">
+			<VBox>
+				<Text text="Q1. On a scale of 1 through 5, 1 being the lowest and 5 being the highest, please rate DigiGST on the following:"/>
+				<l:Grid containerQuery="true" defaultSpan="XL6 L6 M6 S12" width="40rem">
+					<Text text="Overall Experience" width="100%" textAlign="End" class="sapUiSmallMarginTop"/>
+					<HBox>
+						<RatingIndicator maxValue="5" value="{/q1oer}" iconSize="32px" class=""/>
+						<Input value="{/q1oer}" width="3rem" class="sapUiTinyMarginBegin sapUiSmallMarginTop"/>
+					</HBox>
+					<Text text="Ease of Use" width="100%" textAlign="End" class="sapUiSmallMarginTop"/>
+					<HBox>
+						<RatingIndicator maxValue="5" value="{/q1eur}" iconSize="32px"/>
+						<Input value="{/q1eur}" width="3rem" class="sapUiTinyMarginBegin sapUiSmallMarginTop"/>
+					</HBox>
+					<Text text="Satisfaction with support from EY" width="100%" textAlign="End" class="sapUiSmallMarginTop"/>
+					<HBox>
+						<RatingIndicator maxValue="5" value="{/q1supp}" iconSize="32px"/>
+						<Input value="{/q1supp}" width="3rem" class="sapUiTinyMarginBegin sapUiSmallMarginTop"/>
+					</HBox>
+					<Text text="Product is updated to reflect Regulatory Changes" width="100%" textAlign="End" class="sapUiTinyMarginTop"/>
+					<HBox>
+						<RatingIndicator maxValue="5" value="{/q1rcr}" iconSize="32px"/>
+						<Input value="{/q1rcr}" width="3rem" class="sapUiTinyMarginBegin sapUiSmallMarginTop"/>
+					</HBox>
+					<Text text="The new User Interface (UI)" width="100%" textAlign="End" class="sapUiSmallMarginTop"/>
+					<HBox>
+						<RatingIndicator maxValue="5" value="{/q1uir}" iconSize="32px"/>
+						<Input value="{/q1uir}" width="3rem" class="sapUiTinyMarginBegin sapUiSmallMarginTop"/>
+					</HBox>
+				</l:Grid>
+			</VBox>
+			<VBox>
+				<Text text="Q2. What is your favourite feature of DigiGST?"/>
+				<TextArea cols="130" rows="3" class="sapUiSmallMarginBegin"/>
+			</VBox>
+			<VBox>
+				<Text
+					text="Q3. Plese list out all the pain points/areas where EY can improve DigiGST or Are there any features you would like to see implemented by EY to improve your DigiGST user experience? you may attach a pdf of less 2mb."
+					width="65rem"/>
+				<TextArea cols="130" rows="3" class="sapUiSmallMarginBegin"/>
+				<HBox renderType="Bare" width="63rem" class="sapUiSmallMarginBegin">
+					<u:FileUploader id="fileUploader" name="myFileUpload" tooltip="Upload your file to the local server" uploadComplete="handleUploadComplete"
+						width="100%"/>
+				</HBox>
+			</VBox>
+			<VBox>
+				<Text text="Q4. Please select the latest features added to DigiGST in the last year that you know about and use."/>
+				<HBox direction="Column" items="{UserFeedback>items}" class="sapUiSmallMarginBegin">
+					<CheckBox text="{UserFeedback>text}"/>
+					<!--<CheckBox text="ITC-04 return filing"/>-->
+					<!--<CheckBox text="Role based access for E-invoice / Return Module"/>-->
+					<!--<CheckBox text="TAX/NIL/NON/EXT bifurcation to respective tables of GSTR 1 basis the supply type against line items"/>-->
+					<!--<CheckBox text="Report for Exports transactions without shipping bill details"/>-->
+					<!--<CheckBox text="Late reported invoices"/>-->
+					<!--<CheckBox text="GSTR-2B attributes in GSTR 2A vs PR reconciliation reports"/>-->
+					<!--<CheckBox text="Imports reconciliation"/>-->
+					<!--<CheckBox text="Exclude vendors / records from reconciliation"/>-->
+					<!--<CheckBox text="Daily recon module with payment blocking"/>-->
+					<!--<CheckBox text="E-invoice QR code validator for vendor invoices"/>-->
+				</HBox>
+			</VBox>
+			<VBox>
+				<Text
+					text="Q5. Do you need extra training or help in using the above mentioned features? if Yes, please provide an email that we can connect you on."/>
+				<RadioButtonGroup columns="2" selectedIndex="{/q5}" class="sapUiSmallMarginBegin">
+					<RadioButton text="Yes"/>
+					<RadioButton text="No"/>
+				</RadioButtonGroup>
+				<Input value="" enabled="{=!${/q5}}" width="30rem" class="sapUiSmallMarginBegin"/>
+			</VBox>
+			<VBox>
+				<Text text="Q6. Would you like to recognize anyone from EY for their support?"/>
+				<RadioButtonGroup columns="2" selectedIndex="{/q6}" class="sapUiSmallMarginBegin">
+					<RadioButton text="Yes"/>
+					<RadioButton text="No"/>
+				</RadioButtonGroup>
+				<Input value="" maxLength="50" enabled="{=!${/q6}}" width="30rem" class="sapUiSmallMarginBegin"/>
+			</VBox>
+		</VBox>
+		<!--<HBox justifyContent="End" width="64rem">-->
+		<!--	<Button text="Submit"/>-->
+		<!--</HBox>-->
+	</Page>
+</mvc:View>

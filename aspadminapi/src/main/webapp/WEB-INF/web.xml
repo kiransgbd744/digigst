@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+
+	<display-name>Archetype Created Web Application</display-name>
+	 <resource-ref>
+		<res-ref-name>KeyStoreService</res-ref-name>
+		<res-type>com.sap.cloud.crypto.keystore.api.KeyStoreService</res-type>
+	 </resource-ref>
+	<resource-ref>
+		<res-ref-name>TenantContext</res-ref-name>
+		<res-type>com.sap.cloud.account.TenantContext</res-type>
+	</resource-ref>
+	<resource-ref>
+		<res-ref-name>EcmService</res-ref-name>
+		<res-type>com.sap.ecm.api.EcmService</res-type>
+	</resource-ref>
+
+	<filter>
+		<filter-name>GroupResolverFilter</filter-name>
+		<filter-class>com.ey.advisory.filter.GroupResolverFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>GroupResolverFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>UserLoaderFilter</filter-name>
+		<filter-class>com.ey.advisory.filter.UserLoaderFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>UserLoaderFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/dispatcher-servlet.xml</param-value>
+		</init-param>
+		<!-- Comment it while deploying to SCP or check in Uncomment the following 
+			spring profiles init params ONLY in dev env -->
+		 <!-- <init-param>
+			<param-name>spring.profiles.active</param-name>
+			<param-value>hanadev</param-value>
+		</init-param>  -->
+		<!-- Comment it while deploying to SCP or check in Uncomment the following 
+			spring profiles init params ONLY in dev env -->
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+
+	<login-config>
+		<auth-method>FORM</auth-method>
+	</login-config>
+ 
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Protected Area</web-resource-name>
+			<url-pattern>*.do</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>Everyone</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<security-role>
+		<description>All SAP Cloud Platform users</description>
+		<role-name>Everyone</role-name>
+	</security-role>
+ 
+</web-app>

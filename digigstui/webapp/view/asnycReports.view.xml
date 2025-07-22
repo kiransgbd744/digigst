@@ -1,0 +1,168 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.ey.digigst.controller.asnycReports"
+	xmlns:commons="sap.suite.ui.commons" xmlns:ui="sap.ui.table" xmlns:l="sap.ui.layout" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	busyIndicatorDelay="0">
+	<f:DynamicPage>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Request Reports" class="TitleColor"/>
+				</f:heading>
+				<f:actions></f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar showFilterConfiguration="false" useToolbar="false" class="sapUiNoContentPadding" width="90%" showGoOnFB="false"
+					showClearOnFB="false">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="a" label="Data Type" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idDT" selectionFinish="onDTChange" selectionChange="selectAll" placeholder="Select Data type">
+									<core:Item key="All" text="All"/>
+									<core:Item key="GSTR3B" text="GSTR3B"/>
+									<core:Item key="GSTR6" text="GSTR6"/>
+									<core:Item key="GSTR6A" text="GSTR6A"/>
+									<core:Item key="GSTR8" text="GSTR8"/>
+									<core:Item key="GSTR9" text="GSTR9"/>
+									<core:Item key="Exceptional Tagging" text="Exceptional Tagging"/>
+									<core:Item key="Get Call" text="Get Call"/>
+									<core:Item key="Inward" text="Inward"/>
+									<core:Item key="ITC-04" text="ITC-04"/>
+									<core:Item key="Ledger" text="Ledger"/>
+									<core:Item key="Outward" text="Outward"/>
+									<core:Item key="Outward_1A" text="Outward - GSTR 1A"/>
+									<core:Item key="Supplier IMS" text="Supplier IMS"/>
+									<core:Item key="Top 10 Compliant" text="Top 10 Compliant"/>
+									<core:Item key="Top 20 Compliant" text="Top 20 Compliant"/>
+									<core:Item key="Top 10 Non-Compliant" text="Top 10 Non-Compliant"/>
+									<core:Item key="Top 20 Non-Compliant" text="Top 20 Non-Compliant"/>
+									<core:Item key="Vendor Compliance" text="Vendor Compliance"/>
+									<core:Item key="Vertical" text="Vertical"/>
+									<core:Item key="All Compliants" text="All Compliants"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="C" label="Report Category" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox id="idRC" items="{getReportCategory>/reportCategory/}" selectionChange="selectAll" width="100%"
+									placeholder="Select Report Category">
+									<core:Item key="{getReportCategory>repCateg}" text="{getReportCategory>repCateg}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="D" label="From Date" visibleInFilterBar="true" id="vBox1ID2A">
+							<fb:control>
+								<DatePicker displayFormat="dd MMM yyyy" id="idFrom" valueFormat="dd-MM-yyyy" class="input" change="onFromDateChange"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="E" label="To Date" visibleInFilterBar="true" id="vBox1ID2A1">
+							<fb:control>
+								<DatePicker displayFormat="dd MMM yyyy" id="idTo" valueFormat="dd-MM-yyyy" class="input"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button press="onClear" text="Clear" class="buttoncolorSec"/>
+					<Button press="_onRouteMatched" text="Filter" class="sapUiTinyMarginBegin buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<commons:ChartContainer showFullScreen="true" showZoom="true" showPersonalization="false" autoAdjustHeight="false">
+				<commons:content>
+					<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+						<commons:content>
+							<ui:Table rows="{path:'AsnycReport>/resp/AsyncReportsData', sorter: {path: 'requestId',descending:true}}" selectionMode="None"
+								selectionBehavior="Row" visibleRowCount="10" fixedColumnCount="0" enableSelectAll="false">
+								<ui:Column hAlign="Center" width="8rem">
+									<Label text="Request ID" design="Bold" textAlign="Center" width="100%"/>
+									<ui:template>
+										<Text text="{AsnycReport>requestId}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="14rem">
+									<Label text="Report Category" design="Bold" textAlign="Center" width="100%"/>
+									<ui:template>
+										<Text text="{AsnycReport>reportCateg}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="16rem">
+									<Label text="Report Type" design="Bold" textAlign="Center" width="100%"/>
+									<ui:template>
+										<Text text="{AsnycReport>reportType}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column width="10rem">
+									<Label text="Data Type" design="Bold" textAlign="Center" width="100%"/>
+									<ui:template>
+										<Text text="{AsnycReport>dataType}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column>
+									<Label design="Bold" text="File Name"/>
+									<ui:template>
+										<Text text="{AsnycReport>fileName}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="12rem">
+									<Label text="Initiation On" design="Bold" textAlign="Center" width="100%"/>
+									<ui:template>
+										<Text text="{AsnycReport>initiatedOn}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="9rem">
+									<Label text="Initiated By" design="Bold" textAlign="Center" width="100%"/>
+									<ui:template>
+										<Text text="{AsnycReport>initiatedBy}"/>
+									</ui:template>
+								</ui:Column>
+								<!--<ui:Column hAlign="Center" >
+										<Label design="Bold" text="Completion"/>
+										<ui:template>
+											<HBox alignItems="Center" justifyContent="Center">
+												<Text text="{AsnycReport>completionOn}"/>
+											</HBox>
+										</ui:template>
+									</ui:Column>-->
+								<ui:Column width="14rem">
+									<Label text="Status" design="Bold" textAlign="Center" width="100%"/>
+									<ui:template>
+										<Text text="{AsnycReport>status}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:Column hAlign="Center" width="9rem">
+									<Label text="Download" design="Bold" textAlign="Center" width="100%"/>
+									<ui:template>
+										<Button text="Report Download" class="buttoncolorSec" press="onRDownloadPress" visible="{= (${AsnycReport>status} === 'REPORT_GENERATED')}"/>
+									</ui:template>
+								</ui:Column>
+								<ui:footer>
+									<HBox width="100%" justifyContent="Center">
+										<Button id="btnFirst" type="Ghost" icon="sap-icon://media-rewind" tooltip="{i18n>firstPage}" class="sapUiTinyMarginBeginEnd" enabled="false"
+											press="onPressPagination"/>
+										<Button id="btnPrev" type="Ghost" icon="sap-icon://navigation-left-arrow" tooltip="{i18n>previous}" enabled="false"
+											press="onPressPagination"/>
+										<Input id="inPageNo" type="Number" textAlign="End" width="4rem" submit="onSubmitPagination" enabled="false" class="sapUiTinyMarginBegin"
+											value="0"/>
+										<Text id="txtPageNo" text="/ 0" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop"/>
+										<Button id="btnNext" type="Ghost" icon="sap-icon://navigation-right-arrow" tooltip="{i18n>next}" enabled="false" press="onPressPagination"/>
+										<Button id="btnLast" type="Ghost" icon="sap-icon://media-forward" tooltip="{i18n>lastPage}" class="sapUiTinyMarginBeginEnd" enabled="false"
+											press="onPressPagination"/>
+									</HBox>
+								</ui:footer>
+							</ui:Table>
+						</commons:content>
+					</commons:ChartContainerContent >
+				</commons:content>
+				<commons:toolbar>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+						<Button type="Transparent" icon="sap-icon://download" tooltip="Download Summary" press="onDownloadSummary" visible="false"/>
+						<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+					</OverflowToolbar>
+				</commons:toolbar>
+			</commons:ChartContainer>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

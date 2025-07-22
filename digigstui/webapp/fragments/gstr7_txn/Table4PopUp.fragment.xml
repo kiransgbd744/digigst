@@ -1,0 +1,112 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:f="sap.f" xmlns:ui="sap.ui.table" xmlns:commons="sap.suite.ui.commons">
+	<Dialog title="Amendment Details" type="Message" class="sapUiSizeCompact" xmlns:ui="sap.ui.table" xmlns:form="sap.ui.layout.form">
+		<layout:HorizontalLayout class="sapUiSmallMarginBottom">
+			<Label text="GSTIN : " design="Bold" textAlign="Right" class="sapUiSmallMarginBegin sapUiTinyMarginEnd sapUiTinyMarginTop" width="8rem"/>
+			<Select id="idTable4Gstin" items="{path:'TDSGstin>/'}" selectedKey="{DialogProperty>/gstin}" width="12rem">
+				<core:Item key="{TDSGstin>value}" text="{TDSGstin>value}"/>
+			</Select>
+			<Label text="Tax Period : " design="Bold" textAlign="Right" class="sapUiSmallMarginBegin sapUiTinyMarginEnd sapUiTinyMarginTop" width="8rem"/>
+			<DatePicker id="idTable4taxPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy" value="{DialogProperty>/taxPeriod}"
+				maxDate="{DialogProperty>/maxDate}" width="10rem"/>
+			<Button id="bTable4Go" text="Filter" class="sapUiSmallMarginBegin buttoncolor" press="getGstr7PopupSummary('Table-4')"/>
+		</layout:HorizontalLayout>
+		<ui:Table rows="{PopupSummary>/resp/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="8" id="idtable4">
+			<ui:extension>
+				<Toolbar>
+					<Label text="Table-4 (Amendment Details)" design="Bold" class="sapUiSmallMarginBegin titleFont"/>
+					<ToolbarSpacer/>
+					<Button class="buttoncolorSec" text="Add" enabled="false" press="onPressAddProduct"/>
+					<Button class="buttoncolorSec" text="Edit" enabled="false" press="onPressAddProduct"/>
+					<Button class="buttoncolorSec" text="Delete" enabled="false" press="onPressDeleteProduct"/>
+					<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="{i18n>downExcel}" enabled="false" press="onExportExcel('S')"/>
+					<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="{i18n>downPdf}" enabled="false" press="onPressDownloadPdf"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column width="10rem" headerSpan="3">
+					<ui:multiLabels>
+						<Label text="Original Details" tooltip="GSTIN of Deductee" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="Month" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Input value="{PopupSummary>odMonth}" enabled="false"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<ui:multiLabels>
+						<Label text="" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="GSTIN" tooltip="GSTIN of Deductee" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Input value="{PopupSummary>odGstin}" enabled="false"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem">
+					<ui:multiLabels>
+						<Label text="" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="Amount paid" tooltip="Amount paid to deductee on which deducted" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Input value="{PopupSummary>odAmount}" enabled="false"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" headerSpan="5,1">
+					<ui:multiLabels>
+						<Label text="Revised Details" textAlign="Center" width="100%" design="Bold"/>
+						<!--<Label text="" textAlign="Center" width="100%" design="Bold"/>-->
+						<Label text="GSTIN" tooltip="GSTIN of Deductee" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Input value="{PopupSummary>rdGstin}" enabled="false"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="12rem" headerSpan="5,1">
+					<ui:multiLabels>
+						<Label text="" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="Amount paid" tooltip="Amount paid to deductee on which deducted" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Input value="{PopupSummary>rdAmount}" enabled="false"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem" headerSpan="5,3,1">
+					<ui:multiLabels>
+						<Label text="" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="Amount of Tax deducted at source" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="IGST" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Input value="{PopupSummary>rdIgst}" enabled="false"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem" headerSpan="5,3,1">
+					<ui:multiLabels>
+						<Label text="" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="CGST" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Input value="{PopupSummary>rdCgst}" enabled="false"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column width="10rem" headerSpan="5,3,1">
+					<ui:multiLabels>
+						<Label text="" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="" textAlign="Center" width="100%" design="Bold"/>
+						<Label text="SGST" textAlign="Center" width="100%" design="Bold"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Input value="{PopupSummary>rdSgst}" enabled="false"/>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+		<beginButton>
+			<Button text="Save" id="bTable4Apply" class="buttoncolorSec" enabled="false" press="onPressTable4Close"/>
+		</beginButton>
+		<endButton>
+			<Button text="Cancel" class="buttoncolorSec" press="onPressTable4Close"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

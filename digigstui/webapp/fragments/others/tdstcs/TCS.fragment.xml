@@ -1,0 +1,155 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f"
+	xmlns:commons="sap.suite.ui.commons" xmlns:fb="sap.ui.comp.filterbar" xmlns:ui="sap.ui.table">
+	<f:DynamicPage id="dpBulkSaveTCS">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<HBox>
+						<Title text="" titleStyle="H3" class="tinyMarginTop"/>
+					</HBox>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader class="sapUiNoContentPadding cl_spacebar" pinnable="false">
+				<l:VerticalLayout width="100%">
+					<l:Grid defaultSpan="L2 M2 S12" vSpacing="0" class="sapUiTinyMarginTop">
+						<l:content>
+							<VBox>
+								<Label text="GSTIN"/>
+								<MultiComboBox id="idtcsGstin" items="{userPermission>/respData/dataSecurity/gstin}" selectedKeys="{FilterData>/entityTcsGstin}"
+									selectionChange="selectAll" width="100%">
+									<core:Item key="{userPermission>value}" text="{userPermission>value}"/>
+								</MultiComboBox>
+							</VBox>
+							<VBox>
+								<Label text="Tax Period" required="true"/>
+								<DatePicker id="idTcsDate" value="{FilterData>/entityTcsPeriod}" maxDate="{FilterData>/maxDate}" displayFormat="MMM yyyy"
+									valueFormat="MMyyyy"/>
+							</VBox>
+							<VBox>
+								<Label text=""/>
+								<HBox>
+									<Button icon="sap-icon://filter" type="Default" tooltip="Adapt Filters" press="onPressAdaptFilter"
+										class="sapUiTinyMarginBegin buttoncolorSec" enabled="false"/>
+									<Button text="Filter" class="sapUiTinyMarginBegin buttoncolor" press="onPressTCSProcessGo"/>
+								</HBox>
+							</VBox>
+						</l:content>
+					</l:Grid>
+				</l:VerticalLayout>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<Panel>
+				<commons:ChartContainer showFullScreen="false" autoAdjustHeight="false">
+					<commons:content>
+						<commons:ChartContainerContent icon="sap-icon://table-view" title="Table">
+							<commons:content>
+								<ui:Table id="idTableTcs" rowSelectionChange="onSelection" rows="{path:'TCSProessData>/resp/'}" selectionMode="MultiToggle"
+									visibleRowCount="8" fixedBottomRowCount="0" enableSelectAll="true" enableColumnReordering="false">
+									<ui:columns>
+										<ui:Column>
+											<Label design="Bold" text="GSTIN"/>
+											<ui:template>
+												<VBox>
+													<HBox>
+														<Text text="{TCSProessData>state}" class="stateColor"/>
+													</HBox>
+													<HBox alignContent="Center" justifyContent="SpaceBetween">
+														<Link text="{TCSProessData>gstin}" press="onPressTCSGstin"/>
+														<core:Icon src="sap-icon://circle-task-2" size="0.8rem" class="sapUiSmallMarginBegin" tooltip="Generate OTP"
+															visible="{=${TCSProessData>gstin}=== '' ?false:true}" color="{=${TCSProessData>authToken}=== 'Active' ?'#00ff00':'#ff0000'}"
+															press="onPressGenerateOTP1"/>
+													</HBox>
+												</VBox>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="Center">
+											<Label design="Bold" text="Get TCS Status" textAlign="Center" wrapping="true"/>
+											<ui:template>
+												<Label text="{TCSProessData>getTdsStatus}" design="{=!${TCSProessData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label design="Bold" text="Filing Status" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'TCSProessData>invoiceValue'}], formatter : '.formatter.amountValue'}"
+													design="{=!${TCSProessData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label design="Bold" text="Total Amount" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'TCSProessData>taxableValue'}], formatter : '.formatter.amountValue'}"
+													design="{=!${TCSProessData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label design="Bold" text="Integrated Tax" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'TCSProessData>intigratedTax'}], formatter : '.formatter.amountValue'}"
+													design="{=!${TCSProessData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<Label design="Bold" text="Central Tax" textAlign="Center" width="100%" wrapping="true"/>
+											<ui:template>
+												<Label text="{parts:[{path : 'TCSProessData>centralTax'}], formatter : '.formatter.amountValue'}"
+													design="{=!${TCSProessData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column hAlign="End">
+											<HBox>
+												<Label design="Bold" text="State/UT Tax" textAlign="Center" wrapping="true"/>
+												<!--<core:Icon src="sap-icon://favorite" size="0.8rem" color="#346187" class="sapUiTinyMarginBegin"/>-->
+											</HBox>
+											<ui:template>
+												<Label text="{parts:[{path : 'TCSProessData>stateUtTax'}], formatter : '.formatter.amountValue'}"
+													design="{=!${TCSProessData>gstin}?'Bold':'Standard'}"/>
+											</ui:template>
+										</ui:Column>
+									</ui:columns>
+									<ui:footer>
+										<Toolbar>
+											<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+											<Text text="Auth Token Active"/>
+											<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+											<Text text="Auth Token Inactive"/>
+											<ToolbarSpacer/>
+										</Toolbar>
+									</ui:footer>
+								</ui:Table>
+							</commons:content>
+						</commons:ChartContainerContent >
+					</commons:content>
+					<commons:toolbar>
+						<OverflowToolbar>
+							<ToolbarSpacer/>
+							<Button text="Get TCS" class="buttoncolorSec" press="onPressProcessGetTds('P','TCS')" enabled="{= ${userPermission>/appPermission/P99}}"/>
+							<MenuButton class="buttoncolorSec" text="Download Reports" enabled="{= ${userPermission>/appPermission/P99}}">
+								<Menu>
+									<MenuItem text="TCS Credit Report" key="Accept" press="onPressProcessDownload('P','TCS','TCS')" visible="false"/>
+									<MenuItem text="Consolidated Report" key="Reject" press="onPressProcessDownload('P','TCS','')"/>
+								</Menu>
+							</MenuButton>
+							<MenuButton class="buttoncolorSec" text="Action" enabled="{= ${userPermission>/appPermission/P99}}">
+								<Menu>
+									<MenuItem text="Accept" key="Accept" press="onAcceptActionPress('P','accept','TCS')"/>
+									<MenuItem text="Reject" key="Reject" press="onAcceptActionPress('P','reject','TCS')"/>
+									<MenuItem text="No Action" key="NoAction" press="onAcceptActionPress('P','noaction','TCS')"/>
+								</Menu>
+							</MenuButton>
+							<Button text="Save to GSTN" class="buttoncolorSec" press="onSaveToGstinPress1('P','TCS')" enabled="{= ${userPermission>/appPermission/P99}}"/>
+							<Button text="Save Status" class="buttoncolorSec" press="onSaveStatusPress('P','TCS')" enabled="{= ${userPermission>/appPermission/P99}}"/>
+							<Button text="Sign &amp; File" class="buttoncolorSec" press="onSignFilePress" enabled="false"/>
+							<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="Download Excel" enabled="false"/>
+							<Button type="Transparent" icon="sap-icon://pdf-attachment" tooltip="Download Excel" class="sapUiTinyMarginEnd" enabled="false"/>
+							<commons:ChartContainerToolbarPlaceholder></commons:ChartContainerToolbarPlaceholder>
+						</OverflowToolbar>
+					</commons:toolbar>
+				</commons:ChartContainer>
+			</Panel>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

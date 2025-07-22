@@ -1,0 +1,132 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:fb="sap.ui.comp.filterbar">
+	<Dialog title="Initiate and Add Multi Vehicle Details" type="Message" class="sapUiSizeCompact" xmlns:ui="sap.ui.table"
+		xmlns:form="sap.ui.layout.form">
+		<Toolbar class="toolbarbot sapUiTinyMarginBottom">
+			<Label text="Change Multi Vehicle Details" design="Bold" class="sapUiSmallMarginBegin titleFont"/>
+		</Toolbar>
+		<Toolbar class="sapUiSmallMarginTop">
+			<Label text="Transport Mode : " design="Bold" width="8rem"/>
+			<RadioButtonGroup columns="4" selectedIndex="{VehiclesForGroup>/transMode}" enabled="{VehiclesForGroup>/edit}" width="100%"
+				id="idAMVTransportMode">
+				<RadioButton text="Road" width="6rem"/>
+				<RadioButton text="Rail" width="6rem"/>
+				<RadioButton text="Air" width="6rem"/>
+				<RadioButton text="Ship" width="6rem"/>
+			</RadioButtonGroup>
+		</Toolbar>
+		<VBox class="sapUiSmallMarginTop sapUiSmallMarginBegin">
+			<HBox class="sapUiSmallMarginTop">
+				<VBox>
+					<Label text="From Place" design="Bold" textDirection="RTL" required="true"/>
+					<Input width="15rem" value="{VehiclesForGroup>/fromPlace}" enabled="{VehiclesForGroup>/edit}" id="idAMVFromPlace"/>
+				</VBox>
+				<VBox class="sapUiSmallMarginBegin">
+					<Label text="From State" design="Bold" textDirection="RTL" required="true"/>
+					<ComboBox width="15rem" id="idAMVFromState" enabled="{VehiclesForGroup>/edit}" selectedKey="{VehiclesForGroup>/fromState}"
+						showSecondaryValues="true" items="{ path: 'stateCode>/resp/states', sorter: { path: 'state' } }">
+						<core:ListItem key="{stateCode>state}" text="{stateCode>value}" additionalText="{stateCode>state}"/>
+					</ComboBox>
+				</VBox>
+				<VBox class="sapUiSmallMarginBegin">
+					<Label text="Quantity" design="Bold" textDirection="RTL" required="true"/>
+					<Input width="15rem" value="{VehiclesForGroup>/totalQty}" enabled="{VehiclesForGroup>/edit}" id="idAMVQuantity"/>
+				</VBox>
+			</HBox>
+			<HBox class="sapUiSmallMarginTop">
+				<VBox>
+					<Label text="To Place" design="Bold" textDirection="RTL" required="true"/>
+					<Input width="15rem" value="{VehiclesForGroup>/toPlace}" enabled="{VehiclesForGroup>/edit}" id="idAMVToPlace"/>
+				</VBox>
+				<VBox class="sapUiSmallMarginBegin">
+					<Label text="To State" design="Bold" textDirection="RTL" required="true"/>
+					<ComboBox width="15rem" id="idAMVToState" selectedKey="{VehiclesForGroup>/toState}" enabled="{VehiclesForGroup>/edit}"
+						showSecondaryValues="true" items="{ path: 'stateCode>/resp/states', sorter: { path: 'state' } }">
+						<core:ListItem key="{stateCode>state}" text="{stateCode>value}" additionalText="{stateCode>state}"/>
+					</ComboBox>
+				</VBox>
+				<VBox class="sapUiSmallMarginBegin">
+					<Label text="Unit" design="Bold" textDirection="RTL" required="true"/>
+					<!--<Input width="15rem" value="{VehiclesForGroup>/unitCode}" enabled="{VehiclesForGroup>/edit}" id="idAMVUnit"/>-->
+					<ComboBox items="{UQC>/resp}" selectedKey="{VehiclesForGroup>/unitCode}" enabled="{VehiclesForGroup>/edit}" width="15rem">
+						<core:Item key="{UQC>uqc}" text="{UQC>uqc} - {UQC>uqcDesc}"/>
+					</ComboBox>
+				</VBox>
+			</HBox>
+			<HBox class="sapUiSmallMarginTop">
+				<VBox>
+					<Label text="Reason" design="Bold" textDirection="RTL" required="true"/>
+					<ComboBox width="15rem" selectedKey="{VehiclesForGroup>/reasonCode}" enabled="{VehiclesForGroup>/edit}" id="idAMVReason"
+						selectionChange="onAMVSelectionChange" change="onComboBoxChange">
+						<core:Item key="1" text="Due to Break Down"/>
+						<core:Item key="2" text="Due to Transshipment"/>
+						<core:Item key="3" text="Others (Pls. Specify)"/>
+						<core:Item key="4" text="First Time"/>
+						<!--<core:Item key="5" text="Others" />-->
+					</ComboBox>
+				</VBox>
+				<VBox class="sapUiSmallMarginBegin" id="idAMVHeaderRemark" visible="false">
+					<Label text="Remarks" design="Bold" textDirection="RTL" required="true"/>
+					<Input maxLength="50" value="{VehiclesForGroup>/reasonRem}" enabled="{VehiclesForGroup>/edit}" width="25rem" id="idAMVRemarks"/>
+				</VBox>
+			</HBox>
+		</VBox>
+		<ui:Table rows="{VehiclesForGroup>/vechicleDetails/}" selectionMode="MultiToggle" selectionBehavior="Row" visibleRowCount="8"
+			id="idtableAMV">
+			<ui:extension>
+				<Toolbar>
+					<Label text="Vehicle Details" design="Bold" class="sapUiSmallMarginBegin titleFont"/>
+					<ToolbarSpacer/>
+					<Button type="Emphasized" icon="sap-icon://add" enabled="true" press="onPressAddVehicle"/>
+					<Button type="Reject" icon="sap-icon://delete" enabled="true" press="onPressDeleteVehicle"/>
+				</Toolbar>
+			</ui:extension>
+			<ui:columns>
+				<ui:Column >
+					<ui:multiLabels>
+						<Label text="Transport Doc. No." textAlign="Center" width="100%" design="Bold" textDirection="RTL"
+							required="{=(${VehiclesForGroup>/transMode}!==0)}"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Input value="{VehiclesForGroup>transDocNo}" enabled="{VehiclesForGroup>edit}" valueState="{VehiclesForGroup>transDocNoState}"
+							change="onChagneVehicleValue"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column >
+					<ui:multiLabels>
+						<Label text="Transport Doc. Date" textAlign="Center" width="100%" design="Bold" textDirection="RTL"
+							required="{=(${VehiclesForGroup>/transMode}!==0)}"/>
+					</ui:multiLabels>
+					<ui:template>
+						<DatePicker value="{VehiclesForGroup>transDocDate}" enabled="{VehiclesForGroup>edit}" displayFormat="dd/MM/yyyy" valueFormat="dd/MM/yyyy"
+							change="onChagneVehicleValue" valueState="{VehiclesForGroup>transDocDateState}"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column >
+					<ui:multiLabels>
+						<Label text="Vehicle No." textAlign="Center" width="100%" design="Bold" textDirection="RTL"
+							required="{=(${VehiclesForGroup>/transMode}===0)}"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Input value="{VehiclesForGroup>vehicleNo}" enabled="{VehiclesForGroup>edit}" valueState="{VehiclesForGroup>vehicleNoState}"
+							change="onChagneVehicleValue"/>
+					</ui:template>
+				</ui:Column>
+				<ui:Column >
+					<ui:multiLabels>
+						<Label text="Quantity" textAlign="Center" width="100%" design="Bold" textDirection="RTL" required="true"/>
+					</ui:multiLabels>
+					<ui:template>
+						<Input value="{VehiclesForGroup>quantity}" enabled="{VehiclesForGroup>edit}" valueState="{VehiclesForGroup>quantityState}"
+							change="onChagneVehicleValue"/>
+					</ui:template>
+				</ui:Column>
+			</ui:columns>
+		</ui:Table>
+		<beginButton>
+			<Button text="Generate" id="bAMVApply" type="Default" press="onPressAMVClose"/>
+		</beginButton>
+		<endButton>
+			<Button text="Close" type="Default" press="onPressAMVClose"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

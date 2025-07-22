@@ -1,0 +1,147 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:ui="sap.ui.table">
+	<f:DynamicPage id="dpGstr8Entity" class="sapUiNoContentPadding sapUiNoMargin">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="GSTR - 8" titleStyle="H3"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="false">
+				<fb:FilterBar showGoOnFB="false" showClearOnFB="false" showFilterConfiguration="false" useToolbar="false" width="90%"
+					class="sapUiNoContentPadding">
+					<fb:filterGroupItems>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="A" label="{i18n>gstin}" visibleInFilterBar="true">
+							<fb:control>
+								<MultiComboBox items="{GstinModel>/}" showSelectAll="true" width="100%" selectedKeys="{FilterModel>/gstin}">
+									<core:Item key="{GstinModel>gstin}" text="{GstinModel>gstin}"/>
+								</MultiComboBox>
+							</fb:control>
+						</fb:FilterGroupItem>
+						<fb:FilterGroupItem groupName="G1" groupTitle="Basic" name="B" label="{i18n>taxPeriod}" visibleInFilterBar="true">
+							<fb:control>
+								<DatePicker id="dTaxPeriod" displayFormat="MMM yyyy" valueFormat="MMyyyy" value="{FilterModel>/taxPeriod}" maxDate="{FilterModel>/maxDate}"/>
+							</fb:control>
+						</fb:FilterGroupItem>
+					</fb:filterGroupItems>
+				</fb:FilterBar>
+				<HBox justifyContent="End" class="clMain" width="10%">
+					<Button text="{i18n>clear}" press="onEntityClear" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+					<Button text="Filter" press="onEntitySearch" class="buttoncolor"/>
+				</HBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ui:Table id="tabEntiryGstr8" rows="{EntiryLevelRecord>/}" selectionMode="MultiToggle" visibleRowCount="8" fixedColumnCount="1">
+				<ui:extension>
+					<OverflowToolbar height="3.2rem">
+						<ToolbarSpacer/>
+						<HBox>
+							<Button text="{i18n>deleteData}" press="onEntityDeleteData" class="buttoncolorSec" enabled="false"/>
+							<Button text="Save GSTR-8" press="onEntitySaveGstr8" class="sapUiTinyMarginBeginEnd buttoncolorSec"/>
+							<Button text="Get GSTR-8" press="onEntityGetGstr8" class="buttoncolorSec"/>
+							<Button text="{i18n>signFile}" class="sapUiTinyMarginBeginEnd buttoncolorSec" enabled="false"/>
+							<MenuButton text="{i18n>downReport}" class="buttoncolorSec">
+								<Menu itemSelected="onDownloadReport('E',${$parameters>/item/mProperties/key})">
+									<MenuItem key="processRecords" text="Processed Records"/>
+									<MenuItem key="summaryRecords" text="Entity Level Summary Report"/>
+								</Menu>
+							</MenuButton>
+							<Button type="Transparent" icon="sap-icon://excel-attachment" tooltip="{i18n>downExcel}"/>
+							<MenuButton type="Transparent" icon="sap-icon://pdf-attachment" class="cl_dropgstr1" tooltip="{i18n>downPdf}">
+								<Menu itemSelected="onDownloadEntityPDF(${$parameters>/item/mProperties/key})">
+									<MenuItem key="digiGst" text="As per DigiGST Values"/>
+									<MenuItem key="gstn" text="As per GSTN Values"/>
+								</Menu>
+							</MenuButton>
+						</HBox>
+					</OverflowToolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="14rem">
+						<Label text="{i18n>gstin}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<VBox>
+								<HBox>
+									<Text text="{EntiryLevelRecord>state}" width="8rem" class="stateColor"/>
+									<Text text="{EntiryLevelRecord>regType}" class="stateColor fontSmall"/>
+								</HBox>
+								<HBox alignContent="Start" justifyContent="SpaceBetween">
+									<Link text="{EntiryLevelRecord>gstin}" emphasized="true" press="onEntityGstin"/>
+									<core:Icon src="sap-icon://circle-task-2" visible="{=${EntiryLevelRecord>state}===''?false:true}" size="0.8rem"
+										tooltip="{EntiryLevelRecord>authToken}" color="{=${EntiryLevelRecord>authToken}==='Active'?'#00ff00':'#ff0000'}"
+										press="onActivateAuthToken(${EntiryLevelRecord>gstin},${EntiryLevelRecord>authToken})"/>
+								</HBox>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column>
+						<Label text="Return Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<HBox direction="Column" justifyContent="Center">
+								<ObjectStatus text="{EntiryLevelRecord>returnStatus}" active="{=${EntiryLevelRecord>returnStatus}!=='NOT_INTIATED'}"
+									state="{path:'EntiryLevelRecord>returnStatus', formatter:'.formatter.statusClr'}" press="onPressStatus"/>
+								<Text text="{EntiryLevelRecord>returnStatusTime}" class="timeStmpClr"/>
+							</HBox>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="{i18n>count}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{EntiryLevelRecord>totalCount}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="Total Supply" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{path:'EntiryLevelRecord>totalSupplies', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="{i18n>igst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{path:'EntiryLevelRecord>igst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="{i18n>cgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{path:'EntiryLevelRecord>cgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="End">
+						<Label text="{i18n>sgst}" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<Text text="{path:'EntiryLevelRecord>sgst', formatter:'.formatter.amountValue'}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center" visible="false">
+						<Label text="Difference" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<core:Icon src="sap-icon://show" size="1.5rem" tooltip="View Difference with GSTN" color="#000000" press="onDifference" class="clsIcon"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column hAlign="Center">
+						<Label text="Get GSTR-8 Status" textAlign="Center" width="100%" wrapping="true" design="Bold"/>
+						<ui:template>
+							<VBox renderType="Bare">
+								<Text text="{EntiryLevelRecord>getGstr8Status}"/>
+								<Text text="{EntiryLevelRecord>getGstr8Time}" class="timeStmpClr"/>
+							</VBox>
+						</ui:template>
+					</ui:Column>
+				</ui:columns>
+				<ui:footer>
+					<HBox>
+						<core:Icon src="sap-icon://circle-task-2" color="#00ff00" size="0.8rem"/>
+						<Text text="Auth Token Active" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+						<core:Icon src="sap-icon://circle-task-2" color="red" size="0.8rem"/>
+						<Text text="Auth Token Inactive" class="sapUiTinyMarginBegin"/>
+					</HBox>
+				</ui:footer>
+			</ui:Table>
+		</f:content>
+	</f:DynamicPage>
+</core:FragmentDefinition>

@@ -1,0 +1,115 @@
+package com.ey.advisory.app.services.reports;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+import com.aspose.cells.Cells;
+import com.aspose.cells.FileFormatType;
+import com.aspose.cells.LoadOptions;
+import com.aspose.cells.MemorySetting;
+import com.aspose.cells.Workbook;
+import com.ey.advisory.app.data.services.anx1.Gstr2aProcessedRecordsFetchService;
+import com.ey.advisory.app.docs.dto.anx1.Gstr2aProcessedRecordsRespDto;
+import com.ey.advisory.common.CommonUtility;
+import com.ey.advisory.core.dto.Gstr2AProcessedRecordsReqDto;
+
+/**
+ * @author Sasidhar
+ *
+ * 
+ */
+
+@Service("Gstr2aProcessedRecordsScreenServiceImpl")
+public class Gstr2aProcessedRecordsScreenServiceImpl {
+
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(Gstr6ProcessedRecordsScreenServiceImpl.class);
+
+	@Autowired
+	CommonUtility commonUtility;
+
+	@Autowired
+	@Qualifier("Gstr2aProcessedRecordsFetchService")
+	private Gstr2aProcessedRecordsFetchService gstr2aPRFetchService;
+
+	public Workbook findProcessedScreenDownload(
+			Gstr2AProcessedRecordsReqDto criteria) {
+		Workbook workbook = new Workbook();
+		int startRow = 1;
+		int startcolumn = 0;
+		boolean isHeaderRequired = false;
+		List<Gstr2aProcessedRecordsRespDto> respDtos = gstr2aPRFetchService
+				.findGstr2aProcessedRecords(criteria);
+
+		List<Gstr2aProcessedSummScreenRespDto> responseFromView = convertProcessSummaryRecordsToScreenDtos(
+				respDtos);
+
+		workbook = createWorkbookWithExcelTemplate("ReportTemplates",
+				"Gstr2a_EntityLevel_Summary.xlsx");
+
+		LOGGER.debug(
+				"Gstr2a_EntityLevel_Summary data response" + responseFromView);
+
+		if (responseFromView != null && responseFromView.size() > 0) {
+			String[] invoiceHeaders = commonUtility
+					.getProp("gstr2a.processed.rec.screen.report.headers")
+					.split(",");
+
+			Cells errorDumpCells = workbook.getWorksheets().get(0).getCells();
+			errorDumpCells.importCustomObjects(responseFromView, invoiceHeaders,
+					isHeaderRequired, startRow, startcolumn,
+					responseFromView.size(), true, "yyyy-mm-dd", false);
+		}
+
+		return workbook;
+
+	}
+
+	private List<Gstr2aProcessedSummScreenRespDto> convertProcessSummaryRecordsToScreenDtos(
+			List<Gstr2aProcessedRecordsRespDto> result) {
+		List<Gstr2aProcessedSummScreenRespDto> dtos = new ArrayList<Gstr2aProcessedSummScreenRespDto>();
+		result.stream().forEach(dto -> {
+			Gstr2aProcessedSummScreenRespDto screenDto = new Gstr2aProcessedSummScreenRespDto();
+			screenDto.setGstin(dto.getGstin());
+			screenDto.setState(dto.getState());
+			screenDto.setStatus(dto.getStatus());
+			screenDto.setTimeStamp(dto.getTimeStamp());
+			screenDto.setCount(dto.getCount());
+			screenDto.setInvoiceValue(dto.getInvoiceValue());
+			screenDto.setTaxPayable(dto.getTaxPayable());
+			screenDto.setTaxableValue(dto.getTaxableValue());
+			screenDto.setIgst(dto.getIgst());
+			screenDto.setCgst(dto.getCgst());
+			screenDto.setSgst(dto.getSgst());
+			screenDto.setCess(dto.getCess());
+			dtos.add(screenDto);
+		});
+		return dtos;
+	}
+
+	private Workbook createWorkbookWithExcelTemplate(String folderName,
+			String fileName) {
+		Workbook workbook = null;
+		try {
+			ClassLoader classLoader = getClass().getClassLoader();
+			URL template_Dir = classLoader.getResource(folderName + "/");
+			String templatePath = template_Dir.getPath() + fileName;
+			LoadOptions options = new LoadOptions(FileFormatType.XLSX);
+			CommonUtility.setAsposeLicense();
+			workbook = new Workbook(templatePath, options);
+			workbook.getSettings()
+					.setMemorySetting(MemorySetting.MEMORY_PREFERENCE);
+		} catch (Exception ex) {
+			LOGGER.error("Exception in creating workbook : ", ex);
+		}
+		return workbook;
+	}
+
+}
