@@ -176,7 +176,14 @@ public class AspProcessedAsUploadedReportConvertor implements ReportConvertor {
 		obj.setCancellationRemarks(arr[29] != null ? arr[29].toString() : null);
 		obj.setSupplyType(arr[30] != null ? arr[30].toString() : null);
 		obj.setDocCategory(arr[31] != null ? arr[31].toString() : null);
-		obj.setDocumentType(arr[32] != null ? arr[32].toString() : null);
+                String documentType = arr[32] != null ? arr[32].toString() : null;
+                obj.setDocumentType(documentType);
+                boolean isNegative = "CR".equalsIgnoreCase(documentType)
+                                || "RCR".equalsIgnoreCase(documentType)
+                                || "CDNR".equalsIgnoreCase(documentType)
+                                || "CDNRA".equalsIgnoreCase(documentType)
+                                || "CDNUR".equalsIgnoreCase(documentType)
+                                || "CDNURA".equalsIgnoreCase(documentType);
 		obj.setDocumentNumber(arr[33] != null ? arr[33].toString() : null);
 		if (arr[34] != null) {
 			String strdate = arr[34].toString();
@@ -283,50 +290,50 @@ public class AspProcessedAsUploadedReportConvertor implements ReportConvertor {
 		 * obj.setQuantity(arr[87] != null ? arr[87].toString() : null);
 		 */
 		obj.setFreeQuantity(arr[88] != null ? arr[88].toString() : null);
-		obj.setUnitPrice(arr[89] != null ? arr[89].toString() : null);
-		obj.setItemAmount(arr[90] != null ? arr[90].toString() : null);
-		obj.setItemDiscount(arr[91] != null ? arr[91].toString() : null);
-		obj.setPreTaxAmount(arr[92] != null ? arr[92].toString() : null);
-		obj.setItemAssessableAmount(
-				arr[93] != null ? arr[93].toString() : null);
+                obj.setUnitPrice(arr[89] != null ? arr[89].toString() : null);
+                obj.setItemAmount(convertAmountToNegative(arr[90] != null ? arr[90].toString() : null, isNegative));
+                obj.setItemDiscount(arr[91] != null ? arr[91].toString() : null);
+                obj.setPreTaxAmount(arr[92] != null ? arr[92].toString() : null);
+                obj.setItemAssessableAmount(
+                                convertAmountToNegative(arr[93] != null ? arr[93].toString() : null, isNegative));
 		obj.setiGSTRate(arr[94] != null ? arr[94].toString() : null);
-		obj.setiGSTAmount(arr[95] != null ? arr[95].toString() : null);
+                obj.setiGSTAmount(convertAmountToNegative(arr[95] != null ? arr[95].toString() : null, isNegative));
 		obj.setcGSTRate(arr[96] != null ? arr[96].toString() : null);
-		obj.setcGSTAmount(arr[97] != null ? arr[97].toString() : null);
+                obj.setcGSTAmount(convertAmountToNegative(arr[97] != null ? arr[97].toString() : null, isNegative));
 		obj.setsGSTRate(arr[98] != null ? arr[98].toString() : null);
-		obj.setsGSTAmount(arr[99] != null ? arr[99].toString() : null);
+                obj.setsGSTAmount(convertAmountToNegative(arr[99] != null ? arr[99].toString() : null, isNegative));
 		obj.setCessAdvaloremRate(arr[100] != null ? arr[100].toString() : null);
-		obj.setCessAdvaloremAmount(
-				arr[101] != null ? arr[101].toString() : null);
+                obj.setCessAdvaloremAmount(
+                                convertAmountToNegative(arr[101] != null ? arr[101].toString() : null, isNegative));
 		obj.setCessSpecificRate(arr[102] != null ? arr[102].toString() : null);
-		obj.setCessSpecificAmount(
-				arr[103] != null ? arr[103].toString() : null);
+                obj.setCessSpecificAmount(
+                                convertAmountToNegative(arr[103] != null ? arr[103].toString() : null, isNegative));
 		obj.setStateCessAdvaloremRate(
 				arr[104] != null ? arr[104].toString() : null);
-		obj.setStateCessAdvaloremAmount(
-				arr[105] != null ? arr[105].toString() : null);
+                obj.setStateCessAdvaloremAmount(
+                                convertAmountToNegative(arr[105] != null ? arr[105].toString() : null, isNegative));
 		obj.setStateCessSpecificRate(
 				arr[106] != null ? arr[106].toString() : null);
-		obj.setStateCessSpecificAmount(
-				arr[107] != null ? arr[107].toString() : null);
+                obj.setStateCessSpecificAmount(
+                                convertAmountToNegative(arr[107] != null ? arr[107].toString() : null, isNegative));
 		obj.setItemOtherCharges(arr[108] != null ? arr[108].toString() : null);
-		obj.setTotalItemAmount(arr[109] != null ? arr[109].toString() : null);
+                obj.setTotalItemAmount(convertAmountToNegative(arr[109] != null ? arr[109].toString() : null, isNegative));
 		obj.setInvoiceOtherCharges(
 				arr[110] != null ? arr[110].toString() : null);
-		obj.setInvoiceAssessableAmount(
-				arr[111] != null ? arr[111].toString() : null);
-		obj.setInvoiceIGSTAmount(arr[112] != null ? arr[112].toString() : null);
-		obj.setInvoiceCGSTAmount(arr[113] != null ? arr[113].toString() : null);
-		obj.setInvoiceSGSTAmount(arr[114] != null ? arr[114].toString() : null);
-		obj.setInvoiceCessAdvaloremAmount(
-				arr[115] != null ? arr[115].toString() : null);
-		obj.setInvoiceCessSpecificAmount(
-				arr[116] != null ? arr[116].toString() : null);
-		obj.setInvoiceStateCessAdvaloremAmount(
-				arr[117] != null ? arr[117].toString() : null);
-		obj.setInvoiceStateCessSpecificAmount(
-				arr[118] != null ? arr[118].toString() : null);
-		obj.setInvoiceValue(arr[119] != null ? arr[119].toString() : null);
+                obj.setInvoiceAssessableAmount(
+                                convertAmountToNegative(arr[111] != null ? arr[111].toString() : null, isNegative));
+                obj.setInvoiceIGSTAmount(convertAmountToNegative(arr[112] != null ? arr[112].toString() : null, isNegative));
+                obj.setInvoiceCGSTAmount(convertAmountToNegative(arr[113] != null ? arr[113].toString() : null, isNegative));
+                obj.setInvoiceSGSTAmount(convertAmountToNegative(arr[114] != null ? arr[114].toString() : null, isNegative));
+                obj.setInvoiceCessAdvaloremAmount(
+                                convertAmountToNegative(arr[115] != null ? arr[115].toString() : null, isNegative));
+                obj.setInvoiceCessSpecificAmount(
+                                convertAmountToNegative(arr[116] != null ? arr[116].toString() : null, isNegative));
+                obj.setInvoiceStateCessAdvaloremAmount(
+                                convertAmountToNegative(arr[117] != null ? arr[117].toString() : null, isNegative));
+                obj.setInvoiceStateCessSpecificAmount(
+                                convertAmountToNegative(arr[118] != null ? arr[118].toString() : null, isNegative));
+                obj.setInvoiceValue(convertAmountToNegative(arr[119] != null ? arr[119].toString() : null, isNegative));
 		obj.setRoundOff(arr[120] != null ? arr[120].toString() : null);
 		obj.setTotalInvoiceValue(arr[121] != null ? arr[121].toString() : null);
 		obj.settCSFlagIncomeTax(arr[122] != null ? arr[122].toString() : null);
@@ -871,9 +878,14 @@ public class AspProcessedAsUploadedReportConvertor implements ReportConvertor {
 		obj.setDocCategory(
 				extractFieldData(arr, "DocCategory", selectedFields));
 
-		 String documentType = extractFieldData(arr, "DocumentType", selectedFields);
-		    obj.setDocumentType(documentType);
-		    boolean isNegative = "CR".equalsIgnoreCase(documentType) || "RCR".equalsIgnoreCase(documentType);
+                String documentType = extractFieldData(arr, "DocumentType", selectedFields);
+                obj.setDocumentType(documentType);
+                boolean isNegative = "CR".equalsIgnoreCase(documentType)
+                                || "RCR".equalsIgnoreCase(documentType)
+                                || "CDNR".equalsIgnoreCase(documentType)
+                                || "CDNRA".equalsIgnoreCase(documentType)
+                                || "CDNUR".equalsIgnoreCase(documentType)
+                                || "CDNURA".equalsIgnoreCase(documentType);
 		obj.setDocumentNumber(
 				extractFieldData(arr, "DocumentNumber", selectedFields));
 		obj.setDocumentNumber(
