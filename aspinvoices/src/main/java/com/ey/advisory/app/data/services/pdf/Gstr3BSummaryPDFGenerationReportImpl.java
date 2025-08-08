@@ -1134,14 +1134,24 @@ public class Gstr3BSummaryPDFGenerationReportImpl
 							liabilitySetOffEntity.getCsPdCess()));
 					
 					if (newSource) {
-						// --3b pdf start 1--digigst pdf
-						// adjustment of negative--other than reverse charge
-						parameters.put("aonlOrcIgst",
-								convertBigDecimalToString1(liabilitySetOffEntity
-										.getI_adjNegative2i() != null
-												? liabilitySetOffEntity
-														.getI_adjNegative2i()
-												: null));
+                                               // --3b pdf start 1--digigst pdf
+                                               // adjustment of negative--other than reverse charge
+                                               BigDecimal aonlOrcIgst = liabilitySetOffEntity.getI_adjNegative2i();
+                                               BigDecimal ipdIgst = liabilitySetOffEntity.getIPDIgst();
+                                               BigDecimal ipdCgst = liabilitySetOffEntity.getIPDCgst();
+                                               BigDecimal ipdSgst = liabilitySetOffEntity.getIPDSgst();
+                                               BigDecimal ipdCess = BigDecimal.ZERO;
+
+                                               BigDecimal adjustedAonlOrcIgst = (aonlOrcIgst != null ? aonlOrcIgst
+                                                               : BigDecimal.ZERO)
+                                                               .subtract((ipdIgst != null ? ipdIgst : BigDecimal.ZERO)
+                                                                               .subtract(ipdCgst != null ? ipdCgst
+                                                                                               : BigDecimal.ZERO)
+                                                                               .subtract(ipdSgst != null ? ipdSgst
+                                                                                               : BigDecimal.ZERO)
+                                                                               .subtract(ipdCess));
+                                               parameters.put("aonlOrcIgst",
+                                                               convertBigDecimalToString1(adjustedAonlOrcIgst));
 
 						parameters.put("aonlOrcCgst",
 								convertBigDecimalToString1(liabilitySetOffEntity
